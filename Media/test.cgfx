@@ -1,0 +1,30 @@
+void test_vertex(
+			in float4 position   : POSITION,
+			in float4 normal     : NORMAL, 
+			out float4 positionO : POSITION,
+			out float4 normalVTF, 
+			const uniform float4x4 ModelViewProjectionMatrix)
+{
+	positionO = mul(ModelViewProjectionMatrix, position); 
+	normalVTF = normal;
+}
+
+void test_fragment(
+	in float4 normalVTF,
+	out float4 colorO : COLOR0 )
+{
+    colorO = float4(normalize(normalVTF).rgb, 1.); 
+} 
+
+
+
+
+
+float4x4 mvp	: ModelViewProjectionMatrix;
+
+technique NormMap { 
+    pass { 
+        VertexProgram = compile arbvp1 test_vertex(mvp); 
+        FragmentProgram = compile arbfp1 test_fragment(); 
+    } 
+} 

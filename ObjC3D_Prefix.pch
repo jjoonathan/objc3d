@@ -1,0 +1,22 @@
+/**
+ *  @file ObjC3D_Prefix.pch
+ *  @license MIT License (see LICENSE.txt)
+ *  @author Jonathan deWerd
+ *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
+ */
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
+
+#include <GL/glew.h>
+#include <GL/GLFW.h>
+
+#include <CoreFoundation/CoreFoundation.h>
+#include <Carbon/Carbon.h>
+
+
+#ifndef __COREFOUNDATION__
+#warning ObjC3D is being compiled without Core Foundation. This is fine, but you may find hidden bugs and ObjC3D might be a bit slower. Ignore/suppress this warning if you like.
+#endif
+
+#include "ObjC3D.h"

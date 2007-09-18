@@ -1,0 +1,3 @@
+It appears that GCC on -O3 can catch an optimize the proxy object which allows access like a_matrix[0][1]. There was no performance or assembly difference between matr[1][1]=matr[0][3]; and matr(5) = matr(3);.
+
+Conclusion: GCC rules :)

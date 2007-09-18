@@ -1,0 +1,18 @@
+/**
+ *  @file O3DirectionalLight.h
+ *  @license MIT License (see LICENSE.txt)
+ *  @date 11/23/06.
+ *  @author Jonathan deWerd
+ *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
+ */
+#import <Cocoa/Cocoa.h>
+#import "O3Light.h"
+
+@interface O3DirectionalLight : O3Light {
+}
+//Initializers
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor;
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation;
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff;
+
+@end

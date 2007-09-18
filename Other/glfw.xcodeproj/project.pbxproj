@@ -1,0 +1,278 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FC2C17000C11C7060084A599 /* enable.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16AE0C11C7050084A599 /* enable.c */; };
+		FC2C17010C11C7060084A599 /* fullscreen.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16AF0C11C7050084A599 /* fullscreen.c */; };
+		FC2C17020C11C7060084A599 /* glext.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16B00C11C7050084A599 /* glext.c */; };
+		FC2C17030C11C7060084A599 /* image.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16B10C11C7050084A599 /* image.c */; };
+		FC2C17040C11C7060084A599 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16B20C11C7050084A599 /* init.c */; };
+		FC2C17050C11C7060084A599 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16B30C11C7050084A599 /* input.c */; };
+		FC2C17060C11C7060084A599 /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2C16B40C11C7050084A599 /* internal.h */; };
+		FC2C17070C11C7060084A599 /* joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16B50C11C7050084A599 /* joystick.c */; };
+		FC2C17090C11C7060084A599 /* macosx_enable.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16B80C11C7050084A599 /* macosx_enable.c */; };
+		FC2C170A0C11C7060084A599 /* macosx_fullscreen.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16B90C11C7050084A599 /* macosx_fullscreen.c */; };
+		FC2C170B0C11C7060084A599 /* macosx_glext.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16BA0C11C7050084A599 /* macosx_glext.c */; };
+		FC2C170C0C11C7060084A599 /* macosx_init.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16BB0C11C7050084A599 /* macosx_init.c */; };
+		FC2C170D0C11C7060084A599 /* macosx_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16BC0C11C7050084A599 /* macosx_joystick.c */; };
+		FC2C170E0C11C7060084A599 /* macosx_thread.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16BD0C11C7050084A599 /* macosx_thread.c */; };
+		FC2C170F0C11C7060084A599 /* macosx_time.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16BE0C11C7050084A599 /* macosx_time.c */; };
+		FC2C17100C11C7060084A599 /* macosx_window.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16BF0C11C7050084A599 /* macosx_window.c */; };
+		FC2C17110C11C7060084A599 /* platform.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2C16C10C11C7050084A599 /* platform.h */; };
+		FC2C17120C11C7060084A599 /* tga.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16C20C11C7050084A599 /* tga.c */; };
+		FC2C17130C11C7060084A599 /* thread.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16C30C11C7050084A599 /* thread.c */; };
+		FC2C17140C11C7060084A599 /* time.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16C40C11C7050084A599 /* time.c */; };
+		FC2C171F0C11C7060084A599 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16DB0C11C7060084A599 /* window.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FC2C16880C11C5910084A599 /* libglfw.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglfw.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC2C16AE0C11C7050084A599 /* enable.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = enable.c; sourceTree = "<group>"; };
+		FC2C16AF0C11C7050084A599 /* fullscreen.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = fullscreen.c; sourceTree = "<group>"; };
+		FC2C16B00C11C7050084A599 /* glext.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = glext.c; sourceTree = "<group>"; };
+		FC2C16B10C11C7050084A599 /* image.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = image.c; sourceTree = "<group>"; };
+		FC2C16B20C11C7050084A599 /* init.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = init.c; sourceTree = "<group>"; };
+		FC2C16B30C11C7050084A599 /* input.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = input.c; sourceTree = "<group>"; };
+		FC2C16B40C11C7050084A599 /* internal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = internal.h; sourceTree = "<group>"; };
+		FC2C16B50C11C7050084A599 /* joystick.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = joystick.c; sourceTree = "<group>"; };
+		FC2C16B70C11C7050084A599 /* libglfw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libglfw.a; sourceTree = "<group>"; };
+		FC2C16B80C11C7050084A599 /* macosx_enable.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_enable.c; sourceTree = "<group>"; };
+		FC2C16B90C11C7050084A599 /* macosx_fullscreen.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_fullscreen.c; sourceTree = "<group>"; };
+		FC2C16BA0C11C7050084A599 /* macosx_glext.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_glext.c; sourceTree = "<group>"; };
+		FC2C16BB0C11C7050084A599 /* macosx_init.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_init.c; sourceTree = "<group>"; };
+		FC2C16BC0C11C7050084A599 /* macosx_joystick.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_joystick.c; sourceTree = "<group>"; };
+		FC2C16BD0C11C7050084A599 /* macosx_thread.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_thread.c; sourceTree = "<group>"; };
+		FC2C16BE0C11C7050084A599 /* macosx_time.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_time.c; sourceTree = "<group>"; };
+		FC2C16BF0C11C7050084A599 /* macosx_window.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = macosx_window.c; sourceTree = "<group>"; };
+		FC2C16C00C11C7050084A599 /* Makefile.macosx.gcc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Makefile.macosx.gcc; sourceTree = "<group>"; };
+		FC2C16C10C11C7050084A599 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
+		FC2C16C20C11C7050084A599 /* tga.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = tga.c; sourceTree = "<group>"; };
+		FC2C16C30C11C7050084A599 /* thread.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = thread.c; sourceTree = "<group>"; };
+		FC2C16C40C11C7050084A599 /* time.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = time.c; sourceTree = "<group>"; };
+		FC2C16DB0C11C7060084A599 /* window.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		FC2C16760C11C57B0084A599 = {
+			isa = PBXGroup;
+			children = (
+				FC2C16910C11C7050084A599 /* lib */,
+				FC2C16890C11C5910084A599 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FC2C16890C11C5910084A599 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC2C16880C11C5910084A599 /* libglfw.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FC2C16910C11C7050084A599 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				FC2C16AE0C11C7050084A599 /* enable.c */,
+				FC2C16AF0C11C7050084A599 /* fullscreen.c */,
+				FC2C16B00C11C7050084A599 /* glext.c */,
+				FC2C16B10C11C7050084A599 /* image.c */,
+				FC2C16B20C11C7050084A599 /* init.c */,
+				FC2C16B30C11C7050084A599 /* input.c */,
+				FC2C16B40C11C7050084A599 /* internal.h */,
+				FC2C16B50C11C7050084A599 /* joystick.c */,
+				FC2C16B60C11C7050084A599 /* macosx */,
+				FC2C16C20C11C7050084A599 /* tga.c */,
+				FC2C16C30C11C7050084A599 /* thread.c */,
+				FC2C16C40C11C7050084A599 /* time.c */,
+				FC2C16DB0C11C7060084A599 /* window.c */,
+			);
+			name = lib;
+			path = glfw/lib;
+			sourceTree = "<group>";
+		};
+		FC2C16B60C11C7050084A599 /* macosx */ = {
+			isa = PBXGroup;
+			children = (
+				FC2C16B70C11C7050084A599 /* libglfw.a */,
+				FC2C16B80C11C7050084A599 /* macosx_enable.c */,
+				FC2C16B90C11C7050084A599 /* macosx_fullscreen.c */,
+				FC2C16BA0C11C7050084A599 /* macosx_glext.c */,
+				FC2C16BB0C11C7050084A599 /* macosx_init.c */,
+				FC2C16BC0C11C7050084A599 /* macosx_joystick.c */,
+				FC2C16BD0C11C7050084A599 /* macosx_thread.c */,
+				FC2C16BE0C11C7050084A599 /* macosx_time.c */,
+				FC2C16BF0C11C7050084A599 /* macosx_window.c */,
+				FC2C16C00C11C7050084A599 /* Makefile.macosx.gcc */,
+				FC2C16C10C11C7050084A599 /* platform.h */,
+			);
+			path = macosx;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		FC2C16840C11C5910084A599 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC2C17060C11C7060084A599 /* internal.h in Headers */,
+				FC2C17110C11C7060084A599 /* platform.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		FC2C16870C11C5910084A599 /* glfw */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC2C168A0C11C5920084A599 /* Build configuration list for PBXNativeTarget "glfw" */;
+			buildPhases = (
+				FC2C16840C11C5910084A599 /* Headers */,
+				FC2C16850C11C5910084A599 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = glfw;
+			productName = glfw;
+			productReference = FC2C16880C11C5910084A599 /* libglfw.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FC2C16780C11C57B0084A599 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = FC2C16790C11C57B0084A599 /* Build configuration list for PBXProject "glfw" */;
+			hasScannedForEncodings = 0;
+			mainGroup = FC2C16760C11C57B0084A599;
+			productRefGroup = FC2C16890C11C5910084A599 /* Products */;
+			projectDirPath = "";
+			targets = (
+				FC2C16870C11C5910084A599 /* glfw */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FC2C16850C11C5910084A599 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC2C17000C11C7060084A599 /* enable.c in Sources */,
+				FC2C17010C11C7060084A599 /* fullscreen.c in Sources */,
+				FC2C17020C11C7060084A599 /* glext.c in Sources */,
+				FC2C17030C11C7060084A599 /* image.c in Sources */,
+				FC2C17040C11C7060084A599 /* init.c in Sources */,
+				FC2C17050C11C7060084A599 /* input.c in Sources */,
+				FC2C17070C11C7060084A599 /* joystick.c in Sources */,
+				FC2C17090C11C7060084A599 /* macosx_enable.c in Sources */,
+				FC2C170A0C11C7060084A599 /* macosx_fullscreen.c in Sources */,
+				FC2C170B0C11C7060084A599 /* macosx_glext.c in Sources */,
+				FC2C170C0C11C7060084A599 /* macosx_init.c in Sources */,
+				FC2C170D0C11C7060084A599 /* macosx_joystick.c in Sources */,
+				FC2C170E0C11C7060084A599 /* macosx_thread.c in Sources */,
+				FC2C170F0C11C7060084A599 /* macosx_time.c in Sources */,
+				FC2C17100C11C7060084A599 /* macosx_window.c in Sources */,
+				FC2C17120C11C7060084A599 /* tga.c in Sources */,
+				FC2C17130C11C7060084A599 /* thread.c in Sources */,
+				FC2C17140C11C7060084A599 /* time.c in Sources */,
+				FC2C171F0C11C7060084A599 /* window.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FC2C167A0C11C57B0084A599 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				COPY_PHASE_STRIP = NO;
+				SYMROOT = "$(PROJECT_DIR)/../build/Support";
+			};
+			name = Debug;
+		};
+		FC2C167B0C11C57B0084A599 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				COPY_PHASE_STRIP = YES;
+				SYMROOT = "$(PROJECT_DIR)/../build/Support";
+			};
+			name = Release;
+		};
+		FC2C168B0C11C5920084A599 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/glfw/lib/macosx\"";
+				PREBINDING = NO;
+				PRODUCT_NAME = glfw;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		FC2C168C0C11C5920084A599 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				LIBRARY_SEARCH_PATHS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = glfw;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FC2C16790C11C57B0084A599 /* Build configuration list for PBXProject "glfw" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC2C167A0C11C57B0084A599 /* Debug */,
+				FC2C167B0C11C57B0084A599 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC2C168A0C11C5920084A599 /* Build configuration list for PBXNativeTarget "glfw" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC2C168B0C11C5920084A599 /* Debug */,
+				FC2C168C0C11C5920084A599 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FC2C16780C11C57B0084A599 /* Project object */;
+}

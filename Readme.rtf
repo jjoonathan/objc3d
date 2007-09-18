@@ -1,0 +1,79 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf420
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\vieww22680\viewh11420\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\f0\b\fs24 \cf0 Philosophy/goal\
+	
+\f1\b0 To make a easily-integratable framework and toolset for cocoa 3D development.
+\f0\b \
+\
+O3Accelerate design pattern\
+	
+\f1\b0 Speed is critical in RT3D. We should definitely go for lazy optimization, but at the start of this project especially I had problems with that concept. If a function looked critical, I made a C version of it (that was called from ObjC) that didn't have the ObjC overhead but did have the dynamic goodness. "Self" is argument one, and an O3Accelerate function can be called on any object. First they check the isa of the object to see if they can accelerate the call. If so they used their cached C version of the ObjC call. If not (the isa is unrecognized) they use a plain ObjC call. They come in two naming conventions: NSO3Class_someMethod(id self) and NSO3ClassSomeMethod(id self). The latter is prefered, feel free to refactor any of the old style you see.\
+\
+	You will also see O3SuperInitOrDie() and O3SuperDealloc(). These are functionally (but not speed) equivalent to \{if (![super init]) return 0;\} and [super dealloc]; respectively. Use them or don't, whichever you prefer.\
+\
+
+\f0\b Hacks conventions\
+	
+\f1\b0 Many things, including some of the things mentioned above, are unsafe hacks. CoreFoundation is considered a hack as well (since it might not be available on other platforms that cocoa might). Hacks are fine IFF they are surrounded by a #ifdef O3AllowHacks block and an alternate implementation is provied if O3AllowHacks is turned off. More fine grained control is also available, see O3Global.h. Feel free to add your own hacks and tags!\
+\
+
+\f0\b Private C Function-Methods\
+	
+\f1\b0 Rather than have objC private methods, inline C functions are used. Ivars can be used via self->ivar from any C function defined inside an ObjC class. For instance: \
+\
+@implementation FooClass\
+\
+inline void initP(FooClass* self) \{ self->mSomeIvar  = 123\}\
+\
+@end\
+\
+
+\f0\b ObjC++ decision\
+	
+\f1\b0 C++ allows some really ugly and hackish (but extremely useful) behavior. ObjC++ is required for ObjC3D, but we should try to keep the use of C++ in the public interface to a minimum. If you are so inclined, feel free to refactor some of my early C++ classes into a more CoreFoundation-esque style. C++ elimination is probably impossible, but we can at least make it all look like C.\
+\
+	I am in the process of flattening the C++ namespaces into less-problematic O3 prefixed C++ code (which should eventually be flattened to C). \
+\
+
+\f0\b Matrices and Vectors\
+	
+\f1\b0 O3D has a very complicated "basic" math system that is hopefully easy and powerful. Matrices and Vectors are represented by the O3Mat<rows, cols, type> class and the O3Vec<elements, type> class. There are a bunch of convenience typedefs so you can pretend that the templating doesn't exist. For instance, O3Mat4x4d would be a 4x4 matrix of doubles, and O3Mat3x3r would be a 3x3 matrix of "reals" (another legacy decision: reals should be doubles). Basic math works (matc = mata * matb). \
+\
+	Casting rules: it is perfectly possible to convert matricies between sizes. When casting down (say, making a 4x4 into a 3x3) the result is the upper left corner of the original. When casting up, all excess elements are filled with 0s, except for the diagonal of square matricies (which are filled with 1). Examples:\
+		1	2	3	4				1	2	3	 \
+		5	6	7	8		->		5	6	7    \
+		9	10	11	12				9	10	11	(\
+		13	14	15	16				13	14	15	\
+\
+		1	2	3				1	2	3	0\
+		5	6	7 		->		5	6	7	0\
+		9	10	11				9	10	11	0\
+								0	0	0	1	\
+\
+	O3DynamicVector and O3Dynamic matrix encapsulate runtime info about matrices and vectors. C++ turns O3Mat4x4d into a static type: if I wanted to allow matrices of all sizes to be passed to a function (say, logging), I would need to explicitly know the type information of what was passed as well as the raw data. O3Dynamic* fill this role. Conversion is automatic, so you shouldn't have to mess with these much.\
+\
+	O3Value is an encapsulator for matricies and vectors just like NSValue encapsulates NSRects and such. You can do stuff like O3Mat4x4r([O3Value valueWithMatrix:some3x3d]); casting as outlined above should work as expected.\
+\
+
+\f0\b Error handling and KVC\
+	
+\f1\b0 A complete mess right now, and automatic-KVO classes nullify any benefits of O3Accelerate functions. Hopefully this will get cleaned up. Feel free to suggest some standards!\
+\
+
+\f0\b Assertions\
+	
+\f1\b0 Lots and lots of them! See pretty much any code to get the general idea.\
+\
+
+\f0\b Archiving\
+	
+\f1\b0 A definite work in progress. I would have my own branch, but \strike downgrading\strike0\striked0  migrating from git to svn screwed up some of the branches. It looks like I will be using a hybrid VFS and NSCoder type system, I will write it up when I am done.\
+\
+
+\f0\b Suggestions, Questions, Comments, etc?\
+	
+\f1\b0 Feel free to put other stuff here!}

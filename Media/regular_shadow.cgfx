@@ -1,0 +1,92 @@
+//"Conenction" structure
+struct testVTF {
+	float4 position : POSITION;
+	float4 shadowcam_pos : TEXCOORD0;
+	float4 shadowmap_pos : TEXCOORD1;
+	float3 normal		 : TEXCOORD2;
+};
+
+testVTF test_vertex(
+			in float4 position   : POSITION,
+			in float3 normal     : NORMAL,
+			uniform float4x4 MVP,
+			uniform float4x4 ShadowcamMV,
+			uniform float4x4 ShadowcamP)
+{
+	testVTF to_return;
+	to_return.position = mul(MVP, position); 
+	to_return.shadowcam_pos = mul(ShadowcamMV, position);
+	to_return.shadowmap_pos = mul(ShadowcamP, to_return.shadowcam_pos);
+	to_return.normal = normal;
+	return to_return;
+}
+
+float4 test_fragment(
+	in testVTF instruct,
+	out float4 colorO : COLOR0,
+	const uniform sampler2D smap,
+	const uniform float4x4 ShadowcamPI) : COLOR0 //Shadow camera projection inverse matrix
+{
+	//Some params to control the shadow
+	float shadow_length = .5;
+	//float4 max_shadow = float4(.5, .5, .5, .5); //N/A in current algorithm
+	
+	//Exponential equation parameters
+	float start = -3.;
+	float end = 3.;
+	float length = end-start;
+	float transscale = exp(start);
+	float scale = 1./(exp(end)-transscale);
+	
+	//We don't need the shadow length, we need 1/shadow_length
+	float recip_shadow_length = 1.0/shadow_length;
+	
+	//This gets denormalized during interpolation, especially across large polys with large angles inbetween (floor)
+	float3 normal_normal = normalize(instruct.normal);
+
+	//Perform 
+	float3 shadowmap_loc = instruct.shadowmap_pos.xyz / instruct.shadowmap_pos.w; //Receiver position in post projective shadow map space
+	float2 shadowmap_sample_coord = ((shadowmap_loc.xy * .5) + .5);
+	float depth_map_depth = tex2D(smap, shadowmap_sample_coord).a; //Negated because Z is down negative access
+	float4 occluder_pos = float4(shadowmap_loc.xy, depth_map_depth*2.-1., 1); //Occluder position in clip space
+	occluder_pos = mul(ShadowcamPI, occluder_pos); //Occluder position in camera space
+	occluder_pos /= occluder_pos.w; //Perspective divide
+	
+	float difference = occluder_pos.z-instruct.shadowcam_pos.z; //Difference in Z of occluder and receiver (both negative, negatives cancel)
+	
+	//Turn the difference into a shadow term
+	float x = difference*recip_shadow_length;
+	float below_plane = step(x,0);
+	float above_plane = 1.-below_plane;
+	
+	float3 tweaked_norm = float3(instruct.normal+.3);
+	
+	float3 shaded_color = tweaked_norm - .4*above_plane;
+	
+	return float4(shaded_color, 1.);
+}
+
+
+
+
+float4x4 mvp_mat	: ModelViewProjectionMatrix;
+float4x4 shadowcam_mv_mat;
+float4x4 shadowcam_p_mat;
+float4x4 shadowcam_pi_mat;
+
+sampler2D shadowMap = sampler_state {
+        minFilter = Linear;
+        magFilter = Linear;
+        WrapS = ClampToEdge;
+        WrapT = ClampToEdge;
+		CompareMode = None;
+		DepthMode = Alpha;
+		CompareFunc = Always;
+};
+
+technique NewShadowAlgorithm { 
+    pass { 
+        VertexProgram = compile arbvp1 test_vertex(mvp_mat, shadowcam_mv_mat, shadowcam_p_mat); 
+        FragmentProgram = compile arbfp1 test_fragment(shadowMap, shadowcam_pi_mat); 
+    } 
+} 

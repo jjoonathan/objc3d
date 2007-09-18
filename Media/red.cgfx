@@ -1,0 +1,33 @@
+void test_vertex(
+			in float4 position   : POSITION,
+			in float3 norm       : NORMAL,
+			out float4 positionO : POSITION,
+			out float3 normVTF   : TEXCOORD0,
+			out float4 posVTF    : TEXCOORD1,
+			uniform float4x4 ModelViewProjectionMatrix)
+{
+	positionO = posVTF = mul(ModelViewProjectionMatrix, position); 
+	normVTF = norm;
+}
+
+float4 test_fragment(in float3 normVTF  : TEXCOORD0,
+					 in float4 posVTF   : TEXCOORD1
+					) : COLOR0 {
+	return float4(normVTF,1);
+} 
+
+
+
+
+
+float4x4 mvp	: ModelViewProjectionMatrix;
+float4x4 shadowcam_mv_mat;
+float4x4 shadowcam_p_mat;
+float4x4 shadowcam_pi_mat;
+
+technique Red { 
+    pass { 
+        VertexProgram = compile arbvp1 test_vertex(mvp); 
+        FragmentProgram = compile arbfp1 test_fragment(); 
+    } 
+} 

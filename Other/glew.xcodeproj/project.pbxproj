@@ -1,0 +1,189 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FC2C16410C11C1B40084A599 /* glew.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16400C11C1B40084A599 /* glew.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FC2C16400C11C1B40084A599 /* glew.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = glew.c; path = glew/src/glew.c; sourceTree = "<group>"; };
+		FC2C164C0C11C2260084A599 /* glew.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = glew.h; sourceTree = "<group>"; };
+		FC2C164D0C11C2260084A599 /* glxew.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = glxew.h; sourceTree = "<group>"; };
+		FC2C164E0C11C2260084A599 /* wglew.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = wglew.h; sourceTree = "<group>"; };
+		FC2C165D0C11C3270084A599 /* libglew.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libglew.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		FC2C13BB0C11BC150084A599 = {
+			isa = PBXGroup;
+			children = (
+				FC2C16400C11C1B40084A599 /* glew.c */,
+				FC2C164A0C11C2260084A599 /* Headers */,
+				FC2C165D0C11C3270084A599 /* libglew.a */,
+			);
+			sourceTree = "<group>";
+		};
+		FC2C164A0C11C2260084A599 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				FC2C164B0C11C2260084A599 /* GL */,
+			);
+			name = Headers;
+			path = glew/include;
+			sourceTree = "<group>";
+		};
+		FC2C164B0C11C2260084A599 /* GL */ = {
+			isa = PBXGroup;
+			children = (
+				FC2C164C0C11C2260084A599 /* glew.h */,
+				FC2C164D0C11C2260084A599 /* glxew.h */,
+				FC2C164E0C11C2260084A599 /* wglew.h */,
+			);
+			path = GL;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FC2C13C90C11BC3E0084A599 /* glew */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC2C13CC0C11BC3F0084A599 /* Build configuration list for PBXNativeTarget "glew" */;
+			buildPhases = (
+				FC2C13C70C11BC3E0084A599 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = glew;
+			productName = glew;
+			productReference = FC2C165D0C11C3270084A599 /* libglew.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FC2C13BD0C11BC150084A599 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = FC2C13BE0C11BC150084A599 /* Build configuration list for PBXProject "glew" */;
+			hasScannedForEncodings = 0;
+			mainGroup = FC2C13BB0C11BC150084A599;
+			productRefGroup = FC2C13BB0C11BC150084A599;
+			projectDirPath = "";
+			targets = (
+				FC2C13C90C11BC3E0084A599 /* glew */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FC2C13C70C11BC3E0084A599 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC2C16410C11C1B40084A599 /* glew.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FC2C13BF0C11BC150084A599 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = NO;
+				HEADER_SEARCH_PATHS = glew/include;
+				INSTALL_PATH = "";
+				OWN3D_ROOT = "$(PROJECT_DIR)/../";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(OWN3D_ROOT)/include/GL/";
+				SYMROOT = "$(PROJECT_DIR)/../build/Support";
+			};
+			name = Debug;
+		};
+		FC2C13C00C11BC150084A599 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				COPY_PHASE_STRIP = YES;
+				HEADER_SEARCH_PATHS = glew/include;
+				OWN3D_ROOT = "$(PROJECT_DIR)/../";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(OWN3D_ROOT)/include/GL/";
+				SYMROOT = "$(PROJECT_DIR)/../build/Support";
+			};
+			name = Release;
+		};
+		FC2C13CD0C11BC3F0084A599 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/lib\"";
+				PREBINDING = NO;
+				PRODUCT_NAME = glew;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		FC2C13CE0C11BC3F0084A599 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = "$(PROJECT_DIR)/../lib/";
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.1;
+				PREBINDING = NO;
+				PRODUCT_NAME = glew;
+				PUBLIC_HEADERS_FOLDER_PATH = include/GL/;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FC2C13BE0C11BC150084A599 /* Build configuration list for PBXProject "glew" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC2C13BF0C11BC150084A599 /* Debug */,
+				FC2C13C00C11BC150084A599 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC2C13CC0C11BC3F0084A599 /* Build configuration list for PBXNativeTarget "glew" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC2C13CD0C11BC3F0084A599 /* Debug */,
+				FC2C13CE0C11BC3F0084A599 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FC2C13BD0C11BC150084A599 /* Project object */;
+}

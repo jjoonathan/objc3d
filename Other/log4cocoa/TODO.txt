@@ -1,0 +1,23 @@
+Demo App
+
+more appenders 
+
+more layouts
+
+more configuration
+
+test & improve performance
+
+multi-threading
+
+writing tests
+
+GUI configuration management framework
+
+GUI log viewer
+
+c wrapper
+
+---------------------------------------------------------------
+
+clean up internal logging of error messages.
