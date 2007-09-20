@@ -152,12 +152,12 @@
 		FC3978A20C6F6BAA00F4AEA5 /* O3Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */; };
 		FC3A0EAB0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */; };
 		FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */ = {isa = PBXBuildFile; fileRef = FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */; };
-		FC3E61AB0C9E315600E2F0F8 /* deportabalize.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */; };
-		FC3E61AC0C9E315600E2F0F8 /* portabalize.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC3E61990C9E305F00E2F0F8 /* portabalize.sh */; };
+		FC3E61AB0C9E315600E2F0F8 /* deportabalize.sh in Copy bundle-enabling scripts */ = {isa = PBXBuildFile; fileRef = FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */; };
+		FC3E61AC0C9E315600E2F0F8 /* portabalize.sh in Copy bundle-enabling scripts */ = {isa = PBXBuildFile; fileRef = FC3E61990C9E305F00E2F0F8 /* portabalize.sh */; };
 		FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5B48770C205A4100879D56 /* O3BigObject.mm */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FC7DD6650C1C8EDB009D36A2 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */; };
-		FC7DD6840C1C8EEE009D36A2 /* Log4Cocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */; };
+		FC7DD6840C1C8EEE009D36A2 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */; };
 		FCA6B9AB0C25AA2C00FBE90D /* O3ArchiveVFSNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA6B9A30C25AA2C00FBE90D /* O3ArchiveVFSNode.h */; };
 		FCA6B9AC0C25AA2C00FBE90D /* O3ArchiveVFSNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCA6B9A40C25AA2C00FBE90D /* O3ArchiveVFSNode.mm */; };
 		FCA6B9AD0C25AA2C00FBE90D /* O3DirectoryVFSNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA6B9A50C25AA2C00FBE90D /* O3DirectoryVFSNode.h */; };
@@ -167,13 +167,13 @@
 		FCA6B9B10C25AA2C00FBE90D /* O3VFSNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA6B9A90C25AA2C00FBE90D /* O3VFSNode.h */; };
 		FCA6B9B20C25AA2C00FBE90D /* O3VFSNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCA6B9AA0C25AA2C00FBE90D /* O3VFSNode.mm */; };
 		FCC1E92A0C198A3E0041415C /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
-		FCC1E9860C198AB50041415C /* ObjC3D.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
+		FCC1E9860C198AB50041415C /* ObjC3D.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
 		FCE82BC60C5A2E4A00A47451 /* O3BufferedReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE82BC50C5A2E4A00A47451 /* O3BufferedReader.mm */; };
 		FCEA98DF0C9E1A4200D93A70 /* TestRunner_main.m in Sources */ = {isa = PBXBuildFile; fileRef = FCEA98DE0C9E1A4200D93A70 /* TestRunner_main.m */; };
 		FCEA98E60C9E1C7900D93A70 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCFB0E900BB44B3200994ADB /* SenTestingKit.framework */; };
 		FCEF231F0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCEF231D0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm */; };
 		FCEF23200C6D78BE0022A0D7 /* O3ArchiveStatisticsGatherer.h in Headers */ = {isa = PBXBuildFile; fileRef = FCEF231C0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.h */; };
-		FCEF4EBC0C17393C00B97983 /* Cg.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */; };
+		FCEF4EBC0C17393C00B97983 /* Cg.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */; };
 		FCEF50F90C186FE000B97983 /* O3EncodingInterpretation.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC11C3110B5964410069119E /* O3EncodingInterpretation.mm */; };
 		FCEF50FA0C186FE000B97983 /* O3TestAccelerate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2B5F490BD2823E005324C8 /* O3TestAccelerate.mm */; };
 		FCEF50FB0C186FE000B97983 /* O3TestArchivers.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC953A370BD2AD840070BE52 /* O3TestArchivers.mm */; };
@@ -244,45 +244,48 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		FC2C1E950C12F3CD0084A599 /* CopyFiles */ = {
+		FC0A5BE60CA200560011EDD1 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FC7DD6840C1C8EEE009D36A2 /* Log4Cocoa.framework in CopyFiles */,
-				FCEF4EBC0C17393C00B97983 /* Cg.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FC3E61970C9E303800E2F0F8 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 1;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FC3E61A90C9E314700E2F0F8 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 1;
-			files = (
-				FC3E61AB0C9E315600E2F0F8 /* deportabalize.sh in CopyFiles */,
-				FC3E61AC0C9E315600E2F0F8 /* portabalize.sh in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FCC1E9820C198AA80041415C /* CopyFiles */ = {
+		FC2C1E950C12F3CD0084A599 /* Embed Log4Cocoa and Cg frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FCC1E9860C198AB50041415C /* ObjC3D.framework in CopyFiles */,
+				FC7DD6840C1C8EEE009D36A2 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */,
+				FCEF4EBC0C17393C00B97983 /* Cg.framework in Embed Log4Cocoa and Cg frameworks */,
 			);
+			name = "Embed Log4Cocoa and Cg frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC3E61A90C9E314700E2F0F8 /* Copy bundle-enabling scripts */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 1;
+			files = (
+				FC3E61AB0C9E315600E2F0F8 /* deportabalize.sh in Copy bundle-enabling scripts */,
+				FC3E61AC0C9E315600E2F0F8 /* portabalize.sh in Copy bundle-enabling scripts */,
+			);
+			name = "Copy bundle-enabling scripts";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCC1E9820C198AA80041415C /* Embed ObjC3D */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FCC1E9860C198AB50041415C /* ObjC3D.framework in Embed ObjC3D */,
+			);
+			name = "Embed ObjC3D";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1208,12 +1211,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC2C1BB90C123F7A0084A599 /* Build configuration list for PBXNativeTarget "ObjC3D.framework" */;
 			buildPhases = (
-				FC2C1E950C12F3CD0084A599 /* CopyFiles */,
+				FC2C1E950C12F3CD0084A599 /* Embed Log4Cocoa and Cg frameworks */,
+				FCE2193F0CA0CA0200CD6D43 /* Un-bundle-enable frameworks */,
 				FC2C1BB40C123F790084A599 /* Sources */,
 				FC2C1BB20C123F790084A599 /* Headers */,
 				FC2C1BB30C123F790084A599 /* Resources */,
 				FC2C1BB50C123F790084A599 /* Frameworks */,
-				FC3E61A90C9E314700E2F0F8 /* CopyFiles */,
+				FC3E61A90C9E314700E2F0F8 /* Copy bundle-enabling scripts */,
 			);
 			buildRules = (
 			);
@@ -1231,9 +1235,9 @@
 			buildConfigurationList = FCEA98D90C9E190F00D93A70 /* Build configuration list for PBXNativeTarget "TestRunner" */;
 			buildPhases = (
 				FCEA98D20C9E18F800D93A70 /* Resources */,
+				FC0A5BE60CA200560011EDD1 /* CopyFiles */,
 				FCEA98D30C9E18F800D93A70 /* Sources */,
 				FCEA98D40C9E18F800D93A70 /* Frameworks */,
-				FC3E61970C9E303800E2F0F8 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1249,7 +1253,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FCEF50D90C17C1CA00B97983 /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
-				FCC1E9820C198AA80041415C /* CopyFiles */,
+				FCC1E9820C198AA80041415C /* Embed ObjC3D */,
+				FC0A5CDE0CA202FA0011EDD1 /* Bundle-enable ObjC3D */,
 				FC7DD70F0C1CA483009D36A2 /* ShellScript */,
 				FCEF50D20C17C1C900B97983 /* Resources */,
 				FCEF50D30C17C1C900B97983 /* Sources */,
@@ -1271,7 +1276,6 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ObjC3D" */;
-			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ObjC3D */;
 			projectDirPath = "";
@@ -1350,6 +1354,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		FC0A5CDE0CA202FA0011EDD1 /* Bundle-enable ObjC3D */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle-enable ObjC3D";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SCRIPT=$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/ObjC3D.framework/portabalize.sh\nchmod +x $SCRIPT\n$SCRIPT";
+		};
 		FC348D610B45DFF5000015FE /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1375,6 +1393,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "/bin/mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"";
+		};
+		FCE2193F0CA0CA0200CD6D43 /* Un-bundle-enable frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Un-bundle-enable frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "#This un-changes the install paths so they are executable-relative.\n#This will make the framework compiler happy again at the cost of making it not runtime happy.\n\nFRAMEWORKS=$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\nOBJC3D_EXEC=$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH\n\necho \"Un-patching ObjC3D binaries to work with ld\"\n\n/usr/bin/install_name_tool -id \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Cg.framework/Cg\" $FRAMEWORKS/Cg.framework/Cg\n/usr/bin/install_name_tool -id \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework/Log4Cocoa\" $FRAMEWORKS/Log4Cocoa.framework/Log4Cocoa\n\nif [ -f $OBJC3D_EXEC ] ; then\n/usr/bin/install_name_tool -id \"@executable_path/../Frameworks\" $OBJC3D_EXEC\n/usr/bin/install_name_tool -change \"@loader_path/Frameworks/Cg.framework/Cg\" \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Cg.framework/Cg\" -change \"@loader_path/Frameworks/Log4Cocoa.framework/Log4Cocoa\" \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework/Log4Cocoa\"  $OBJC3D_EXEC\nfi\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2019,7 +2051,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "";
 				COPY_PHASE_STRIP = YES;
-				EXECUTABLE_PREFIX = "-framework Cocoa -framework SenTestingKit -framework ObjC3D -Xlinker -executable_path -Xlinker $(BUILT_PRODUCTS_DIR)/$(PRODUCT_NAME).octest/Contents/MacOS";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
