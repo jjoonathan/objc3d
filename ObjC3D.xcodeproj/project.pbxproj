@@ -667,6 +667,7 @@
 		FC11C3080B5963C20069119E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				FCB810D40CA5F92C00DC8387 /* ResManager */,
 				FC2B5F080BD26C6D005324C8 /* Archivers */,
 				FCB055E60BC3D22D00F4B778 /* O3Protocols.h */,
 				FC92305A0AB347E9003878EA /* O3Utilities.h */,
@@ -993,6 +994,13 @@
 				FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */,
 			);
 			name = Other;
+			sourceTree = "<group>";
+		};
+		FCB810D40CA5F92C00DC8387 /* ResManager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ResManager;
 			sourceTree = "<group>";
 		};
 		FCBE37E70AFE2ED9000D82C8 /* Box */ = {
