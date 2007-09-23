@@ -158,14 +158,6 @@
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FC7DD6650C1C8EDB009D36A2 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */; };
 		FC7DD6840C1C8EEE009D36A2 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */; };
-		FCA6B9AB0C25AA2C00FBE90D /* O3ArchiveVFSNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA6B9A30C25AA2C00FBE90D /* O3ArchiveVFSNode.h */; };
-		FCA6B9AC0C25AA2C00FBE90D /* O3ArchiveVFSNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCA6B9A40C25AA2C00FBE90D /* O3ArchiveVFSNode.mm */; };
-		FCA6B9AD0C25AA2C00FBE90D /* O3DirectoryVFSNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA6B9A50C25AA2C00FBE90D /* O3DirectoryVFSNode.h */; };
-		FCA6B9AE0C25AA2C00FBE90D /* O3DirectoryVFSNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCA6B9A60C25AA2C00FBE90D /* O3DirectoryVFSNode.mm */; };
-		FCA6B9AF0C25AA2C00FBE90D /* O3VFS.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA6B9A70C25AA2C00FBE90D /* O3VFS.h */; };
-		FCA6B9B00C25AA2C00FBE90D /* O3VFS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCA6B9A80C25AA2C00FBE90D /* O3VFS.mm */; };
-		FCA6B9B10C25AA2C00FBE90D /* O3VFSNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA6B9A90C25AA2C00FBE90D /* O3VFSNode.h */; };
-		FCA6B9B20C25AA2C00FBE90D /* O3VFSNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCA6B9AA0C25AA2C00FBE90D /* O3VFSNode.mm */; };
 		FCC1E92A0C198A3E0041415C /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
 		FCC1E9860C198AB50041415C /* ObjC3D.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
 		FCE82BC60C5A2E4A00A47451 /* O3BufferedReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE82BC50C5A2E4A00A47451 /* O3BufferedReader.mm */; };
@@ -412,14 +404,6 @@
 		FCA01CCA0B223F250087DA08 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		FCA35A2F0AA2812D0055819F /* O3Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Vector.h; sourceTree = "<group>"; };
 		FCA3C7690BA31DA800832931 /* O3DynamicVector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3DynamicVector.h; sourceTree = "<group>"; };
-		FCA6B9A30C25AA2C00FBE90D /* O3ArchiveVFSNode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3ArchiveVFSNode.h; sourceTree = "<group>"; };
-		FCA6B9A40C25AA2C00FBE90D /* O3ArchiveVFSNode.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ArchiveVFSNode.mm; sourceTree = "<group>"; };
-		FCA6B9A50C25AA2C00FBE90D /* O3DirectoryVFSNode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3DirectoryVFSNode.h; sourceTree = "<group>"; };
-		FCA6B9A60C25AA2C00FBE90D /* O3DirectoryVFSNode.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3DirectoryVFSNode.mm; sourceTree = "<group>"; };
-		FCA6B9A70C25AA2C00FBE90D /* O3VFS.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3VFS.h; sourceTree = "<group>"; };
-		FCA6B9A80C25AA2C00FBE90D /* O3VFS.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3VFS.mm; sourceTree = "<group>"; };
-		FCA6B9A90C25AA2C00FBE90D /* O3VFSNode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3VFSNode.h; sourceTree = "<group>"; };
-		FCA6B9AA0C25AA2C00FBE90D /* O3VFSNode.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3VFSNode.mm; sourceTree = "<group>"; };
 		FCAA6AFE0ABDB78000D2BC75 /* O3Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Global.h; sourceTree = "<group>"; };
 		FCAA6B0C0ABDECE400D2BC75 /* O3Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Math.h; sourceTree = "<group>"; };
 		FCAAB2790AAA03B5001E5A30 /* O3Functions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3Functions.h; sourceTree = "<group>"; };
@@ -684,7 +668,6 @@
 			isa = PBXGroup;
 			children = (
 				FC2B5F080BD26C6D005324C8 /* Archivers */,
-				FCA6B9A20C25AA2C00FBE90D /* VFS */,
 				FCB055E60BC3D22D00F4B778 /* O3Protocols.h */,
 				FC92305A0AB347E9003878EA /* O3Utilities.h */,
 				FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */,
@@ -1003,21 +986,6 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
-		FCA6B9A20C25AA2C00FBE90D /* VFS */ = {
-			isa = PBXGroup;
-			children = (
-				FCA6B9A30C25AA2C00FBE90D /* O3ArchiveVFSNode.h */,
-				FCA6B9A40C25AA2C00FBE90D /* O3ArchiveVFSNode.mm */,
-				FCA6B9A50C25AA2C00FBE90D /* O3DirectoryVFSNode.h */,
-				FCA6B9A60C25AA2C00FBE90D /* O3DirectoryVFSNode.mm */,
-				FCA6B9A70C25AA2C00FBE90D /* O3VFS.h */,
-				FCA6B9A80C25AA2C00FBE90D /* O3VFS.mm */,
-				FCA6B9A90C25AA2C00FBE90D /* O3VFSNode.h */,
-				FCA6B9AA0C25AA2C00FBE90D /* O3VFSNode.mm */,
-			);
-			path = VFS;
-			sourceTree = "<group>";
-		};
 		FCB0166B0B4EAE8900FBFAC2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -1195,10 +1163,6 @@
 				FC2C1C7F0C125FA10084A599 /* ObjC3D.h in Headers */,
 				FCF438A10C21865900263F34 /* O3NonlinearWriter.h in Headers */,
 				FCF438A30C21866A00263F34 /* O3BigObject.h in Headers */,
-				FCA6B9AB0C25AA2C00FBE90D /* O3ArchiveVFSNode.h in Headers */,
-				FCA6B9AD0C25AA2C00FBE90D /* O3DirectoryVFSNode.h in Headers */,
-				FCA6B9AF0C25AA2C00FBE90D /* O3VFS.h in Headers */,
-				FCA6B9B10C25AA2C00FBE90D /* O3VFSNode.h in Headers */,
 				FC3A0EAB0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h in Headers */,
 				FCEF23200C6D78BE0022A0D7 /* O3ArchiveStatisticsGatherer.h in Headers */,
 			);
@@ -1276,6 +1240,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ObjC3D" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* ObjC3D */;
 			projectDirPath = "";
@@ -1457,10 +1422,6 @@
 				FC2C1C7B0C125F8D0084A599 /* O3DynamicMatrix.cpp in Sources */,
 				FCF438A00C21865800263F34 /* O3NonlinearWriter.mm in Sources */,
 				FCF438A20C21866500263F34 /* O3BigObject.mm in Sources */,
-				FCA6B9AC0C25AA2C00FBE90D /* O3ArchiveVFSNode.mm in Sources */,
-				FCA6B9AE0C25AA2C00FBE90D /* O3DirectoryVFSNode.mm in Sources */,
-				FCA6B9B00C25AA2C00FBE90D /* O3VFS.mm in Sources */,
-				FCA6B9B20C25AA2C00FBE90D /* O3VFSNode.mm in Sources */,
 				FCE82BC60C5A2E4A00A47451 /* O3BufferedReader.mm in Sources */,
 				FCEF231F0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm in Sources */,
 				FC3978A20C6F6BAA00F4AEA5 /* O3Utilities.mm in Sources */,
