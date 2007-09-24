@@ -183,7 +183,7 @@ inline id<NSObject> O3RetainAutorelease(id<NSObject> obj) 		{return O3Autoreleas
 #endif
 
 /*******************************************************************/ #pragma mark Random Useful Macros /*******************************************************************/
-#define O3Assign(source, dest) {if(1){\
+#define O3Assign(source, dest) ({\
 	id O3AssignSource = (id)(source);											\
 	id O3AssignDest = (id)(dest);												\
 	if (O3AssignSource != O3AssignDest) {										\
@@ -191,11 +191,12 @@ inline id<NSObject> O3RetainAutorelease(id<NSObject> obj) 		{return O3Autoreleas
 		(dest) = O3AssignSource;												\
 		if (O3AssignDest) O3Release(O3AssignDest);								\
 	}																			\
-}}
+	O3AssignSource;                                                             \
+})
 
 #define O3AssignCopy(source, dest) O3Assign(O3Copy(source), (dest))
 #define O3AssignMutableCopy(source, dest) O3Assign([(source) mutableCopy], (dest))
-#define O3Destroy(victim) { O3Release(victim); (victim) = nil; }
+#define O3Destroy(victim) ({ O3Release(victim); (victim) = nil; nil;})
 
 #define O3DestroyCppContainer(type, name, prePath, postPath) {		\
 	if (name) {												\

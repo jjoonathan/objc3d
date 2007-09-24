@@ -15,7 +15,7 @@
 	return nil;
 }
 
-- (id)tryToLoadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager sideEffects:(BOOL)loadSiblings {
+- (id)tryToLoadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager allowSideEffects:(BOOL)loadSiblings {
 	[self doesNotRecognizeSelector:_cmd];	
 	return nil;
 }
@@ -25,7 +25,7 @@
 	return nil;
 }
 
-- (id)tryToReloadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager sideEffects:(BOOL)loadSiblings {
+- (id)tryToReloadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager allowSideEffects:(BOOL)loadSiblings {
 	[self doesNotRecognizeSelector:_cmd];	
 	return nil;
 }

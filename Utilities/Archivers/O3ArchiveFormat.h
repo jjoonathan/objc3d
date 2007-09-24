@@ -30,6 +30,7 @@ enum O3PkgType { //See below for the full definitions of these types
  * "C" is a dictionary of arrays with fallback classes in it
  * "KT" "ST" and "CT" are the Key Table, the String Table, and the Class Table
  * "" is the content of the archive itself.
+ * "D" is the "domain" of the archive. When an archive is being loaded as a set of resources, the domain + "_" is prepended to all keys in the archive root.
  */
 
 /* U?CInt

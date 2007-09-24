@@ -28,7 +28,6 @@ O3BufferedReader::O3BufferedReader(NSFileHandle* handle) {
 O3BufferedReader::~O3BufferedReader() {
 	O3Destroy(mHandle);
 	O3Destroy(mBlockData);
-	if (mHandle) Close();
 }
 
 /************************************/ #pragma mark Private Inline Stuff /************************************/
@@ -78,6 +77,17 @@ enum O3PkgType O3BufferedReader::ReadObjectHeader(UIntP* size, NSString** classn
 		*size = realsize;
 	}
 	return type;
+}
+
+///Skips over an object header and that header's object
+void O3BufferedReader::SkipObject() {
+	UIntP size;
+	ReadObjectHeader(&size);
+	if (mBlockBytesRemaining>size) {
+		Advance(size);
+		return;
+	}
+	SeekToOffset(Offset()+size);
 }
 
 ///@warning This will fail to read archived objects (if coder is nil, because of the callback). Use O3KeyedUnarchiver.

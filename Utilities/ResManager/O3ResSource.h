@@ -19,7 +19,7 @@
 @interface O3ResSource : NSObject {
 }
 - (double)searchPriorityForObjectNamed:(NSString*)key;
-- (id)tryToLoadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager sideEffects:(BOOL)loadSiblings;
+- (id)tryToLoadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager allowSideEffects:(BOOL)loadSiblings;
 - (NSArray*)allKeys; ///<Finds all keys in the source, but does not load them. This method may return old data, since it is allowed to cache. Try to reload some nonexsistant key with sideEffects:NO to update said (optional) cache.
-- (id)tryToReloadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager sideEffects:(BOOL)loadSiblings;
+- (id)tryToReloadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager allowSideEffects:(BOOL)loadSiblings;
 @end

@@ -64,7 +64,8 @@ public:
 	NSString* ReadCCString(enum O3CCSTableType = O3CCSStringTable);
 	void* ReadBytes(UInt64 len, UInt64 extra_bytes=0);
 	NSData* ReadData(UInt64 len);
-	enum O3PkgType O3BufferedReader::ReadObjectHeader(UIntP* size, NSString** classname = nil);
+	enum O3PkgType ReadObjectHeader(UIntP* size, NSString** classname = nil);
+	void SkipObject();
 	id ReadObject(NSCoder<O3UnarchiverCallbackable>* coder = nil, NSZone* z = nil);
 	
 	NSArray* mKT; ///<The Key Table. Note that this is a public var, and the assigner is therefore also responsible for disposal.

@@ -39,7 +39,7 @@ inline void initP(O3KeyedArchiver* self) {
 - (id)initForWritingWithMutableData:(NSMutableData*)dat {
 	O3SuperInitOrDie();
 	initP(self);
-	O3Assign(dat, mDat)
+	O3Assign(dat, mDat);
 	return self;
 }
 

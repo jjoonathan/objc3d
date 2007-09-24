@@ -119,7 +119,7 @@ int sortBySearchPriority(id l, id r, void* objname) {
 	NSEnumerator* sourceEnum = [mResourceSources objectEnumerator];
 	while (O3ResSource* s = [sourceEnum nextObject]) {
 		if ([s searchPriorityForObjectNamed:resName]<0) continue;
-		id obj = [s tryToLoadObjectNamed:resName intoResManager:self sideEffects:YES];
+		id obj = [s tryToLoadObjectNamed:resName intoResManager:self allowSideEffects:YES];
 		if (obj) return obj;
 	}
 	[mResSourceLock unlock];

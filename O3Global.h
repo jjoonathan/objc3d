@@ -57,6 +57,9 @@ typedef enum O3SupportLevel {
 	//NOTE: As of now, this option is somewhat tied to the one above. If CoreFoundation can't be used, this option automatically is ignored and the fallback ObjC -retain and -release are used normally.
 	#define O3AllowObjcInitAndDeallocSpeedHack
 	
+	//Allows thi assumption that [NSDict objectEnumerator] and [NSDict keyEnumerator] enumerate simultaneously
+	#define O3AssumeSimultaneousDictEnumeration
+	
 	//This allows O3Retain(), O3Release() macros which were originally intended to speed up the retain/release cycle. However, there are problems with the CoreFoudation bridge, so the macros only work some of the time
 	//#define O3AllowObjcMemoryManagementHack
 	
