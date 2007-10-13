@@ -1,0 +1,11 @@
+{
+	Actions = {
+		// Define action descriptions here, for example
+		// "myAction:" = id;
+	};
+	Outlets = {
+		parentManager = O3ResManager;
+	};
+    ClassName = O3ResManager; 
+    SuperClass = NSObject; 
+}

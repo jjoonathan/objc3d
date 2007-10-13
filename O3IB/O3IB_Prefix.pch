@@ -1,0 +1,9 @@
+//
+// Prefix header for all source files of the 'O3IB' target in the 'O3IB' project.
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+    #import <InterfaceBuilderKit/InterfaceBuilderKit.h>
+	#import <ObjC3D/ObjC3D.h>
+#endif
