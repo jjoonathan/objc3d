@@ -1216,6 +1216,7 @@
 				FC2C1BB30C123F790084A599 /* Resources */,
 				FC2C1BB50C123F790084A599 /* Frameworks */,
 				FC3E61A90C9E314700E2F0F8 /* Copy bundle-enabling scripts */,
+				FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */,
 			);
 			buildRules = (
 			);
@@ -1407,6 +1408,20 @@
 			shellPath = /bin/bash;
 			shellScript = "#This un-changes the install paths so they are executable-relative.\n#This will make the framework compiler happy again at the cost of making it not runtime happy.\n\nFRAMEWORKS=$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\nOBJC3D_EXEC=$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH\n\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Cg.framework/Cg\" $FRAMEWORKS/Cg.framework/Cg\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Log4Cocoa.framework/Log4Cocoa\" $FRAMEWORKS/Log4Cocoa.framework/Log4Cocoa\n\nif [ -f $OBJC3D_EXEC ] ; then\n/usr/bin/install_name_tool -id \"@loader_path/../Frameworks/ObjC3D.framework/ObjC3D\" $OBJC3D_EXEC\n/usr/bin/install_name_tool -change \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Cg.framework/Cg\" \"@loader_path/Frameworks/Cg.framework/Cg\" -change \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework/Log4Cocoa\" \"@loader_path/Frameworks/Log4Cocoa.framework/Log4Cocoa\"  $OBJC3D_EXEC\nfi\n\n";
 		};
+		FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Create Latest Build Shortcut";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "FRMWK=$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\nALIAS=$BUILD_DIR/ObjC3D.framework\nrm -f $ALIAS\nln -s $FRMWK $ALIAS";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1566,7 +1581,7 @@
 			};
 			name = Debug;
 		};
-		C01FCF5008A954540054247B /* Release */ = {
+		C01FCF5008A954540054247B /* Release_OneArch */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 0.1.0d;
@@ -1594,7 +1609,7 @@
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SYMROOT = "$(PROJECT_DIR)/build";
 			};
-			name = Release;
+			name = Release_OneArch;
 		};
 		FC2C1BBA0C123F7A0084A599 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1664,7 +1679,7 @@
 			};
 			name = Debug_Optimized;
 		};
-		FC2C1BBC0C123F7A0084A599 /* Release */ = {
+		FC2C1BBC0C123F7A0084A599 /* Release_OneArch */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -1697,9 +1712,9 @@
 				PRODUCT_NAME = ObjC3D;
 				ZERO_LINK = NO;
 			};
-			name = Release;
+			name = Release_OneArch;
 		};
-		FC2C1BBD0C123F7A0084A599 /* Release_Intel+PPC */ = {
+		FC2C1BBD0C123F7A0084A599 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1729,7 +1744,7 @@
 				PRODUCT_NAME = ObjC3D;
 				ZERO_LINK = YES;
 			};
-			name = "Release_Intel+PPC";
+			name = Release;
 		};
 		FC348D660B45E014000015FE /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1749,7 +1764,7 @@
 			};
 			name = Debug_Optimized;
 		};
-		FC348D680B45E014000015FE /* Release */ = {
+		FC348D680B45E014000015FE /* Release_OneArch */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -1758,16 +1773,16 @@
 				PRODUCT_NAME = Documentation;
 				ZERO_LINK = NO;
 			};
-			name = Release;
+			name = Release_OneArch;
 		};
-		FC348D690B45E014000015FE /* Release_Intel+PPC */ = {
+		FC348D690B45E014000015FE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = Documentation;
 			};
-			name = "Release_Intel+PPC";
+			name = Release;
 		};
-		FC6012A30AFA6DD000E27061 /* Release_Intel+PPC */ = {
+		FC6012A30AFA6DD000E27061 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
@@ -1804,7 +1819,7 @@
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SYMROOT = "$(PROJECT_DIR)/build";
 			};
-			name = "Release_Intel+PPC";
+			name = Release;
 		};
 		FCDAAED40AD07FD90074B780 /* Debug_Optimized */ = {
 			isa = XCBuildConfiguration;
@@ -1903,7 +1918,7 @@
 			};
 			name = Debug_Optimized;
 		};
-		FCEA98DC0C9E190F00D93A70 /* Release */ = {
+		FCEA98DC0C9E190F00D93A70 /* Release_OneArch */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -1934,9 +1949,9 @@
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
-			name = Release;
+			name = Release_OneArch;
 		};
-		FCEA98DD0C9E190F00D93A70 /* Release_Intel+PPC */ = {
+		FCEA98DD0C9E190F00D93A70 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1963,7 +1978,7 @@
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
-			name = "Release_Intel+PPC";
+			name = Release;
 		};
 		FCEF50DA0C17C1CA00B97983 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2051,7 +2066,7 @@
 			};
 			name = Debug_Optimized;
 		};
-		FCEF50DC0C17C1CA00B97983 /* Release */ = {
+		FCEF50DC0C17C1CA00B97983 /* Release_OneArch */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "";
@@ -2091,9 +2106,9 @@
 				WRAPPER_EXTENSION = octest;
 				ZERO_LINK = NO;
 			};
-			name = Release;
+			name = Release_OneArch;
 		};
-		FCEF50DD0C17C1CA00B97983 /* Release_Intel+PPC */ = {
+		FCEF50DD0C17C1CA00B97983 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "";
@@ -2132,7 +2147,7 @@
 				WRAPPER_EXTENSION = octest;
 				ZERO_LINK = NO;
 			};
-			name = "Release_Intel+PPC";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -2142,8 +2157,8 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				FCDAAED40AD07FD90074B780 /* Debug_Optimized */,
-				C01FCF5008A954540054247B /* Release */,
-				FC6012A30AFA6DD000E27061 /* Release_Intel+PPC */,
+				C01FCF5008A954540054247B /* Release_OneArch */,
+				FC6012A30AFA6DD000E27061 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2153,8 +2168,8 @@
 			buildConfigurations = (
 				FC2C1BBA0C123F7A0084A599 /* Debug */,
 				FC2C1BBB0C123F7A0084A599 /* Debug_Optimized */,
-				FC2C1BBC0C123F7A0084A599 /* Release */,
-				FC2C1BBD0C123F7A0084A599 /* Release_Intel+PPC */,
+				FC2C1BBC0C123F7A0084A599 /* Release_OneArch */,
+				FC2C1BBD0C123F7A0084A599 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2164,8 +2179,8 @@
 			buildConfigurations = (
 				FC348D660B45E014000015FE /* Debug */,
 				FC348D670B45E014000015FE /* Debug_Optimized */,
-				FC348D680B45E014000015FE /* Release */,
-				FC348D690B45E014000015FE /* Release_Intel+PPC */,
+				FC348D680B45E014000015FE /* Release_OneArch */,
+				FC348D690B45E014000015FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2175,8 +2190,8 @@
 			buildConfigurations = (
 				FCEA98DA0C9E190F00D93A70 /* Debug */,
 				FCEA98DB0C9E190F00D93A70 /* Debug_Optimized */,
-				FCEA98DC0C9E190F00D93A70 /* Release */,
-				FCEA98DD0C9E190F00D93A70 /* Release_Intel+PPC */,
+				FCEA98DC0C9E190F00D93A70 /* Release_OneArch */,
+				FCEA98DD0C9E190F00D93A70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2186,8 +2201,8 @@
 			buildConfigurations = (
 				FCEF50DA0C17C1CA00B97983 /* Debug */,
 				FCEF50DB0C17C1CA00B97983 /* Debug_Optimized */,
-				FCEF50DC0C17C1CA00B97983 /* Release */,
-				FCEF50DD0C17C1CA00B97983 /* Release_Intel+PPC */,
+				FCEF50DC0C17C1CA00B97983 /* Release_OneArch */,
+				FCEF50DD0C17C1CA00B97983 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

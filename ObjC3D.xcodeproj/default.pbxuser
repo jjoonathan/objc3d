@@ -1,7 +1,8 @@
 // !$*UTF8*$!
 {
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeBuildConfigurationName = Release;
+		activeArchitecture = i386;
+		activeBuildConfigurationName = "Release_Intel+PPC";
 		activeExecutable = FCEA98D70C9E18F800D93A70 /* TestRunner */;
 		activeTarget = FCEA98D50C9E18F800D93A70 /* TestRunner */;
 		addToTargets = (
@@ -9,7 +10,6 @@
 		);
 		breakpoints = (
 		);
-		breakpointsGroup = FCC1E8BB0C1986380041415C /* XCBreakpointsBucket */;
 		codeSenseManager = FCC1E8790C1984610041415C /* Code sense */;
 		executables = (
 			FCEA98D70C9E18F800D93A70 /* TestRunner */,
@@ -56,7 +56,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Warnings_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					279,
+					157,
 					20,
 					48,
 					43,
@@ -114,8 +114,8 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					200,
-					10,
+					117,
+					60,
 					20,
 					48,
 					43,
@@ -131,12 +131,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 211686028;
-			PBXWorkspaceStateSaveDate = 211686028;
-		};
-		perUserProjectItems = {
-			FCEA99170C9E21D500D93A70 /* PBXTextBookmark */ = FCEA99170C9E21D500D93A70 /* PBXTextBookmark */;
-			FCEA993E0C9E29B900D93A70 /* PBXTextBookmark */ = FCEA993E0C9E29B900D93A70 /* PBXTextBookmark */;
+			PBXPerProjectTemplateStateSaveDate = 214187651;
+			PBXWorkspaceStateSaveDate = 214187651;
 		};
 		sourceControlManager = FCC1E8780C1984610041415C /* Source Control */;
 		userBuildSettings = {
@@ -364,62 +360,6 @@
 			sepNavWindowFrame = "{{15, -1}, {1581, 774}}";
 		};
 	};
-	FCA6B9A30C25AA2C00FBE90D /* O3ArchiveVFSNode.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 645}}";
-			sepNavSelRange = "{354, 0}";
-			sepNavVisRect = "{{0, 0}, {1536, 645}}";
-			sepNavWindowFrame = "{{15, -1}, {1581, 774}}";
-		};
-	};
-	FCA6B9A40C25AA2C00FBE90D /* O3ArchiveVFSNode.mm */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 645}}";
-			sepNavSelRange = "{530, 5}";
-			sepNavVisRect = "{{0, 0}, {1536, 645}}";
-			sepNavWindowFrame = "{{15, -1}, {1581, 774}}";
-		};
-	};
-	FCA6B9A50C25AA2C00FBE90D /* O3DirectoryVFSNode.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 645}}";
-			sepNavSelRange = "{334, 9}";
-			sepNavVisRect = "{{0, 0}, {1536, 645}}";
-			sepNavWindowFrame = "{{15, -1}, {1581, 774}}";
-		};
-	};
-	FCA6B9A60C25AA2C00FBE90D /* O3DirectoryVFSNode.mm */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 910}}";
-			sepNavSelRange = "{1508, 0}";
-			sepNavVisRect = "{{0, 80}, {1536, 645}}";
-			sepNavWindowFrame = "{{85, 3}, {1581, 774}}";
-		};
-	};
-	FCA6B9A80C25AA2C00FBE90D /* O3VFS.mm */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 645}}";
-			sepNavSelRange = "{170, 0}";
-			sepNavVisRect = "{{0, 0}, {1536, 645}}";
-			sepNavWindowFrame = "{{15, -1}, {1581, 774}}";
-		};
-	};
-	FCA6B9A90C25AA2C00FBE90D /* O3VFSNode.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 645}}";
-			sepNavSelRange = "{250, 0}";
-			sepNavVisRect = "{{0, 0}, {1536, 645}}";
-			sepNavWindowFrame = "{{15, -1}, {1581, 774}}";
-		};
-	};
-	FCA6B9AA0C25AA2C00FBE90D /* O3VFSNode.mm */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 1008}}";
-			sepNavSelRange = "{1163, 0}";
-			sepNavVisRect = "{{0, 363}, {1536, 645}}";
-			sepNavWindowFrame = "{{15, -1}, {1581, 774}}";
-		};
-	};
 	FCABCE8B0AACA04F0047BE2F /* O3Matrix.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1536, 1792}}";
@@ -447,12 +387,6 @@
 	FCC1E8790C1984610041415C /* Code sense */ = {
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
-	};
-	FCC1E8BB0C1986380041415C /* XCBreakpointsBucket */ = {
-		isa = XCBreakpointsBucket;
-		name = "Project Breakpoints";
-		objects = (
-		);
 	};
 	FCD234C50C09D6CE007DB98F /* O3Value.h */ = {
 		uiCtxt = {
@@ -501,7 +435,6 @@
 	};
 	FCEA98D70C9E18F800D93A70 /* TestRunner */ = {
 		isa = PBXExecutable;
-		activeArgIndex = 0;
 		activeArgIndices = (
 			YES,
 		);
@@ -509,6 +442,7 @@
 			Tests.octest,
 		);
 		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -539,41 +473,6 @@
 			sepNavVisRect = "{{0, 0}, {1771, 464}}";
 			sepNavWindowFrame = "{{684, 159}, {1810, 593}}";
 		};
-	};
-	FCEA99170C9E21D500D93A70 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = FCEA99180C9E21D500D93A70 /* SenTestSuite.h */;
-		rLen = 1;
-		rLoc = 69;
-		rType = 1;
-	};
-	FCEA99180C9E21D500D93A70 /* SenTestSuite.h */ = {
-		isa = PBXFileReference;
-		lastKnownFileType = sourcecode.c.h;
-		name = SenTestSuite.h;
-		path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/SenTestingKit.framework/Versions/A/Headers/SenTestSuite.h;
-		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1771, 1204}}";
-			sepNavSelRange = "{2819, 22}";
-			sepNavVisRect = "{{0, 728}, {1771, 464}}";
-		};
-	};
-	FCEA993E0C9E29B900D93A70 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = FCEA993F0C9E29B900D93A70 /* SenTestSuite.h */;
-		name = testSuiteForBundlePath;
-		rLen = 22;
-		rLoc = 2819;
-		rType = 0;
-		vrLen = 765;
-		vrLoc = 2486;
-	};
-	FCEA993F0C9E29B900D93A70 /* SenTestSuite.h */ = {
-		isa = PBXFileReference;
-		name = SenTestSuite.h;
-		path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/SenTestingKit.framework/Versions/A/Headers/SenTestSuite.h;
-		sourceTree = "<absolute>";
 	};
 	FCEF50D60C17C1C900B97983 /* Tests */ = {
 		activeExec = 0;

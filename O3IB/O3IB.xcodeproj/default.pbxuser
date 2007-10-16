@@ -4,7 +4,7 @@
 		activeArchitecture = i386;
 		activeBuildConfigurationName = Release;
 		activeExecutable = C096A9340C03CEAB00263BB0 /* Interface Builder */;
-		activeTarget = 53DF6901067E5B8E0090B5B0 /* All */;
+		activeTarget = 8D1AC9600486D14A00FE50C9 /* O3IB */;
 		codeSenseManager = C096A9330C03CEA700263BB0 /* Code sense */;
 		executables = (
 			C096A9340C03CEAB00263BB0 /* Interface Builder */,
@@ -29,9 +29,9 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					364,
+					243,
 					20,
-					48.16259765625,
+					48,
 					43,
 					43,
 					20,
@@ -68,18 +68,12 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 201576068;
-			PBXWorkspaceStateSaveDate = 201576068;
+			PBXPerProjectTemplateStateSaveDate = 214194722;
+			PBXWorkspaceStateSaveDate = 214194722;
 		};
 		sourceControlManager = C096A9320C03CEA700263BB0 /* Source Control */;
 		userBuildSettings = {
 		};
-	};
-	53DF68FC067E5B5A0090B5B0 /* O3IBFramework */ = {
-		activeExec = 0;
-	};
-	53DF6901067E5B8E0090B5B0 /* All */ = {
-		activeExec = 0;
 	};
 	8D1AC9600486D14A00FE50C9 /* O3IB */ = {
 		activeExec = 0;
@@ -101,10 +95,10 @@
 			YES,
 		);
 		argumentStrings = (
-			"-NSOpen \"O3IBFramework.framework/Resources/O3IB.ibplugin\"",
+			"-NSOpen \"O3IB.ibplugin\"",
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 1;
+		breakpointsEnabled = 0;
 		configStateDict = {
 			"PBXLSLaunchAction-0" = {
 				PBXLSLaunchAction = 0;
@@ -143,6 +137,6 @@
 		lastKnownFileType = wrapper.application;
 		name = "Interface Builder.app";
 		path = "Applications/Interface Builder.app";
-		sourceTree = "DEVELOPER_DIR";
+		sourceTree = SYSTEM_DEVELOPER_DIR;
 	};
 }

@@ -14,10 +14,11 @@
 		C0D069560A49DF9100C95564 /* InterfaceBuilderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */; };
 		D1AEDE470A6C289C0010C343 /* O3IBLibrary.nib in Resources */ = {isa = PBXBuildFile; fileRef = D1AEDE460A6C289C0010C343 /* O3IBLibrary.nib */; };
 		FC56C3770CC148AE00B7F12A /* O3ResManager+IB.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56C3760CC148AE00B7F12A /* O3ResManager+IB.mm */; };
-		FC57D3980CB7DDE600741F39 /* ObjC3D.framework in Implant ObjC3D */ = {isa = PBXBuildFile; fileRef = FC57D3420CB7DDDA00741F39 /* ObjC3D.framework */; };
 		FC57D3D80CB8668800741F39 /* O3ResManagerInspector.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC57D3D70CB8668800741F39 /* O3ResManagerInspector.mm */; };
 		FC57D3EF0CB8987A00741F39 /* O3ResManager.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = FC57D3EE0CB8987A00741F39 /* O3ResManager.classdescription */; };
 		FC57D4E70CB9E0C400741F39 /* O3ResManager.icns in Resources */ = {isa = PBXBuildFile; fileRef = FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */; };
+		FCE25B7C0CC4517B0064CA75 /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */; };
+		FCE25B960CC452E40064CA75 /* ObjC3D.framework in Implant Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,15 +53,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		FC57D3410CB7DDC200741F39 /* Implant ObjC3D */ = {
+		FCE25B860CC451BB0064CA75 /* Implant Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FC57D3980CB7DDE600741F39 /* ObjC3D.framework in Implant ObjC3D */,
+				FCE25B960CC452E40064CA75 /* ObjC3D.framework in Implant Frameworks */,
 			);
-			name = "Implant ObjC3D";
+			name = "Implant Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -82,11 +83,11 @@
 		FC56C3750CC148AE00B7F12A /* O3ResManager+IB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O3ResManager+IB.h"; sourceTree = "<group>"; };
 		FC56C3760CC148AE00B7F12A /* O3ResManager+IB.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "O3ResManager+IB.mm"; sourceTree = "<group>"; };
 		FC57D3160CB7D6A500741F39 /* ObjC3D.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjC3D.xcodeproj; path = ../ObjC3D.xcodeproj; sourceTree = SOURCE_ROOT; };
-		FC57D3420CB7DDDA00741F39 /* ObjC3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjC3D.framework; path = "../build/Release_Intel+PPC/ObjC3D.framework"; sourceTree = SOURCE_ROOT; };
 		FC57D3D60CB8668800741F39 /* O3ResManagerInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ResManagerInspector.h; sourceTree = "<group>"; };
 		FC57D3D70CB8668800741F39 /* O3ResManagerInspector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ResManagerInspector.mm; sourceTree = "<group>"; };
 		FC57D3EE0CB8987A00741F39 /* O3ResManager.classdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = O3ResManager.classdescription; sourceTree = "<group>"; };
 		FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = O3ResManager.icns; sourceTree = "<group>"; };
+		FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjC3D.framework; path = ../build/ObjC3D.framework; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCE25B7C0CC4517B0064CA75 /* ObjC3D.framework in Frameworks */,
 				8D1AC9700486D14A00FE50C9 /* Cocoa.framework in Frameworks */,
 				C0D069560A49DF9100C95564 /* InterfaceBuilderKit.framework in Frameworks */,
 			);
@@ -162,7 +164,7 @@
 		2E58F364FFB232C311CA0CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FC57D3420CB7DDDA00741F39 /* ObjC3D.framework */,
+				FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */,
 				13F8B6FD07B43410008AE28D /* Linked Frameworks */,
 				13F8B70407B43425008AE28D /* Other Frameworks */,
 			);
@@ -244,8 +246,8 @@
 			buildConfigurationList = C056398308A954F8003078D8 /* Build configuration list for PBXNativeTarget "O3IB" */;
 			buildPhases = (
 				8D1AC9660486D14A00FE50C9 /* Resources */,
-				FC57D3410CB7DDC200741F39 /* Implant ObjC3D */,
 				FC57D40F0CB8A1FB00741F39 /* Portabalize ObjC3D */,
+				FCE25B860CC451BB0064CA75 /* Implant Frameworks */,
 				8D1AC96A0486D14A00FE50C9 /* Sources */,
 				8D1AC96E0486D14A00FE50C9 /* Frameworks */,
 			);
@@ -335,7 +337,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PSCRIPT=$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/ObjC3D.framework/portabalize.sh\necho Running portabalization script at $PSCRIPT\nchmod +x $PSCRIPT\n$PSCRIPT";
+			shellScript = "PSCRIPT=$PROJECT_DIR/../build/ObjC3D.framework/portabalize.sh\necho Running portabalization script at $PSCRIPT\nchmod +x $PSCRIPT\n$PSCRIPT";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -375,7 +377,6 @@
 		C056398408A954F8003078D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/O3IBFramework.framework/Resources/";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -383,10 +384,12 @@
 					$FRAMEWORK_SEARCH_PATHS_QUOTED_2,
 					$FRAMEWORK_SEARCH_PATHS_QUOTED_1,
 					$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH,
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(HOME)/Library/Frameworks/\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(DEVELOPER_DIR)/Library/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(BUILD_DIR)/$(CONFIGURATION)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../build\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -407,7 +410,6 @@
 		C056398508A954F8003078D8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)/O3IBFramework.framework/Resources/";
 				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -417,10 +419,12 @@
 					$FRAMEWORK_SEARCH_PATHS_QUOTED_2,
 					$FRAMEWORK_SEARCH_PATHS_QUOTED_1,
 					$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH,
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(HOME)/Library/Frameworks/\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(DEVELOPER_DIR)/Library/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(BUILD_DIR)/$(CONFIGURATION)\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../build\"";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = O3IB_Prefix.pch;
