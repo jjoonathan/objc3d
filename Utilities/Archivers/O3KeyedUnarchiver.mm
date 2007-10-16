@@ -89,21 +89,26 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 		}
 	}
 	[pool release];
+	mHasReadMetadata = YES;
 	return [to_return autorelease];
 }
 
 ///@warning One-shot. Either call read or readAndLoadIntoManager, but not both, as the second will cause issues. Use -reset if you must readAndLoadIntoManager after reading.
-- (id)readAndLoadIntoManager:(O3ResManager*)manager {
+///@param returnDummyDict if YES, the dictionary returned is full of [NSNull null] rather than anything useful. Often the receiver might want to know what keys were loaded, but not retain them. Using the null object works great in these situatios. NSSet would be more logical, but less convenient.
+- (id)readAndLoadIntoManager:(O3ResManager*)manager returnDummyDict:(BOOL)returnDummyDict {
 	NSDictionary* loaded_objects = [self read];
 	NSEnumerator* k = [loaded_objects keyEnumerator];
+	id nullval = returnDummyDict?O3NSNull():nil;
 	#ifdef O3AssumeSimultaneousDictEnumeration
 	NSEnumerator* o = [loaded_objects objectEnumerator];
 	while (id obj = [o nextObject]) {
-		[manager setValue:obj forKey:[k nextObject]];
+		id val = (returnDummyDict?nullval:obj);
+		[manager setValue:val forKey:[k nextObject]];
 	}
 	#else
 	while (id key = [k nextObject]) {
-		[manager setValue:[loaded_objects objectForKey:key] forKey:key];
+		id val = (returnDummyDict?nullval:[loaded_objects objectForKey:key]);
+		[manager setValue:val forKey:key];
 	}	
 	#endif
 	return loaded_objects;
@@ -131,6 +136,7 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 	}
 	
 	mDepth-=100;
+	mHasReadMetadata = YES;
 	mBr->SeekToOffset(oldoffset);
 	O3Assign(mdata, mMetadata);
 	return mdata;
@@ -139,6 +145,10 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 ///@param prependDomainToKeys O3Archives by default prepend every key in their root level (every key that is globally visible without calling accessors) with the domain. skimDictionaryAtOffset has no way of knowing if we are in the root level (level 1), so you must provide this info.
 ///@warning Be sure to call readMetadata first, or this will likely burn and die with an archive corrupt message
 - (NSDictionary*)skimDictionaryAtOffset:(UIntP)offs levelOne:(BOOL)prependDomainToKeys {
+	if (!mHasReadMetadata) {
+		O3LogWarn(@"Skimming was requested of unarchiver %@. This is not a good idea without having first read metadata, since you won't know what you are skimming. Metadata was automatically read to assure consistency.");
+		[self metadata];
+	}
 	mDepth+=100; //Just to be safe, we get away from other special behavior
 	NSMutableDictionary* to_return = [[[NSMutableDictionary alloc] init] autorelease];
 	O3AssertIvar(mBr);
@@ -159,6 +169,10 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 }
 
 - (id)readObjectAtOffset:(UIntP)offset {
+	if (!mHasReadMetadata) {
+		O3LogWarn(@"Raw object reading was requested of unarchiver %@. This is not a good idea without having first read metadata, since you won't know what you are jumping to. Metadata was automatically read to assure consistency.");
+		[self metadata];
+	}
 	mDepth+=100; //Just to be safe, we get away from other special behavior
 	O3AssertIvar(mBr);
 	mBr->SeekToOffset(offset);

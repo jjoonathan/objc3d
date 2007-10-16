@@ -3,8 +3,6 @@
 
 @implementation O3ResManager (IB)
 
-#include "IBKVCPatch.h"
-
 - (NSImage*)ibDefaultImage {
 	NSImage* img = [NSImage imageNamed:@"O3ResManager"];
 	if (img) return img;

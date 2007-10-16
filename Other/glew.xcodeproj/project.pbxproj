@@ -71,10 +71,12 @@
 		FC2C13BD0C11BC150084A599 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = FC2C13BE0C11BC150084A599 /* Build configuration list for PBXProject "glew" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = FC2C13BB0C11BC150084A599;
 			productRefGroup = FC2C13BB0C11BC150084A599;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				FC2C13C90C11BC3E0084A599 /* glew */,
 			);

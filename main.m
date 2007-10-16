@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 	return NSApplicationMain(argc,  (const char **) argv);
 }
 
-@implementation O3FrameworkLoader
+/*@implementation O3FrameworkLoader
 + (void)load {
 	NSBundle* bundle = [NSBundle bundleForClass:[self class]];
 	NSString* pfpath = [bundle privateFrameworksPath];
@@ -26,4 +26,4 @@ int main(int argc, char *argv[]) {
 	BOOL cgLoaded = [cg load];
 	if (!cgLoaded) NSLog(@"Could not load Cg framework at path \"%@\". Bundle = %@.", cgPath, cg);
 }
-@end
+@end*/

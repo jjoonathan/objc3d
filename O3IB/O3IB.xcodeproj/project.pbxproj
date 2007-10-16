@@ -13,9 +13,10 @@
 		C0A47C500A523B730004BDC3 /* O3ResManagerInspector.nib in Resources */ = {isa = PBXBuildFile; fileRef = C05B20D80A48CB530099B9E5 /* O3ResManagerInspector.nib */; };
 		C0D069560A49DF9100C95564 /* InterfaceBuilderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */; };
 		D1AEDE470A6C289C0010C343 /* O3IBLibrary.nib in Resources */ = {isa = PBXBuildFile; fileRef = D1AEDE460A6C289C0010C343 /* O3IBLibrary.nib */; };
+		FC56C3770CC148AE00B7F12A /* O3ResManager+IB.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56C3760CC148AE00B7F12A /* O3ResManager+IB.mm */; };
 		FC57D3980CB7DDE600741F39 /* ObjC3D.framework in Implant ObjC3D */ = {isa = PBXBuildFile; fileRef = FC57D3420CB7DDDA00741F39 /* ObjC3D.framework */; };
 		FC57D3D80CB8668800741F39 /* O3ResManagerInspector.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC57D3D70CB8668800741F39 /* O3ResManagerInspector.mm */; };
-		FC57D3EF0CB8987A00741F39 /* O3IBView.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = FC57D3EE0CB8987A00741F39 /* O3IBView.classdescription */; };
+		FC57D3EF0CB8987A00741F39 /* O3ResManager.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = FC57D3EE0CB8987A00741F39 /* O3ResManager.classdescription */; };
 		FC57D4E70CB9E0C400741F39 /* O3ResManager.icns in Resources */ = {isa = PBXBuildFile; fileRef = FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */; };
 /* End PBXBuildFile section */
 
@@ -78,11 +79,13 @@
 		C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InterfaceBuilderKit.framework; path = /Developer/Library/Frameworks/InterfaceBuilderKit.framework; sourceTree = "<absolute>"; };
 		D1AEDE460A6C289C0010C343 /* O3IBLibrary.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = O3IBLibrary.nib; path = English.lproj/O3IBLibrary.nib; sourceTree = "<group>"; };
 		DD92D38A0106425D02CA0E72 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		FC56C3750CC148AE00B7F12A /* O3ResManager+IB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O3ResManager+IB.h"; sourceTree = "<group>"; };
+		FC56C3760CC148AE00B7F12A /* O3ResManager+IB.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "O3ResManager+IB.mm"; sourceTree = "<group>"; };
 		FC57D3160CB7D6A500741F39 /* ObjC3D.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjC3D.xcodeproj; path = ../ObjC3D.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FC57D3420CB7DDDA00741F39 /* ObjC3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjC3D.framework; path = "../build/Release_Intel+PPC/ObjC3D.framework"; sourceTree = SOURCE_ROOT; };
 		FC57D3D60CB8668800741F39 /* O3ResManagerInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ResManagerInspector.h; sourceTree = "<group>"; };
 		FC57D3D70CB8668800741F39 /* O3ResManagerInspector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ResManagerInspector.mm; sourceTree = "<group>"; };
-		FC57D3EE0CB8987A00741F39 /* O3IBView.classdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = O3IBView.classdescription; sourceTree = "<group>"; };
+		FC57D3EE0CB8987A00741F39 /* O3ResManager.classdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = O3ResManager.classdescription; sourceTree = "<group>"; };
 		FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = O3ResManager.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,8 +118,6 @@
 		0259C582FE90428111CA0C5A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */,
-				C05B20D80A48CB530099B9E5 /* O3ResManagerInspector.nib */,
 				D1AEDE460A6C289C0010C343 /* O3IBLibrary.nib */,
 				8D1AC9730486D14A00FE50C9 /* Info.plist */,
 				8D1AC97F0486D23B00FE50C9 /* InfoPlist.strings */,
@@ -171,7 +172,7 @@
 		32DBCF9E0370C38000C91783 /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
-				54D33B2406778DD400C9C163 /* Class Descriptions */,
+				FC56C3740CC1488A00B7F12A /* O3ResManager */,
 				54D33B2506778DF000C9C163 /* Classes */,
 				32DBCF9F0370C38200C91783 /* Other Sources */,
 				131E8FE8067F80F40006E0CE /* Resources */,
@@ -187,21 +188,11 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
-		54D33B2406778DD400C9C163 /* Class Descriptions */ = {
-			isa = PBXGroup;
-			children = (
-				FC57D3EE0CB8987A00741F39 /* O3IBView.classdescription */,
-			);
-			name = "Class Descriptions";
-			sourceTree = "<group>";
-		};
 		54D33B2506778DF000C9C163 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				0259C57AFE90428111CA0C5A /* O3IB.h */,
 				0259C576FE90428111CA0C5A /* O3IB.mm */,
-				FC57D3D60CB8668800741F39 /* O3ResManagerInspector.h */,
-				FC57D3D70CB8668800741F39 /* O3ResManagerInspector.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -219,6 +210,20 @@
 			children = (
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		FC56C3740CC1488A00B7F12A /* O3ResManager */ = {
+			isa = PBXGroup;
+			children = (
+				FC57D3EE0CB8987A00741F39 /* O3ResManager.classdescription */,
+				FC57D3D60CB8668800741F39 /* O3ResManagerInspector.h */,
+				FC57D3D70CB8668800741F39 /* O3ResManagerInspector.mm */,
+				FC56C3750CC148AE00B7F12A /* O3ResManager+IB.h */,
+				FC56C3760CC148AE00B7F12A /* O3ResManager+IB.mm */,
+				FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */,
+				C05B20D80A48CB530099B9E5 /* O3ResManagerInspector.nib */,
+			);
+			name = O3ResManager;
 			sourceTree = "<group>";
 		};
 		FC57D3170CB7D6A500741F39 /* Products */ = {
@@ -310,7 +315,7 @@
 				8D1AC9800486D23B00FE50C9 /* InfoPlist.strings in Resources */,
 				C0A47C500A523B730004BDC3 /* O3ResManagerInspector.nib in Resources */,
 				D1AEDE470A6C289C0010C343 /* O3IBLibrary.nib in Resources */,
-				FC57D3EF0CB8987A00741F39 /* O3IBView.classdescription in Resources */,
+				FC57D3EF0CB8987A00741F39 /* O3ResManager.classdescription in Resources */,
 				FC57D4E70CB9E0C400741F39 /* O3ResManager.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,6 +346,7 @@
 			files = (
 				C08787290A49DE9A00E9B151 /* O3IB.mm in Sources */,
 				FC57D3D80CB8668800741F39 /* O3ResManagerInspector.mm in Sources */,
+				FC56C3770CC148AE00B7F12A /* O3ResManager+IB.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

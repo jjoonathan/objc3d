@@ -18,6 +18,7 @@
 	NSDictionary* mMetadata; ///<Only a cache for the -metadata method, it is not normally filled
 	UInt16 mDepth; ///<During reading, the distance to the root through the read tree. 0=metadata, 1 is the start of normal objects
 	BOOL mDeleteBr;
+	BOOL mHasReadMetadata; ///<Has read internally important metadata (i.e. the string tables and the domain)
 }
 
 //Accessors
@@ -29,7 +30,7 @@
 - (O3KeyedUnarchiver*)initForReadingWithReader:(O3BufferedReader*)br deleteWhenDone:(BOOL)shouldDelete;
 - (void)reset;
 - (id)read;
-- (id)readAndLoadIntoManager:(O3ResManager*)manager;
+- (id)readAndLoadIntoManager:(O3ResManager*)manager returnDummyDict:(BOOL)returnDummyDict;
 - (NSDictionary*)metadata; ///<All level 0 keys (except @"" which is reported as the offset of the archive contents rather than the contents themselves), which are info about the archive. Also sets the appropriate values for the rest of the unarchiving.
 - (id)readObjectAtOffset:(UIntP)offset; ///<Returns an object at an arbitrary offset. Note that mDepth is set to 100 to avoid any ill effects of resetting what is level 1 (where keys are prepended by the domain)
 - (NSDictionary*)skimDictionaryAtOffset:(UIntP)offs  levelOne:(BOOL)prependDomainToKeys; ///<Returns a (NSString*)key->(NSNumber*)offset dictionary for the dictionary at offs

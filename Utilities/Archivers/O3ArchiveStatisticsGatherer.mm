@@ -79,7 +79,7 @@ NSDictionary* O3ArchiveStringMapFromArray(NSArray* a) {
 }
 
 inline NSArray* putIntoArrayOrderAndCutLosses(NSDictionary* dict) {
-	NSMutableArray* arr = [[[dict objectEnumerator] allObjects] mutableCopy];
+	NSMutableArray* arr = [[dict allValues] mutableCopy];
 	UIntP count = O3CFArrayGetCount(arr);
 	[arr sortUsingFunction:winnageSort context:nil];
 	UIntP i; for(i=0; i<count; i++) {

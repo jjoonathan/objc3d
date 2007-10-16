@@ -53,9 +53,15 @@ inline void NSDictionaryGetKeysAndValues(NSDictionary* dictionary, NSArray** key
 	CFDictionaryGetKeysAndValues((CFDictionaryRef)dictionary, raw_keys, raw_values);
 	if (keys) keys = [(NSArray*) autorelease];
 #else*/
-	if (keys) *keys = [[dictionary keyEnumerator] allObjects];
-	if (values) *values = [[dictionary objectEnumerator] allObjects];
+	if (keys) *keys = [dictionary allKeys];
+	if (values) *values = [dictionary allValues];
 //#endif
+}
+
+inline NSNull* O3NSNull() {
+	static NSNull* gNull = nil;
+	if (!gNull) gNull = [NSNull null];
+	return gNull;
 }
 
 #ifndef O3UseCoreFoundation

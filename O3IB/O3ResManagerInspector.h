@@ -15,7 +15,3 @@
 - (NSString *)viewNibName;
 + (BOOL)supportsMultipleObjectInspection;
 @end
-
-@interface O3ResManager (IB)
-- (NSImage*)ibDefaultImage;
-@end

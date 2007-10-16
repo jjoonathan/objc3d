@@ -6,25 +6,27 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3ResSource.h"
+@class O3KeyedUnarchiver, O3FileResSource;
 
-@interface O3DirectoryResSource : NSObject {
+@interface O3DirectoryResSource : O3ResSource {
 	NSString* mPath;
 	NSMutableDictionary* mFileSources; ///< (NSString*)path -> (O3FileResSource*)fsource
+	
+	NSString* mCacheKey;
+	NSArray* mCacheOrder;
 }
+- (O3DirectoryResSource*)initWithPath:(NSString*)path;
 
-@end
+//O3ResSource stuff
+- (O3DirectoryResSource*)initWithCoder:(NSCoder*)coder;
+- (void)encodeWithCoder:(NSCoder*)coder;
+- (double)searchPriorityForObjectNamed:(NSString*)key;
+- (id)loadObjectNamed:(NSString*)name;
+- (void)loadAllObjectsInto:(O3ResManager*)manager;
+- (BOOL)isBig; ///<Always returns YES
+- (NSString*)path;
+- (void)setPath:(NSString*)path;
 
-@interface O3FileResSource : NSObject {
-	NSString* mPath;
-	NSDate* mLastUpdatedDate;
-	NSMutableDictionary* mKeys;
-	NSString* mDomain; ///<Domain to prepend to all keys (actually domain + "_")
-}
-- (O3FileResSource*)initWithPath:(NSString*)path;
-- (NSArray*)keys; ///<This always returns an up to date list of the keys in the file represented by the receiver.
-- (NSArray*)cachedKeys; ///<The keys that have already been read and had their locations cached
-- (NSString*)domain;
-
-//Private
-- (BOOL)needsUpdate;
+//Notifications (used by files)
+- (void)fileDidClose:(O3FileResSource*)file;
 @end

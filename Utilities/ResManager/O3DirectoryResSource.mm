@@ -6,119 +6,137 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3DirectoryResSource.h"
+#import "O3KeyedUnarchiver.h"
+#import "O3FileResSource.h"
 
 @implementation O3DirectoryResSource
 
-
-
-@end
-
-
-
-
-@implementation O3FileResSource
-
-- (O3FileResSource*)initWithPath:(NSString*)path {
-	O3SuperInitOrDie();
-	O3Assign(path, mPath);
-	mKeys = [[NSMutableDictionary alloc] init];
+- (O3DirectoryResSource*)initWithPath:(NSString*)path {
+	O3SuperInitOrDie(); //Don't mod without updating setStringValue
+	[self setPath:path];
 	return self;
 }
 
 - (void)dealloc {
-	O3Release(mPath);
-	O3Release(mLastUpdatedDate);
-	O3Release(mKeys);
+	[mFileSources release];
+	[mPath release];
+	[mCacheKey release];
+	[mCacheOrder release];
 	O3SuperDealloc();
 }
 
-void loadKeysP(O3FileResSource* self) {
-	if (![self needsUpdate]) return;
-	O3ToImplement();
-	[self->mKeys removeAllObjects];
-	O3Destroy(self->mDomain);
-	NSAutoreleasePool *pool = [NSAutoreleasePool new];
-	@try {
-		NSFileHandle* h = [NSFileHandle fileHandleForReadingAtPath:self->mPath];
-		if (!h) {
-			O3LogError(@"Could not open %@ for reading to peek at its keys", self->mPath);
-			return;
-		}
-		O3BufferedReader r(h);
-		r.mBlockSize = 32;
-		
-		while (!r.IsAtEnd()) {
-			NSString* globalKey = r.ReadCCString(O3CCSKeyTable);
-			if ([globalKey isEqualToString:@""]) {
-				UIntP size;
-				r.ReadObjectHeader(&size);
-				UIntP endOffset = r.Offset()+size;
-				while (r.Offset()<endOffset) {
-					NSString* localKey = r.ReadCCString(O3CCSKeyTable);
-					if (self->mDomain) localKey = [self->mDomain stringByAppendingString:localKey];
-					O3CFDictionarySetValue(self->mKeys, localKey, O3NSNumberWithLongLong(r.Offset()));
-					r.SkipObject();
-				}		
-				break;
-			} //if gkey @""
-			else if ([globalKey isEqualToString:@"D"]) {
-				O3Assign([r.ReadObject() stringByAppendingString:@"_"], self->mDomain);
-			}
-			r.SkipObject();
-		} //while not at end
-	} @catch (NSException* e) {
-		O3LogError(@"Couldn't get the keys from file %@. Partial keyset = %@. Removing partial keys since archive is probably corrupt.", self->mPath, self->mKeys);
-		[self->mKeys removeAllObjects];
+- (void)fileDidClose:(O3FileResSource*)file {
+	NSArray* sources = [mFileSources allKeysForObject:file];
+	[mFileSources removeObjectsForKeys:sources];
+	O3Destroy(mCacheKey);
+	O3Destroy(mCacheOrder);
+}
+
+- (O3DirectoryResSource*)initWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding]) {
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+		[self release];
+		return nil;
 	}
-	[pool release];
+	[super initWithCoder:coder];
+	[self setPath:[coder decodeObjectForKey:@"Path"]];	
+	return self;
 }
 
-- (NSArray*)keys {
-	loadKeysP(self);
-	return [[mKeys keyEnumerator] allObjects];
+- (void)encodeWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding])
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+	[coder encodeObject:mPath forKey:@"Path"];
 }
 
-- (NSArray*)cachedKeys {
-	return [[mKeys keyEnumerator] allObjects];
+
+/************************************/ #pragma mark O3ResSource stuff /************************************/
+static int searchPrioritySort(O3FileResSource* l, O3FileResSource* r, void* vkey) {
+	NSString* key = (NSString*)vkey;
+	double ll = O3FileResSourceSearchPriority(l, key);
+	double rr = O3FileResSourceSearchPriority(r, key);
+	if (ll<rr) return NSOrderedDescending; //Swapped on purpose
+	if (ll>rr) return NSOrderedAscending;
+	return NSOrderedSame;
 }
 
-- (NSString*)domain {
-	return mDomain;
+NSArray* prioritySortedFilesP(O3DirectoryResSource* self, NSString* key) {
+	if (key==self->mCacheKey) return self->mCacheOrder;
+	NSArray* files = [self->mFileSources allValues];
+	files = [files sortedArrayUsingFunction:searchPrioritySort context:key];
+	O3Assign(files, self->mCacheOrder);
+	O3Assign(key, self->mCacheKey);	
+	return files;
 }
 
-- (BOOL)needsUpdate {
-	if (!mLastUpdatedDate) return YES;
-	NSDate* modDate = [[[NSFileManager defaultManager] fileAttributesAtPath:mPath traverseLink:YES] objectForKey:NSFileModificationDate];
-	if ([mLastUpdatedDate timeIntervalSinceDate:modDate]<0) return YES;
-	return NO;
-}
-
-/************************************/ #pragma mark ResSource /************************************/
 - (double)searchPriorityForObjectNamed:(NSString*)key {
-	double numerator = 1.;
-	double recip_denom = 1.;
-	if (mDomain) {
-		if ([key hasPrefix:mDomain]) numerator *= [mDomain length];
-	} else {
-		NSArray* keys = [self cachedKeys];
-		NSString* first = [keys count]?[keys objectAtIndex:0]:nil;
-		if (first) numerator *= [[key commonPrefixWithString:first options:nil] length];
+	NSArray* files = prioritySortedFilesP(self, key);
+	return [files count]? O3FileResSourceSearchPriority([files objectAtIndex:0], key) : 0;
+}
+
+- (id)loadObjectNamed:(NSString*)name {
+	NSArray* files = prioritySortedFilesP(self, name);
+	NSEnumerator* filesEnumerator = [files objectEnumerator];
+	while (O3FileResSource* o = [filesEnumerator nextObject]) {
+		id lobj = [o loadObjectNamed:name];
+		if (lobj) return lobj;
+		if (O3FileResSourceSearchPriority(o, name) <= 0.) return nil;
 	}
-	return numerator*recip_denom;
+	return nil;
 }
 
-- (id)tryToLoadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager allowSideEffects:(BOOL)loadSiblings {
-	loadKeysP(self);
-	NSNumber* offset = O3CFDictionaryGetValue(mKeys, key);
-		if (!offset) return nil;
-	NSFileHandle* h = [NSFileHandle fileHandleForReadingAtPath:self->mPath];
-		if (!h) return nil;
-	O3BufferedReader r(h);
-	r.SeekToOffset(O3NSNumberLongLongValue(offset));
-	return r.ReadObject(); //need an unarchiver, dammit
+- (void)loadAllObjectsInto:(O3ResManager*)manager {
+	NSArray* files = [mFileSources allValues];
+	NSEnumerator* filesEnumerator = [files objectEnumerator];
+	while (O3FileResSource* o = [filesEnumerator nextObject]) {
+		[o loadAllObjectsInto:manager];
+	}
 }
 
-//- (NSArray*)allKeys; ///<Finds all keys in the source, but does not load them. This method may return old data, since it is allowed to cache. Try to reload some nonexsistant key with sideEffects:NO to update said (optional) cache.
-//- (id)tryToReloadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager allowSideEffects:(BOOL)loadSiblings;
+- (BOOL)isBig {
+	return YES;
+}
 
+- (NSString*)path {
+	return mPath;
+}
+
+- (void)setPath:(NSString*)path {
+	if (![path isEqualToString:mPath]) {
+		O3Assign(path, mPath);
+		
+		NSMutableDictionary* newSources = [[NSMutableDictionary alloc] init];
+		NSArray* subpaths = [[NSFileManager defaultManager] subpathsAtPath:path];
+		NSEnumerator* subpathsEnumerator = [subpaths objectEnumerator];
+		while (NSString* p = [path stringByAppendingPathComponent:[subpathsEnumerator nextObject]]) {
+			O3FileResSource* frs = [mFileSources objectForKey:p] ?: [[O3FileResSource alloc] initWithPath:p];
+			[newSources setObject:frs forKey:p];
+			[frs release];
+		}
+		
+		O3Assign(newSources, mFileSources);
+		[newSources release];
+		[mCacheKey release];
+		[mCacheOrder release];		
+	}
+}
+
+/************************************/ #pragma mark Bindings /************************************/
+- (NSString*)stringValue {
+	return mPath;
+}
+
+- (void)setStringValue:(NSString*)string {
+	[self setPath:string];
+}
+
+/************************************/ #pragma mark Comparison /************************************/
+- (UIntP)hash {
+	return [mPath hash];
+}
+
+- (BOOL)isEqual:(O3DirectoryResSource*)other {
+	if (![other isKindOfClass:[O3DirectoryResSource class]]) return NO;
+	return [mPath isEqual:[other path]];
+}
 @end

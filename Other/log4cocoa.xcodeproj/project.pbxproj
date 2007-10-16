@@ -312,10 +312,12 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "log4cocoa" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* log4cocoa */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* Log4Cocoa */,
 			);
@@ -424,7 +426,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = log4cocoa/Log4Cocoa.h;
 				INFOPLIST_FILE = log4cocoa/Info.plist;
-				INSTALL_PATH = "@executable_path/../Frameworks/Own3D.framework/Versions/Current/Frameworks";
+				INSTALL_PATH = "@loader_path/Frameworks";
 				PRODUCT_NAME = Log4Cocoa;
 				WRAPPER_EXTENSION = framework;
 			};
