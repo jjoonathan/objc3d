@@ -1,0 +1,11 @@
+{
+	Actions = {
+		// Define action descriptions here, for example
+		// "myAction:" = id;
+	};
+	Outlets = {
+		resManager = O3ResManager;
+	};
+    ClassName = O3GLView; 
+    SuperClass = NSOpenGLView; 
+}

@@ -19,6 +19,7 @@
 		FC57D4E70CB9E0C400741F39 /* O3ResManager.icns in Resources */ = {isa = PBXBuildFile; fileRef = FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */; };
 		FCE25B7C0CC4517B0064CA75 /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */; };
 		FCE25B960CC452E40064CA75 /* ObjC3D.framework in Implant Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */; };
+		FCE25C4F0CCBF1BE0064CA75 /* O3GLView.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = FCE25C4E0CCBF1BE0064CA75 /* O3GLView.classdescription */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		FC57D3EE0CB8987A00741F39 /* O3ResManager.classdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = O3ResManager.classdescription; sourceTree = "<group>"; };
 		FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = O3ResManager.icns; sourceTree = "<group>"; };
 		FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjC3D.framework; path = ../build/ObjC3D.framework; sourceTree = SOURCE_ROOT; };
+		FCE25C4E0CCBF1BE0064CA75 /* O3GLView.classdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = O3GLView.classdescription; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 		32DBCF9E0370C38000C91783 /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
+				FCE25C4D0CCBF19B0064CA75 /* O3GLView */,
 				FC56C3740CC1488A00B7F12A /* O3ResManager */,
 				54D33B2506778DF000C9C163 /* Classes */,
 				32DBCF9F0370C38200C91783 /* Other Sources */,
@@ -236,6 +239,14 @@
 				FC57D3220CB7D6A500741F39 /* TestRunner.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FCE25C4D0CCBF19B0064CA75 /* O3GLView */ = {
+			isa = PBXGroup;
+			children = (
+				FCE25C4E0CCBF1BE0064CA75 /* O3GLView.classdescription */,
+			);
+			name = O3GLView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -319,6 +330,7 @@
 				D1AEDE470A6C289C0010C343 /* O3IBLibrary.nib in Resources */,
 				FC57D3EF0CB8987A00741F39 /* O3ResManager.classdescription in Resources */,
 				FC57D4E70CB9E0C400741F39 /* O3ResManager.icns in Resources */,
+				FCE25C4F0CCBF1BE0064CA75 /* O3GLView.classdescription in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

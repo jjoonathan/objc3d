@@ -17,34 +17,11 @@ inline void O3Camera_init(O3Camera* self) {
 	self->mAspectRatio = 1.;
 	self->mNearPlane = .1;
 	self->mFarPlane = 100.;
-	self->mFOVY = 90.; //In degrees?
+	self->mFOVY = 90.; //In degrees?!
 	self->mPostProjectionSpaceNeedsUpdate = YES;
 }
 
 inline double O3Camera_aspectRatio(O3Camera* self) {
-	if (self->mAspectRatioSource) {
-		if (self->mAspectRatioSourceType==O3AutoDetectAspectRatio) {
-			if ([self->mAspectRatioSource respondsToSelector:@selector(size)])
-				self->mAspectRatioSourceType = O3SizeAspectRatio;
-			else if ([self->mAspectRatioSource respondsToSelector:@selector(frame)])
-				self->mAspectRatioSourceType = O3SizeAspectRatio;
-			else if ([self->mAspectRatioSource respondsToSelector:@selector(width)] && [self->mAspectRatioSource respondsToSelector:@selector(height)])
-				self->mAspectRatioSourceType = O3WidthHeightAspectRatio;
-			else
-				O3Assert(false , @"O3Camera's aspect ratio source does not respond to any method required to get an aspect ratio (width+height, size, or frame)!");
-		}
-		if (self->mAspectRatioSourceType==O3SizeAspectRatio) {
-			NSSize size = [self->mAspectRatioSource size];
-			self->mAspectRatio = size.width / size.height;
-		}
-		else if (self->mAspectRatioSourceType==O3FrameAspectRatio) {
-			NSSize size = [self->mAspectRatioSource frame].size;
-			self->mAspectRatio = size.width / size.height;
-		}
-		else if (self->mAspectRatioSourceType==O3WidthHeightAspectRatio) {
-			self->mAspectRatio = (double)[self->mAspectRatioSource width] / [self->mAspectRatioSource height];
-		}
-	}
 	return self->mAspectRatio;
 }
 
@@ -108,12 +85,6 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 - (void)setFarPlaneDistance:(double)newDist {mFarPlane = newDist; mPostProjectionSpaceNeedsUpdate = YES;}	///<@note This change will not take effect until -(void)set is called (usually in the next frame). This behavior is usually desired but can cause confusion since the accessors will return the new value.
 - (void)setFovY:(double)newFOVY {mFOVY = newFOVY; mPostProjectionSpaceNeedsUpdate = YES;}	///<@note This change will not take effect until -(void)set is called (usually in the next frame). This behavior is usually desired but can cause confusion since the accessors will return the new value.
 
-- (void)setAspectRatioSource:(id)newSource { ///<@note This change will not take effect until -(void)set is called (usually in the next frame). This behavior is usually desired but can cause confusion since the accessors will return the new value.
-	mAspectRatioSource = newSource;
-	mAspectRatioSourceType = O3AutoDetectAspectRatio; //CLear the cache
-}	
-
-
 /************************************/ #pragma mark Use /************************************/
 - (void)setViewMatrix {
 	glMultMatrixd(mSpace->MatrixFromSuper());
@@ -125,4 +96,23 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+@end
+
+
+
+@implementation NSView (AspectRatio)
+- (double)aspectRatio {
+	NSRect fr = [self frame];
+	return (double)fr.size.width/fr.size.height;
+}
+@end
+
+///NSViewAspectRatioLoader is a dummy class to make aspectRatio dependant on frame in NSView
+@interface NSViewAspectRatioLoader
+@end
+
+@implementation NSViewAspectRatioLoader
++ (void)init {
+	[NSView setKeys:[NSArray arrayWithObject:@"frame"] triggerChangeNotificationsForDependentKey:@"aspectRatio"];
+}
 @end
