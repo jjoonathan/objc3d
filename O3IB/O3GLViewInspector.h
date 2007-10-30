@@ -9,6 +9,15 @@
 #import <ObjC3D/O3GLView.h>
 
 @interface O3GLViewInspector : IBInspector {
+	NSString* colorString;
+	NSString* depthString;
+	NSString* stencilString;
+	NSString* accumString;
+	NSString* auxBuffersString;
+	NSString* samplingString;
+	NSString* aaStyleString;
+	NSString* rendererString;
+	NSString* policyString;
 }
 //Attribs
 - (NSString*)label;

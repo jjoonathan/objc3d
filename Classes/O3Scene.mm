@@ -63,10 +63,10 @@
 }
 
 
-/************************************/ #pragma mark Drawing /************************************/
-- (void)drawWithCamera:(O3Camera*)camera {
+/************************************/ #pragma mark Rendering /************************************/
+- (void)renderWithContext:(O3RenderContext*)context {
 	[mRegionLock lock];
-	[[self rootGroup] drawWithCamera:camera];
+	[[self rootGroup] renderWithContext:context];
 	[mRegionLock unlock];
 }
 

@@ -103,15 +103,7 @@ inline void initP(O3Mesh* self) {
 - (O3VertexDataSource*)vertexDataSourceForType:(O3VertexDataType)type {return [mVertexDataSources objectForKey:[NSNumber numberWithUnsignedInt:type]];}
 
 /************************************/ #pragma mark Use /************************************/
-- (void*)defaultUserData {
-	return NULL; //We don't use userData
-}
-
-- (void)destroyUserData:(void*)userData {
-	//We don't use userData
-}
-
-- (void)renderWithUserData:(void*)userData context:(O3RenderContext*)context {
+- (void)renderWithContext:(O3RenderContext*)context {
 	//O3Optimizable()
 	//Bind vertex data sources
 	NSEnumerator* vdsEnum = [mVertexDataSources objectEnumerator];

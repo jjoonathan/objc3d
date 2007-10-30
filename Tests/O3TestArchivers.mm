@@ -13,6 +13,7 @@
 #import "O3Value.h"
 #import "O3KeyedArchiver.h"
 #import "O3KeyedUnarchiver.h"
+#import "O3Camera.h"
 using namespace ObjC3D;
 
 #define TCLog(str, args...) printf([[NSString stringWithFormat:str @"\n",##args] UTF8String])
@@ -416,6 +417,17 @@ using namespace ObjC3D;
 	NSData* dateData = [O3KeyedArchiver archivedDataWithRootObject:now];
 	NSDate* then = [O3KeyedUnarchiver unarchiveObjectWithData:dateData];
 	STAssertTrue([now isEqual:then], @"Archiving a date failed. (%@)%@ != (%@)%@", [now className], now, [then className], then);
+}
+
+- (void)testArchivingCamera {
+	O3Camera* c1 = [O3Camera new];
+	O3Camera* c2 = [O3Camera new];
+	STAssertTrue([c1 isEqual:c2], @"O3Camera's isEqual method is bad");
+	[c1 translateBy:O3Translation3(1., 2., 3.)];
+	STAssertFalse([c1 isEqual:c2], @"O3Camera's isEqual method is bad");
+	NSData* cameraData = [O3KeyedArchiver archivedDataWithRootObject:c1];
+	O3Camera* unarchivedCamera = [O3KeyedUnarchiver unarchiveObjectWithData:cameraData];
+	STAssertTrue([c1 isEqual:unarchivedCamera], @"Archiving a camera failed. (%@)%@ != (%@)%@", [c1 className], c1, [unarchivedCamera className], unarchivedCamera);
 }
 
 - (void)testArchiverCompression {

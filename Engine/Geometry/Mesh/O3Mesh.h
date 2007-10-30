@@ -43,7 +43,5 @@
 - (O3VertexDataSource*)vertexDataSourceForType:(O3VertexDataType)type;	///<Like calling [[O3Mesh vertexDataSources] objectForKey:[NSNumber numberWithUnsignedInt:type]]
 
 /************************************/ #pragma mark Use /************************************/
-- (void*)defaultUserData; ///<Create and return the default userData object (O3Renderable).
-- (void)destroyUserData:(void*)userData; ///<Destroy persistent user data (O3Renderable).
-- (void)renderWithUserData:(void*)userData context:(O3RenderContext*)context; ///<Render with info about the context (hints, etc) \e context and user data \e userData that stays across the context. @note userData may be NULL, in which case the receiver should proceed to render with default values (O3Renderable). @note This method does not position, orient, or scale the receiver. That is up to the mesh instance.
+- (void)renderWithContext:(O3RenderContext*)context; ///<Render with info about the context (hints, etc) \e context
 @end

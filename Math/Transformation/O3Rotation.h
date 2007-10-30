@@ -38,6 +38,8 @@ public: //Concatenations
 
 public: //Operators & Methods
 	O3Rotation3& Invert();
+	BOOL operator==(const O3Rotation3& other) const {return other.MyQuat==MyQuat;}
+	BOOL operator!=(const O3Rotation3& other) const {return other.MyQuat!=MyQuat;}
 	O3Rotation3 operator+(const O3Rotation3& other) const;	///<Add two rotations
 	O3Rotation3& operator+=(const O3Rotation3& other);		///<In-place add two rotations
 	O3Rotation3 operator-(const O3Rotation3& other) const;	///<Subtract two rotations
@@ -48,5 +50,5 @@ public: //Inspectors
 	O3Rotation3 GetInverse();
 	O3Mat3x3d GetMatrix() const;			///<Gets the 3x3 matrix that performs the receiver's rotation
 	O3Quaternion GetQuaternion() const;	///<Gets the receiver's quaternion representation
-	void GetEulerAngles(angle* roll, angle* pitch, angle*yaw) const;	///<Gets the euler angles that compose the receiver's rotation (pass NULL if you don't want one of them)
+	void GetEulerAngles(angle* roll, angle* pitch, angle* yaw) const;	///<Gets the euler angles that compose the receiver's rotation (pass NULL if you don't want one of them)
 };

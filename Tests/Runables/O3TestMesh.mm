@@ -98,7 +98,7 @@ void Render(CFRunLoopTimerRef timer, void *info) {
 	gluPerspective(90., 1., 1., 100.);
 	glMatrixMode(GL_MODELVIEW);
 	
-	[mesh renderWithUserData:nil context:nil];
+	[mesh renderWithContext:nil];
 	
 	glfwSwapBuffers();
 	

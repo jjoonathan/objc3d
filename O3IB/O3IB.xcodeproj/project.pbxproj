@@ -13,6 +13,8 @@
 		C0A47C500A523B730004BDC3 /* O3ResManagerInspector.nib in Resources */ = {isa = PBXBuildFile; fileRef = C05B20D80A48CB530099B9E5 /* O3ResManagerInspector.nib */; };
 		C0D069560A49DF9100C95564 /* InterfaceBuilderKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */; };
 		D1AEDE470A6C289C0010C343 /* O3IBLibrary.nib in Resources */ = {isa = PBXBuildFile; fileRef = D1AEDE460A6C289C0010C343 /* O3IBLibrary.nib */; };
+		FC37AAD80CD4E056005BB1B8 /* O3GalaxyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FC37AAD70CD4E056005BB1B8 /* O3GalaxyButton.png */; };
+		FC37AAF10CD4EEF1005BB1B8 /* O3BlackSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = FC37AAF00CD4EEF1005BB1B8 /* O3BlackSquare.png */; };
 		FC56C3770CC148AE00B7F12A /* O3ResManager+IB.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56C3760CC148AE00B7F12A /* O3ResManager+IB.mm */; };
 		FC57D3D80CB8668800741F39 /* O3ResManagerInspector.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC57D3D70CB8668800741F39 /* O3ResManagerInspector.mm */; };
 		FC57D3EF0CB8987A00741F39 /* O3ResManager.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = FC57D3EE0CB8987A00741F39 /* O3ResManager.classdescription */; };
@@ -20,6 +22,8 @@
 		FCE25B7C0CC4517B0064CA75 /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */; };
 		FCE25B960CC452E40064CA75 /* ObjC3D.framework in Implant Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */; };
 		FCE25C4F0CCBF1BE0064CA75 /* O3GLView.classdescription in Resources */ = {isa = PBXBuildFile; fileRef = FCE25C4E0CCBF1BE0064CA75 /* O3GLView.classdescription */; };
+		FCE25C850CCC36260064CA75 /* O3GLViewInspector.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE25C840CCC36260064CA75 /* O3GLViewInspector.mm */; };
+		FCE25C8B0CCC3BAA0064CA75 /* O3GLViewInspector.nib in Resources */ = {isa = PBXBuildFile; fileRef = FCE25C890CCC3BAA0064CA75 /* O3GLViewInspector.nib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +85,8 @@
 		C0D069550A49DF9100C95564 /* InterfaceBuilderKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InterfaceBuilderKit.framework; path = /Developer/Library/Frameworks/InterfaceBuilderKit.framework; sourceTree = "<absolute>"; };
 		D1AEDE460A6C289C0010C343 /* O3IBLibrary.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = O3IBLibrary.nib; path = English.lproj/O3IBLibrary.nib; sourceTree = "<group>"; };
 		DD92D38A0106425D02CA0E72 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		FC37AAD70CD4E056005BB1B8 /* O3GalaxyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = O3GalaxyButton.png; sourceTree = "<group>"; };
+		FC37AAF00CD4EEF1005BB1B8 /* O3BlackSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = O3BlackSquare.png; sourceTree = "<group>"; };
 		FC56C3750CC148AE00B7F12A /* O3ResManager+IB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O3ResManager+IB.h"; sourceTree = "<group>"; };
 		FC56C3760CC148AE00B7F12A /* O3ResManager+IB.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "O3ResManager+IB.mm"; sourceTree = "<group>"; };
 		FC57D3160CB7D6A500741F39 /* ObjC3D.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjC3D.xcodeproj; path = ../ObjC3D.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -90,6 +96,9 @@
 		FC57D4E60CB9E0C400741F39 /* O3ResManager.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = O3ResManager.icns; sourceTree = "<group>"; };
 		FCE25B1E0CC4514B0064CA75 /* ObjC3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjC3D.framework; path = ../build/ObjC3D.framework; sourceTree = SOURCE_ROOT; };
 		FCE25C4E0CCBF1BE0064CA75 /* O3GLView.classdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = O3GLView.classdescription; sourceTree = "<group>"; };
+		FCE25C830CCC36260064CA75 /* O3GLViewInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3GLViewInspector.h; sourceTree = "<group>"; };
+		FCE25C840CCC36260064CA75 /* O3GLViewInspector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3GLViewInspector.mm; sourceTree = "<group>"; };
+		FCE25C8A0CCC3BAA0064CA75 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/O3GLViewInspector.nib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +131,7 @@
 		0259C582FE90428111CA0C5A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FC37AAF00CD4EEF1005BB1B8 /* O3BlackSquare.png */,
 				D1AEDE460A6C289C0010C343 /* O3IBLibrary.nib */,
 				8D1AC9730486D14A00FE50C9 /* Info.plist */,
 				8D1AC97F0486D23B00FE50C9 /* InfoPlist.strings */,
@@ -245,6 +255,10 @@
 			isa = PBXGroup;
 			children = (
 				FCE25C4E0CCBF1BE0064CA75 /* O3GLView.classdescription */,
+				FC37AAD70CD4E056005BB1B8 /* O3GalaxyButton.png */,
+				FCE25C830CCC36260064CA75 /* O3GLViewInspector.h */,
+				FCE25C840CCC36260064CA75 /* O3GLViewInspector.mm */,
+				FCE25C890CCC3BAA0064CA75 /* O3GLViewInspector.nib */,
 			);
 			name = O3GLView;
 			sourceTree = "<group>";
@@ -331,6 +345,9 @@
 				FC57D3EF0CB8987A00741F39 /* O3ResManager.classdescription in Resources */,
 				FC57D4E70CB9E0C400741F39 /* O3ResManager.icns in Resources */,
 				FCE25C4F0CCBF1BE0064CA75 /* O3GLView.classdescription in Resources */,
+				FCE25C8B0CCC3BAA0064CA75 /* O3GLViewInspector.nib in Resources */,
+				FC37AAD80CD4E056005BB1B8 /* O3GalaxyButton.png in Resources */,
+				FC37AAF10CD4EEF1005BB1B8 /* O3BlackSquare.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +378,7 @@
 				C08787290A49DE9A00E9B151 /* O3IB.mm in Sources */,
 				FC57D3D80CB8668800741F39 /* O3ResManagerInspector.mm in Sources */,
 				FC56C3770CC148AE00B7F12A /* O3ResManager+IB.mm in Sources */,
+				FCE25C850CCC36260064CA75 /* O3GLViewInspector.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +399,14 @@
 				8D1AC97B0486D23100FE50C9 /* English */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FCE25C890CCC3BAA0064CA75 /* O3GLViewInspector.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FCE25C8A0CCC3BAA0064CA75 /* English */,
+			);
+			name = O3GLViewInspector.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

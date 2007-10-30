@@ -168,14 +168,15 @@
 		FCC1E9860C198AB50041415C /* ObjC3D.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
 		FCCF22640CA6D98400B0A16B /* O3DirectoryResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FCCF22620CA6D98400B0A16B /* O3DirectoryResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCCF22650CA6D98500B0A16B /* O3DirectoryResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCCF22630CA6D98400B0A16B /* O3DirectoryResSource.mm */; };
-		FCE25C2F0CC855D00064CA75 /* O3GLView.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C2D0CC855D00064CA75 /* O3GLView.h */; };
+		FCE25C2F0CC855D00064CA75 /* O3GLView.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C2D0CC855D00064CA75 /* O3GLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCE25C300CC855D00064CA75 /* O3GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE25C2E0CC855D00064CA75 /* O3GLView.mm */; };
-		FCE25C560CCC0A900064CA75 /* O3Region.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C540CCC0A900064CA75 /* O3Region.h */; };
+		FCE25C560CCC0A900064CA75 /* O3Region.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C540CCC0A900064CA75 /* O3Region.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCE25C570CCC0A900064CA75 /* O3Region.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE25C550CCC0A900064CA75 /* O3Region.mm */; };
-		FCE25C5A0CCC0AB90064CA75 /* O3Scene.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C580CCC0AB90064CA75 /* O3Scene.h */; };
+		FCE25C5A0CCC0AB90064CA75 /* O3Scene.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C580CCC0AB90064CA75 /* O3Scene.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCE25C5B0CCC0AB90064CA75 /* O3Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE25C590CCC0AB90064CA75 /* O3Scene.mm */; };
-		FCE25C5F0CCC16260064CA75 /* O3Group.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C5D0CCC16260064CA75 /* O3Group.h */; };
-		FCE25C600CCC16260064CA75 /* O3Group.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE25C5E0CCC16260064CA75 /* O3Group.mm */; };
+		FCE25C5F0CCC16260064CA75 /* O3Group.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE25C5D0CCC16260064CA75 /* O3Group.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FCE25CE00CCCCFAA0064CA75 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25CDF0CCCCFAA0064CA75 /* SenTestingKit.framework */; };
+		FCE25CE10CCCCFAA0064CA75 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCE25CDF0CCCCFAA0064CA75 /* SenTestingKit.framework */; };
 		FCE82BC60C5A2E4A00A47451 /* O3BufferedReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE82BC50C5A2E4A00A47451 /* O3BufferedReader.mm */; };
 		FCEA98DF0C9E1A4200D93A70 /* TestRunner_main.m in Sources */ = {isa = PBXBuildFile; fileRef = FCEA98DE0C9E1A4200D93A70 /* TestRunner_main.m */; };
 		FCEF231F0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCEF231D0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm */; };
@@ -465,7 +466,7 @@
 		FCE25C580CCC0AB90064CA75 /* O3Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Scene.h; sourceTree = "<group>"; };
 		FCE25C590CCC0AB90064CA75 /* O3Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Scene.mm; sourceTree = "<group>"; };
 		FCE25C5D0CCC16260064CA75 /* O3Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Group.h; sourceTree = "<group>"; };
-		FCE25C5E0CCC16260064CA75 /* O3Group.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Group.mm; sourceTree = "<group>"; };
+		FCE25CDF0CCCCFAA0064CA75 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		FCE82BC50C5A2E4A00A47451 /* O3BufferedReader.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3BufferedReader.mm; sourceTree = "<group>"; };
 		FCE8479E0BDFAB3E00A8FD75 /* NSValueO3CGShaderAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueO3CGShaderAdditions.h; sourceTree = "<group>"; };
 		FCE8479F0BDFAB3E00A8FD75 /* NSValueO3CGShaderAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = NSValueO3CGShaderAdditions.mm; sourceTree = "<group>"; };
@@ -508,7 +509,6 @@
 		FCF438500C217FE500263F34 /* O3BigObjSubclass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3BigObjSubclass.mm; sourceTree = "<group>"; };
 		FCFB0E770BB4480E00994ADB /* O3TestValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestValue.h; sourceTree = "<group>"; };
 		FCFB0E780BB4480E00994ADB /* O3TestValue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestValue.mm; sourceTree = "<group>"; };
-		FCFB0E900BB44B3200994ADB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		FCFB70B50B72DB0B00BB2243 /* O3Space.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Space.h; sourceTree = "<group>"; };
 		FCFB70B60B72DB0B00BB2243 /* O3Space.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Space.cpp; sourceTree = "<group>"; };
 		FCFB70E50B74DD2C00BB2243 /* O3TestMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3TestMatrix.h; path = Math/O3TestMatrix.h; sourceTree = "<group>"; };
@@ -534,6 +534,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCE25CE00CCCCFAA0064CA75 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +544,7 @@
 			files = (
 				FCC1E92A0C198A3E0041415C /* ObjC3D.framework in Frameworks */,
 				FC7DD6650C1C8EDB009D36A2 /* Log4Cocoa.framework in Frameworks */,
+				FCE25CE10CCCCFAA0064CA75 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -812,7 +814,7 @@
 		FC3AA9490B3728110033122E /* Apple */ = {
 			isa = PBXGroup;
 			children = (
-				FCFB0E900BB44B3200994ADB /* SenTestingKit.framework */,
+				FCE25CDF0CCCCFAA0064CA75 /* SenTestingKit.framework */,
 				FC3AABD70B372A710033122E /* Carbon.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
@@ -1079,7 +1081,6 @@
 				FCE25C580CCC0AB90064CA75 /* O3Scene.h */,
 				FCE25C590CCC0AB90064CA75 /* O3Scene.mm */,
 				FCE25C5D0CCC16260064CA75 /* O3Group.h */,
-				FCE25C5E0CCC16260064CA75 /* O3Group.mm */,
 			);
 			name = Hiecarchy;
 			sourceTree = "<group>";
@@ -1140,6 +1141,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCE25C2F0CC855D00064CA75 /* O3GLView.h in Headers */,
+				FCE25C560CCC0A900064CA75 /* O3Region.h in Headers */,
+				FCE25C5A0CCC0AB90064CA75 /* O3Scene.h in Headers */,
+				FC2C1C040C125EB20084A599 /* O3Camera.h in Headers */,
+				FC2C1C060C125EB30084A599 /* O3Locateable.h in Headers */,
+				FCE25C5F0CCC16260064CA75 /* O3Group.h in Headers */,
 				FC2C1C740C125F880084A599 /* O3Functions.hpp in Headers */,
 				FC2C1C520C125F6E0084A599 /* O3VectorFunctions.hpp in Headers */,
 				FC2C1C5D0C125F760084A599 /* O3Sphere.hpp in Headers */,
@@ -1153,8 +1160,6 @@
 				FC2C1C1C0C125F080084A599 /* O3KeyedUnarchiver.h in Headers */,
 				FC2C1C1D0C125F080084A599 /* O3KVCHelper.h in Headers */,
 				FC2C1BBE0C123FB00084A599 /* O3Accelerate.h in Headers */,
-				FC2C1C040C125EB20084A599 /* O3Camera.h in Headers */,
-				FC2C1C060C125EB30084A599 /* O3Locateable.h in Headers */,
 				FC2C1C080C125EB40084A599 /* O3Object.h in Headers */,
 				FC2C1C0A0C125EC80084A599 /* O3ArchiveFormat.h in Headers */,
 				FC2C1C0B0C125EC90084A599 /* O3BufferedReader.h in Headers */,
@@ -1231,10 +1236,6 @@
 				FC4605C10CA602E9006F0122 /* O3ResSource.h in Headers */,
 				FCCF22640CA6D98400B0A16B /* O3DirectoryResSource.h in Headers */,
 				FC4055420CAC86B5005908DF /* O3FileResSource.h in Headers */,
-				FCE25C2F0CC855D00064CA75 /* O3GLView.h in Headers */,
-				FCE25C560CCC0A900064CA75 /* O3Region.h in Headers */,
-				FCE25C5A0CCC0AB90064CA75 /* O3Scene.h in Headers */,
-				FCE25C5F0CCC16260064CA75 /* O3Group.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1517,7 +1518,6 @@
 				FCE25C300CC855D00064CA75 /* O3GLView.mm in Sources */,
 				FCE25C570CCC0A900064CA75 /* O3Region.mm in Sources */,
 				FCE25C5B0CCC0AB90064CA75 /* O3Scene.mm in Sources */,
-				FCE25C600CCC16260064CA75 /* O3Group.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1595,6 +1595,7 @@
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_FAST_OBJC_DISPATCH = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = O3DEBUG;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1631,6 +1632,7 @@
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_FAST_OBJC_DISPATCH = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1762,6 +1764,7 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/Other\"";
 				FRAMEWORK_VERSION = A;
+				GCC_AUTO_VECTORIZATION = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_MODEL_TUNING = G5;
@@ -1872,6 +1875,7 @@
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_FAST_OBJC_DISPATCH = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -1904,8 +1908,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1936,8 +1942,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1998,8 +2006,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2032,9 +2042,11 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../../Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2076,9 +2088,11 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../../Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
@@ -2117,9 +2131,11 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../../Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -2159,9 +2175,11 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../../Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;

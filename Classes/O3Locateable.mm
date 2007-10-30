@@ -6,6 +6,7 @@
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #import "O3Locateable.h"
+#import "O3Value.h"
 #import <iostream>
 using namespace std;
 using namespace ObjC3D::Math;
@@ -14,58 +15,67 @@ using namespace ObjC3D::Math;
 
 inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	if (!self->mSpaceNeedsUpdate) return;
-	self->mSpace->Set();
-	*self->mSpace += *self->mTranslation;
-	*self->mSpace += *self->mRotation;
-	*self->mSpace += *self->mScale;
+	self->mSpace.Set(self->mTranslation, self->mRotation, self->mScale);
 	self->mSpaceNeedsUpdate = NO;
 }
 
+/************************************/ #pragma mark Init /************************************/
 - (id)initWithLocation:(O3Translation3)trans rotation:(O3Rotation3)rot scale:(O3Scale3)scale {
 	O3SuperInitOrDie();
-	mSpace = new Space3(trans, rot, scale);
-	mRotation = new O3Rotation3(rot);
-	mTranslation = new O3Translation3(trans);
-	mScale = new O3Scale3(scale);
+	mSpace.Set(trans, rot, scale);
+	mRotation.Set(rot);
+	mTranslation.Set(trans);
+	mScale.Set(scale);
 	return self;
 }
 
-- (id)init {
+- (O3Locateable*)initWithCoder:(NSCoder*)coder {
 	O3SuperInitOrDie();
-	mSpace = new Space3();
-	mRotation = new O3Rotation3();
-	mTranslation = new O3Translation3();
-	mScale = new O3Scale3();
+	O3Vec3d rot([[coder decodeObjectForKey:@"rotation"] vectorValue]);
+	mRotation.Set(rot.X(), rot.Y(), rot.Z());
+	mTranslation.Set([[coder decodeObjectForKey:@"translation"] vectorValue]);
+	mScale.Set([[coder decodeObjectForKey:@"scale"] vectorValue]);
 	return self;
 }
 
-- (void)dealloc {
-	if (mSpace) delete mSpace; /*mSpace = NULL;*/
-	[super dealloc];
+- (void)encodeWithCoder:(NSCoder*)coder {
+	angle roll, pitch, yaw;
+	mRotation.GetEulerAngles(&roll, &pitch, &yaw);
+	[coder encodeObject:[O3Value valueWithVector:O3Vec3d(roll,pitch,yaw)] forKey:@"rotation"];
+	[coder encodeObject:[O3Value valueWithVector:mTranslation] forKey:@"translation"];
+	[coder encodeObject:[O3Value valueWithVector:mScale] forKey:@"scale"];
 }
 
+- (BOOL)isEqual:(O3Locateable*)other {
+	if (mRotation!=[other rotation]) return NO;
+	if (mTranslation!=[other translation]) return NO;
+	if (mScale!=[other scale]) return NO;
+	return YES;
+}
+
+/************************************/ #pragma mark Accessors /************************************/
 - (void)rotateBy:(O3Rotation3)relativeRotation {
-	*mRotation += relativeRotation;	
+	mRotation += relativeRotation;	
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (void)translateBy:(O3Translation3)trans {
-	*mTranslation += trans;	
+	mTranslation += trans;	
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (void)translateInObjectSpaceBy:(O3Translation3)trans {
 	O3Locateable_UpdateSpaceIfNecessary(self);
-	const O3Mat4x4d themat = mSpace->MatrixToSuper();
-	*mTranslation += O3Vec3d(themat*O3Vec4d(trans));
+	const O3Mat4x4d themat = mSpace.MatrixToSuper();
+	mTranslation += O3Vec3d(themat*O3Vec4d(trans));
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (void)scaleBy:(O3Scale3)scale {
-	*mScale += scale;	
+	mScale += scale;	
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
@@ -73,66 +83,75 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 ///Returns the receiver's space (object space)
 - (Space3*)space {		
 	O3Locateable_UpdateSpaceIfNecessary(self);
-	return mSpace;
+	return &mSpace;
 }
 
 - (Space3*)superspace {	///<Returns the receiver's superspace (space above object space)
 	//O3Locateable_UpdateSpaceIfNecessary(self);
-	return mSpace->Superspace();
+	return mSpace.Superspace();
 }
 
 - (O3Rotation3)rotation {
-	return *mRotation;
+	return mRotation;
 }
 
 - (O3Translation3)translation {
-	return *mTranslation;
+	return mTranslation;
 }
 
 - (O3Scale3)scale {
-	return *mScale;
+	return mScale;
 }
 
 - (void)setSuperspace:(Space3*)space {
-	mSpace->SetSuperspace(space);
+	mSpace.SetSuperspace(space);
+}
+
+- (void)setSuperspaceToThatOfLocateable:(O3Locateable*)locateable {
+	mSpace.SetSuperspace([locateable space]);
 }
 
 - (void)setRotation:(O3Rotation3)newRot {
-	mRotation->Set(newRot);
+	mRotation.Set(newRot);
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (void)setTranslation:(O3Translation3)newTrans {
-	mTranslation->Set(newTrans);
+	mTranslation.Set(newTrans);
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (void)setScale:(O3Scale3)newScale {
-	mScale->Set(newScale);
+	mScale.Set(newScale);
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (O3Mat4x4d)matrixToSpace:(Space3*)targetspace {
 	O3Locateable_UpdateSpaceIfNecessary(self);
-	return mSpace->MatrixToSpace(targetspace);
+	return mSpace.MatrixToSpace(targetspace);
+}
+
+- (O3Mat4x4d)matrixToSpaceOfLocateable:(O3Locateable*)locateable {
+	O3Locateable_UpdateSpaceIfNecessary(self);
+	return mSpace.MatrixToSpace([locateable space]);
 }
 
 - (void)setMatrixToSpace:(Space3*)targetspace {
 	O3Locateable_UpdateSpaceIfNecessary(self);
-	O3Mat4x4d themat = mSpace->MatrixToSpace(targetspace);
+	O3Mat4x4d themat = mSpace.MatrixToSpace(targetspace);
 	glLoadMatrixd(themat);
 }
 
 - (NSString*)description {
-	real x = mTranslation->GetX();
-	real y = mTranslation->GetY();
-	real z = mTranslation->GetZ();
+	real x = mTranslation.GetX();
+	real y = mTranslation.GetY();
+	real z = mTranslation.GetZ();
 	double rotx, roty, rotz;
-	mRotation->GetEulerAngles(&rotx, &roty, &rotz);
-	return [NSString stringWithFormat:@"{O3Locateable: x:%.6f y:%.6f z:%.6f xrot:%.6f yrot:%.6f zrot:%.6f xscl:%.6f yscl:%.6f zscl:%.6f}", x, y, z, rotx, roty, rotz, mScale->GetX(), mScale->GetY(), mScale->GetZ()];
+	mRotation.GetEulerAngles(&rotx, &roty, &rotz);
+	return [NSString stringWithFormat:@"{O3Locateable: x:%.6f y:%.6f z:%.6f xrot:%.6f yrot:%.6f zrot:%.6f xscl:%.6f yscl:%.6f zscl:%.6f}", x, y, z, rotx, roty, rotz, mScale.GetX(), mScale.GetY(), mScale.GetZ()];
 }
 
 - (void)debugDrawIntoSpace:(const Space3&)intospace {
@@ -143,7 +162,7 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	glDisable(GL_VERTEX_PROGRAM_ARB);
 	glEnable(GL_BLEND);
 	glPushMatrix();
-	glLoadMatrixd(mSpace->MatrixToSpace(intospace));
+	glLoadMatrixd(mSpace.MatrixToSpace(intospace));
 	
 	glBegin(GL_LINES);
 		glColor4f(1,0,0,1);

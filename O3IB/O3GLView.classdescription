@@ -4,8 +4,8 @@
 		// "myAction:" = id;
 	};
 	Outlets = {
-		resManager = O3ResManager;
+		resourceManager = O3ResManager;
 	};
     ClassName = O3GLView; 
-    SuperClass = NSOpenGLView; 
+    SuperClass = NSView; 
 }

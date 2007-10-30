@@ -68,4 +68,11 @@ template <typename TYPE> TYPE O3Byteswap(const TYPE& to_swap); ///<Swaps the byt
 #define O3ByteswapHostTo(endianess, x) ((endianess==O3LittleEndian)?O3Byteswap(x):(x))
 #endif
 
+/************************************/ #pragma mark Foundation Additions /************************************/
+inline NSRect O3CenterSizeInRect(NSSize s, NSRect rect) {
+	double xpadding = (rect.size.width-s.width)*.5;
+	double ypadding = (rect.size.height-s.height)*.5;
+	return NSMakeRect(rect.origin.x+xpadding, rect.origin.y+ypadding, s.width, s.height);
+}
+
 #include "O3Functions.hpp"

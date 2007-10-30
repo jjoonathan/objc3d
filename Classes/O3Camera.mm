@@ -26,7 +26,7 @@ inline double O3Camera_aspectRatio(O3Camera* self) {
 }
 
 inline O3Mat3x3d O3Camera_orthonormalBase(O3Camera* self) {
-	const O3Mat4x4d& tmat = self->mSpace->MatrixFromSuper();
+	const O3Mat4x4d& tmat = self->mSpace.MatrixFromSuper();
 	O3Vec3d xcol(tmat.GetColumn(0));
 	O3Vec3d ycol(tmat.GetColumn(1));
 	O3Vec3d zcol(tmat.GetColumn(2));
@@ -48,12 +48,38 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	[super dealloc];
 }
 
-- (id)init {
+- (O3Camera*)init {
 	O3SuperInitOrDie();
 	O3Camera_init(self);
 	return self;
 }
 
+- (O3Camera*)initWithCoder:(NSCoder*)coder {
+	[super initWithCoder:coder];
+	O3Assert([coder allowsKeyedCoding], @"Cannot create an O3GLView from a non-keyed coder");
+	O3Camera_init(self);
+	self->mAspectRatio = [coder decodeDoubleForKey:@"aspectRatio"];
+	self->mNearPlane = [coder decodeDoubleForKey:@"nearPlane"];
+	self->mFarPlane = [coder decodeDoubleForKey:@"farPlane"];
+	self->mFOVY = [coder decodeDoubleForKey:@"fovYDegrees"];
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder {
+	[super encodeWithCoder:coder];
+	[coder encodeDouble:mAspectRatio forKey:@"aspectRatio"];
+	[coder encodeDouble:mNearPlane forKey:@"nearPlane"];
+	[coder encodeDouble:mFarPlane forKey:@"farPlane"];
+	[coder encodeDouble:mFOVY forKey:@"fovYDegrees"];	
+}
+
+- (BOOL)isEqual:(O3Camera*)camera {
+	if (mFOVY!=[camera fovY]) return NO;
+	if (mNearPlane!=[camera nearPlaneDistance]) return NO;
+	if (mFarPlane!=[camera farPlaneDistance]) return NO;
+	if (mAspectRatio!=[camera aspectRatio]) return NO;
+	return [super isEqual:camera];
+}
 
 /************************************/ #pragma mark Inspectors /************************************/
 - (double)nearPlaneDistance {return mNearPlane;}
@@ -64,7 +90,7 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 
 - (O3Mat4x4d)viewMatrix {
 	O3Camera_postProjectiveSpace(self);
-	return mSpace->MatrixFromRoot();
+	return mSpace.MatrixFromRoot();
 }
 
 - (O3Mat4x4d)projectionMatrix {
@@ -87,7 +113,7 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 
 /************************************/ #pragma mark Use /************************************/
 - (void)setViewMatrix {
-	glMultMatrixd(mSpace->MatrixFromSuper());
+	glMultMatrixd(mSpace.MatrixFromSuper());
 }
 
 - (void)setProjectionMatrix {

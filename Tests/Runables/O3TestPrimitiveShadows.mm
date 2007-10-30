@@ -249,7 +249,7 @@ void DrawScene(O3CGEffect* eff, BOOL include_shadow_receivers) {
 		
 		O3Mesh* themesh = obj->mesh;
 		//[themesh setMaterial:eff];
-		[themesh renderWithUserData:nil context:nil];
+		[themesh renderWithContext:nil];
 		
 		glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();

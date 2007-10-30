@@ -14,6 +14,9 @@ using namespace ObjC3D::Math;
 	double mNearPlane, mFarPlane;	///<The near and far plane distances (like min and max Z values)
 	double mFOVY;
 }
+//Init
+- (O3Camera*)initWithCoder:(NSCoder*)coder;
+- (void)encodeWithCoder:(NSCoder*)coder;
 
 //Accessors
 - (double)aspectRatio;	///<Returns the aspect ratio (width/height) of the receiver.

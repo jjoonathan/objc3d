@@ -111,7 +111,7 @@ void Init() {
 
 void DrawScene() {
 	glTranslatef(0,0,-1);
-	[mesh renderWithUserData:nil context:nil];
+	[mesh renderWithContext:nil];
 }
 
 
