@@ -41,7 +41,7 @@ inline void initP(O3GLView* self) {
 	self->mStereoBuffer = NO;
 	self->mNoRecovery = NO;
 	self->mContextNeedsUpdate = YES;
-	[self setScene:@"defaultScene"];
+	[self setSceneName:@"defaultScene"];
 }
 
 - (O3GLView*)initWithFrame:(NSRect)frameRect {
@@ -169,6 +169,7 @@ inline void initP(O3GLView* self) {
 }
 
 - (void)setScene:(O3Scene*)scene {
+	O3Assert([scene conformsToProtocol:@protocol(O3Renderable)], @"Scene %@ (possibly named \"%@\") doesn't implement O3Renderable.", scene, mSceneName); 
 	O3Assign(scene, mScene);
 	[self setNeedsDisplay:YES];
 }

@@ -6,10 +6,9 @@
 //  Copyright __MyCompanyName__ 2007 . All rights reserved.
 //
 
-
-#import <Cocoa/Cocoa.h>
-
-@interface MyDocument : NSDocument
-{
+@interface MyDocument : NSDocument {
+	IBOutlet NSArrayController* oObjects;
 }
+- (id)objectForKey:(NSString*)name;
+- (NSString*)nextUntitledName;
 @end

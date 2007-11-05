@@ -11,11 +11,21 @@
 		8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
 		8D15AC2E0486D014006FF6A4 /* MyDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
-		8D15AC310486D014006FF6A4 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */; settings = {ATTRIBUTES = (); }; };
-		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D15AC310486D014006FF6A4 /* MyDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.mm */; settings = {ATTRIBUTES = (); }; };
+		8D15AC320486D014006FF6A4 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.mm */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		FC6F2A8B0CB02B5B0081FA5D /* ObjC3D.framework in Copy in ObjC3D */ = {isa = PBXBuildFile; fileRef = FC6F2A300CB02AFD0081FA5D /* ObjC3D.framework */; };
-		FC6F2A8C0CB02B5E0081FA5D /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC6F2A300CB02AFD0081FA5D /* ObjC3D.framework */; };
+		FC2A9CF20CDE46B90036EEAA /* O3ObjectEditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2A9CF10CDE46B90036EEAA /* O3ObjectEditor.mm */; };
+		FC2A9CF90CDE4FEE0036EEAA /* ObjectEditor.nib in Resources */ = {isa = PBXBuildFile; fileRef = FC2A9CF70CDE4FEE0036EEAA /* ObjectEditor.nib */; };
+		FC2A9D870CDE8FBC0036EEAA /* DropableCollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2A9D860CDE8FBC0036EEAA /* DropableCollectionView.mm */; };
+		FC2A9D8A0CDEAA8D0036EEAA /* O3MeshImporter.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2A9D890CDEAA8D0036EEAA /* O3MeshImporter.mm */; };
+		FC4A43CA0CDD162C00D71FEF /* RootObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4A43C90CDD162C00D71FEF /* RootObject.mm */; };
+		FC4A44600CDD23EA00D71FEF /* ObjC3D.framework in Copy in ObjC3D */ = {isa = PBXBuildFile; fileRef = FC4A43FF0CDD23DE00D71FEF /* ObjC3D.framework */; };
+		FC4A44610CDD23F700D71FEF /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC4A43FF0CDD23DE00D71FEF /* ObjC3D.framework */; };
+		FC4A44BD0CDE2BE600D71FEF /* MyApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4A44BC0CDE2BE600D71FEF /* MyApp.mm */; };
+		FC4A44C20CDE2F5600D71FEF /* O3Mesh+Galaxy.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4A44C10CDE2F5600D71FEF /* O3Mesh+Galaxy.mm */; };
+		FC4A44C70CDE2FAC00D71FEF /* O3Editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4A44C60CDE2FAC00D71FEF /* O3Editor.mm */; };
+		FC4A44C90CDE3B7D00D71FEF /* O3MeshIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FC4A44C80CDE3B7D00D71FEF /* O3MeshIcon.png */; };
+		FC4A44CE0CDE3CD300D71FEF /* O3MeshEditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4A44CD0CDE3CD300D71FEF /* O3MeshEditor.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +66,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FC6F2A8B0CB02B5B0081FA5D /* ObjC3D.framework in Copy in ObjC3D */,
+				FC4A44600CDD23EA00D71FEF /* ObjC3D.framework in Copy in ObjC3D */,
 			);
 			name = "Copy in ObjC3D";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,9 +77,9 @@
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDocument.m; sourceTree = "<group>"; };
+		2A37F4ACFDCFA73011CA2CEA /* MyDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyDocument.mm; sourceTree = "<group>"; };
 		2A37F4AEFDCFA73011CA2CEA /* MyDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDocument.h; sourceTree = "<group>"; };
-		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2A37F4B0FDCFA73011CA2CEA /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		2A37F4B5FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MyDocument.nib; sourceTree = "<group>"; };
 		2A37F4B7FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
@@ -78,8 +88,26 @@
 		32DBCF750370BD2300C91783 /* Galaxy_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Galaxy_Prefix.pch; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Galaxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Galaxy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC2A9CF00CDE46B90036EEAA /* O3ObjectEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ObjectEditor.h; sourceTree = "<group>"; };
+		FC2A9CF10CDE46B90036EEAA /* O3ObjectEditor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ObjectEditor.mm; sourceTree = "<group>"; };
+		FC2A9CF80CDE4FEE0036EEAA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/ObjectEditor.nib; sourceTree = "<group>"; };
+		FC2A9D850CDE8FBC0036EEAA /* DropableCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropableCollectionView.h; sourceTree = "<group>"; };
+		FC2A9D860CDE8FBC0036EEAA /* DropableCollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DropableCollectionView.mm; sourceTree = "<group>"; };
+		FC2A9D880CDEAA8D0036EEAA /* O3MeshImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3MeshImporter.h; sourceTree = "<group>"; };
+		FC2A9D890CDEAA8D0036EEAA /* O3MeshImporter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3MeshImporter.mm; sourceTree = "<group>"; };
+		FC4A43C80CDD162C00D71FEF /* RootObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootObject.h; sourceTree = "<group>"; };
+		FC4A43C90CDD162C00D71FEF /* RootObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RootObject.mm; sourceTree = "<group>"; };
+		FC4A43FF0CDD23DE00D71FEF /* ObjC3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjC3D.framework; path = ../build/ObjC3D.framework; sourceTree = SOURCE_ROOT; };
+		FC4A44BB0CDE2BE600D71FEF /* MyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyApp.h; sourceTree = "<group>"; };
+		FC4A44BC0CDE2BE600D71FEF /* MyApp.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyApp.mm; sourceTree = "<group>"; };
+		FC4A44C00CDE2F5600D71FEF /* O3Mesh+Galaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O3Mesh+Galaxy.h"; sourceTree = "<group>"; };
+		FC4A44C10CDE2F5600D71FEF /* O3Mesh+Galaxy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "O3Mesh+Galaxy.mm"; sourceTree = "<group>"; };
+		FC4A44C50CDE2FAC00D71FEF /* O3Editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Editor.h; sourceTree = "<group>"; };
+		FC4A44C60CDE2FAC00D71FEF /* O3Editor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Editor.mm; sourceTree = "<group>"; };
+		FC4A44C80CDE3B7D00D71FEF /* O3MeshIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = O3MeshIcon.png; sourceTree = "<group>"; };
+		FC4A44CC0CDE3CD300D71FEF /* O3MeshEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3MeshEditor.h; sourceTree = "<group>"; };
+		FC4A44CD0CDE3CD300D71FEF /* O3MeshEditor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3MeshEditor.mm; sourceTree = "<group>"; };
 		FC6F29A40CB028270081FA5D /* ObjC3D.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjC3D.xcodeproj; path = ../ObjC3D.xcodeproj; sourceTree = SOURCE_ROOT; };
-		FC6F2A300CB02AFD0081FA5D /* ObjC3D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjC3D.framework; path = "../build/Release_Intel+PPC/ObjC3D.framework"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC6F2A8C0CB02B5E0081FA5D /* ObjC3D.framework in Frameworks */,
+				FC4A44610CDD23F700D71FEF /* ObjC3D.framework in Frameworks */,
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,6 +152,7 @@
 		2A37F4AAFDCFA73011CA2CEA /* Galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				FC4A44BF0CDE2F1A00D71FEF /* Editors */,
 				FC6F29A40CB028270081FA5D /* ObjC3D.xcodeproj */,
 				2A37F4ABFDCFA73011CA2CEA /* Classes */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
@@ -137,8 +166,12 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FC4A43C80CDD162C00D71FEF /* RootObject.h */,
+				FC4A43C90CDD162C00D71FEF /* RootObject.mm */,
 				2A37F4AEFDCFA73011CA2CEA /* MyDocument.h */,
-				2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */,
+				2A37F4ACFDCFA73011CA2CEA /* MyDocument.mm */,
+				FC4A44BB0CDE2BE600D71FEF /* MyApp.h */,
+				FC4A44BC0CDE2BE600D71FEF /* MyApp.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -147,7 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				32DBCF750370BD2300C91783 /* Galaxy_Prefix.pch */,
-				2A37F4B0FDCFA73011CA2CEA /* main.m */,
+				2A37F4B0FDCFA73011CA2CEA /* main.mm */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -156,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
+				FC2A9CF70CDE4FEE0036EEAA /* ObjectEditor.nib */,
 				2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */,
 				2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */,
 				8D15AC360486D014006FF6A4 /* Info.plist */,
@@ -167,11 +201,39 @@
 		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FC6F2A300CB02AFD0081FA5D /* ObjC3D.framework */,
+				FC4A43FF0CDD23DE00D71FEF /* ObjC3D.framework */,
 				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
 				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FC4A44BF0CDE2F1A00D71FEF /* Editors */ = {
+			isa = PBXGroup;
+			children = (
+				FC4A44C40CDE2F9600D71FEF /* O3Mesh */,
+				FC4A44C50CDE2FAC00D71FEF /* O3Editor.h */,
+				FC4A44C60CDE2FAC00D71FEF /* O3Editor.mm */,
+				FC2A9CF00CDE46B90036EEAA /* O3ObjectEditor.h */,
+				FC2A9CF10CDE46B90036EEAA /* O3ObjectEditor.mm */,
+				FC2A9D850CDE8FBC0036EEAA /* DropableCollectionView.h */,
+				FC2A9D860CDE8FBC0036EEAA /* DropableCollectionView.mm */,
+			);
+			name = Editors;
+			sourceTree = "<group>";
+		};
+		FC4A44C40CDE2F9600D71FEF /* O3Mesh */ = {
+			isa = PBXGroup;
+			children = (
+				FC4A44C80CDE3B7D00D71FEF /* O3MeshIcon.png */,
+				FC4A44C00CDE2F5600D71FEF /* O3Mesh+Galaxy.h */,
+				FC4A44C10CDE2F5600D71FEF /* O3Mesh+Galaxy.mm */,
+				FC4A44CC0CDE3CD300D71FEF /* O3MeshEditor.h */,
+				FC4A44CD0CDE3CD300D71FEF /* O3MeshEditor.mm */,
+				FC2A9D880CDEAA8D0036EEAA /* O3MeshImporter.h */,
+				FC2A9D890CDEAA8D0036EEAA /* O3MeshImporter.mm */,
+			);
+			name = O3Mesh;
 			sourceTree = "<group>";
 		};
 		FC6F29A50CB028270081FA5D /* Products */ = {
@@ -263,6 +325,8 @@
 				8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */,
 				8D15AC2E0486D014006FF6A4 /* MyDocument.nib in Resources */,
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
+				FC4A44C90CDE3B7D00D71FEF /* O3MeshIcon.png in Resources */,
+				FC2A9CF90CDE4FEE0036EEAA /* ObjectEditor.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,8 +337,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D15AC310486D014006FF6A4 /* MyDocument.m in Sources */,
-				8D15AC320486D014006FF6A4 /* main.m in Sources */,
+				8D15AC310486D014006FF6A4 /* MyDocument.mm in Sources */,
+				8D15AC320486D014006FF6A4 /* main.mm in Sources */,
+				FC4A43CA0CDD162C00D71FEF /* RootObject.mm in Sources */,
+				FC4A44BD0CDE2BE600D71FEF /* MyApp.mm in Sources */,
+				FC4A44C20CDE2F5600D71FEF /* O3Mesh+Galaxy.mm in Sources */,
+				FC4A44C70CDE2FAC00D71FEF /* O3Editor.mm in Sources */,
+				FC4A44CE0CDE3CD300D71FEF /* O3MeshEditor.mm in Sources */,
+				FC2A9CF20CDE46B90036EEAA /* O3ObjectEditor.mm in Sources */,
+				FC2A9D870CDE8FBC0036EEAA /* DropableCollectionView.mm in Sources */,
+				FC2A9D8A0CDEAA8D0036EEAA /* O3MeshImporter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +393,14 @@
 			name = Credits.rtf;
 			sourceTree = "<group>";
 		};
+		FC2A9CF70CDE4FEE0036EEAA /* ObjectEditor.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FC2A9CF80CDE4FEE0036EEAA /* English */,
+			);
+			name = ObjectEditor.nib;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -332,6 +412,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../build/Release\"",
 					"\"$(SRCROOT)/../build/Release_Intel+PPC\"",
+					"\"$(SRCROOT)/../build\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -355,6 +436,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../build/Release\"",
 					"\"$(SRCROOT)/../build/Release_Intel+PPC\"",
+					"\"$(SRCROOT)/../build\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
