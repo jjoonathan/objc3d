@@ -14,6 +14,7 @@
  * Set 2: -initWithBytesNoCopy:type:freeWhenDone:, -writeToBytes, -structKeys
  * Set 2 is more efficient than set one, generally speaking, though it may be impossible through a scripting bridge.
  * @warning The default implementation of the public init methods simply call eachother. If you subclass O3Struct, do not simply call super, call [super initWithType:].
+ * @warning Also note that structs should not be mutable.
  */
 @interface O3Struct : NSObject { //Subclass to O3ByteStruct, provide default imps of initWithBytes, etc.
 	O3StructType* mType;

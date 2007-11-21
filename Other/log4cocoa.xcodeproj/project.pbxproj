@@ -295,6 +295,7 @@
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
+				FC63E4180CF3C2E300325C54 /* Create Latest Build Shortcut */,
 			);
 			buildRules = (
 			);
@@ -334,6 +335,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FC63E4180CF3C2E300325C54 /* Create Latest Build Shortcut */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Create Latest Build Shortcut";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "FRMWK=$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\nALIAS=$PROJECT_DIR/../build/Log4Cocoa.framework\nrm -f $ALIAS\nln -s $FRMWK $ALIAS";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8DC2EF540486A6940098B216 /* Sources */ = {
@@ -399,7 +417,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = log4cocoa/Log4Cocoa.h;
 				INFOPLIST_FILE = log4cocoa/Info.plist;
-				INSTALL_PATH = "@executable_path/../Frameworks/Own3D.framework/Versions/Current/Frameworks";
+				INSTALL_PATH = "@loader_path/Frameworks";
 				PRODUCT_NAME = Log4Cocoa;
 				WRAPPER_EXTENSION = framework;
 				ZERO_LINK = YES;

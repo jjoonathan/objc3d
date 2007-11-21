@@ -2,7 +2,7 @@
 {
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeArchitecture = i386;
-		activeBuildConfigurationName = "Release_Intel+PPC";
+		activeBuildConfigurationName = Release_OneArch;
 		activeExecutable = FCEA98D70C9E18F800D93A70 /* TestRunner */;
 		activeTarget = FCEA98D50C9E18F800D93A70 /* TestRunner */;
 		addToTargets = (
@@ -13,6 +13,7 @@
 		codeSenseManager = FCC1E8790C1984610041415C /* Code sense */;
 		executables = (
 			FCEA98D70C9E18F800D93A70 /* TestRunner */,
+			FC63DF110CF1C2A200325C54 /* RubyConsole */,
 		);
 		perUserDictionary = {
 			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
@@ -43,7 +44,7 @@
 				PBXFileTableDataSourceColumnWidthsKey = (
 					22,
 					300,
-					130,
+					68,
 				);
 				PBXFileTableDataSourceColumnsKey = (
 					PBXExecutablesDataSource_ActiveFlagID,
@@ -56,7 +57,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Warnings_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					157,
+					180,
 					20,
 					48,
 					43,
@@ -114,7 +115,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					117,
+					140,
 					60,
 					20,
 					48,
@@ -131,8 +132,29 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 214187651;
-			PBXWorkspaceStateSaveDate = 214187651;
+			PBXPerProjectTemplateStateSaveDate = 217043456;
+			PBXWorkspaceStateSaveDate = 217043456;
+		};
+		perUserProjectItems = {
+			FC60525D0CEEA27D0059C883 = FC60525D0CEEA27D0059C883 /* PBXBookmark */;
+			FC6052600CEFADBA0059C883 = FC6052600CEFADBA0059C883 /* PBXTextBookmark */;
+			FC63DEAC0CEFD21000325C54 /* PBXTextBookmark */ = FC63DEAC0CEFD21000325C54 /* PBXTextBookmark */;
+			FC63DEB50CF131E100325C54 /* PBXTextBookmark */ = FC63DEB50CF131E100325C54 /* PBXTextBookmark */;
+			FC63DEB70CF131E100325C54 /* PBXTextBookmark */ = FC63DEB70CF131E100325C54 /* PBXTextBookmark */;
+			FC63DEB80CF131E100325C54 /* PBXTextBookmark */ = FC63DEB80CF131E100325C54 /* PBXTextBookmark */;
+			FC63DEBA0CF131E100325C54 /* PBXTextBookmark */ = FC63DEBA0CF131E100325C54 /* PBXTextBookmark */;
+			FC63DEC30CF14A6000325C54 /* PBXTextBookmark */ = FC63DEC30CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DEC40CF14A6000325C54 /* PBXTextBookmark */ = FC63DEC40CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DEC50CF14A6000325C54 /* PBXTextBookmark */ = FC63DEC50CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DEC60CF14A6000325C54 /* PBXTextBookmark */ = FC63DEC60CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DEC70CF14A6000325C54 /* PBXTextBookmark */ = FC63DEC70CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DEC80CF14A6000325C54 /* PBXTextBookmark */ = FC63DEC80CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DEC90CF14A6000325C54 /* PBXTextBookmark */ = FC63DEC90CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DECA0CF14A6000325C54 /* PBXTextBookmark */ = FC63DECA0CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DECB0CF14A6000325C54 /* PBXTextBookmark */ = FC63DECB0CF14A6000325C54 /* PBXTextBookmark */;
+			FC63DF580CF1C4FC00325C54 /* PBXTextBookmark */ = FC63DF580CF1C4FC00325C54 /* PBXTextBookmark */;
+			FC63DF5A0CF1C4FC00325C54 /* PBXTextBookmark */ = FC63DF5A0CF1C4FC00325C54 /* PBXTextBookmark */;
+			FC63DF740CF1C55200325C54 /* PBXTextBookmark */ = FC63DF740CF1C55200325C54 /* PBXTextBookmark */;
 		};
 		sourceControlManager = FCC1E8780C1984610041415C /* Source Control */;
 		userBuildSettings = {
@@ -248,6 +270,86 @@
 	FC348D620B45DFF5000015FE /* Documentation */ = {
 		activeExec = 0;
 	};
+	FC4EF1670CE88A9F00B14EBF /* O3Struct.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1016, 932}}";
+			sepNavSelRange = "{165, 0}";
+			sepNavVisRange = "{0, 2087}";
+			sepNavWindowFrame = "{{38, 56}, {812, 1060}}";
+		};
+	};
+	FC4EF1680CE88A9F00B14EBF /* O3Struct.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2144, 2644}}";
+			sepNavSelRange = "{1520, 0}";
+			sepNavVisRange = "{857, 668}";
+			sepNavWindowFrame = "{{48, 36}, {812, 1060}}";
+		};
+	};
+	FC5507230CDF5354003EE24B /* O3StructArray.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {998, 900}}";
+			sepNavSelRange = "{171, 0}";
+			sepNavVisRange = "{0, 1243}";
+			sepNavWindowFrame = "{{1058, 150}, {812, 1028}}";
+		};
+	};
+	FC5507240CDF5354003EE24B /* O3StructArray.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {843, 1946}}";
+			sepNavSelRange = "{2670, 0}";
+			sepNavVisRange = "{2372, 602}";
+			sepNavWindowFrame = "{{702, -244}, {812, 1060}}";
+		};
+	};
+	FC5507260CDF539D003EE24B /* O3StructType.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1904, 812}}";
+			sepNavSelRange = "{1135, 13}";
+			sepNavVisRange = "{0, 2019}";
+			sepNavWindowFrame = "{{2648, 231}, {762, 940}}";
+		};
+	};
+	FC55072A0CE01E12003EE24B /* O3VecStructType.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1010, 1484}}";
+			sepNavSelRange = "{6160, 155}";
+			sepNavVisRange = "{1102, 5411}";
+			sepNavWindowFrame = "{{888, 96}, {812, 1060}}";
+		};
+	};
+	FC55072B0CE01E12003EE24B /* O3VecStructType.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {926, 3752}}";
+			sepNavSelRange = "{1766, 86}";
+			sepNavVisRange = "{0, 4220}";
+			sepNavWindowFrame = "{{408, -243}, {812, 1060}}";
+		};
+	};
+	FC55072E0CE17B7D003EE24B /* O3StructType.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {843, 1008}}";
+			sepNavSelRange = "{1207, 0}";
+			sepNavVisRange = "{1117, 278}";
+			sepNavWindowFrame = "{{2593, 258}, {762, 940}}";
+		};
+	};
+	FC5507300CE52EDB003EE24B /* O3VecStruct.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {753, 932}}";
+			sepNavSelRange = "{706, 0}";
+			sepNavVisRange = "{0, 706}";
+			sepNavWindowFrame = "{{991, -114}, {812, 1060}}";
+		};
+	};
+	FC5507310CE52EDC003EE24B /* O3VecStruct.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1136, 1526}}";
+			sepNavSelRange = "{4400, 74}";
+			sepNavVisRange = "{4053, 745}";
+			sepNavWindowFrame = "{{58, 16}, {812, 1060}}";
+		};
+	};
 	FC5B48760C205A4100879D56 /* O3BigObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1536, 645}}";
@@ -296,6 +398,258 @@
 			sepNavWindowFrame = "{{0, 4}, {1280, 774}}";
 		};
 	};
+	FC6052350CEE69580059C883 /* O3ByteStruct.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1406, 812}}";
+			sepNavSelRange = "{198, 0}";
+			sepNavVisRange = "{0, 461}";
+			sepNavWindowFrame = "{{818, -520}, {762, 940}}";
+		};
+	};
+	FC6052360CEE69580059C883 /* O3ByteStruct.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {703, 812}}";
+			sepNavSelRange = "{152, 12}";
+			sepNavVisRange = "{0, 578}";
+			sepNavWindowFrame = "{{29, -409}, {762, 940}}";
+		};
+	};
+	FC60525D0CEEA27D0059C883 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = FC5507230CDF5354003EE24B /* O3StructArray.h */;
+	};
+	FC6052600CEFADBA0059C883 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507230CDF5354003EE24B /* O3StructArray.h */;
+		name = "O3StructArray.h: 11";
+		rLen = 0;
+		rLoc = 172;
+		rType = 0;
+		vrLen = 731;
+		vrLoc = 0;
+	};
+	FC63DEAC0CEFD21000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507230CDF5354003EE24B /* O3StructArray.h */;
+		name = "O3StructArray.h: 21";
+		rLen = 0;
+		rLoc = 295;
+		rType = 0;
+		vrLen = 713;
+		vrLoc = 0;
+	};
+	FC63DEB50CF131E100325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC63DEB60CF131E100325C54 /* glew.c */;
+		name = "glew.c: 80";
+		rLen = 130;
+		rLoc = 3108;
+		rType = 0;
+		vrLen = 381;
+		vrLoc = 2857;
+	};
+	FC63DEB60CF131E100325C54 /* glew.c */ = {
+		isa = PBXFileReference;
+		name = glew.c;
+		path = /Users/jon/Documents/Prog/objc3d/Other/glew/src/glew.c;
+		sourceTree = "<absolute>";
+	};
+	FC63DEB70CF131E100325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "warning: 'O3Struct' may not respond to '-alloc'";
+		fRef = FC5507240CDF5354003EE24B /* O3StructArray.mm */;
+		rLen = 1;
+		rLoc = 85;
+		rType = 1;
+	};
+	FC63DEB80CF131E100325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC63DEB90CF131E100325C54 /* glew.c */;
+		name = "glew.c: 80";
+		rLen = 130;
+		rLoc = 3108;
+		rType = 0;
+		vrLen = 381;
+		vrLoc = 2857;
+	};
+	FC63DEB90CF131E100325C54 /* glew.c */ = {
+		isa = PBXFileReference;
+		name = glew.c;
+		path = /Users/jon/Documents/Prog/objc3d/Other/glew/src/glew.c;
+		sourceTree = "<absolute>";
+	};
+	FC63DEBA0CF131E100325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507240CDF5354003EE24B /* O3StructArray.mm */;
+		name = "O3StructArray.mm: 86";
+		rLen = 0;
+		rLoc = 2670;
+		rType = 0;
+		vrLen = 602;
+		vrLoc = 2372;
+	};
+	FC63DEC30CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC55072B0CE01E12003EE24B /* O3VecStructType.mm */;
+		name = "O3VecStructType.mm: 250";
+		rLen = 0;
+		rLoc = 14193;
+		rType = 0;
+		vrLen = 479;
+		vrLoc = 14171;
+	};
+	FC63DEC40CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507300CE52EDB003EE24B /* O3VecStruct.h */;
+		name = "O3VecStruct.h: 16";
+		rLen = 13;
+		rLoc = 286;
+		rType = 0;
+		vrLen = 212;
+		vrLoc = 165;
+	};
+	FC63DEC50CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "warning: method definition for '-initWithType:' not found";
+		fRef = FC5507310CE52EDC003EE24B /* O3VecStruct.mm */;
+		rLen = 1;
+		rLoc = 109;
+		rType = 1;
+	};
+	FC63DEC60CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507300CE52EDB003EE24B /* O3VecStruct.h */;
+		name = "O3VecStruct.h: 16";
+		rLen = 13;
+		rLoc = 286;
+		rType = 0;
+		vrLen = 212;
+		vrLoc = 165;
+	};
+	FC63DEC70CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC55072B0CE01E12003EE24B /* O3VecStructType.mm */;
+		name = "O3VecStructType.mm: 250";
+		rLen = 0;
+		rLoc = 14193;
+		rType = 0;
+		vrLen = 479;
+		vrLoc = 14171;
+	};
+	FC63DEC80CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507300CE52EDB003EE24B /* O3VecStruct.h */;
+		name = "O3VecStruct.h: 16";
+		rLen = 13;
+		rLoc = 286;
+		rType = 0;
+		vrLen = 212;
+		vrLoc = 165;
+	};
+	FC63DEC90CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507310CE52EDC003EE24B /* O3VecStruct.mm */;
+		name = "O3VecStruct.mm: 62";
+		rLen = 33;
+		rLoc = 3091;
+		rType = 0;
+		vrLen = 697;
+		vrLoc = 2640;
+	};
+	FC63DECA0CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507300CE52EDB003EE24B /* O3VecStruct.h */;
+		name = "O3VecStruct.h: 16";
+		rLen = 13;
+		rLoc = 286;
+		rType = 0;
+		vrLen = 212;
+		vrLoc = 165;
+	};
+	FC63DECB0CF14A6000325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC5507310CE52EDC003EE24B /* O3VecStruct.mm */;
+		name = "O3VecStruct.mm: 97";
+		rLen = 74;
+		rLoc = 4400;
+		rType = 0;
+		vrLen = 745;
+		vrLoc = 4053;
+	};
+	FC63DF0F0CF1C2A200325C54 /* RubyConsole */ = {
+		activeExec = 0;
+		executables = (
+			FC63DF110CF1C2A200325C54 /* RubyConsole */,
+		);
+	};
+	FC63DF110CF1C2A200325C54 /* RubyConsole */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = RubyConsole;
+		sourceDirectories = (
+		);
+	};
+	FC63DF580CF1C4FC00325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC63DF590CF1C4FC00325C54 /* main.m */;
+		rLen = 0;
+		rLoc = 2147483647;
+		rType = 0;
+	};
+	FC63DF590CF1C4FC00325C54 /* main.m */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
+		name = main.m;
+		path = /Developer/Examples/Ruby/RubyCocoa/RubyConsole/main.m;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {753, 877}}";
+			sepNavSelRange = "{290, 0}";
+			sepNavVisRange = "{0, 290}";
+		};
+	};
+	FC63DF5A0CF1C4FC00325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC63DF5B0CF1C4FC00325C54 /* main.m */;
+		name = "main.m: 16";
+		rLen = 0;
+		rLoc = 290;
+		rType = 0;
+		vrLen = 290;
+		vrLoc = 0;
+	};
+	FC63DF5B0CF1C4FC00325C54 /* main.m */ = {
+		isa = PBXFileReference;
+		name = main.m;
+		path = /Developer/Examples/Ruby/RubyCocoa/RubyConsole/main.m;
+		sourceTree = "<absolute>";
+	};
+	FC63DF740CF1C55200325C54 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = FC63DF590CF1C4FC00325C54 /* main.m */;
+		name = "main.m: 16";
+		rLen = 0;
+		rLoc = 290;
+		rType = 0;
+		vrLen = 290;
+		vrLoc = 0;
+	};
 	FC78BB2E0B8B4F8D00F75030 /* O3KVCHelper.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1536, 645}}";
@@ -322,8 +676,9 @@
 	};
 	FC92305A0AB347E9003878EA /* O3Utilities.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1536, 2674}}";
-			sepNavSelRange = "{2933, 8}";
+			sepNavIntBoundsRect = "{{0, 0}, {1522, 2912}}";
+			sepNavSelRange = "{956, 68}";
+			sepNavVisRange = "{0, 1591}";
 			sepNavVisRect = "{{0, 657}, {1536, 577}}";
 			sepNavWindowFrame = "{{253, 72}, {1581, 706}}";
 		};
@@ -442,7 +797,7 @@
 			Tests.octest,
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 1;
+		breakpointsEnabled = 0;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -456,6 +811,11 @@
 				name = DYLD_FRAMEWORK_PATH;
 				value = "./:./ObjC3D.framework/Versions/Current/Frameworks";
 			},
+			{
+				active = YES;
+				name = DYLD_FALLBACK_FRAMEWORK_PATH;
+				value = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+			},
 		);
 		executableSystemSymbolLevel = 0;
 		executableUserSymbolLevel = 0;
@@ -468,8 +828,9 @@
 	};
 	FCEA98DE0C9E1A4200D93A70 /* TestRunner_main.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1771, 464}}";
-			sepNavSelRange = "{852, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {1751, 465}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1153}";
 			sepNavVisRect = "{{0, 0}, {1771, 464}}";
 			sepNavWindowFrame = "{{684, 159}, {1810, 593}}";
 		};

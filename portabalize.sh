@@ -9,6 +9,6 @@ FRAMEWORKS=$CURVERS/Frameworks
 
 /usr/bin/install_name_tool -id "@loader_path/Frameworks/Cg.framework/Cg" $FRAMEWORKS/Cg.framework/Cg
 /usr/bin/install_name_tool -id "@loader_path/Frameworks/Log4Cocoa.framework/Log4Cocoa" $FRAMEWORKS/Log4Cocoa.framework/Log4Cocoa
-/usr/bin/install_name_tool -id "@loader_path/../Frameworks/ObjC3D.framework/ObjC3D" $CURVERS/ObjC3D
+/usr/bin/install_name_tool -id "@loader_path/Frameworks/ObjC3D.framework/ObjC3D" $CURVERS/ObjC3D
 
 /usr/bin/install_name_tool -change "@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Cg.framework/Cg" "@loader_path/Frameworks/Cg.framework/Cg" -change "@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework/Log4Cocoa" "@loader_path/Frameworks/Log4Cocoa.framework/Log4Cocoa" $CURVERS/ObjC3D

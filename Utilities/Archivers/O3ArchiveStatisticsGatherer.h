@@ -5,7 +5,6 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
-#import <map>
 @class O3ArchiveStatistic;
 
 @interface O3ArchiveStatisticsGatherer : NSCoder {

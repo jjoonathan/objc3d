@@ -7,25 +7,13 @@
 //
 #import "O3VecStruct.h"
 
-@implementation O3VecStruct
-/************************************/ #pragma mark KVC /************************************/
-+ (void)initialize {
-	[self setKeys:[NSArray arrayWithObjects:@"r", @"roll", nil] triggerChangeNotificationsForDependentKey:@"x"];
-	[self setKeys:[NSArray arrayWithObjects:@"x", @"roll", nil] triggerChangeNotificationsForDependentKey:@"r"];
-	[self setKeys:[NSArray arrayWithObjects:@"x", @"r", nil] triggerChangeNotificationsForDependentKey:@"roll"];
-	
-	[self setKeys:[NSArray arrayWithObjects:@"g", @"pitch", nil] triggerChangeNotificationsForDependentKey:@"y"];
-	[self setKeys:[NSArray arrayWithObjects:@"y", @"pitch", nil] triggerChangeNotificationsForDependentKey:@"g"];
-	[self setKeys:[NSArray arrayWithObjects:@"y", @"g", nil] triggerChangeNotificationsForDependentKey:@"pitch"];
-	
-	[self setKeys:[NSArray arrayWithObjects:@"b", @"yaw", nil] triggerChangeNotificationsForDependentKey:@"z"];
-	[self setKeys:[NSArray arrayWithObjects:@"z", @"yaw", nil] triggerChangeNotificationsForDependentKey:@"b"];
-	[self setKeys:[NSArray arrayWithObjects:@"z", @"b", nil] triggerChangeNotificationsForDependentKey:@"yaw"];
-	
-	[self setKeys:[NSArray arrayWithObject:@"w"] triggerChangeNotificationsForDependentKey:@"a"];
-	[self setKeys:[NSArray arrayWithObject:@"a"] triggerChangeNotificationsForDependentKey:@"w"];
-}
+/************************************/ #pragma mark Private C Functions /************************************/
+//Private, since structs should be immutable.
+//void O3VecStructSetDoubleValueAtIndex(O3VecStruct* self, UIntP idx, double v);
+//void O3VecStructSetInt64ValueAtIndex(O3VecStruct* self, UIntP idx, Int64 v);
+//void O3VecStructSetUInt64ValueAtIndex(O3VecStruct* self, UIntP idx, UInt64 v);
 
+@implementation O3VecStruct
 /************************************/ #pragma mark C Accessors /************************************/
 double O3VecStructValueAtIndex(O3VecStruct* self, UIntP idx) {
 	enum O3VecStructElementType t;
@@ -70,130 +58,53 @@ void O3VecStructSetUInt64ValueAtIndex(O3VecStruct* self, UIntP idx, UInt64 v) {
 }
 
 /************************************/ #pragma mark Access /************************************/
-- (double)x {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>0, @"Attempt to access element 0 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 0);
+inline double accessIndexP(O3VecStruct* self, UIntP idx) {
+	double mult; UIntP* perms = O3VecStructTypePermsAndMultiplier(self->mType, &mult);
+	idx = perms? perms[idx] : idx;
+	#ifdef O3DEBUG
+	short c; O3VecStructTypeGetType_count_specificType_(self->mType, nil, &c, nil); O3Assert(c>=idx, @"Attempt to access element %i of %i element struct", c);
+	#endif
+	return mult * O3VecStructValueAtIndex(self, idx);
 }
 
-- (double)y {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>1, @"Attempt to access element 1 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 1);
+inline void setAtIndexP(O3VecStruct* self, UIntP idx, double val) {
+	double mult; UIntP* perms = O3VecStructTypePermsAndMultiplier(self->mType, &mult);
+	idx = perms? perms[idx] : idx;
+	#ifdef O3DEBUG
+	short c; O3VecStructTypeGetType_count_specificType_(self->mType, nil, &c, nil); O3Assert(c>=idx, @"Attempt to set element %i of %i element struct", c);
+	#endif
+	O3VecStructSetDoubleValueAtIndex(self, idx, val/mult);
 }
 
-- (double)z {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>2, @"Attempt to access element 2 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 2);
-}
+- (double)x {return accessIndexP(self, 0);}
+- (double)y {return accessIndexP(self, 1);}
+- (double)z {return accessIndexP(self, 2);}
+- (double)w {return accessIndexP(self, 3);}
 
-- (double)w {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>3, @"Attempt to access element 3 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 3);
-}
+- (double)r {return accessIndexP(self, 0);}
+- (double)g {return accessIndexP(self, 1);}
+- (double)b {return accessIndexP(self, 2);}
+- (double)a {return accessIndexP(self, 3);}
 
-- (void)setX:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>0, @"Attempt to access element 0 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 0, v);
-}
-
-- (void)setY:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>1, @"Attempt to access element 1 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 1, v);
-}
-
-- (void)setZ:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>2, @"Attempt to access element 2 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 2, v);	
-}
-
-- (void)setW:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>3, @"Attempt to access element 3 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 3, v);
-}
-
-
-
-
-- (double)r {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>0, @"Attempt to access element 0 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 1);
-}
-
-- (double)g {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>1, @"Attempt to access element 1 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 2);
-}
-
-- (double)b {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>2, @"Attempt to access element 2 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 3);
-}
-
-- (double)a {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>3, @"Attempt to access element 3 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 4);
-}
-
-- (void)setR:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>0, @"Attempt to access element 0 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 0, v);
-}
-
-- (void)setG:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>1, @"Attempt to access element 1 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 1, v);
-}
-
-- (void)setB:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>2, @"Attempt to access element 2 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 2, v);
-}
-
-- (void)setA:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>3, @"Attempt to access element 3 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 3, v);
-}
-
-
-
-
-- (double)roll {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>0, @"Attempt to access element 0 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 1);
-}
-
-- (double)pitch {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>1, @"Attempt to access element 1 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 2);
-}
-
-- (double)yaw {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>2, @"Attempt to access element 2 of %i element struct", c);
-	return O3VecStructValueAtIndex(self, 3);
-}
-
-- (void)setRoll:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>0, @"Attempt to access element 0 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 0, v);
-}
-
-- (void)setPitch:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>1, @"Attempt to access element 1 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 1, v);
-}
-
-- (void)setYaw:(double)v {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>2, @"Attempt to access element 2 of %i element struct", c);
-	O3VecStructSetDoubleValueAtIndex(self, 2, v);
-}
-
-- (void)setValue:(double)v atIndex:(UIntP)idx {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>idx, @"Attempt to access struct element %i outside of bounds %i.", (int)idx, (int)c);
-	O3VecStructSetDoubleValueAtIndex(self, idx, v);
-}
+- (double)roll {return accessIndexP(self, 0);}
+- (double)pitch {return accessIndexP(self, 1);}
+- (double)yaw {return accessIndexP(self, 2);}
 
 - (double)valueAtIndex:(UIntP)idx {
-	short c; O3VecStructTypeGetType_count_specificType_(mType, nil, &c, nil); O3Assert(c>idx, @"Attempt to access struct element %i outside of bounds %i.", (int)idx, (int)c);
-	return O3VecStructValueAtIndex(self, idx);
+	return accessIndexP(self, idx);
+}
+
+- (O3VecStruct*)initWithType:(O3VecStructType*)type values:(double)val,... {
+	if (![super initWithType:type]) return nil;
+	va_list argList;
+	setAtIndexP(self, 0, val);
+	short c; O3VecStructTypeGetType_count_specificType_(self->mType, nil, &c, nil);
+	UIntP i; for(i=1; i<c; i++) {
+		va_start(argList, val);
+		setAtIndexP(self, i, va_arg(argList, double));
+	}
+	va_end(argList);
+	return self;
 }
 
 @end

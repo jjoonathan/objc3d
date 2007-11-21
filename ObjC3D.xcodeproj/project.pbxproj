@@ -11,12 +11,24 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = FC348D650B45E014000015FE /* Build configuration list for PBXAggregateTarget "Documentation" */;
 			buildPhases = (
-				FC348D610B45DFF5000015FE /* ShellScript */,
+				FC348D610B45DFF5000015FE /* Build Documentation */,
 			);
 			dependencies = (
 			);
 			name = Documentation;
 			productName = Documentation;
+		};
+		FC63E2090CF2A5B800325C54 /* Update Bridge */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FC63E2110CF2A5D400325C54 /* Build configuration list for PBXAggregateTarget "Update Bridge" */;
+			buildPhases = (
+				FC63E2080CF2A5B800325C54 /* ShellScript */,
+			);
+			dependencies = (
+				FC63E4220CF3C52400325C54 /* PBXTargetDependency */,
+			);
+			name = "Update Bridge";
+			productName = Bridge;
 		};
 /* End PBXAggregateTarget section */
 
@@ -152,16 +164,37 @@
 		FC3978A20C6F6BAA00F4AEA5 /* O3Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */; };
 		FC3A0EAB0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */; };
 		FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */ = {isa = PBXBuildFile; fileRef = FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */; };
-		FC3E61AB0C9E315600E2F0F8 /* deportabalize.sh in Copy bundle-enabling scripts */ = {isa = PBXBuildFile; fileRef = FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */; };
-		FC3E61AC0C9E315600E2F0F8 /* portabalize.sh in Copy bundle-enabling scripts */ = {isa = PBXBuildFile; fileRef = FC3E61990C9E305F00E2F0F8 /* portabalize.sh */; };
 		FC4055420CAC86B5005908DF /* O3FileResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4055400CAC86B5005908DF /* O3FileResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4055430CAC86B5005908DF /* O3FileResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4055410CAC86B5005908DF /* O3FileResSource.mm */; };
 		FC4605C10CA602E9006F0122 /* O3ResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4605BF0CA602E9006F0122 /* O3ResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4605C20CA602E9006F0122 /* O3ResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4605C00CA602E9006F0122 /* O3ResSource.mm */; };
+		FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507230CDF5354003EE24B /* O3StructArray.h */; };
+		FC4EF1850CEA90B500B14EBF /* O3VecStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072B0CE01E12003EE24B /* O3VecStructType.mm */; };
+		FC4EF1860CEA90B600B14EBF /* O3Struct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4EF1670CE88A9F00B14EBF /* O3Struct.h */; };
+		FC4EF1870CEA90B700B14EBF /* O3StructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507260CDF539D003EE24B /* O3StructType.h */; };
+		FC4EF1880CEA90B800B14EBF /* O3VecStruct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507300CE52EDB003EE24B /* O3VecStruct.h */; };
+		FC4EF1890CEA90B800B14EBF /* O3Struct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4EF1680CE88A9F00B14EBF /* O3Struct.mm */; };
+		FC4EF18A0CEA90B900B14EBF /* O3VecStruct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5507310CE52EDC003EE24B /* O3VecStruct.mm */; };
+		FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5507240CDF5354003EE24B /* O3StructArray.mm */; };
+		FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC55072A0CE01E12003EE24B /* O3VecStructType.h */; };
+		FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072E0CE17B7D003EE24B /* O3StructType.mm */; };
 		FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5B48770C205A4100879D56 /* O3BigObject.mm */; };
+		FC6052490CEE9A490059C883 /* O3ByteStruct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC6052360CEE69580059C883 /* O3ByteStruct.mm */; };
+		FC60524A0CEE9A4A0059C883 /* O3ByteStruct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC6052350CEE69580059C883 /* O3ByteStruct.h */; };
+		FC63DF5D0CF1C51800325C54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */; };
+		FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63DF770CF1C5E800325C54 /* RubyConsole_main.mm */; };
+		FC63DF800CF1C62800325C54 /* ObjC3D.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
+		FC63E1040CF1C65800325C54 /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
+		FC63E1340CF1C7D800325C54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FC63E1350CF1C7D800325C54 /* RubyCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63E1110CF1C6AE00325C54 /* RubyCocoa.framework */; };
+		FC63E1590CF1CA0A00325C54 /* console.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63E1460CF1C8FA00325C54 /* console.rb */; };
+		FC63E1DB0CF276F200325C54 /* MainMenu.nib in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63E15C0CF276BE00325C54 /* MainMenu.nib */; };
+		FC63E2FA0CF3174500325C54 /* Cg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */; };
+		FC63E3060CF317A800325C54 /* Cg.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */; };
+		FC63E3130CF3197100325C54 /* Log4Cocoa.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC7DD60E0C1C8CAB009D36A2 /* Log4Cocoa.framework */; };
+		FC63E35A0CF35D7C00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */; };
+		FC63E3B60CF35D8300325C54 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
-		FC7DD6650C1C8EDB009D36A2 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */; };
-		FC7DD6840C1C8EEE009D36A2 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
 		FCC1E92A0C198A3E0041415C /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
@@ -172,7 +205,6 @@
 		FCEA98DF0C9E1A4200D93A70 /* TestRunner_main.m in Sources */ = {isa = PBXBuildFile; fileRef = FCEA98DE0C9E1A4200D93A70 /* TestRunner_main.m */; };
 		FCEF231F0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCEF231D0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm */; };
 		FCEF23200C6D78BE0022A0D7 /* O3ArchiveStatisticsGatherer.h in Headers */ = {isa = PBXBuildFile; fileRef = FCEF231C0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FCEF4EBC0C17393C00B97983 /* Cg.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */; };
 		FCEF50F90C186FE000B97983 /* O3EncodingInterpretation.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC11C3110B5964410069119E /* O3EncodingInterpretation.mm */; };
 		FCEF50FA0C186FE000B97983 /* O3TestAccelerate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2B5F490BD2823E005324C8 /* O3TestAccelerate.mm */; };
 		FCEF50FB0C186FE000B97983 /* O3TestArchivers.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC953A370BD2AD840070BE52 /* O3TestArchivers.mm */; };
@@ -219,6 +251,20 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = log4cocoa;
 		};
+		FC63DF7A0CF1C61600325C54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FC2C1BB60C123F790084A599 /* ObjC3D.framework */;
+			remoteInfo = ObjC3D.framework;
+		};
+		FC63E4210CF3C52400325C54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FC2C1BB60C123F790084A599 /* ObjC3D.framework */;
+			remoteInfo = ObjC3D.framework;
+		};
 		FC7DD60D0C1C8CAB009D36A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */;
@@ -258,22 +304,32 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FC7DD6840C1C8EEE009D36A2 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */,
-				FCEF4EBC0C17393C00B97983 /* Cg.framework in Embed Log4Cocoa and Cg frameworks */,
+				FC63E35A0CF35D7C00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */,
+				FC63E3060CF317A800325C54 /* Cg.framework in Embed Log4Cocoa and Cg frameworks */,
 			);
 			name = "Embed Log4Cocoa and Cg frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FC3E61A90C9E314700E2F0F8 /* Copy bundle-enabling scripts */ = {
+		FC63E1060CF1C67700325C54 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 1;
+			dstSubfolderSpec = 10;
 			files = (
-				FC3E61AB0C9E315600E2F0F8 /* deportabalize.sh in Copy bundle-enabling scripts */,
-				FC3E61AC0C9E315600E2F0F8 /* portabalize.sh in Copy bundle-enabling scripts */,
+				FC63DF800CF1C62800325C54 /* ObjC3D.framework in Copy Frameworks */,
 			);
-			name = "Copy bundle-enabling scripts";
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC63E1540CF1C9E200325C54 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				FC63E1DB0CF276F200325C54 /* MainMenu.nib in CopyFiles */,
+				FC63E1590CF1CA0A00325C54 /* console.rb in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FCC1E9820C198AA80041415C /* Embed ObjC3D */ = {
@@ -282,6 +338,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FC63E3130CF3197100325C54 /* Log4Cocoa.framework in Embed ObjC3D */,
 				FCC1E9860C198AB50041415C /* ObjC3D.framework in Embed ObjC3D */,
 			);
 			name = "Embed ObjC3D";
@@ -357,9 +414,19 @@
 		FC4AD8340AE9BA3D00812085 /* O3Quaternion.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Quaternion.cpp; sourceTree = "<group>"; };
 		FC4AD8400AE9BAB300812085 /* O3Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Rotation.h; sourceTree = "<group>"; };
 		FC4AD8410AE9BAB300812085 /* O3Rotation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Rotation.cpp; sourceTree = "<group>"; };
+		FC4EF1670CE88A9F00B14EBF /* O3Struct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Struct.h; sourceTree = "<group>"; };
+		FC4EF1680CE88A9F00B14EBF /* O3Struct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Struct.mm; sourceTree = "<group>"; };
 		FC4EF36E0B39F411006F3284 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		FC5265380B7549BC00BAA016 /* O3VectorFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VectorFunctions.h; sourceTree = "<group>"; };
 		FC5267030B757E3900BAA016 /* O3TestSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestSpace.h; sourceTree = "<group>"; };
+		FC5507230CDF5354003EE24B /* O3StructArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3StructArray.h; sourceTree = "<group>"; };
+		FC5507240CDF5354003EE24B /* O3StructArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3StructArray.mm; sourceTree = "<group>"; };
+		FC5507260CDF539D003EE24B /* O3StructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3StructType.h; sourceTree = "<group>"; };
+		FC55072A0CE01E12003EE24B /* O3VecStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VecStructType.h; sourceTree = "<group>"; };
+		FC55072B0CE01E12003EE24B /* O3VecStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3VecStructType.mm; sourceTree = "<group>"; };
+		FC55072E0CE17B7D003EE24B /* O3StructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3StructType.mm; sourceTree = "<group>"; };
+		FC5507300CE52EDB003EE24B /* O3VecStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VecStruct.h; sourceTree = "<group>"; };
+		FC5507310CE52EDC003EE24B /* O3VecStruct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3VecStruct.mm; sourceTree = "<group>"; };
 		FC5B48760C205A4100879D56 /* O3BigObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3BigObject.h; path = ../Utilities/O3BigObject.h; sourceTree = "<group>"; };
 		FC5B48770C205A4100879D56 /* O3BigObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3BigObject.mm; path = ../Utilities/O3BigObject.mm; sourceTree = "<group>"; };
 		FC5BBBB90BD58B7200894533 /* O3TestUtilities.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestUtilities.mm; sourceTree = "<group>"; };
@@ -373,8 +440,18 @@
 		FC5BBD5F0BD6488000894533 /* O3KeyedArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3KeyedArchiver.mm; sourceTree = "<group>"; };
 		FC5BBD620BD6489500894533 /* O3KeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3KeyedUnarchiver.h; sourceTree = "<group>"; };
 		FC5BBD630BD6489500894533 /* O3KeyedUnarchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3KeyedUnarchiver.mm; sourceTree = "<group>"; };
+		FC6052350CEE69580059C883 /* O3ByteStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ByteStruct.h; sourceTree = "<group>"; };
+		FC6052360CEE69580059C883 /* O3ByteStruct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ByteStruct.mm; sourceTree = "<group>"; };
 		FC62DA090BC879440053C30F /* ibeam.verts */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibeam.verts; sourceTree = "<group>"; };
 		FC62DE820BCBB9510053C30F /* red_terr.cgfx */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = red_terr.cgfx; sourceTree = "<group>"; };
+		FC63DF100CF1C2A200325C54 /* RubyConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RubyConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC63DF120CF1C2A200325C54 /* RubyConsole-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RubyConsole-Info.plist"; sourceTree = "<group>"; };
+		FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
+		FC63DF770CF1C5E800325C54 /* RubyConsole_main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RubyConsole_main.mm; sourceTree = "<group>"; };
+		FC63E1110CF1C6AE00325C54 /* RubyCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RubyCocoa.framework; path = /System/Library/Frameworks/RubyCocoa.framework; sourceTree = "<absolute>"; };
+		FC63E1460CF1C8FA00325C54 /* console.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = console.rb; sourceTree = "<group>"; };
+		FC63E15D0CF276BE00325C54 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log4Cocoa.framework; path = build/Support/Log4Cocoa.framework; sourceTree = SOURCE_ROOT; };
 		FC66909B0B63F5B200C87AF9 /* O3RawVertexDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RawVertexDataSource.mm; sourceTree = "<group>"; };
 		FC66909C0B63F5B200C87AF9 /* O3RawVertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3RawVertexDataSource.h; sourceTree = "<group>"; };
 		FC6690A20B63F5EE00C87AF9 /* O3VertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexDataSource.h; sourceTree = "<group>"; };
@@ -396,7 +473,6 @@
 		FC7C93C60B0A087F001DD0A0 /* O3RGB565.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3RGB565.h; sourceTree = "<group>"; };
 		FC7DD1E00C1B311A009D36A2 /* O3NonlinearWriter.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3NonlinearWriter.mm; sourceTree = "<group>"; };
 		FC7DD1E10C1B311B009D36A2 /* O3NonlinearWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3NonlinearWriter.h; sourceTree = "<group>"; };
-		FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log4Cocoa.framework; path = build/Support/Log4Cocoa.framework; sourceTree = SOURCE_ROOT; };
 		FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ObjCEncoding.h; sourceTree = "<group>"; };
 		FC8FF9A00B6D3ABE006D2ECF /* test_srec.cgfx */ = {isa = PBXFileReference; fileEncoding = 4; languageSpecificationIdentifier = c.cpp; lastKnownFileType = text; path = test_srec.cgfx; sourceTree = "<group>"; };
 		FC922FA00AB30F74003878EA /* O3Vector.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; path = O3Vector.hpp; sourceTree = "<group>"; };
@@ -492,7 +568,6 @@
 		FCF438500C217FE500263F34 /* O3BigObjSubclass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3BigObjSubclass.mm; sourceTree = "<group>"; };
 		FCFB0E770BB4480E00994ADB /* O3TestValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestValue.h; sourceTree = "<group>"; };
 		FCFB0E780BB4480E00994ADB /* O3TestValue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestValue.mm; sourceTree = "<group>"; };
-		FCFB0E900BB44B3200994ADB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		FCFB70B50B72DB0B00BB2243 /* O3Space.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Space.h; sourceTree = "<group>"; };
 		FCFB70B60B72DB0B00BB2243 /* O3Space.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Space.cpp; sourceTree = "<group>"; };
 		FCFB70E50B74DD2C00BB2243 /* O3TestMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3TestMatrix.h; path = Math/O3TestMatrix.h; sourceTree = "<group>"; };
@@ -506,6 +581,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC63E3B60CF35D8300325C54 /* Log4Cocoa.framework in Frameworks */,
+				FC63E2FA0CF3174500325C54 /* Cg.framework in Frameworks */,
 				FC2C1D430C125FDB0084A599 /* libglew.a in Frameworks */,
 				FC2C1D450C125FDB0084A599 /* AGL.framework in Frameworks */,
 				FC2C1D460C125FDB0084A599 /* Cocoa.framework in Frameworks */,
@@ -514,10 +591,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FC63DF0E0CF1C2A200325C54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC63E1340CF1C7D800325C54 /* Cocoa.framework in Frameworks */,
+				FC63E1350CF1C7D800325C54 /* RubyCocoa.framework in Frameworks */,
+				FC63E1040CF1C65800325C54 /* ObjC3D.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FCEA98D40C9E18F800D93A70 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC63DF5D0CF1C51800325C54 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,7 +614,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCC1E92A0C198A3E0041415C /* ObjC3D.framework in Frameworks */,
-				FC7DD6650C1C8EDB009D36A2 /* Log4Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +641,7 @@
 				FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */,
 				FCEF50D70C17C1C900B97983 /* Tests.octest */,
 				FCEA98D60C9E18F800D93A70 /* TestRunner.app */,
+				FC63DF100CF1C2A200325C54 /* RubyConsole.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -575,6 +663,7 @@
 				FC2C1BB80C123F7A0084A599 /* ObjC3D.framework-Info.plist */,
 				FCEF50D80C17C1C900B97983 /* Tests-Info.plist */,
 				FCEA98D80C9E18FA00D93A70 /* TestRunner-Info.plist */,
+				FC63DF120CF1C2A200325C54 /* RubyConsole-Info.plist */,
 			);
 			name = ObjC3D;
 			sourceTree = "<group>";
@@ -582,8 +671,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FC63E1460CF1C8FA00325C54 /* console.rb */,
 				FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */,
 				FC3E61990C9E305F00E2F0F8 /* portabalize.sh */,
+				FC63E15C0CF276BE00325C54 /* MainMenu.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -663,6 +754,7 @@
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				FCB016F90B4F403000FBFAC2 /* O3Accelerate.h */,
 				FCEA98DE0C9E1A4200D93A70 /* TestRunner_main.m */,
+				FC63DF770CF1C5E800325C54 /* RubyConsole_main.mm */,
 			);
 			name = ObjC3D;
 			sourceTree = "<group>";
@@ -681,6 +773,7 @@
 		FC11C3080B5963C20069119E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				FC5507290CE01DED003EE24B /* Structs */,
 				FCB810D40CA5F92C00DC8387 /* ResManager */,
 				FC2B5F080BD26C6D005324C8 /* Archivers */,
 				FCB055E60BC3D22D00F4B778 /* O3Protocols.h */,
@@ -793,7 +886,8 @@
 		FC3AA9490B3728110033122E /* Apple */ = {
 			isa = PBXGroup;
 			children = (
-				FCFB0E900BB44B3200994ADB /* SenTestingKit.framework */,
+				FC63E1110CF1C6AE00325C54 /* RubyCocoa.framework */,
+				FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */,
 				FC3AABD70B372A710033122E /* Carbon.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
@@ -903,6 +997,25 @@
 			path = Media;
 			sourceTree = "<group>";
 		};
+		FC5507290CE01DED003EE24B /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				FC5507260CDF539D003EE24B /* O3StructType.h */,
+				FC55072E0CE17B7D003EE24B /* O3StructType.mm */,
+				FC55072A0CE01E12003EE24B /* O3VecStructType.h */,
+				FC55072B0CE01E12003EE24B /* O3VecStructType.mm */,
+				FC5507230CDF5354003EE24B /* O3StructArray.h */,
+				FC5507240CDF5354003EE24B /* O3StructArray.mm */,
+				FC4EF1670CE88A9F00B14EBF /* O3Struct.h */,
+				FC4EF1680CE88A9F00B14EBF /* O3Struct.mm */,
+				FC6052350CEE69580059C883 /* O3ByteStruct.h */,
+				FC6052360CEE69580059C883 /* O3ByteStruct.mm */,
+				FC5507300CE52EDB003EE24B /* O3VecStruct.h */,
+				FC5507310CE52EDC003EE24B /* O3VecStruct.mm */,
+			);
+			name = Structs;
+			sourceTree = "<group>";
+		};
 		FC6690A80B63F60800C87AF9 /* Raw Vertex Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1004,7 +1117,7 @@
 		FCB0166B0B4EAE8900FBFAC2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				FC7DD6640C1C8EDB009D36A2 /* Log4Cocoa.framework */,
+				FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */,
 				FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */,
 			);
 			name = Other;
@@ -1199,6 +1312,12 @@
 				FC4605C10CA602E9006F0122 /* O3ResSource.h in Headers */,
 				FCCF22640CA6D98400B0A16B /* O3DirectoryResSource.h in Headers */,
 				FC4055420CAC86B5005908DF /* O3FileResSource.h in Headers */,
+				FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */,
+				FC4EF1860CEA90B600B14EBF /* O3Struct.h in Headers */,
+				FC4EF1870CEA90B700B14EBF /* O3StructType.h in Headers */,
+				FC4EF1880CEA90B800B14EBF /* O3VecStruct.h in Headers */,
+				FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */,
+				FC60524A0CEE9A4A0059C883 /* O3ByteStruct.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1209,13 +1328,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC2C1BB90C123F7A0084A599 /* Build configuration list for PBXNativeTarget "ObjC3D.framework" */;
 			buildPhases = (
+				FC63E32B0CF35BE900325C54 /* Make Cg Imbedable */,
 				FC2C1E950C12F3CD0084A599 /* Embed Log4Cocoa and Cg frameworks */,
-				FCE2193F0CA0CA0200CD6D43 /* Un-bundle-enable frameworks */,
 				FC2C1BB40C123F790084A599 /* Sources */,
 				FC2C1BB20C123F790084A599 /* Headers */,
 				FC2C1BB30C123F790084A599 /* Resources */,
 				FC2C1BB50C123F790084A599 /* Frameworks */,
-				FC3E61A90C9E314700E2F0F8 /* Copy bundle-enabling scripts */,
 				FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */,
 			);
 			buildRules = (
@@ -1228,6 +1346,25 @@
 			productName = ObjC3D.framework;
 			productReference = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		FC63DF0F0CF1C2A200325C54 /* RubyConsole */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC63DF170CF1C2A200325C54 /* Build configuration list for PBXNativeTarget "RubyConsole" */;
+			buildPhases = (
+				FC63E1060CF1C67700325C54 /* Copy Frameworks */,
+				FC63DF0D0CF1C2A200325C54 /* Sources */,
+				FC63DF0E0CF1C2A200325C54 /* Frameworks */,
+				FC63E1540CF1C9E200325C54 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FC63DF7B0CF1C61600325C54 /* PBXTargetDependency */,
+			);
+			name = RubyConsole;
+			productName = RubyConsole;
+			productReference = FC63DF100CF1C2A200325C54 /* RubyConsole.app */;
+			productType = "com.apple.product-type.application";
 		};
 		FCEA98D50C9E18F800D93A70 /* TestRunner */ = {
 			isa = PBXNativeTarget;
@@ -1253,8 +1390,6 @@
 			buildConfigurationList = FCEF50D90C17C1CA00B97983 /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
 				FCC1E9820C198AA80041415C /* Embed ObjC3D */,
-				FC0A5CDE0CA202FA0011EDD1 /* Bundle-enable ObjC3D */,
-				FC7DD70F0C1CA483009D36A2 /* ShellScript */,
 				FCEF50D20C17C1C900B97983 /* Resources */,
 				FCEF50D30C17C1C900B97983 /* Sources */,
 				FCEF50D40C17C1C900B97983 /* Frameworks */,
@@ -1298,7 +1433,9 @@
 				FCEF50D60C17C1C900B97983 /* Tests */,
 				FC2C1BB60C123F790084A599 /* ObjC3D.framework */,
 				FC348D620B45DFF5000015FE /* Documentation */,
+				FC63E2090CF2A5B800325C54 /* Update Bridge */,
 				FCEA98D50C9E18F800D93A70 /* TestRunner */,
+				FC63DF0F0CF1C2A200325C54 /* RubyConsole */,
 			);
 		};
 /* End PBXProject section */
@@ -1354,34 +1491,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		FC0A5CDE0CA202FA0011EDD1 /* Bundle-enable ObjC3D */ = {
+		FC348D610B45DFF5000015FE /* Build Documentation */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Bundle-enable ObjC3D";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "SCRIPT=$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/ObjC3D.framework/portabalize.sh\nchmod +x $SCRIPT\n$SCRIPT";
-		};
-		FC348D610B45DFF5000015FE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
+			name = "Build Documentation";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd Documentation\n/Applications/Doxygen.app/Contents/Resources/doxygen Doxygen_Config\nexit 0";
 		};
-		FC7DD70F0C1CA483009D36A2 /* ShellScript */ = {
+		FC63E2080CF2A5B800325C54 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1391,22 +1515,22 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "/bin/mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"";
+			shellPath = /bin/sh;
+			shellScript = "rm -f $PROJECT_DIR/build/Cg.framework\nln -s $PROJECT_DIR/Other/Cg.framework $PROJECT_DIR/build/Cg.framework\n\ngen_bridge_metadata -f $PROJECT_DIR/build/ObjC3D.framework -o $PROJECT_DIR/BridgeSupport/ObjC3D.bridgesupport";
 		};
-		FCE2193F0CA0CA0200CD6D43 /* Un-bundle-enable frameworks */ = {
+		FC63E32B0CF35BE900325C54 /* Make Cg Imbedable */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Un-bundle-enable frameworks";
+			name = "Make Cg Imbedable";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "#This un-changes the install paths so they are executable-relative.\n#This will make the framework compiler happy again at the cost of making it not runtime happy.\n\nFRAMEWORKS=$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\nOBJC3D_EXEC=$CONFIGURATION_BUILD_DIR/$EXECUTABLE_PATH\n\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Cg.framework/Cg\" $FRAMEWORKS/Cg.framework/Cg\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Log4Cocoa.framework/Log4Cocoa\" $FRAMEWORKS/Log4Cocoa.framework/Log4Cocoa\n\nif [ -f $OBJC3D_EXEC ] ; then\n/usr/bin/install_name_tool -id \"@loader_path/../Frameworks/ObjC3D.framework/ObjC3D\" $OBJC3D_EXEC\n/usr/bin/install_name_tool -change \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Cg.framework/Cg\" \"@loader_path/Frameworks/Cg.framework/Cg\" -change \"@executable_path/../Frameworks/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework/Log4Cocoa\" \"@loader_path/Frameworks/Log4Cocoa.framework/Log4Cocoa\"  $OBJC3D_EXEC\nfi\n\n";
+			shellPath = /bin/sh;
+			shellScript = "CGF=$PROJECT_DIR/Other/Cg.framework\nAALINK=$CGF/Versions/AA\nrm -f $AALINK\nln -s $CGF/Versions/Current $AALINK\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Cg.framework/Versions/AA/Cg\" $CGF/Versions/AA/Cg\n";
 		};
 		FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1478,6 +1602,20 @@
 				FC4605C20CA602E9006F0122 /* O3ResSource.mm in Sources */,
 				FCCF22650CA6D98500B0A16B /* O3DirectoryResSource.mm in Sources */,
 				FC4055430CAC86B5005908DF /* O3FileResSource.mm in Sources */,
+				FC4EF1850CEA90B500B14EBF /* O3VecStructType.mm in Sources */,
+				FC4EF1890CEA90B800B14EBF /* O3Struct.mm in Sources */,
+				FC4EF18A0CEA90B900B14EBF /* O3VecStruct.mm in Sources */,
+				FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */,
+				FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */,
+				FC6052490CEE9A490059C883 /* O3ByteStruct.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC63DF0D0CF1C2A200325C54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1521,6 +1659,16 @@
 			name = log4cocoa;
 			targetProxy = FC2C204D0C12FFD40084A599 /* PBXContainerItemProxy */;
 		};
+		FC63DF7B0CF1C61600325C54 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FC2C1BB60C123F790084A599 /* ObjC3D.framework */;
+			targetProxy = FC63DF7A0CF1C61600325C54 /* PBXContainerItemProxy */;
+		};
+		FC63E4220CF3C52400325C54 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FC2C1BB60C123F790084A599 /* ObjC3D.framework */;
+			targetProxy = FC63E4210CF3C52400325C54 /* PBXContainerItemProxy */;
+		};
 		FCEA98FD0C9E1D3C00D93A70 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FCEF50D60C17C1C900B97983 /* Tests */;
@@ -1540,6 +1688,14 @@
 				089C165DFE840E0CC02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FC63E15C0CF276BE00325C54 /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FC63E15D0CF276BE00325C54 /* English */,
+			);
+			name = MainMenu.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1617,8 +1773,15 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/Other\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/Other\"";
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1629,18 +1792,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-					"-framework",
-					Log4Cocoa,
-					"-framework",
-					Cg,
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				ZERO_LINK = NO;
@@ -1652,8 +1805,15 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/Other\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/Other\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
@@ -1661,18 +1821,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-					"-framework",
-					Log4Cocoa,
-					"-framework",
-					Cg,
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				ZERO_LINK = NO;
@@ -1686,8 +1836,15 @@
 				DEAD_CODE_STRIPPING = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/Other\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/Other\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -1696,18 +1853,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-					"-framework",
-					Log4Cocoa,
-					"-framework",
-					Cg,
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				ZERO_LINK = NO;
@@ -1719,8 +1866,15 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/Other\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(CONFIGURATION_BUILD_DIR)/ObjC3D.framework/Versions/Current/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/Other\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
@@ -1728,18 +1882,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-					"-framework",
-					Log4Cocoa,
-					"-framework",
-					Cg,
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				ZERO_LINK = YES;
@@ -1821,6 +1965,118 @@
 			};
 			name = Release;
 		};
+		FC63DF130CF1C2A200325C54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "RubyConsole-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = RubyConsole;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		FC63DF140CF1C2A200325C54 /* Debug_Optimized */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "RubyConsole-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = RubyConsole;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug_Optimized;
+		};
+		FC63DF150CF1C2A200325C54 /* Release_OneArch */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "RubyConsole-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = RubyConsole;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Release_OneArch;
+		};
+		FC63DF160CF1C2A200325C54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "RubyConsole-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = RubyConsole;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		FC63E20A0CF2A5B800325C54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Bridge;
+			};
+			name = Debug;
+		};
+		FC63E20B0CF2A5B800325C54 /* Debug_Optimized */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Bridge;
+			};
+			name = Debug_Optimized;
+		};
+		FC63E20C0CF2A5B800325C54 /* Release_OneArch */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Bridge;
+			};
+			name = Release_OneArch;
+		};
+		FC63E20D0CF2A5B800325C54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Bridge;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		FCDAAED40AD07FD90074B780 /* Debug_Optimized */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1863,8 +2119,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1895,8 +2155,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1927,8 +2191,10 @@
 					/System/Library/Frameworks,
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
@@ -1957,8 +2223,12 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(DEVELOPER_FRAMEWORKS_DIR)\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2181,6 +2451,28 @@
 				FC348D670B45E014000015FE /* Debug_Optimized */,
 				FC348D680B45E014000015FE /* Release_OneArch */,
 				FC348D690B45E014000015FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC63DF170CF1C2A200325C54 /* Build configuration list for PBXNativeTarget "RubyConsole" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC63DF130CF1C2A200325C54 /* Debug */,
+				FC63DF140CF1C2A200325C54 /* Debug_Optimized */,
+				FC63DF150CF1C2A200325C54 /* Release_OneArch */,
+				FC63DF160CF1C2A200325C54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC63E2110CF2A5D400325C54 /* Build configuration list for PBXAggregateTarget "Update Bridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC63E20A0CF2A5B800325C54 /* Debug */,
+				FC63E20B0CF2A5B800325C54 /* Debug_Optimized */,
+				FC63E20C0CF2A5B800325C54 /* Release_OneArch */,
+				FC63E20D0CF2A5B800325C54 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
