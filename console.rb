@@ -3,6 +3,7 @@
 #  
 # Find more information about this file online at:
 #    http://www.rubycocoa.com/mastering-cocoa-with-ruby
+# Modified with permission
 
 require 'irb'
 require 'osx/cocoa'

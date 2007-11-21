@@ -6,11 +6,11 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #include "O3Light.h"
+#include <vector>
 
 @implementation O3Light
 
-static std::vector<O3Light*>* gBoundLights;
-static int gMaxLights;
+static std::vector<UIntP>* gFreeLights; ///<Free light indexes. NOT thread safe
 
 /******************************************************************************************/
 #pragma mark Initializers
@@ -19,7 +19,7 @@ static int gMaxLights;
 	[self setKeys:[NSArray arrayWithObjects:@"effectiveRadius",nil] triggerChangeNotificationsForDependentKey:@"cutoff"];
 }
 
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor {
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor {
 	[self initWithLocation:aLocation 
 				   ambient:ambientColor
 				   diffuse:diffuseColor
@@ -29,7 +29,7 @@ static int gMaxLights;
 	return self;
 }
 
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation {
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation {
 	[self initWithLocation:aLocation 
 				   ambient:ambientColor
 				   diffuse:diffuseColor
@@ -39,11 +39,11 @@ static int gMaxLights;
 	return self;
 }
 
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff {
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff {
 	mLocation = new O3Point3(aLocation);
-	mAmbient = new Color(ambientColor);
-	mDiffuse = new Color(diffuseColor);
-	mSpecular = new Color(specularColor);
+	[self setAmbient:ambientColor];
+	[self setDiffuse:diffuseColor];
+	[self setSpecular:specularColor];
 	mAttenuation = new QuadraticEquationR(reciprocalAttenuation);
 	mEffectiveRadius = mAttenuation->GetHighXIntercept(cutoff);
 	[self attach];
@@ -60,23 +60,21 @@ static int gMaxLights;
 	if (!mContext) [NSException raise:O3BadContextException format:@"There was no suitable OpenGL mContext for light %@ to attach to.", self];
 
 	int bindIndex = -1;
-	if (!gBoundLights) {
-		gBoundLights = new std::vector<O3Light*>();
+	if (!gFreeLights) {
+		gFreeLights = new std::vector<UIntP>();
 		GLint tmpMaxLights;
 		glGetIntegerv(GL_MAX_LIGHTS, &tmpMaxLights);
-		gMaxLights = tmpMaxLights;
+		UIntP i; for(i=0; i<tmpMaxLights; i++) gFreeLights->push_back(i);
 		glEnable(GL_LIGHTING);
-		bindIndex = 0;
-	} else {
-		int i;
-		bindIndex = 0;
-		int j = gBoundLights->size();
-		for (i=0;i<j;i++) if (((gBoundLights->at(i))->mIndex)==bindIndex) bindIndex++;
 	}
-	if (mIndex>=gMaxLights) [NSException raise:O3EXCEPTION_LIGHT_OVERFLOW format:@"Attempt to attach more lights to the scene than this opengl implementation allows (%i max).", gMaxLights];
+	if (!gFreeLights->size()) {
+		GLint tmpMaxLights;
+		glGetIntegerv(GL_MAX_LIGHTS, &tmpMaxLights);
+		[NSException raise:O3EXCEPTION_LIGHT_UNDERFLOW format:@"Attempt to attach more lights to the scene than this opengl implementation allows (%i max).", tmpMaxLights];
+	}
+	O3Assert(gFreeLights.size(), @"Light stack underflow (too many lights active at once)");
+	bindIndex = gFreeLights->back(); gFreeLights->pop_back();
 	mIndex = bindIndex;
-	gBoundLights->push_back(self);
-	sort(gBoundLights->begin(), gBoundLights->end());
 	glEnable(GL_LIGHT0+mIndex);
 	[self set];
 }
@@ -86,8 +84,7 @@ static int gMaxLights;
 	O3AssertInContext(mContext);
 	
 	glDisable(GL_LIGHT0+mIndex);
-	std::vector<O3Light*>::iterator it = gBoundLights->begin();
-	for (;(gBoundLights->end())!=it;it++) if ((*it)==self) {gBoundLights->erase(it); break;}
+	gFreeLights->push_back(mIndex);
 	mIndex = -1;
 }
 
@@ -97,9 +94,9 @@ static int gMaxLights;
 	
 	GLenum light = GL_LIGHT0 + mIndex;
 	GLfloat wPosition[] = {mLocation->GetX(), mLocation->GetY(), mLocation->GetZ(), 1.};
-	glLightfv(light, GL_AMBIENT, *mAmbient);
-	glLightfv(light, GL_DIFFUSE, *mDiffuse);
-	glLightfv(light, GL_SPECULAR, *mSpecular);
+	glLightfv(light, GL_AMBIENT, mColors+0);
+	glLightfv(light, GL_DIFFUSE, mColors+4);
+	glLightfv(light, GL_SPECULAR, mColors+8);
 	glLightfv(light, GL_POSITION, wPosition);
 	glLightf(light, GL_CONSTANT_ATTENUATION, mAttenuation->GetC());
 	glLightf(light, GL_LINEAR_ATTENUATION, mAttenuation->GetB());
@@ -138,25 +135,25 @@ static int gMaxLights;
 	glLightfv(light, GL_POSITION, wPosition);
 }
 
-- (void)setAmbient:(const Color*)newAmbient {
-	*mAmbient= *newAmbient;
+- (void)setAmbient:(NSColor*)newAmbient {
+	[newAmbient getRed:mColors green:mColors+1 blue:mColors+2 alpha:mColors+3];
 	if (mIndex==-1) return;
 	int light = GL_LIGHT0+mIndex;
-	glLightfv(light, GL_AMBIENT, *mAmbient);
+	glLightfv(light, GL_AMBIENT, mColors+0);
 }
 
-- (void)setDiffuse:(const Color*)newDiffuse {
-	*mDiffuse= *newDiffuse;
+- (void)setDiffuse:(NSColor*)newDiffuse {
+	[newDiffuse getRed:mColors+4 green:mColors+5 blue:mColors+6 alpha:mColors+7];
 	if (mIndex==-1) return;
 	int light = GL_LIGHT0+mIndex;
-	glLightfv(light, GL_DIFFUSE, *mDiffuse);
+	glLightfv(light, GL_DIFFUSE, mColors+4);
 }
 
-- (void)setSpecular:(const Color*)newSpecular {
-	*mSpecular= *newSpecular;
+- (void)setSpecular:(NSColor*)newSpecular {
+	[newSpecular getRed:mColors+8 green:mColors+9 blue:mColors+10 alpha:mColors+11];
 	if (mIndex==-1) return;
 	int light = GL_LIGHT0+mIndex;
-	glLightfv(light, GL_SPECULAR, *mSpecular);
+	glLightfv(light, GL_SPECULAR, mColors+8);
 }
 
 - (void)setAttenuation:(const QuadraticEquationR*)newAttenuation {
@@ -197,16 +194,16 @@ static int gMaxLights;
 	return mLocation;
 }
 
-- (const Color*)ambient {
-	return mAmbient;
+- (NSColor*)ambient {
+	return [NSColor colorWithCalibratedRed:mColors[0] green:mColors[1] blue:mColors[2] alpha:mColors[3]];
 }
 
-- (const Color*)diffuse {
-	return mDiffuse;
+- (NSColor*)diffuse {
+	return [NSColor colorWithCalibratedRed:mColors[4] green:mColors[5] blue:mColors[6] alpha:mColors[7]];
 }
 
-- (const Color*)specular {
-	return mSpecular;
+- (NSColor*)specular {
+	return [NSColor colorWithCalibratedRed:mColors[8] green:mColors[9] blue:mColors[10] alpha:mColors[11]];
 }
 
 - (double)cutoff {
@@ -222,10 +219,6 @@ static int gMaxLights;
 #pragma mark Deallocation
 /******************************************************************************************/
 - (void)dealloc {
-	delete mLocation;		/*mLocation = NULL;*/
-	delete mAmbient;		/*mAmbient = NULL;*/
-	delete mSpecular;		/*mSpecular = NULL;*/
-	delete mAttenuation;	/*mAttenuation = NULL;*/
 	if (mIndex!=-1) [self detach];
 	[super dealloc];
 }

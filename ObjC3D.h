@@ -13,4 +13,3 @@
 
 #include "O3Global.h"
 #include "O3Math.h"
-#include "O3Color.h"

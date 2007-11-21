@@ -10,7 +10,7 @@
 
 @implementation O3SpotLight
 
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)theExponent {
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)theExponent {
 	[self initWithLocation:(O3Point3)aLocation 
 				   ambient:ambientColor
 				   diffuse:diffuseColor
@@ -23,7 +23,7 @@
 	return self;
 }
 
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)theExponent {
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)theExponent {
 	[self initWithLocation:(O3Point3)aLocation 
 				   ambient:ambientColor
 				   diffuse:diffuseColor
@@ -36,7 +36,7 @@
 	return self;
 }
 
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff  direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)theExponent {
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff  direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)theExponent {
 	direction = new O3Vec3r(aDirection);
 	spreadAngle = spread;
 	exponent = theExponent;
@@ -53,9 +53,9 @@
 	if (mIndex==-1) return;
 	GLenum light = GL_LIGHT0 + mIndex;
 	GLfloat wPosition[] = {mLocation->GetX(), mLocation->GetY(), mLocation->GetZ(), 1.};
-	glLightfv(light, GL_AMBIENT, *mAmbient);
-	glLightfv(light, GL_DIFFUSE, *mDiffuse);
-	glLightfv(light, GL_SPECULAR, *mSpecular);
+	glLightfv(light, GL_AMBIENT, mColors);
+	glLightfv(light, GL_DIFFUSE, mColors+4);
+	glLightfv(light, GL_SPECULAR, mColors+8);
 	glLightfv(light, GL_POSITION, wPosition);
 	glLightf(light, GL_CONSTANT_ATTENUATION, mAttenuation->GetC());
 	glLightf(light, GL_LINEAR_ATTENUATION, mAttenuation->GetB());

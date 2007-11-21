@@ -11,8 +11,8 @@
 @interface O3DirectionalLight : O3Light {
 }
 //Initializers
-- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor;
-- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation;
-- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff;
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor;
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation;
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff;
 
 @end

@@ -67,7 +67,6 @@
 		FC2C1C230C125F3C0084A599 /* O3Texture.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847B60BDFAB3E00A8FD75 /* O3Texture.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C240C125F3C0084A599 /* O3SpotLight.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2D261F0B167F23000C2073 /* O3SpotLight.mm */; };
 		FC2C1C250C125F3D0084A599 /* O3SpotLight.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2D261E0B167F23000C2073 /* O3SpotLight.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C260C125F3D0084A599 /* O3RGB565.h in Headers */ = {isa = PBXBuildFile; fileRef = FC7C93C60B0A087F001DD0A0 /* O3RGB565.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C270C125F3E0084A599 /* O3Renderbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC02C30B0B3AE719000DC47C /* O3Renderbuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C280C125F3E0084A599 /* O3RenderBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC02C30C0B3AE719000DC47C /* O3RenderBuffer.mm */; };
 		FC2C1C290C125F3F0084A599 /* O3Renderable.h in Headers */ = {isa = PBXBuildFile; fileRef = FC11C4A60B5A9C410069119E /* O3Renderable.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,7 +88,6 @@
 		FC2C1C390C125F4B0084A599 /* O3DirectionalLight.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2D262C0B168029000C2073 /* O3DirectionalLight.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C3A0C125F4B0084A599 /* O3CubeMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847B50BDFAB3E00A8FD75 /* O3CubeMap.mm */; };
 		FC2C1C3B0C125F4C0084A599 /* O3CubeMap.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847B40BDFAB3E00A8FD75 /* O3CubeMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C3C0C125F4D0084A599 /* O3Color.h in Headers */ = {isa = PBXBuildFile; fileRef = FC7C93780B08F3FE001DD0A0 /* O3Color.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C3D0C125F500084A599 /* O3CGTechnique.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847AE0BDFAB3E00A8FD75 /* O3CGTechnique.mm */; };
 		FC2C1C3E0C125F500084A599 /* O3CGTechnique.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847AD0BDFAB3E00A8FD75 /* O3CGTechnique.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C3F0C125F510084A599 /* O3CGProgram.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847AC0BDFAB3E00A8FD75 /* O3CGProgram.mm */; };
@@ -105,8 +103,6 @@
 		FC2C1C490C125F570084A599 /* O3CGAutoSetParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847A20BDFAB3E00A8FD75 /* O3CGAutoSetParameters.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C4A0C125F580084A599 /* O3CGAnnotation.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847A10BDFAB3E00A8FD75 /* O3CGAnnotation.mm */; };
 		FC2C1C4B0C125F590084A599 /* O3CGAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847A00BDFAB3E00A8FD75 /* O3CGAnnotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C4C0C125F590084A599 /* O3BGRA8.h in Headers */ = {isa = PBXBuildFile; fileRef = FC7C93A30B08FB99001DD0A0 /* O3BGRA8.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C4D0C125F5A0084A599 /* O3BGRA16.h in Headers */ = {isa = PBXBuildFile; fileRef = FC7C93C50B0A0818001DD0A0 /* O3BGRA16.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C4E0C125F5A0084A599 /* NSValueO3CGShaderAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE8479F0BDFAB3E00A8FD75 /* NSValueO3CGShaderAdditions.mm */; };
 		FC2C1C4F0C125F5B0084A599 /* NSValueO3CGShaderAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE8479E0BDFAB3E00A8FD75 /* NSValueO3CGShaderAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C500C125F5C0084A599 /* NSImageAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847B30BDFAB3E00A8FD75 /* NSImageAdditions.mm */; };
@@ -467,10 +463,6 @@
 		FC79C1D80B129C5500834C4D /* O3QuadraticEquation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3QuadraticEquation.h; sourceTree = "<group>"; };
 		FC79C1E00B129D2700834C4D /* O3QuadraticEquation.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; path = O3QuadraticEquation.hpp; sourceTree = "<group>"; };
 		FC79C1E80B12A15000834C4D /* O3TestQuadraticEquation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3TestQuadraticEquation.h; path = Math/O3TestQuadraticEquation.h; sourceTree = "<group>"; };
-		FC7C93780B08F3FE001DD0A0 /* O3Color.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3Color.h; sourceTree = "<group>"; };
-		FC7C93A30B08FB99001DD0A0 /* O3BGRA8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3BGRA8.h; sourceTree = "<group>"; };
-		FC7C93C50B0A0818001DD0A0 /* O3BGRA16.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3BGRA16.h; sourceTree = "<group>"; };
-		FC7C93C60B0A087F001DD0A0 /* O3RGB565.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3RGB565.h; sourceTree = "<group>"; };
 		FC7DD1E00C1B311A009D36A2 /* O3NonlinearWriter.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3NonlinearWriter.mm; sourceTree = "<group>"; };
 		FC7DD1E10C1B311B009D36A2 /* O3NonlinearWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3NonlinearWriter.h; sourceTree = "<group>"; };
 		FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ObjCEncoding.h; sourceTree = "<group>"; };
@@ -728,7 +720,6 @@
 				FC02C3020B3AE69A000DC47C /* Rendering */,
 				FCE8479C0BDFAB3E00A8FD75 /* Materials */,
 				FC79C2570B12A6FF00834C4D /* Lights */,
-				FC7C93730B08F39F001DD0A0 /* Colors */,
 			);
 			path = Engine;
 			sourceTree = SOURCE_ROOT;
@@ -1084,17 +1075,6 @@
 			path = Lights;
 			sourceTree = "<group>";
 		};
-		FC7C93730B08F39F001DD0A0 /* Colors */ = {
-			isa = PBXGroup;
-			children = (
-				FC7C93780B08F3FE001DD0A0 /* O3Color.h */,
-				FC7C93A30B08FB99001DD0A0 /* O3BGRA8.h */,
-				FC7C93C50B0A0818001DD0A0 /* O3BGRA16.h */,
-				FC7C93C60B0A087F001DD0A0 /* O3RGB565.h */,
-			);
-			path = Colors;
-			sourceTree = "<group>";
-		};
 		FC953A350BD2AD2E0070BE52 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -1252,7 +1232,6 @@
 				FC2C1C210C125F390084A599 /* O3TextureConstantInterperetation.h in Headers */,
 				FC2C1C230C125F3C0084A599 /* O3Texture.h in Headers */,
 				FC2C1C250C125F3D0084A599 /* O3SpotLight.h in Headers */,
-				FC2C1C260C125F3D0084A599 /* O3RGB565.h in Headers */,
 				FC2C1C270C125F3E0084A599 /* O3Renderbuffer.h in Headers */,
 				FC2C1C290C125F3F0084A599 /* O3Renderable.h in Headers */,
 				FC2C1C2B0C125F400084A599 /* O3RawVertexDataSource.h in Headers */,
@@ -1264,7 +1243,6 @@
 				FC2C1C370C125F4A0084A599 /* O3FramebufferObject.h in Headers */,
 				FC2C1C390C125F4B0084A599 /* O3DirectionalLight.h in Headers */,
 				FC2C1C3B0C125F4C0084A599 /* O3CubeMap.h in Headers */,
-				FC2C1C3C0C125F4D0084A599 /* O3Color.h in Headers */,
 				FC2C1C3E0C125F500084A599 /* O3CGTechnique.h in Headers */,
 				FC2C1C400C125F510084A599 /* O3CGProgram.h in Headers */,
 				FC2C1C420C125F530084A599 /* O3CGPass.h in Headers */,
@@ -1273,8 +1251,6 @@
 				FC2C1C480C125F570084A599 /* O3CGEffect.h in Headers */,
 				FC2C1C490C125F570084A599 /* O3CGAutoSetParameters.h in Headers */,
 				FC2C1C4B0C125F590084A599 /* O3CGAnnotation.h in Headers */,
-				FC2C1C4C0C125F590084A599 /* O3BGRA8.h in Headers */,
-				FC2C1C4D0C125F5A0084A599 /* O3BGRA16.h in Headers */,
 				FC2C1C4F0C125F5B0084A599 /* NSValueO3CGShaderAdditions.h in Headers */,
 				FC2C1C510C125F5C0084A599 /* NSImageAdditions.h in Headers */,
 				FC2C1C530C125F6F0084A599 /* O3VectorFunctions.h in Headers */,
