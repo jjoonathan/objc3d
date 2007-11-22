@@ -5,7 +5,7 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#ifndef O3FILE_PLANE_H
+#if !defined(O3FILE_PLANE_H) && defined(__cplusplus)
 #define O3FILE_PLANE_H
 
 namespace ObjC3D {

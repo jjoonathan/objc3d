@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3BufferedWriter.h
  *  @license MIT License (see LICENSE.txt)
@@ -138,3 +139,4 @@ template <typename UIntegerType>
 			WriteByte(b);
 		}
 	}
+#endif /*defined(__cplusplus)*/

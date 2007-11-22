@@ -4,7 +4,7 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
-@class O3Texture;
+#import "O3Texture.h"
 
 #define O3EXCEPTION_INCONSISTANT_FORMATS @"O3ExceptionInconsistantFormats"
 

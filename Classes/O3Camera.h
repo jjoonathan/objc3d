@@ -5,7 +5,9 @@
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
 #import "O3Locateable.h"
+#ifdef __cplusplus
 using namespace ObjC3D::Math;
+#endif
 
 @interface NSObject (O3CameraAspectRatioSource) ///<An informal protocol with various ways of getting the aspect ratio (really width and height at this point)
 - (NSSize)size;
@@ -22,11 +24,13 @@ enum O3CameraAspectRatioSourceType { ///<A private enum used internally by O3Cam
 };
 
 @interface O3Camera : O3Locateable {
+#ifdef __cplusplus
 	Space3* mPostProjectionSpace;
+#endif
 	BOOL mPostProjectionSpaceNeedsUpdate;
 	double mAspectRatio;	///<Width/height of whatever is being rendered into
 	id mAspectRatioSource;	///<The place the aspect ratio is computed from by calling -width and -height. Can be nil, in which case mAspectRatio is used directly.
-	O3CameraAspectRatioSourceType mAspectRatioSourceType; ///<What method should be used to get the aspect ratio of the mAspectRatioSource
+	enum O3CameraAspectRatioSourceType mAspectRatioSourceType; ///<What method should be used to get the aspect ratio of the mAspectRatioSource
 	double mNearPlane, mFarPlane;	///<The near and far plane distances (like min and max Z values)
 	double mFOVY;
 }
@@ -37,10 +41,12 @@ enum O3CameraAspectRatioSourceType { ///<A private enum used internally by O3Cam
 - (double)farPlaneDistance;  ///<Returns how far away the far plane is
 - (double)nearToFarRatio;    ///<Returns the near-plane to far-plane ratio
 - (double)fovY;				///<Returns the field of view in the Y direction in radians
+#ifdef __cplusplus
 - (O3Mat4x4d)viewMatrix;		///<Returns the view (look-at) matrix
 - (O3Mat4x4d)projectionMatrix; ///<Returns the receiver's projection matrix
 - (O3Mat4x4d)viewProjectionMatrix; ///<Returns the receiver's projection matrix * its view matrix (view then project)
 - (Space3*)postProjectionSpace; ///<Returns the post projective space (projection transform, superspace is camera space)
+#endif
 
 //Setters
 - (void)setAspectRatio:(double)newAR;	///<Sets the aspect ratio (width/height) of the receiver

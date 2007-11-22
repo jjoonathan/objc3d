@@ -6,7 +6,6 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#import "ObjCEncoding.h"
 #import "O3EncodingInterpretation.h"	
 
 ///Access elements of the vector as so: <code>O3DynamicVector vec(stuff); vec.ElementOfTypeAt<double>(index);</code>. Replace "double" with the actual type of data you want to get out of it.

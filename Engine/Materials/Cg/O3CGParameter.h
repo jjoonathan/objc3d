@@ -7,8 +7,10 @@
  */
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>
+#ifdef __cplusplus
 #include <map>
 #include <string>
+#endif
 @class O3Value;
 @class O3Texture;
 @class O3KVCHelper;
@@ -22,7 +24,11 @@
  */
 @interface O3CGParameter : NSObject {
 	O3KVCHelper* mAnnotationKVCHelper;
+#ifdef __cplusplus
 	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
+#else
+	void* mAnnotations;
+#endif
 	CGparameter mParam;
 	BOOL mFreeParamWhenDone;
 }

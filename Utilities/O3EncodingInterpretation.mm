@@ -9,7 +9,7 @@
 #import "O3BufferedWriter.h"
 #import "O3BufferedReader.h"
 #include <cstdlib>
-#include <ObjCEncoding.h>
+#include "ObjCEncoding.h"
 
 #undef O3AssumeGCCHack
 #ifdef O3AssumeGCCHack
@@ -78,6 +78,17 @@ inline char O3Alignof_helper(unsigned char typecode) {
 #define O3Alignof(type) O3Alignof_helper(*@encode(type))
 #endif
 
+NSMutableData* O3SerializeDataOfType(const void* from, const char* objCType, UIntP count, NSMutableData* data) {
+	if (!data) data = [NSMutableData data];
+	O3BufferedWriter bw(data);
+	O3SerializeDataOfType(from, objCType, &bw, count);
+	return data;
+}
+
+void O3DeserializeDataOfType(void* to, const char* objCType, NSData* dat) {
+	O3BufferedReader br(dat);
+	O3DeserializeDataOfType(to, objCType, &br);
+}
 
 void O3EncodedTypeCounterAdvanceWithStack(char inc_char, char dec_char, const char** encoding) { //Private
 	unsigned stack = 1;
@@ -98,26 +109,26 @@ unsigned O3CountObjCEncodedElementsOfType(char type, const char* encoding) {
 	while (next_char = *encoding) {
 		if (next_char==type) count++;
 		
-		if (next_char==_C_ARY_B) {
+		if (next_char==OCTYPE_ARY_B) {
 			//stack++;
 			encoding++; if(!*encoding) return count;
 			count += atoi(encoding) * O3CountObjCEncodedElementsOfType(type, encoding);
-			O3EncodedTypeCounterAdvanceWithStack(_C_ARY_B, _C_ARY_E, &encoding);
+			O3EncodedTypeCounterAdvanceWithStack(OCTYPE_ARY_B, OCTYPE_ARY_E, &encoding);
 		}
-		else if (next_char==_C_ARY_E) {
+		else if (next_char==OCTYPE_ARY_E) {
 			return count;
 		}
-		else if (next_char==_C_STRUCT_B || next_char==_C_UNION_B) {
+		else if (next_char==OCTYPE_STRUCT_B || next_char==OCTYPE_UNION_B) {
 			const char* old_location = encoding;
 			while ((*encoding) && (*encoding)!='=') encoding++;
 			if (!*encoding) encoding = old_location;
 		}
-		else if (next_char==_C_PTR) {
-			while((*encoding)==_C_PTR) encoding++;
+		else if (next_char==OCTYPE_PTR) {
+			while((*encoding)==OCTYPE_PTR) encoding++;
 			if (!(next_char = *encoding)) return count;
-			if (next_char==_C_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(_C_STRUCT_B, _C_STRUCT_E, &encoding);
-			if (next_char==_C_ARY_B) O3EncodedTypeCounterAdvanceWithStack(_C_ARY_B, _C_ARY_E, &encoding);
-			if (next_char==_C_UNION_B) O3EncodedTypeCounterAdvanceWithStack(_C_UNION_B, _C_UNION_E, &encoding);
+			if (next_char==OCTYPE_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_STRUCT_B, OCTYPE_STRUCT_E, &encoding);
+			if (next_char==OCTYPE_ARY_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_ARY_B, OCTYPE_ARY_E, &encoding);
+			if (next_char==OCTYPE_UNION_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_UNION_B, OCTYPE_UNION_E, &encoding);
 		}
 		encoding++;
 	}
@@ -131,54 +142,54 @@ unsigned O3UnalignedSizeofObjCEncodedType(const char* encoding) {
 	double bytes = 0;
 	while (next_char = *encoding) {
 		switch (next_char) {
-			case _C_INT: bytes += sizeof(int); break;
-			case _C_SHT: bytes += sizeof(short); break;
-			case _C_LNG: bytes += sizeof(long); break;
-			case _C_LNG_LNG: bytes += sizeof(UIntP); break;
-			case _C_UCHR: bytes += sizeof(unsigned char); break;
-			case _C_UINT: bytes += sizeof(unsigned int); break;
-			case _C_USHT: bytes += sizeof(unsigned short); break;
-			case _C_ULNG: bytes += sizeof(unsigned long); break;
-			case _C_ULNG_LNG: bytes += sizeof(unsigned UIntP); break;
-			case _C_FLT: bytes += sizeof(float); break;
-			case _C_DBL: bytes += sizeof(double); break;
-			case _C_CHARPTR: bytes += sizeof(char *); break;
-			case _C_BFLD: bytes += .125*atoi(encoding+1); break;
-			case _C_UNDEF: bytes += sizeof(void*); break;
-			case _C_ID: bytes += sizeof(id); break;
-			case _C_CLASS: bytes += sizeof(Class); break;
-			case _C_SEL: bytes += sizeof(@selector(alloc)); break;
-			//case _C_VECTOR: bytes += sizeof(vector char); break;
+			case OCTYPE_INT: bytes += sizeof(int); break;
+			case OCTYPE_SHT: bytes += sizeof(short); break;
+			case OCTYPE_LNG: bytes += sizeof(long); break;
+			case OCTYPE_LNG_LNG: bytes += sizeof(UIntP); break;
+			case OCTYPE_UCHR: bytes += sizeof(unsigned char); break;
+			case OCTYPE_UINT: bytes += sizeof(unsigned int); break;
+			case OCTYPE_USHT: bytes += sizeof(unsigned short); break;
+			case OCTYPE_ULNG: bytes += sizeof(unsigned long); break;
+			case OCTYPE_ULNG_LNG: bytes += sizeof(unsigned UIntP); break;
+			case OCTYPE_FLT: bytes += sizeof(float); break;
+			case OCTYPE_DBL: bytes += sizeof(double); break;
+			case OCTYPE_CHARPTR: bytes += sizeof(char *); break;
+			case OCTYPE_BFLD: bytes += .125*atoi(encoding+1); break;
+			case OCTYPE_UNDEF: bytes += sizeof(void*); break;
+			case OCTYPE_ID: bytes += sizeof(id); break;
+			case OCTYPE_CLASS: bytes += sizeof(Class); break;
+			case OCTYPE_SEL: bytes += sizeof(@selector(alloc)); break;
+			//case OCTYPE_VECTOR: bytes += sizeof(vector char); break;
 			
-			case _C_ARY_E: 
+			case OCTYPE_ARY_E: 
 				return bytes;				
 			
-			case _C_UNION_B: {
+			case OCTYPE_UNION_B: {
 				O3CToImplement();
 				break;
 			}
 			
-			case _C_ARY_B: {
+			case OCTYPE_ARY_B: {
 				encoding++; if(!*encoding) return bytes;
 				bytes += atoi(encoding) * O3UnalignedSizeofObjCEncodedType(encoding);
-				O3EncodedTypeCounterAdvanceWithStack(_C_ARY_B, _C_ARY_E, &encoding);				
+				O3EncodedTypeCounterAdvanceWithStack(OCTYPE_ARY_B, OCTYPE_ARY_E, &encoding);				
 				break;
 			}
 			
-			case _C_STRUCT_B: {
+			case OCTYPE_STRUCT_B: {
 				const char* old_location = encoding;
 				while ((*encoding) && (*encoding)!='=') encoding++;
 				if (!*encoding) encoding = old_location;				
 				break;
 			}
 			
-			case _C_PTR: {
+			case OCTYPE_PTR: {
 				bytes += sizeof(void*);
-				while((*encoding)==_C_PTR) encoding++;
+				while((*encoding)==OCTYPE_PTR) encoding++;
 				if (!(next_char = *encoding)) return bytes;
-				if (next_char==_C_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(_C_STRUCT_B, _C_STRUCT_E, &encoding);
-				if (next_char==_C_ARY_B) O3EncodedTypeCounterAdvanceWithStack(_C_ARY_B, _C_ARY_E, &encoding);
-				if (next_char==_C_UNION_B) O3EncodedTypeCounterAdvanceWithStack(_C_UNION_B, _C_UNION_E, &encoding);				
+				if (next_char==OCTYPE_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_STRUCT_B, OCTYPE_STRUCT_E, &encoding);
+				if (next_char==OCTYPE_ARY_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_ARY_B, OCTYPE_ARY_E, &encoding);
+				if (next_char==OCTYPE_UNION_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_UNION_B, OCTYPE_UNION_E, &encoding);				
 				break;
 			}
 			
@@ -207,7 +218,7 @@ void O3MoveDataOfType(const void* from, void* to, const char* objCType, UIntP co
 ///@fixme Doesn't handle unions or bitfields right
 ///@param align 0 (default) if alignment should be automatically determined, and 1 for "no alignment"
 void O3SerializeDataOfType(const void* from, const char* objCType, O3BufferedWriter* writer, UIntP count) {
-	//if (!align && *objCType==_C_STRUCT_B) NSGetSizeAndAlignment(objCType, nil, &align);
+	//if (!align && *objCType==OCTYPE_STRUCT_B) NSGetSizeAndAlignment(objCType, nil, &align);
 	O3BufferedWriter& appendTo = *writer;
 	const char* oldObjCType = objCType;
 	const char* c = (const char*)from;
@@ -219,97 +230,97 @@ void O3SerializeDataOfType(const void* from, const char* objCType, O3BufferedWri
 			unsigned size = 0;
 			const char* nextObjCType = objCType+1;
 			switch (next_char) {
-				case _C_CHR:
+				case OCTYPE_CHR:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(char));
 					appendTo.WriteIntAsBytes(*(char*)c, 1);
 					size = sizeof(char);
 					break;
-				case _C_INT:
+				case OCTYPE_INT:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(int));
 					appendTo.WriteCInt(*(int*)c);
 					size = sizeof(int);
 					break;
-				case _C_SHT:
+				case OCTYPE_SHT:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(short));
 					appendTo.WriteIntAsBytes(*(short*)c, 2);
 					size = sizeof(short);				
 					break;
-				case _C_LNG:
+				case OCTYPE_LNG:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(long));
 					appendTo.WriteCInt(*(long*)c);
 					size = sizeof(long);				
 					break;
-				case _C_LNG_LNG:
+				case OCTYPE_LNG_LNG:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(long long));
 					appendTo.WriteCInt(*(long long*)c);
 					size = sizeof(long long);			
 					break;
-				case _C_UCHR:
+				case OCTYPE_UCHR:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned char));
 					appendTo.WriteUIntAsBytes(*(unsigned char*)c, 1);
 					size = sizeof(unsigned char);		
 					break;
-				case _C_UINT:
+				case OCTYPE_UINT:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned int));
 					appendTo.WriteUCInt(*(unsigned int*)c);
 					size = sizeof(unsigned int);		
 					break;
-				case _C_USHT:
+				case OCTYPE_USHT:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned short));
 					appendTo.WriteUIntAsBytes(*(unsigned short*)c, 2);
 					size = sizeof(unsigned short);	
 					break;
-				case _C_ULNG:
+				case OCTYPE_ULNG:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned long));
 					appendTo.WriteUCInt(*(unsigned long*)c);
 					size = sizeof(unsigned long);		
 					break;
-				case _C_ULNG_LNG:
+				case OCTYPE_ULNG_LNG:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned long long));
 					appendTo.WriteUCInt(*(unsigned long long*)c);
 					size = sizeof(unsigned long long);
 					break;
-				case _C_FLT:
+				case OCTYPE_FLT:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(float));
 					appendTo.WriteFloat(*(float*)c);
 					size = sizeof(float);				
 					break;
-				case _C_DBL:
+				case OCTYPE_DBL:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(double));
 					appendTo.WriteDouble(*(double*)c);
 					size = sizeof(double);			
 					break;
-				case _C_CHARPTR:
+				case OCTYPE_CHARPTR:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(char*));
 					appendTo.WriteCCString(*(char**)c);
 					size = sizeof(char*);			
 					break;
-				case _C_SEL:
+				case OCTYPE_SEL:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(SEL));
 					appendTo.WriteCCString(NSStringFromSelector(*(SEL*)c));
 					size = sizeof(SEL);	
 					break;
-				case _C_CLASS:
+				case OCTYPE_CLASS:
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(Class));
 					appendTo.WriteCCString(NSStringFromClass(*(Class*)c));
 					size = sizeof(Class);	
 					break;								
-				case _C_ARY_E: 
-				case _C_STRUCT_E: 
-				case _C_UNION_E: 
+				case OCTYPE_ARY_E: 
+				case OCTYPE_STRUCT_E: 
+				case OCTYPE_UNION_E: 
 					nextObjCType="";
 					size=0;		//Break out to the next iteration of the big for loop
 					break;				
 					
-				case _C_UNDEF:
-				case _C_VOID:
-				case _C_BFLD:
-				case _C_UNION_B:
-				case _C_VECTOR:
+				case OCTYPE_UNDEF:
+				case OCTYPE_VOID:
+				case OCTYPE_BFLD:
+				case OCTYPE_UNION_B:
+				case OCTYPE_VECTOR:
 					O3Assert(false, @"O3SerializeDataOfType cannot handle vectors, bitfields, unions, or voids (void*s are fine).")
 					break;
 					
-				case _C_ARY_B: {
+				case OCTYPE_ARY_B: {
 					unsigned arr_align;
 					nextObjCType = NSGetSizeAndAlignment(objCType, &size, &arr_align);
 					c = (const char*)O3RoundUpToNearest((UIntP)c, arr_align);
@@ -319,35 +330,35 @@ void O3SerializeDataOfType(const void* from, const char* objCType, O3BufferedWri
 					unsigned arr_count = atoi(objCType);
 					while (isdigit(*objCType)) objCType++;
 					O3SerializeDataOfType(c, objCType, &appendTo, arr_count);
-					//O3EncodedTypeCounterAdvanceWithStack(_C_ARY_B, _C_ARY_E, &objCType);
+					//O3EncodedTypeCounterAdvanceWithStack(OCTYPE_ARY_B, OCTYPE_ARY_E, &objCType);
 					//nextObjCType=objCType+1;			
 					break;
 				}
 					
-				case _C_STRUCT_B: {
+				case OCTYPE_STRUCT_B: {
 					unsigned struct_align;
 					nextObjCType = NSGetSizeAndAlignment(objCType, &size, &struct_align);
 					c = (const char*)O3RoundUpToNearest((UIntP)c, struct_align);
 					objCType++;
 					const char* structStartObjCType = objCType;
-					while (*objCType && *objCType!=_C_STRUCT_E && *objCType!='=') objCType++;
+					while (*objCType && *objCType!=OCTYPE_STRUCT_E && *objCType!='=') objCType++;
 					if (*objCType!='=') objCType = structStartObjCType; //Struct was unnamed
 					else objCType++;
 					O3SerializeDataOfType(c, objCType, &appendTo, 1);
-					O3EncodedTypeCounterAdvanceWithStack(_C_STRUCT_B, _C_STRUCT_E, &objCType);			
+					O3EncodedTypeCounterAdvanceWithStack(OCTYPE_STRUCT_B, OCTYPE_STRUCT_E, &objCType);			
 					break;
 				}
 					
-				case _C_ID:
-				case _C_PTR: {
+				case OCTYPE_ID:
+				case OCTYPE_PTR: {
 					c = (const char*)O3RoundUpToNearest((UIntP)c, O3Alignof(void*));
-					while((*objCType)==_C_PTR) objCType++;
+					while((*objCType)==OCTYPE_PTR) objCType++;
 					if (!(next_char = *objCType))
 						[NSException raise:NSInconsistentArchiveException format:@"Premature end of @encode string %s", oldObjCType];
 					objCType++;
-					if (next_char==_C_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(_C_STRUCT_B, _C_STRUCT_E, &objCType);
-					if (next_char==_C_ARY_B) O3EncodedTypeCounterAdvanceWithStack(_C_ARY_B, _C_ARY_E, &objCType);
-					if (next_char==_C_UNION_B) O3EncodedTypeCounterAdvanceWithStack(_C_UNION_B, _C_UNION_E, &objCType);		
+					if (next_char==OCTYPE_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_STRUCT_B, OCTYPE_STRUCT_E, &objCType);
+					if (next_char==OCTYPE_ARY_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_ARY_B, OCTYPE_ARY_E, &objCType);
+					if (next_char==OCTYPE_UNION_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_UNION_B, OCTYPE_UNION_E, &objCType);		
 					size = sizeof(void*);
 					nextObjCType = objCType;
 					break;
@@ -364,7 +375,7 @@ void O3SerializeDataOfType(const void* from, const char* objCType, O3BufferedWri
 ///@warn Type shrinkage is not checked for. For istance, if a 64-bit instance of O3DeserializeDataOfType saves 2^33 as a long and then sends the data to a 32 bit instance, the value would be truncated without warning, error, or exception.
 ///@fixme Type shrinkage (add exceptions)
 void O3DeserializeDataOfType(void* to, const char* objCType, O3BufferedReader* reader, UIntP count) {
-	//if (!align && *objCType==_C_STRUCT_B) NSGetSizeAndAlignment(objCType, nil, &align);
+	//if (!align && *objCType==OCTYPE_STRUCT_B) NSGetSizeAndAlignment(objCType, nil, &align);
 	O3BufferedReader& readFrom = *reader;
 	const char* oldObjCType = objCType;
 	char* c = (char*)to;
@@ -376,101 +387,101 @@ void O3DeserializeDataOfType(void* to, const char* objCType, O3BufferedReader* r
 			unsigned size = 0;
 			const char* nextObjCType = objCType+1;
 			switch (next_char) {
-				case _C_CHR:
+				case OCTYPE_CHR:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(char));
 					*(char*)c = readFrom.ReadBytesAsInt32(1);
 					size = sizeof(char);
 					break;
-				case _C_INT:
+				case OCTYPE_INT:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(int));
 					*(int*)c = readFrom.ReadCIntAsInt32();
 					size = sizeof(int);
 					break;
-				case _C_SHT:
+				case OCTYPE_SHT:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(short));
 					*(short*)c = readFrom.ReadBytesAsInt32(2);
 					size = sizeof(short);				
 					break;
-				case _C_LNG:
+				case OCTYPE_LNG:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(long));
 					*(long*)c = (long)readFrom.ReadCIntAsInt64();
 					size = sizeof(long);				
 					break;
-				case _C_LNG_LNG:
+				case OCTYPE_LNG_LNG:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(long long));
 					*(long long*)c = readFrom.ReadCIntAsInt64();
 					size = sizeof(long long);			
 					break;
-				case _C_UCHR:
+				case OCTYPE_UCHR:
 				c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned char));
 					*(unsigned char*)c = readFrom.ReadBytesAsUInt32(1);
 					size = sizeof(unsigned char);		
 					break;
-				case _C_UINT:
+				case OCTYPE_UINT:
 				c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned int));
 					*(unsigned int*)c = readFrom.ReadUCIntAsUInt32();
 					size = sizeof(unsigned int);		
 					break;
-				case _C_USHT:
+				case OCTYPE_USHT:
 				c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned short));
 					*(unsigned short*)c = readFrom.ReadBytesAsUInt32(2);
 					size = sizeof(unsigned short);	
 					break;
-				case _C_ULNG:
+				case OCTYPE_ULNG:
 				c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned long));
 					*(unsigned long*)c = (unsigned long)readFrom.ReadUCIntAsUInt64();
 					size = sizeof(unsigned long);		
 					break;
-				case _C_ULNG_LNG:
+				case OCTYPE_ULNG_LNG:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(unsigned long long));
 					*(unsigned long long*)c = readFrom.ReadUCIntAsUInt64();
 					size = sizeof(unsigned long long);
 					break;
-				case _C_FLT:
+				case OCTYPE_FLT:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(float));
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(float));
 					*(float*)c = readFrom.ReadFloat();
 					size = sizeof(float);				
 					break;
-				case _C_DBL:
+				case OCTYPE_DBL:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(double));
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(double));
 					*(double*)c = readFrom.ReadDouble();
 					size = sizeof(double);			
 					break;
-				case _C_CHARPTR:
+				case OCTYPE_CHARPTR:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(char*));
 					NSString* str = readFrom.ReadCCString();
 					O3CLogDebug(@"C string at %p probably leaked (deserialized into a struct)");
 					*(const char**)c = strdup([str UTF8String]);
 					size = sizeof(char*);			
 					break;
-				case _C_SEL:
+				case OCTYPE_SEL:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(SEL));
 					*(SEL*)c = NSSelectorFromString(readFrom.ReadCCString());
 					size = sizeof(SEL);	
 					break;
-				case _C_CLASS:
+				case OCTYPE_CLASS:
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(Class));
 					*(Class*)c = NSClassFromString(readFrom.ReadCCString());
 					size = sizeof(Class);	
 					break;								
-				case _C_ARY_E: 
-				case _C_STRUCT_E: 
-				case _C_UNION_E: 
+				case OCTYPE_ARY_E: 
+				case OCTYPE_STRUCT_E: 
+				case OCTYPE_UNION_E: 
 					nextObjCType="";		//Break out to the next iteration of the big for loop
 					size=0;
 					break;				
 					
-				case _C_UNDEF:
-				case _C_VOID:
-				case _C_BFLD:
-				case _C_UNION_B:
-				case _C_VECTOR:
+				case OCTYPE_UNDEF:
+				case OCTYPE_VOID:
+				case OCTYPE_BFLD:
+				case OCTYPE_UNION_B:
+				case OCTYPE_VECTOR:
 					O3Assert(false, @"O3DeserializeDataOfType cannot handle vectors, bitfields, unions, or voids (void*s are fine).")
 					break;
 					
-				case _C_ARY_B: {
+				case OCTYPE_ARY_B: {
 					unsigned arr_align;
 					nextObjCType = NSGetSizeAndAlignment(objCType, &size, &arr_align);
 					c = (char*)O3RoundUpToNearest((UIntP)c, arr_align);
@@ -483,30 +494,30 @@ void O3DeserializeDataOfType(void* to, const char* objCType, O3BufferedReader* r
 					break;
 				}
 					
-				case _C_STRUCT_B: {
+				case OCTYPE_STRUCT_B: {
 					unsigned struct_align;
 					nextObjCType = NSGetSizeAndAlignment(objCType, &size, &struct_align);
 					c = (char*)O3RoundUpToNearest((UIntP)c, struct_align);
 					objCType++;
 					const char* structStartObjCType = objCType;
-					while (*objCType && *objCType!=_C_STRUCT_E && *objCType!='=') objCType++;
+					while (*objCType && *objCType!=OCTYPE_STRUCT_E && *objCType!='=') objCType++;
 					if (*objCType!='=') objCType = structStartObjCType; //Struct was unnamed
 					else objCType++;
 					O3DeserializeDataOfType(c, objCType, reader, 1);
-					O3EncodedTypeCounterAdvanceWithStack(_C_STRUCT_B, _C_STRUCT_E, &objCType);			
+					O3EncodedTypeCounterAdvanceWithStack(OCTYPE_STRUCT_B, OCTYPE_STRUCT_E, &objCType);			
 					break;
 				}
 					
-				case _C_ID:
-				case _C_PTR: {
+				case OCTYPE_ID:
+				case OCTYPE_PTR: {
 					c = (char*)O3RoundUpToNearest((UIntP)c, O3Alignof(void*));
-					while((*objCType)==_C_PTR) objCType++;
+					while((*objCType)==OCTYPE_PTR) objCType++;
 					if (!(next_char = *objCType))
 						[NSException raise:NSInconsistentArchiveException format:@"Premature end of @encode string %s", oldObjCType];
 					objCType++;
-					if (next_char==_C_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(_C_STRUCT_B, _C_STRUCT_E, &objCType);
-					if (next_char==_C_ARY_B) O3EncodedTypeCounterAdvanceWithStack(_C_ARY_B, _C_ARY_E, &objCType);
-					if (next_char==_C_UNION_B) O3EncodedTypeCounterAdvanceWithStack(_C_UNION_B, _C_UNION_E, &objCType);	
+					if (next_char==OCTYPE_STRUCT_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_STRUCT_B, OCTYPE_STRUCT_E, &objCType);
+					if (next_char==OCTYPE_ARY_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_ARY_B, OCTYPE_ARY_E, &objCType);
+					if (next_char==OCTYPE_UNION_B) O3EncodedTypeCounterAdvanceWithStack(OCTYPE_UNION_B, OCTYPE_UNION_E, &objCType);	
 					*(void**)c = NULL;
 					size = sizeof(void*);
 					nextObjCType = objCType;

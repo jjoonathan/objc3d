@@ -5,7 +5,6 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#include <iostream>
 using namespace ObjC3D::Math;
 
 /*******************************************************************/ #pragma mark Constructors /*******************************************************************/

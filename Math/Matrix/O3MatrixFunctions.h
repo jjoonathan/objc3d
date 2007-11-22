@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3MatrixFunctions.h
  *  @license MIT License (see LICENSE.txt)
@@ -32,3 +33,4 @@ template <typename TYPE>	O3Mat<TYPE, 4, 4> operator+(const O3Mat<TYPE, 4, 4>& ma
 template <typename TYPE>	O3Mat<TYPE, 4, 4>& operator+=(O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot);
 template <typename TYPE>	O3Mat<TYPE, 4, 4> operator-(const O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot);
 template <typename TYPE>	O3Mat<TYPE, 4, 4>& operator-=(O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot);
+#endif /*defined(__cplusplus)*/

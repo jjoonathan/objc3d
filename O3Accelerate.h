@@ -22,10 +22,17 @@
 #define O3CFArrayAppendValue(arr, v) CFArrayAppendValue((CFMutableArrayRef)arr, v)
 #define O3CFSetAddValue(set, v) CFSetAddValue((CFMutableSetRef)set, v)
 #define O3CFArraySetValueAtIndex(mutable_array, index, value) CFArraySetValueAtIndex((CFMutableArrayRef)mutable_array, index, value)
+#ifdef __cplusplus
 inline long long O3NSNumberLongLongValue(NSNumber* num) {
 	long long val; CFNumberGetValue((CFNumberRef)num, kCFNumberLongLongType, &val);
 	return val;
 }
+#else
+static long long O3NSNumberLongLongValue(NSNumber* num) {
+	long long val; CFNumberGetValue((CFNumberRef)num, kCFNumberLongLongType, &val);
+	return val;
+}
+#endif /*defined(__cplusplus)*/
 #else
 #define O3CFRetain(x) [(NSObject*)x retain]
 #define O3CFRelease(x) [(NSObject*)x release]
@@ -44,6 +51,7 @@ inline long long O3NSNumberLongLongValue(NSNumber* num) {
 #endif
 
 /************************************/ #pragma mark More Core Foundation stuff /************************************/
+#ifdef __cplusplus
 inline void NSDictionaryGetKeysAndValues(NSDictionary* dictionary, NSArray** keys, NSArray** values) {
 /*#ifdef O3UseCoreFoundation
 	if (!keys && !values) return;
@@ -81,7 +89,7 @@ static void O3AccelerateInitialize() {
 	NSStringAutoreleaseMethod = [NSString methodForSelector:@selector(autorelease)];
 }
 
-inline NSString* NSStringWithUTF8String(const char* str, IntP len = -1) {
+inline NSString* NSStringWithUTF8String(const char* str, IntP len) {
 	O3AccelerateInitialize();
 	if (len==-1) len = strlen(str);
 	#ifndef O3UseCoreFoundation
@@ -92,7 +100,7 @@ inline NSString* NSStringWithUTF8String(const char* str, IntP len = -1) {
 	#endif
 }
 
-inline NSString* NSStringWithUTF8StringNoCopy(const char* str, IntP len = -1, BOOL freeWhenDone = YES) {
+inline NSString* NSStringWithUTF8StringNoCopy(const char* str, IntP len, BOOL freeWhenDone) {
 	O3AccelerateInitialize();
 	if (len==-1) len = strlen(str);
 	#ifndef O3UseCoreFoundation
@@ -164,6 +172,7 @@ inline void NSMutableArray_addObjectsFromCArray(NSMutableArray* self, id* carray
 		addObjectImp(self, @selector(addObject:), carray[i]);
 }
 
+#ifdef __cplusplus
 inline void NSMutableArray_addObjectsFromVector(NSMutableArray* self, std::vector<id> objects) {
 	std::vector<id>::iterator it = objects.begin();
 	std::vector<id>::iterator end = objects.end();
@@ -171,10 +180,11 @@ inline void NSMutableArray_addObjectsFromVector(NSMutableArray* self, std::vecto
 	for (; it!=end; it++)
 		addObjectImp(self, @selector(addObject:), *it);
 }
+#endif
 
 inline NSApplication* NSApplicationSharedApplication() {
 	static NSApplication* app = nil; 
 	if (!app) app = [NSApplication sharedApplication];
 	return app;
 }
-
+#endif /*defined(__cplusplus)*/

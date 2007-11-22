@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #ifndef O3TEMPLATE_FILE_VECTOR_FUNCTIONS_H
 #error This is a template file, not a regular cpp file, so it cannot be used as one.
 #endif
@@ -19,3 +20,4 @@ O3Vec_TT  O3Vec<TYPE, NUMBER> clamp(const O3Vec<TYPE, NUMBER>& v, TYPE min, TYPE
 template <typename TYPE, int NUMBER, typename INTERP_TYPE> O3Vec<TYPE, NUMBER> lerp(const O3Vec<TYPE, NUMBER>& v, const O3Vec<TYPE, NUMBER>& v2, const INTERP_TYPE interpolant);
 
 O3Vec_TT  std::ostream& operator<<(std::ostream& stream, const O3Vec_T& v);
+#endif /*defined(__cplusplus)*/

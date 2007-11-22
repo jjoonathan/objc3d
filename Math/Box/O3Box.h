@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3Box.h
  *  @license MIT License (see LICENSE.txt)
@@ -71,3 +72,4 @@ public:
 	}
 };
 
+#endif /*defined(__cplusplus)*/

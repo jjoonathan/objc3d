@@ -361,7 +361,7 @@ NSString* O3BufferedReader::ReadCCString(enum O3CCSTableType ttype) {
 	if (len>0) {
 		char* str = (char*)ReadBytes(len,1);
 		str[len]=0;
-		return NSStringWithUTF8StringNoCopy(str,len);
+		return NSStringWithUTF8StringNoCopy(str, len, YES);
 	} else {
 		NSArray* table = nil;
 		switch (ttype) {

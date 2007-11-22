@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3QuadraticEquation.h
  *  @license MIT License (see LICENSE.txt)
@@ -42,3 +43,4 @@ public: //Setters
 };
 
 typedef O3QuadraticEquation<real> QuadraticEquationR;
+#endif /*defined(__cplusplus)*/

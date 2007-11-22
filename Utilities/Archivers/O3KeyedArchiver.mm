@@ -58,12 +58,10 @@ inline void initP(O3KeyedArchiver* self) {
 }*/
 
 
-+ (NSData*)archivedDataWithRootObject:(id)obj {return [self archivedDataWithRootObject:obj VFS:nil];}
-+ (NSData*)archivedDataWithRootObject:(id)obj VFS:(O3VFS*)vfs {
++ (NSData*)archivedDataWithRootObject:(id)obj {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSMutableData* d = [NSMutableData dataWithCapacity:32];
 	O3KeyedArchiver* a = [[O3KeyedArchiver alloc] initForWritingWithMutableData:d];
-	[a setVFS:vfs];
 	[a encodeObject:obj forKey:@""];
 	[a finishEncoding];
 	[a release];
@@ -71,12 +69,10 @@ inline void initP(O3KeyedArchiver* self) {
 	[pool release];
 }
 
-+ (void)archiveRootObject:(id)obj toFile:(NSString*)file {return [self archiveRootObject:obj toFile:file VFS:nil];}
-+ (void)archiveRootObject:(id)obj toFile:(NSString*)file VFS:(O3VFS*)vfs {
++ (void)archiveRootObject:(id)obj toFile:(NSString*)file {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	int f = open([file UTF8String], O_RDONLY, 0444);
 	O3KeyedArchiver* a = [[O3KeyedArchiver alloc] initForWritingWithFileDescriptor:f];
-	[a setVFS:vfs];
 	[a encodeObject:obj forKey:@""];
 	[a finishEncoding];
 	[a release];
@@ -84,11 +80,9 @@ inline void initP(O3KeyedArchiver* self) {
 	[pool release];
 }
 
-+ (void)archiveRootObject:(id)obj toFileDescriptor:(int)fd {return [self archiveRootObject:obj toFileDescriptor:fd VFS:nil];}
-+ (void)archiveRootObject:(id)obj toFileDescriptor:(int)fd VFS:(O3VFS*)vfs {
++ (void)archiveRootObject:(id)obj toFileDescriptor:(int)fd {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	O3KeyedArchiver* a = [[O3KeyedArchiver alloc] initForWritingWithFileDescriptor:fd];
-	[a setVFS:vfs];
 	[a encodeObject:obj forKey:@""];
 	[a finishEncoding];
 	[a release];
@@ -183,8 +177,6 @@ inline NSString* classNameForClassCP(Class c) {
 /************************************/ #pragma mark Accessors /************************************/
 ///This class ONLY allows keyed coding
 - (BOOL)allowsKeyedCoding {return YES;}
-- (O3VFS*)VFS {return mVFS;}
-- (void)setVFS:(O3VFS*)vfs {mVFS = vfs;}
 - (NSPropertyListFormat)outputFormat {return O3ArchiveFormat0;}
 - (void)setOutputFormat:(NSPropertyListFormat)newFormat {O3AssertArg(newFormat==O3ArchiveFormat0, @"Right now O3KeyedArchiver can only archive in the O3ArchiveFormat0 format");}
 - (id)delegate {return mDelegate;}

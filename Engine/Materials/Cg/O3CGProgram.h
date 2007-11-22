@@ -9,10 +9,12 @@
 #include <Cg/cgGL.h>
 #import "O3Utilities.h"
 #import "O3CGAutoSetParameters.h"
+#ifdef __cplusplus
 #include <map>
 #include <string>
 #include <vector>
 using namespace std;
+#endif
 @class O3KVCHelper;
 @class O3CGParameter;
 @class O3CGAnnotation;
@@ -26,9 +28,15 @@ extern CGcontext gCGContext; ///<Access with O3GlobalCGContext();
 	NSString* mEntryPoint;	///<The entry point into the program (this doesn't seem to be fetchable via the Cg runtime?)
 	O3KVCHelper* mParameterKVCHelper; ///<Allows KVC to be used properly on parameters
 	O3KVCHelper* mAnnotationKVCHelper; ///<Allows KVC to be used properly on annotations
+#ifdef __cplusplus
 	map<string, O3CGParameter*>* mParameters; ///<All the receiver's parameters
 	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
 	vector<O3CGAutoSetParameter>* mAutoSetParameters;
+#else
+	void* mParameters;
+	void* mAnnotations;
+	void* mAutoSetParameters;
+#endif
 	#ifdef O3DEBUG
 	bool mRenderingBegun; ///<Catches attempts to set pases without first enabling rendering
 	#endif

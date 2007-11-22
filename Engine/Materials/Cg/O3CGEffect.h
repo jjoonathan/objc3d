@@ -7,13 +7,15 @@
  */
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>
-#import <vector>
 #import "O3Material.h"
 #import "O3CGAutoSetParameters.h"
+#ifdef __cplusplus
+#include <vector>
 #include <map>
 #include <set>
 #include <string>
 using namespace std;
+#endif
 @class O3CGTechnique;
 @class O3KVCHelper;
 @class O3CGParameter;
@@ -27,13 +29,19 @@ using namespace std;
 	O3KVCHelper* mTechniqueKVCHelper; ///<Allows KVC to be used properly on techniques
 	O3KVCHelper* mParameterKVCHelper; ///<Allows KVC to be used properly on parameters
 	O3KVCHelper* mAnnotationKVCHelper; ///<Allows KVC to be used properly on annotations
+#ifdef __cplusplus
 	map<string, O3CGTechnique*>* mTechniques; ///<All the techniques in the receiver
 	map<string, O3CGParameter*>* mParameters; ///<All the receiver's parameters
 	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
-	
 	vector<O3CGAutoSetParameter>* mAutoSetParameters; ///<Parameters that need to be automatically set
 	set<CGparameter>* mTextureParams; ///<Parameters that have a sampler and therefore need to be manually enabled and disabled
-	
+#else
+	void* mTechniques;
+	void* mParameters;
+	void* mAnnotations;
+	void* mAutoSetParameters;
+	void* mTextureParams;
+#endif
 	BOOL mRenderingBegun; ///<Used for debug purposes (YES if we are in the middle of a beginRendering / endRendering block)
 }
 //Initialization

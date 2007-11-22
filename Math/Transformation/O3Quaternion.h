@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3Quaternion.h
@@ -54,3 +55,4 @@ public: //Equality and assignment methods and operators
 	bool operator==(const O3Quaternion& q) const;	///<Tests for exact (no epsilon tolerance) equality of two quaternions.
 	bool operator!=(const O3Quaternion& q) const;	///<Tests for exact (no epsilon tolerance) inequality of two quaternions.
 };
+#endif /*defined(__cplusplus)*/

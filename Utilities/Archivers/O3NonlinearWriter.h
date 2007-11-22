@@ -4,8 +4,8 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
+#ifdef __cplusplus
 #pragma once
-#include <vector>
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
@@ -119,3 +119,4 @@ template <typename UIntegerType>
 		WriteBytesAtPlaceholder(bytes, usedbytes, p, NO);
 		return usedbytes;
 	}
+#endif /*defined(__cplusplus)*/

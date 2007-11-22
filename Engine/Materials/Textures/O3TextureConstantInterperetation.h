@@ -210,8 +210,8 @@ static void formatAndTypeForInternalFormatAP(GLenum internalFormat, GLenum* form
 			break;
 		default:
 			if (isFormatCompressedP(internalFormat)) {
-				*type = nil;
-				*format = nil;
+				*type = (GLenum)0;
+				*format =(GLenum)0;
 				return;
 			} else {
 				O3CLogWarn(@"Texture format & type were not guessable for internalFormat 0x%X. Assuming NULL and NULL.", internalFormat);

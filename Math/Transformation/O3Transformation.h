@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3Transformation.h
  *  @license MIT License (see LICENSE.txt)
@@ -121,3 +122,4 @@ public: //Accessors
 public: //Interface
 	std::string Description() const;
 };
+#endif /*defined(__cplusplus)*/

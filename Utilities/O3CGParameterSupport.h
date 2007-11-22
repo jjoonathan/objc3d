@@ -21,6 +21,7 @@ id   O3GetCGParameterValue(CGparameter param);
 void O3SetCGAnnotationToValue(CGannotation anno, id value);
 id   O3GetCGAnnotationValue(CGannotation anno);
 
+#ifdef __cplusplus
 #define O3GetScalarAnnotationValue(annotation, scalar_type) O3GetScalarAnnotationValueSupport<scalar_type>::getValue(annotation)
 template <typename TYPE>
 struct O3GetScalarAnnotationValueSupport {
@@ -49,3 +50,4 @@ struct O3GetScalarAnnotationValueSupport {
 		return 0;
 	}
 };
+#endif /*defined(__cplusplus)*/

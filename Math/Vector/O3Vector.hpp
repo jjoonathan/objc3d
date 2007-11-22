@@ -7,7 +7,6 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #include "O3Functions.h"
-#include <cmath>
 using namespace ObjC3D::Math;
 
 /*******************************************************************/ #pragma mark DEPRICATED /*******************************************************************/

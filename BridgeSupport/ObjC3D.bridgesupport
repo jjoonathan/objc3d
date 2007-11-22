@@ -1,0 +1,432 @@
+<?xml version='1.0'?>
+<!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
+<signatures version='0.9'>
+  <depends_on path='/Users/jon/Documents/Prog/objc3d/build/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework'/>
+  <depends_on path='/Users/jon/Documents/Prog/objc3d/build/ObjC3D.framework/Versions/Current/Frameworks/Cg.framework'/>
+  <depends_on path='/System/Library/Frameworks/AGL.framework'/>
+  <depends_on path='/System/Library/Frameworks/Cocoa.framework'/>
+  <depends_on path='/System/Library/Frameworks/OpenGL.framework'/>
+  <depends_on path='/System/Library/Frameworks/Carbon.framework'/>
+  <depends_on path='/System/Library/Frameworks/CoreFoundation.framework'/>
+  <depends_on path='/System/Library/Frameworks/AppKit.framework'/>
+  <depends_on path='/System/Library/Frameworks/Foundation.framework'/>
+  <constant name='O3ArchiveFormat0' type='I'/>
+  <constant name='O3CGActionUndoableWhenPrecompiledError' type='I'/>
+  <constant name='O3ResManagerKeyDidChangeNotification' type='@'/>
+  <constant name='O3ResManagerKeyWillChangeNotification' type='@'/>
+  <constant name='O3UnkeyedMethodSendToKeyedArchiverException' type='@'/>
+  <constant name='gCGContext' type='^{_CGcontext=}'/>
+  <constant name='gCompressedInternalFormats' type='^I'/>
+  <constant name='gMaximumVertexAttributes' type='i'/>
+  <constant name='gNumberCompressedInternalFormats' type='i'/>
+  <constant name='gO3KeyedUnarchiverLazyThreshhold' type='i'/>
+  <string_constant name='O3CGErrorDomain' nsstring='true' value='O3CGErrorDomain'/>
+  <string_constant name='O3DefaultErrorDomain' nsstring='true' value='O3DefaultErrorDomain'/>
+  <string_constant name='O3EXCEPTION_INCONSISTANT_FORMATS' nsstring='true' value='O3ExceptionInconsistantFormats'/>
+  <string_constant name='O3GLErrorDomain' nsstring='true' value='O3GLErrorDomain'/>
+  <enum name='CGEffectAnnotationType' value='1'/>
+  <enum name='CGParameterAnnotationType' value='0'/>
+  <enum name='CGPassAnnotationType' value='2'/>
+  <enum name='CGProgramAnnotationType' value='4'/>
+  <enum name='CGTechniqueAnnotationType' value='3'/>
+  <enum name='O3AutoDetectAspectRatio' value='0'/>
+  <enum name='O3BigEndian' value='1'/>
+  <enum name='O3ColorDataType' value='2'/>
+  <enum name='O3ColorIndexDataType' value='3'/>
+  <enum name='O3EdgeFlagDataType' value='4'/>
+  <enum name='O3FogCoordDataType' value='6'/>
+  <enum name='O3FrameAspectRatio' value='2'/>
+  <enum name='O3LittleEndian' value='0'/>
+  <enum name='O3NormalDataType' value='1'/>
+  <enum name='O3PkgTypeArray' value='9'/>
+  <enum name='O3PkgTypeDictionary' value='8'/>
+  <enum name='O3PkgTypeFalse' value='0'/>
+  <enum name='O3PkgTypeFloat' value='4'/>
+  <enum name='O3PkgTypeIndexedString' value='6'/>
+  <enum name='O3PkgTypeNegativeInt' value='3'/>
+  <enum name='O3PkgTypeObject' value='14'/>
+  <enum name='O3PkgTypePositiveInt' value='2'/>
+  <enum name='O3PkgTypeRawData' value='12'/>
+  <enum name='O3PkgTypeString' value='6'/>
+  <enum name='O3PkgTypeStringArray' value='11'/>
+  <enum name='O3PkgTypeTrue' value='1'/>
+  <enum name='O3PkgTypeValue' value='7'/>
+  <enum name='O3PkgTypeValueArray' value='10'/>
+  <enum name='O3ResManagerFileLazy' value='0'/>
+  <enum name='O3ResManagerModerateLazy' value='1'/>
+  <enum name='O3ResManagerNoOpinionLazy' value='3'/>
+  <enum name='O3ResManagerObjectLazy' value='2'/>
+  <enum name='O3SecondaryColorDataType' value='5'/>
+  <enum name='O3SizeAspectRatio' value='1'/>
+  <enum name='O3TexCoord0DataType' value='100'/>
+  <enum name='O3TexCoord1DataType' value='101'/>
+  <enum name='O3TexCoord2DataType' value='102'/>
+  <enum name='O3TexCoord3DataType' value='103'/>
+  <enum name='O3TexCoord4DataType' value='104'/>
+  <enum name='O3TexCoord5DataType' value='105'/>
+  <enum name='O3TexCoord6DataType' value='106'/>
+  <enum name='O3TexCoord7DataType' value='107'/>
+  <enum name='O3TexCoord8DataType' value='108'/>
+  <enum name='O3TexCoord9DataType' value='109'/>
+  <enum name='O3TexCoordDataType' value='7'/>
+  <enum name='O3VertexAttribute0DataType' value='16'/>
+  <enum name='O3VertexAttribute1DataType' value='17'/>
+  <enum name='O3VertexAttribute2DataType' value='18'/>
+  <enum name='O3VertexAttribute3DataType' value='19'/>
+  <enum name='O3VertexAttribute4DataType' value='20'/>
+  <enum name='O3VertexAttribute5DataType' value='21'/>
+  <enum name='O3VertexAttribute6DataType' value='22'/>
+  <enum name='O3VertexAttribute7DataType' value='23'/>
+  <enum name='O3VertexAttribute8DataType' value='24'/>
+  <enum name='O3VertexAttribute9DataType' value='25'/>
+  <enum name='O3VertexLocationDataType' value='0'/>
+  <enum name='O3VertexLocationIndexDataType' value='8'/>
+  <enum name='O3WidthHeightAspectRatio' value='3'/>
+  <function name='NSObjectPlainObjectSingleton' inline='true'>
+    <retval type='@'/>
+  </function>
+  <function name='O3AlignedSizeofObjCEncodedType'>
+    <arg type='*'/>
+    <retval type='I'/>
+  </function>
+  <function name='O3Alloc' inline='true'>
+    <arg type='#'/>
+    <arg type='^{_NSZone=}'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3ArchiveStringMapFromArray'>
+    <arg type='@'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3Autorelease' inline='true'>
+    <arg type='@'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3CGParameterBindValue_to_'>
+    <arg type='@'/>
+    <arg type='@'/>
+  </function>
+  <function name='O3CGParameterUnbindValue'>
+    <arg type='@'/>
+    <retval type='B'/>
+  </function>
+  <function name='O3Copy' inline='true'>
+    <arg type='@'/>
+    <arg type='^{_NSZone=}'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3CountObjCEncodedElementsOfType'>
+    <arg type='c'/>
+    <arg type='*'/>
+    <retval type='I'/>
+  </function>
+  <function name='O3DeserializeDataOfType'>
+    <arg type='^v'/>
+    <arg type='*'/>
+    <arg type='@'/>
+  </function>
+  <function name='O3FailAssert'/>
+  <function name='O3FileResSourceSearchPriority'>
+    <arg type='@'/>
+    <arg type='@'/>
+    <retval type='d'/>
+  </function>
+  <function name='O3FramebufferObject_bind'>
+    <arg type='@'/>
+    <arg type='B'/>
+  </function>
+  <function name='O3GetCGAnnotationValue'>
+    <arg type='^{_CGannotation=}'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3GetCGParameterValue'>
+    <arg type='^{_CGparameter=}'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3GlobalCGContext'>
+    <retval type='^{_CGcontext=}'/>
+  </function>
+  <function name='O3KeyedArchiverEncodedNameOfClass'>
+    <arg type='@'/>
+    <arg type='#'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3MoveDataOfType'>
+    <arg type='^v'/>
+    <arg type='^v'/>
+    <arg type='*'/>
+    <arg type='L'/>
+  </function>
+  <function name='O3MultiIndexCount' inline='true'>
+    <arg type='^i'/>
+    <retval type='L'/>
+  </function>
+  <function name='O3RawVertexData_indicies'>
+    <arg type='@'/>
+    <retval type='^v'/>
+  </function>
+  <function name='O3Release' inline='true'>
+    <arg type='@'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3Retain' inline='true'>
+    <arg type='@'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3RetainAutorelease' inline='true'>
+    <arg type='@'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3SerializeDataOfType'>
+    <arg type='^v'/>
+    <arg type='*'/>
+    <arg type='L'/>
+    <arg type='@'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3SetCGAnnotationToValue'>
+    <arg type='^{_CGannotation=}'/>
+    <arg type='@'/>
+  </function>
+  <function name='O3SetCGParameterToValue'>
+    <arg type='^{_CGparameter=}'/>
+    <arg type='@'/>
+  </function>
+  <function name='O3SizeofGLType' inline='true'>
+    <arg type='I'/>
+    <retval type='i'/>
+  </function>
+  <function name='O3UnalignedSizeofObjCEncodedType'>
+    <arg type='*'/>
+    <retval type='I'/>
+  </function>
+  <function name='O3VertexDataTypeIsVertexAttribute' inline='true'>
+    <arg type='i'/>
+    <retval type='B'/>
+  </function>
+  <function name='O3VertexDataTypeStoresIndicies' inline='true'>
+    <arg type='i'/>
+    <retval type='B'/>
+  </function>
+  <function name='isFormatCompressedP' inline='true'>
+    <arg type='I'/>
+    <retval type='B'/>
+  </function>
+  <function name='sizeForFormatAndNumberPixelsP' inline='true'>
+    <arg type='I'/>
+    <arg type='I'/>
+    <arg type='I'/>
+    <retval type='I'/>
+  </function>
+  <function name='sizeForIneternalFormatAndPixelsP' inline='true'>
+    <arg type='I'/>
+    <arg type='I'/>
+    <retval type='I'/>
+  </function>
+  <class name='NSCoder'>
+    <method selector='isStatisticGatherer'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='NSObject'>
+    <method selector='isSpeciallyHandledByO3Archiver'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3CGAnnotation'>
+    <method selector='boolValue'>
+      <retval type='B'/>
+    </method>
+    <method selector='freeWhenDone'>
+      <retval type='B'/>
+    </method>
+    <method selector='setBoolValue:'>
+      <arg type='B' index='0'/>
+    </method>
+    <method selector='setFreeWhenDone:'>
+      <arg type='B' index='0'/>
+    </method>
+  </class>
+  <class name='O3CGEffect'>
+    <method class_method='true' selector='effectsEnabled'>
+      <retval type='B'/>
+    </method>
+    <method class_method='true' selector='setEffectsEnabled:'>
+      <arg type='B' index='0'/>
+    </method>
+  </class>
+  <class name='O3CGParameter'>
+    <method selector='freeWhenDone'>
+      <retval type='B'/>
+    </method>
+    <method selector='setDoubleMatrixValue:rows:columns:rowMajor:'>
+      <arg type='B' index='3'/>
+    </method>
+    <method selector='setFloatMatrixValue:rows:columns:rowMajor:'>
+      <arg type='B' index='3'/>
+    </method>
+    <method selector='setFreeWhenDone:'>
+      <arg type='B' index='0'/>
+    </method>
+    <method selector='setIntMatrixValue:rows:columns:rowMajor:'>
+      <arg type='B' index='3'/>
+    </method>
+  </class>
+  <class name='O3CGProgram'>
+    <method class_method='true' selector='compiledAutomatically'>
+      <retval type='B'/>
+    </method>
+    <method class_method='true' selector='compiledLazily'>
+      <retval type='B'/>
+    </method>
+    <method class_method='true' selector='setCompiledAutomatically:'>
+      <arg type='B' index='0'/>
+    </method>
+    <method class_method='true' selector='setCompiledLazily:'>
+      <arg type='B' index='0'/>
+    </method>
+    <method class_method='true' selector='setShadersEnabled:'>
+      <arg type='B' index='0'/>
+    </method>
+    <method class_method='true' selector='shadersEnabled'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3CGTechnique'>
+    <method selector='isValid'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3DirectoryResSource'>
+    <method selector='isBig'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3FileResSource'>
+    <method selector='isBig'>
+      <retval type='B'/>
+    </method>
+    <method selector='needsUpdate'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3FramebufferObject'>
+    <method class_method='true' selector='supportedAtLeastToLevel:'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3GeneratedVertexDataSource'>
+    <method selector='planeEnabledForCoord:'>
+      <retval type='B'/>
+    </method>
+    <method selector='setPlaneForCoord:enabled:'>
+      <arg type='B' index='1'/>
+    </method>
+  </class>
+  <class name='O3KeyedArchiver'>
+    <method selector='setShouldCompress:'>
+      <arg type='B' index='0'/>
+    </method>
+    <method selector='setWritesCompatibilityData:'>
+      <arg type='B' index='0'/>
+    </method>
+    <method selector='shouldCompress'>
+      <retval type='B'/>
+    </method>
+    <method selector='writesCompatibilityData'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3KeyedUnarchiver'>
+    <method selector='containsValueForKey:'>
+      <retval type='B'/>
+    </method>
+    <method selector='decodeBoolForKey:'>
+      <retval type='B'/>
+    </method>
+    <method selector='readAndLoadIntoManager:returnDummyDict:'>
+      <arg type='B' index='1'/>
+    </method>
+    <method selector='skimDictionaryAtOffset:levelOne:'>
+      <arg type='B' index='1'/>
+    </method>
+  </class>
+  <class name='O3Light'>
+    <method selector='isEnabled'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3Mesh'>
+    <method selector='initWithVerticies:indicies:primitiveType:primitiveCount:verticiesPerPrimitive:primitivesHaveSameNumberVerticies:material:'>
+      <arg type='B' index='5'/>
+    </method>
+    <method selector='primitivesHaveEqualVertexCount'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3RawVertexData'>
+    <method selector='bindAsSourceForVertexAttributeNumber:format:componentCount:normalized:offset:stride:'>
+      <arg type='B' index='3'/>
+    </method>
+    <method selector='isMapped'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3RawVertexDataSource'>
+    <method selector='vertexAttributeNormalized'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3Renderbuffer'>
+    <method class_method='true' selector='supportedAtLeastToLevel:'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3ResManager'>
+    <method selector='encodedAsShared'>
+      <retval type='B'/>
+    </method>
+    <method selector='isInInterfaceBuilder'>
+      <retval type='B'/>
+    </method>
+    <method selector='setEncodedAsShared:'>
+      <arg type='B' index='0'/>
+    </method>
+  </class>
+  <class name='O3ResSource'>
+    <method selector='isBig'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3Texture'>
+    <method selector='isCompressed'>
+      <retval type='B'/>
+    </method>
+    <method selector='isResident'>
+      <retval type='B'/>
+    </method>
+    <method class_method='true' selector='supportedAtLeastToLevel:'>
+      <retval type='B'/>
+    </method>
+  </class>
+  <informal_protocol name='O3CameraAspectRatioSource'>
+    <method type='{_NSRect={_NSPoint=ff}{_NSSize=ff}}8@0:4' selector='frame'/>
+    <method type='i8@0:4' selector='height'/>
+    <method type='{_NSSize=ff}8@0:4' selector='size'/>
+    <method type='i8@0:4' selector='width'/>
+  </informal_protocol>
+  <informal_protocol name='O3KeyedArchiverSpecialness'>
+    <method type='B8@0:4' selector='isSpeciallyHandledByO3Archiver'/>
+  </informal_protocol>
+  <informal_protocol name='O3MutableValues'>
+    <method type='d8@0:4' selector='doubleValue'/>
+    <method type='f8@0:4' selector='floatValue'/>
+    <method type='i8@0:4' selector='intValue'/>
+    <method type='v16@0:4d8' selector='setDoubleValue:'/>
+    <method type='v12@0:4f8' selector='setFloatValue:'/>
+    <method type='v12@0:4i8' selector='setIntValue:'/>
+    <method type='v12@0:4@8' selector='setValue:'/>
+    <method type='@8@0:4' selector='stringValue'/>
+    <method type='@8@0:4' selector='value'/>
+  </informal_protocol>
+</signatures>

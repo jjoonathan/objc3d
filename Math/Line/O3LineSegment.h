@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3LineSegment.h
  *  @license MIT License (see LICENSE.txt)
@@ -46,3 +47,4 @@ public: //Methods
 	bool operator==(const LineSeg_T& other_segment) const; ///<Tests equality (NOTE: LineSeg_T(a,b) != LineSeg_T(b,a))
 	bool operator!=(const LineSeg_T& other_segment) const; ///<Tests inequality (returns !operator==)
 };
+#endif /*defined(__cplusplus)*/

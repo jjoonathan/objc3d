@@ -33,6 +33,7 @@ enum O3PkgType { //See below for the full definitions of these types
  * "D" is the "domain" of the archive. When an archive is being loaded as a set of resources, the domain + "_" is prepended to all keys in the archive root.
  */
 
+#ifdef __cplusplus
 /* U?CInt
  * A U?CInt stores a signed or unsigned integer very efficiently. 
  * The MSB of every byte (byte&0x80) determines if there is another byte following it.
@@ -307,3 +308,5 @@ inline UIntP O3WriteTypedObjectHeader(UInt8* buf, O3PkgType type, UIntP size, NS
 * ./... is in the same virtual folder/object as the place it is specified
 * ../... is in the folder above the place it is specified
 */
+
+#endif /*defined(__cplusplus)*/

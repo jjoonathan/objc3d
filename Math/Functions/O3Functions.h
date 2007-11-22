@@ -7,16 +7,25 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 /************************************/ #pragma mark Square Root /************************************/
+#ifdef __cplusplus
 inline float	O3rsqrt(float value);		//Returns the reciprocol of a square root
-inline double	O3rsqrt(double value);
 inline float	O3rsqrte(float value);	//Returns the estimate reciprocol of a square root
-inline double	O3rsqrte(double value);
 inline float	O3recip(float value);		//Returns the reciprocol of the passed value
+inline double	O3rsqrt(double value);
+inline double	O3rsqrte(double value);
 inline double	O3recip(double value);
+#else
+#define O3rsqrt(1.0 / sqrt(value))
+#define O3rsqrte(1.0 / sqrt(value))
+#define O3recip(1.0 / (value))
+#endif
+
 
 /************************************/ #pragma mark Swap /************************************/
+#ifdef __cplusplus
 template <typename T> 
 inline void O3swap(T& thing1, T& thing2);
+#endif
 
 /************************************/ #pragma mark Conversion /************************************/
 #define O3DegreesToRadians(x) ((x)*(3.14159265358979323846/180.0))
@@ -34,12 +43,14 @@ inline void O3swap(T& thing1, T& thing2);
 #define O3Abs(a)    (((a)<0)?-(a):(a))
 
 /************************************/ #pragma mark Rounding /************************************/
+#ifdef __cplusplus
 template <typename T, typename T2>
 T O3RoundUpToNearest(T num, T2 amount) {
 	T dev = num % amount;
 	if (dev) dev = amount - dev;
 	return num+dev;
 }
+#endif
 
 /*******************************************************************/ #pragma mark Byteswapping /*******************************************************************/
 typedef enum {
@@ -48,6 +59,7 @@ typedef enum {
 } O3ENDIANESS;	///<Defines supported endianess. Also typedefed to O3Endianess.
 typedef O3ENDIANESS O3Endianess;	///<Since it is unclear which naming convention should be used, both are allowed.
 
+#ifdef __cplusplus
 template <typename TYPE> TYPE O3Byteswap(const TYPE& to_swap); ///<Swaps the bytes for any TYPE
 
 #ifndef __BIG_ENDIAN__
@@ -66,6 +78,7 @@ template <typename TYPE> TYPE O3Byteswap(const TYPE& to_swap); ///<Swaps the byt
 #define O3ByteswapHostToBig(x)    (x)
 #define O3ByteswapToHost(endianess, x) ((endianess==O3LittleEndian)?O3Byteswap(x):(x))
 #define O3ByteswapHostTo(endianess, x) ((endianess==O3LittleEndian)?O3Byteswap(x):(x))
-#endif
+#endif /*defined(__BIG_ENDIAN__)*/
+#endif /*defined(__cplusplus)*/
 
 #include "O3Functions.hpp"

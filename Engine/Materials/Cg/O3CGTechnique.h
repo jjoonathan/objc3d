@@ -6,23 +6,31 @@
  */
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>
+#ifdef __cplusplus
 #include <vector>
 #include <map>
 #include <string>
+using namespace std;
+#endif
 @class O3CGEffect;
 @class O3KVCHelper;
 @class O3CGAnnotation;
 @class O3CGPass;
-using namespace std;
 
 @interface O3CGTechnique : NSObject <O3MultipassDirector> {
 	/*O3WEAK*/ O3CGEffect* mEffect; ///<The effect that contains the technique
 	CGtechnique mTechnique; ///<The actual technique wrapped by the O3CGTechnique
-	vector<CGpass>* mPasses; ///<A cache of the passes in the O3CGTechnique (not the ObjC objects)
 	O3KVCHelper* mAnnotationKVCHelper;
 	O3KVCHelper* mPassesKVCHelper;
+#ifdef __cplusplus
+	vector<CGpass>* mPasses; ///<A cache of the passes in the O3CGTechnique (not the ObjC objects)
 	map<string, O3CGPass*>* mPassMap; ///<All the receiver's pass objects organized into a map by name
 	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
+#else
+	void* mPasses;
+	void* mPassMap;
+	void* mAnnotations;
+#endif
 }
 //Init
 - (id)initWithTechnique:(CGtechnique)technique fromEffect:(O3CGEffect*)effect;

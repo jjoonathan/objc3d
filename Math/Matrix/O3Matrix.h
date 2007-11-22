@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3Matrix.h
@@ -6,7 +7,6 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#include <iostream>
 class O3DynamicMatrix;
 
 #define O3Mat_TT	template <typename TYPE, int ROWS, int COLUMNS>
@@ -124,3 +124,4 @@ typedef O3Mat<float, 3, 3> O3Mat3x3f;
 typedef O3Mat<real, 4, 4> O3Mat4x4r;
 typedef O3Mat<double, 4, 4> O3Mat4x4d;
 typedef O3Mat<float, 4, 4> O3Mat4x4f;
+#endif /*defined(__cplusplus)*/

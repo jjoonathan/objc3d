@@ -9,7 +9,11 @@
 @class O3ResManager;
 
 @interface O3KeyedUnarchiver : NSCoder <O3UnarchiverCallbackable> {
+#ifdef __cplusplus
 	O3BufferedReader* mBr;
+#else
+	void* mBr;
+#endif
 	NSZone* mObjectZone;
 	NSMutableDictionary* mClassOverrides; ///<NSString->Class
 	NSDictionary* mClassFallbacks; ///<NSString->NSString
@@ -27,7 +31,9 @@
 
 //Fine control
 - (O3KeyedUnarchiver*)initForReadingWithData:(NSData*)dat;
+#ifdef __cplusplus
 - (O3KeyedUnarchiver*)initForReadingWithReader:(O3BufferedReader*)br deleteWhenDone:(BOOL)shouldDelete;
+#endif
 - (void)reset;
 - (id)read;
 - (id)readAndLoadIntoManager:(O3ResManager*)manager returnDummyDict:(BOOL)returnDummyDict;
@@ -44,9 +50,11 @@
 + (id)unarchiveObjectWithFile:(NSString *)path;
 
 //Unarchiving protocol
+#ifdef __cplusplus
 - (NSObject*)readO3ADictionaryFrom:(O3BufferedReader*)reader size:(UIntP)size;
 - (NSArray*)readO3AArrayFrom:(O3BufferedReader*)reader size:(UIntP)size;
 - (id)readO3AObjectOfClass:(NSString*)className from:(O3BufferedReader*)reader size:(UIntP)size;
+#endif
 
 //Class overriding
 + (void)setClass:(Class)c forClassName:(NSString*)cname;

@@ -9,13 +9,21 @@
 #import "O3Space.h"
 
 @interface O3Locateable : NSObject {
+#ifdef __cplusplus
 	O3Translation3* mTranslation;
 	O3Rotation3* mRotation;
 	O3Scale3* mScale;
-	BOOL mSpaceNeedsUpdate; ///<Weather the space needs to be remade from mTranslation etc. @note In the current implementation this really isn't used: the space is updated right after changes.
 	Space3* mSpace;
+#else
+	void* mTranslation;
+	void* mRotation;
+	void* mScale;
+	void* mSpace;
+#endif
+	BOOL mSpaceNeedsUpdate; ///<Weather the space needs to be remade from mTranslation etc. @note In the current implementation this really isn't used: the space is updated right after changes.
 }
 
+#ifdef __cplusplus
 - (Space3*)space;		///<Returns the receiver's space (object space)
 - (Space3*)superspace;	///<Returns the receiver's superspace (space above object space)
 
@@ -36,5 +44,5 @@
 - (void)setMatrixToSpace:(Space3*)targetspace;
 
 - (void)debugDrawIntoSpace:(const Space3&)intospace;
-
+#endif
 @end

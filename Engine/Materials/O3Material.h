@@ -5,18 +5,22 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+#ifdef __cplusplus
 #include <map>
 #include <string>
 using namespace std;
+#endif
 @class O3KVCHelper;
 
 struct O3MaterialParameterPair {
 	NSObject* target;	//Has -setValue:
 	NSObject* value;	//Has -value
-	O3MaterialParameterPair() {
+#ifdef __cplusplus
+	O3MaterialParameterPair() { ///<Default constructor for use in the map
 		target = nil;
 		value = nil;
 	}
+#endif
 };
 
 /**
@@ -29,7 +33,11 @@ struct O3MaterialParameterPair {
 @interface O3Material : NSObject <O3MultipassDirector> {
 	NSObject<O3MultipassDirector, O3HasParameters>* mMaterialType;	///<The type of material (the shader that implements this type of material)
 	O3KVCHelper* mParameterKVCHelper;
+#ifdef __cplusplus
 	map<string, O3MaterialParameterPair>* mParameters;
+#else
+	void* mParameters;
+#endif
 }
 //Creation
 - (id)initWithMaterialType:(NSObject<O3MultipassDirector, O3HasParameters>*)materialType;

@@ -7,13 +7,15 @@
  */
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>
-#import <vector>
 #import "O3Material.h"
 #import "O3CGAutoSetParameters.h"
+#ifdef __cplusplus
+#import <vector>
 #include <map>
 #include <set>
 #include <string>
 using namespace std;
+#endif
 @class O3CGTechnique;
 @class O3KVCHelper;
 @class O3CGAnnotation;
@@ -25,7 +27,11 @@ using namespace std;
 @interface O3CGPass : NSObject {
 	CGpass mPass;
 	O3KVCHelper* mAnnotationKVCHelper; ///<Allows KVC to be used properly on annotations
+#ifdef __cplusplus
 	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
+#else
+	void* mAnnotations;
+#endif
 }
 
 //Init

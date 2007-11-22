@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3Scale.h
@@ -46,3 +47,4 @@ public: //O3Mat construction
 
 typedef O3Scale<double, 2> O3Scale2;
 typedef O3Scale<double, 3> O3Scale3;
+#endif /*defined(__cplusplus)*/

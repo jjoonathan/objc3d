@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3Point.h
  *  @license MIT License (see LICENSE.txt)
@@ -39,3 +40,4 @@ typedef O3Point<real, 3> O3Point3;
 typedef O3Point<real, 2> O3Point2;
 typedef O3Point<double, 3> O3Point3d;
 typedef O3Point<double, 2> O3Point2d;
+#endif /*defined(__cplusplus)*/

@@ -46,7 +46,7 @@
 		FC2C1C0E0C125ECA0084A599 /* O3BufferedWriter.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2B5F0C0BD26C6D005324C8 /* O3BufferedWriter.mm */; };
 		FC2C1C0F0C125ECB0084A599 /* O3CGParameterSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = FC11C4460B59E09F0069119E /* O3CGParameterSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C100C125ECC0084A599 /* O3CGParameterSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC11C4470B59E09F0069119E /* O3CGParameterSupport.mm */; };
-		FC2C1C110C125ECF0084A599 /* ObjCEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC2C1C110C125ECF0084A599 /* ObjCEncoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FC2C1C120C125ED00084A599 /* O3ValueArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2D3E9F0BD84F7D004F0A20 /* O3ValueArray.mm */; };
 		FC2C1C130C125ED30084A599 /* O3ValueArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2D3E9E0BD84F7D004F0A20 /* O3ValueArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C140C125ED40084A599 /* O3Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = FC92305A0AB347E9003878EA /* O3Utilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -112,7 +112,7 @@
 		FC2C1C550C125F700084A599 /* O3Value.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCD234C60C09D6CE007DB98F /* O3Value.mm */; };
 		FC2C1C560C125F700084A599 /* O3Vector.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA35A2F0AA2812D0055819F /* O3Vector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C570C125F710084A599 /* O3Value.h in Headers */ = {isa = PBXBuildFile; fileRef = FCD234C50C09D6CE007DB98F /* O3Value.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C580C125F720084A599 /* O3TRSSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FCDC8DEF0B7940A500D48155 /* O3TRSSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC2C1C580C125F720084A599 /* O3TRSSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FCDC8DEF0B7940A500D48155 /* O3TRSSpace.h */; settings = {ATTRIBUTES = (); }; };
 		FC2C1C5A0C125F740084A599 /* O3Translation.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4AD8310AE9BA1600812085 /* O3Translation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C5B0C125F750084A599 /* O3Transformation.h in Headers */ = {isa = PBXBuildFile; fileRef = FCDAAF750AD49A5A0074B780 /* O3Transformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C5C0C125F750084A599 /* O3Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCDAAF710AD49A4B0074B780 /* O3Transformation.cpp */; };
@@ -190,6 +190,7 @@
 		FC63E3130CF3197100325C54 /* Log4Cocoa.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC7DD60E0C1C8CAB009D36A2 /* Log4Cocoa.framework */; };
 		FC63E35A0CF35D7C00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */; };
 		FC63E3B60CF35D8300325C54 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */; };
+		FC63ED660CF6498700325C54 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = FC63ED630CF6498700325C54 /* BridgeSupport */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
@@ -448,6 +449,7 @@
 		FC63E1460CF1C8FA00325C54 /* console.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = console.rb; sourceTree = "<group>"; };
 		FC63E15D0CF276BE00325C54 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log4Cocoa.framework; path = build/Support/Log4Cocoa.framework; sourceTree = SOURCE_ROOT; };
+		FC63ED630CF6498700325C54 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BridgeSupport; sourceTree = SOURCE_ROOT; };
 		FC66909B0B63F5B200C87AF9 /* O3RawVertexDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RawVertexDataSource.mm; sourceTree = "<group>"; };
 		FC66909C0B63F5B200C87AF9 /* O3RawVertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3RawVertexDataSource.h; sourceTree = "<group>"; };
 		FC6690A20B63F5EE00C87AF9 /* O3VertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexDataSource.h; sourceTree = "<group>"; };
@@ -663,6 +665,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FC63ED630CF6498700325C54 /* BridgeSupport */,
 				FC63E1460CF1C8FA00325C54 /* console.rb */,
 				FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */,
 				FC3E61990C9E305F00E2F0F8 /* portabalize.sh */,
@@ -1304,7 +1307,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC2C1BB90C123F7A0084A599 /* Build configuration list for PBXNativeTarget "ObjC3D.framework" */;
 			buildPhases = (
-				FC63E32B0CF35BE900325C54 /* Make Cg Imbedable */,
+				FC63E32B0CF35BE900325C54 /* Make Cg Embedable */,
 				FC2C1E950C12F3CD0084A599 /* Embed Log4Cocoa and Cg frameworks */,
 				FC2C1BB40C123F790084A599 /* Sources */,
 				FC2C1BB20C123F790084A599 /* Headers */,
@@ -1447,6 +1450,7 @@
 			files = (
 				FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */,
 				FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */,
+				FC63ED660CF6498700325C54 /* BridgeSupport in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1494,14 +1498,14 @@
 			shellPath = /bin/sh;
 			shellScript = "rm -f $PROJECT_DIR/build/Cg.framework\nln -s $PROJECT_DIR/Other/Cg.framework $PROJECT_DIR/build/Cg.framework\n\ngen_bridge_metadata -f $PROJECT_DIR/build/ObjC3D.framework -o $PROJECT_DIR/BridgeSupport/ObjC3D.bridgesupport";
 		};
-		FC63E32B0CF35BE900325C54 /* Make Cg Imbedable */ = {
+		FC63E32B0CF35BE900325C54 /* Make Cg Embedable */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Make Cg Imbedable";
+			name = "Make Cg Embedable";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

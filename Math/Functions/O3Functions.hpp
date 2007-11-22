@@ -6,14 +6,13 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+#ifdef __cplusplus
 using namespace ObjC3D;
+#endif
 
 /*******************************************************************/ #pragma mark Reciprocal and Square Root Functions /*******************************************************************/
+#ifdef __cplusplus
 inline float O3rsqrt(float value) {
-	return 1.0 / sqrt(value);
-}
-
-inline double O3rsqrt(double value) {
 	return 1.0 / sqrt(value);
 }
 
@@ -27,19 +26,29 @@ inline float O3rsqrte(float value) {
 	//return sqrt(value);
 }
 
-inline double O3rsqrte(double value) {
+inline float	O3recip(float value) {
+	return 1.0 / value;
+}
+
+inline double O3rsqrt(double value) {
 	return 1.0 / sqrt(value);
 }
 
-inline float	O3recip(float value) {
-	return 1.0 / value;
+inline double O3rsqrte(double value) {
+	return 1.0 / sqrt(value);
 }
 
 inline double	O3recip(double value) {
 	return 1.0 / value;
 }
 
+#endif /*defined(__cplusplus)*/
+
+
+
+
 /************************************/ #pragma mark Regular swap /************************************/
+#ifdef __cplusplus
 template <typename T> struct O3swap_implementation;
 template <typename T> void O3swap(T& thing1, T& thing2) {O3swap_implementation<T>::swap(thing1, thing2);}
 template <typename T> struct O3swap_implementation {
@@ -49,8 +58,10 @@ template <typename T> struct O3swap_implementation {
 		thing2 = tmp;
 	}
 };
+#endif
 
 /************************************/ #pragma mark Byteswapping /************************************/
+#ifdef __cplusplus
 template <typename T> struct O3ByteswapImplementation;
 template <typename TYPE> inline TYPE O3Byteswap(const TYPE& to_swap) {return O3ByteswapImplementation<TYPE>::byteswap(to_swap);}
 template <typename TYPE> struct O3ByteswapImplementation {
@@ -65,7 +76,6 @@ template <typename TYPE> struct O3ByteswapImplementation {
 };
 
 #ifdef O3UseCoreFoundation
-
 template <> struct O3ByteswapImplementation<Int32>	{static inline Int32  byteswap(Int32 to_swap) {return CFSwapInt32(to_swap);}};
 template <> struct O3ByteswapImplementation<UInt32>	{static inline UInt32 byteswap(UInt32 to_swap) {return CFSwapInt32(to_swap);}};
 template <> struct O3ByteswapImplementation<Int16>	{static inline Int16  byteswap(Int16 to_swap) {return CFSwapInt16(to_swap);}};
@@ -86,5 +96,6 @@ template <> struct O3ByteswapImplementation<double>	{
 		return *(double*)&v2;
 	}
 };
+#endif /*defined(O3UseCoreFoundation)*/
 
-#endif
+#endif /*defined(__cplusplus)*/

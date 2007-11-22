@@ -8,13 +8,14 @@
 #ifndef O3FILE_MATH
 #define O3FILE_MATH
 
-#include <cmath>
-#include <iostream>
-#include <sstream>
-
 typedef float real;
 typedef double angle;
 typedef double scale;
+
+#ifdef __cplusplus
+#include <cmath>
+#include <iostream>
+#include <sstream>
 
 namespace ObjC3D {
 	namespace Math {};	///<The Math namespace holds all math classes along with a few constants.
@@ -51,4 +52,5 @@ namespace ObjC3D {
 #include "O3Box.hpp"
 #include "O3Sphere.hpp"
 
-#endif
+#endif /*defined(__cplusplus)*/
+#endif /*defined(O3FILE_MATH)*/
