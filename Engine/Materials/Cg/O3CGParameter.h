@@ -77,5 +77,5 @@
 @end
 
 ///Essentially binds \e from to \e to on the key @"value". Does not work for other key-value bindings, and disconnecting is handeled autoamatically if you don't do it manually. A parameter can only be bound to one source parameter at a time (multiple destination parameters are possible).
-void O3CGParameterBindValue_to_(O3CGParameter* to, O3CGParameter* from);
-BOOL O3CGParameterUnbindValue(O3CGParameter* self);
+O3EXTERN_C void O3CGParameterBindValue_to_(O3CGParameter* to, O3CGParameter* from);
+O3EXTERN_C BOOL O3CGParameterUnbindValue(O3CGParameter* self);

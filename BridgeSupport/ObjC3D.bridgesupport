@@ -16,9 +16,7 @@
   <constant name='O3ResManagerKeyWillChangeNotification' type='@'/>
   <constant name='O3UnkeyedMethodSendToKeyedArchiverException' type='@'/>
   <constant name='gCGContext' type='^{_CGcontext=}'/>
-  <constant name='gCompressedInternalFormats' type='^I'/>
   <constant name='gMaximumVertexAttributes' type='i'/>
-  <constant name='gNumberCompressedInternalFormats' type='i'/>
   <constant name='gO3KeyedUnarchiverLazyThreshhold' type='i'/>
   <string_constant name='O3CGErrorDomain' nsstring='true' value='O3CGErrorDomain'/>
   <string_constant name='O3DefaultErrorDomain' nsstring='true' value='O3DefaultErrorDomain'/>
@@ -69,6 +67,22 @@
   <enum name='O3TexCoord8DataType' value='108'/>
   <enum name='O3TexCoord9DataType' value='109'/>
   <enum name='O3TexCoordDataType' value='7'/>
+  <enum name='O3VecStructColor' value='6'/>
+  <enum name='O3VecStructDoubleElement' value='2'/>
+  <enum name='O3VecStructFloatElement' value='1'/>
+  <enum name='O3VecStructIndex' value='4'/>
+  <enum name='O3VecStructInt16Element' value='4'/>
+  <enum name='O3VecStructInt32Element' value='5'/>
+  <enum name='O3VecStructInt64Element' value='6'/>
+  <enum name='O3VecStructInt8Element' value='3'/>
+  <enum name='O3VecStructPoint' value='2'/>
+  <enum name='O3VecStructRotation' value='1'/>
+  <enum name='O3VecStructScale' value='3'/>
+  <enum name='O3VecStructUInt16Element' value='8'/>
+  <enum name='O3VecStructUInt32Element' value='9'/>
+  <enum name='O3VecStructUInt64Element' value='10'/>
+  <enum name='O3VecStructUInt8Element' value='7'/>
+  <enum name='O3VecStructVec' value='5'/>
   <enum name='O3VertexAttribute0DataType' value='16'/>
   <enum name='O3VertexAttribute1DataType' value='17'/>
   <enum name='O3VertexAttribute2DataType' value='18'/>
@@ -89,16 +103,7 @@
     <arg type='*'/>
     <retval type='I'/>
   </function>
-  <function name='O3Alloc' inline='true'>
-    <arg type='#'/>
-    <arg type='^{_NSZone=}'/>
-    <retval type='@'/>
-  </function>
   <function name='O3ArchiveStringMapFromArray'>
-    <arg type='@'/>
-    <retval type='@'/>
-  </function>
-  <function name='O3Autorelease' inline='true'>
     <arg type='@'/>
     <retval type='@'/>
   </function>
@@ -110,11 +115,6 @@
     <arg type='@'/>
     <retval type='B'/>
   </function>
-  <function name='O3Copy' inline='true'>
-    <arg type='@'/>
-    <arg type='^{_NSZone=}'/>
-    <retval type='@'/>
-  </function>
   <function name='O3CountObjCEncodedElementsOfType'>
     <arg type='c'/>
     <arg type='*'/>
@@ -124,6 +124,12 @@
     <arg type='^v'/>
     <arg type='*'/>
     <arg type='@'/>
+  </function>
+  <function name='O3DoubleValueOfType_at_withIndex_'>
+    <arg type='i'/>
+    <arg type='^v'/>
+    <arg type='L'/>
+    <retval type='d'/>
   </function>
   <function name='O3FailAssert'/>
   <function name='O3FileResSourceSearchPriority'>
@@ -146,6 +152,36 @@
   <function name='O3GlobalCGContext'>
     <retval type='^{_CGcontext=}'/>
   </function>
+  <function name='O3Index3x16Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Index3x32Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Index3x64Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Index3x8Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Index4x16Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Index4x32Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Index4x64Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Index4x8Type'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Int64ValueOfType_at_withIndex_'>
+    <arg type='i'/>
+    <arg type='^v'/>
+    <arg type='L'/>
+    <retval type='q'/>
+  </function>
   <function name='O3KeyedArchiverEncodedNameOfClass'>
     <arg type='@'/>
     <arg type='#'/>
@@ -161,20 +197,17 @@
     <arg type='^i'/>
     <retval type='L'/>
   </function>
+  <function name='O3Point3dType'>
+    <retval type='@'/>
+  </function>
   <function name='O3RawVertexData_indicies'>
     <arg type='@'/>
     <retval type='^v'/>
   </function>
-  <function name='O3Release' inline='true'>
-    <arg type='@'/>
+  <function name='O3Rot3dType'>
     <retval type='@'/>
   </function>
-  <function name='O3Retain' inline='true'>
-    <arg type='@'/>
-    <retval type='@'/>
-  </function>
-  <function name='O3RetainAutorelease' inline='true'>
-    <arg type='@'/>
+  <function name='O3Scale3dType'>
     <retval type='@'/>
   </function>
   <function name='O3SerializeDataOfType'>
@@ -192,13 +225,93 @@
     <arg type='^{_CGparameter=}'/>
     <arg type='@'/>
   </function>
+  <function name='O3SetValueOfType_at_toDouble_withIndex_'>
+    <arg type='i'/>
+    <arg type='^v'/>
+    <arg type='d'/>
+    <arg type='L'/>
+  </function>
+  <function name='O3SetValueOfType_at_toInt64_withIndex_'>
+    <arg type='i'/>
+    <arg type='^v'/>
+    <arg type='q'/>
+    <arg type='L'/>
+  </function>
+  <function name='O3SetValueOfType_at_toUInt64_withIndex_'>
+    <arg type='i'/>
+    <arg type='^v'/>
+    <arg type='Q'/>
+    <arg type='L'/>
+  </function>
   <function name='O3SizeofGLType' inline='true'>
     <arg type='I'/>
     <retval type='i'/>
   </function>
+  <function name='O3StructTypeForName'>
+    <arg type='@'/>
+    <retval type='@'/>
+  </function>
+  <function name='O3StructTypeSetForName'>
+    <arg type='@'/>
+    <arg type='@'/>
+  </function>
+  <function name='O3UInt64ValueOfType_at_withIndex_'>
+    <arg type='i'/>
+    <arg type='^v'/>
+    <arg type='L'/>
+    <retval type='Q'/>
+  </function>
   <function name='O3UnalignedSizeofObjCEncodedType'>
     <arg type='*'/>
     <retval type='I'/>
+  </function>
+  <function name='O3Vec3dType'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Vec3fType'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Vec3rType'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Vec4dType'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Vec4fType'>
+    <retval type='@'/>
+  </function>
+  <function name='O3Vec4rType'>
+    <retval type='@'/>
+  </function>
+  <function name='O3VecStructDoubleValueAtIndex'>
+    <arg type='@'/>
+    <arg type='L'/>
+    <retval type='d'/>
+  </function>
+  <function name='O3VecStructInt64ValueAtIndex'>
+    <arg type='@'/>
+    <arg type='L'/>
+    <retval type='q'/>
+  </function>
+  <function name='O3VecStructSize'>
+    <arg type='@'/>
+    <retval type='L'/>
+  </function>
+  <function name='O3VecStructTypeGetType_count_specificType_'>
+    <arg type='@'/>
+    <arg type='^i'/>
+    <arg type='^s'/>
+    <arg type='^i'/>
+  </function>
+  <function name='O3VecStructTypePermsAndMultiplier'>
+    <arg type='@'/>
+    <arg type='^d'/>
+    <retval type='^I'/>
+  </function>
+  <function name='O3VecStructUInt64ValueAtIndex'>
+    <arg type='@'/>
+    <arg type='L'/>
+    <retval type='Q'/>
   </function>
   <function name='O3VertexDataTypeIsVertexAttribute' inline='true'>
     <arg type='i'/>
@@ -207,21 +320,6 @@
   <function name='O3VertexDataTypeStoresIndicies' inline='true'>
     <arg type='i'/>
     <retval type='B'/>
-  </function>
-  <function name='isFormatCompressedP' inline='true'>
-    <arg type='I'/>
-    <retval type='B'/>
-  </function>
-  <function name='sizeForFormatAndNumberPixelsP' inline='true'>
-    <arg type='I'/>
-    <arg type='I'/>
-    <arg type='I'/>
-    <retval type='I'/>
-  </function>
-  <function name='sizeForIneternalFormatAndPixelsP' inline='true'>
-    <arg type='I'/>
-    <arg type='I'/>
-    <retval type='I'/>
   </function>
   <class name='NSCoder'>
     <method selector='isStatisticGatherer'>
@@ -364,6 +462,11 @@
       <retval type='B'/>
     </method>
   </class>
+  <class name='O3MutableStructArray'>
+    <method selector='setStructType:'>
+      <retval type='B'/>
+    </method>
+  </class>
   <class name='O3RawVertexData'>
     <method selector='bindAsSourceForVertexAttributeNumber:format:componentCount:normalized:offset:stride:'>
       <arg type='B' index='3'/>
@@ -398,6 +501,11 @@
       <retval type='B'/>
     </method>
   </class>
+  <class name='O3Struct'>
+    <method selector='initWithBytesNoCopy:type:freeWhenDone:'>
+      <arg type='B' index='2'/>
+    </method>
+  </class>
   <class name='O3Texture'>
     <method selector='isCompressed'>
       <retval type='B'/>
@@ -407,6 +515,14 @@
     </method>
     <method class_method='true' selector='supportedAtLeastToLevel:'>
       <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3VecStruct'>
+    <method variadic='true' selector='initWithType:values:'/>
+  </class>
+  <class name='O3VecStructType'>
+    <method selector='setPermutations:freeWhenDone:'>
+      <arg type='B' index='1'/>
     </method>
   </class>
   <informal_protocol name='O3CameraAspectRatioSource'>

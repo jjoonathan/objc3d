@@ -232,7 +232,11 @@ class RubyConsole < OSX::NSObject
   # delegate methods
   def textView_shouldChangeTextInRange_replacementString(
         textview, range, replacement)
-    return false if range.location < @startOfInput
+    if range.location < @startOfInput
+		moveAndScrollToIndex(@startOfInput)
+		@textview.textStorage.replaceCharactersInRange_withString_(OSX::NSRange.new(@startOfInput,0),replacement)
+		return false
+	end
     replacement = replacement.to_s.gsub("\r","\n")
     if replacement.length > 0 and replacement[-1].chr == "\n"
       @textview.textStorage.appendAttributedString(
@@ -276,6 +280,9 @@ module IRB
     trap("SIGINT") do
       irb.signal_handle
     end
+	trap("SIGTERM") do
+      exit
+    end
     old_stdout, old_stderr = $stdout, $stderr
     $stdout = $stderr = console
     catch(:IRB_EXIT) do
@@ -283,6 +290,7 @@ module IRB
         begin
           irb.eval_input
         rescue Exception
+		  exit if "#{$!}"=="exit"
           puts "Error: #{$!}"
         end
       end

@@ -54,12 +54,14 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return nil;	
 }
 
-- (void)portabalizeStructsAt:(void*)bytes count:(UIntP)count {
-	[self doesNotRecognizeSelector:_cmd];	
+- (void*)portabalizeStructsAt:(const void*)bytes count:(UIntP)count {
+	[self doesNotRecognizeSelector:_cmd];
+	return nil;
 }
 
-- (void)deportabalizeStructsAt:(void*)bytes count:(UIntP)conut {
-	[self doesNotRecognizeSelector:_cmd];	
+- (void*)deportabalizeStructsAt:(const void*)bytes count:(UIntP)conut {
+	[self doesNotRecognizeSelector:_cmd];
+	return nil;
 }
 
 - (void*)translateStructsAt:(const void*)bytes count:(UIntP)count toFormat:(O3StructType*)format {

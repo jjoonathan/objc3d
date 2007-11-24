@@ -15,9 +15,9 @@ inline double	O3rsqrt(double value);
 inline double	O3rsqrte(double value);
 inline double	O3recip(double value);
 #else
-#define O3rsqrt(1.0 / sqrt(value))
-#define O3rsqrte(1.0 / sqrt(value))
-#define O3recip(1.0 / (value))
+#define O3rsqrt(value) (1.0 / sqrt(value))
+#define O3rsqrte(value) (1.0 / sqrt(value))
+#define O3recip(value) (1.0 / (value))
 #endif
 
 

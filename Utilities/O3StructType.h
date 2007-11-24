@@ -27,7 +27,7 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, r
 - (NSArray*)structKeys; ///<All KVC keys that represent struct items (used in automatic translation by some classes)
 
 //(Hopefully accelerated) translation between formats
-- (void)portabalizeStructsAt:(void*)bytes count:(UIntP)count;		///<Make %count structs at %bytes platform independent (it doesn't matter what this is as long as it is portable across architectures and 64/32-bitness)
-- (void)deportabalizeStructsAt:(void*)bytes count:(UIntP)conut;		///<Translate %count structs at %bytes into usable (platform-dependent) in-memory structs
+- (void*)portabalizeStructsAt:(const void*)bytes count:(UIntP)count;		///<Make %count structs at %bytes platform independent (it doesn't matter what this is as long as it is portable across architectures and 64/32-bitness). The returned buffer must be the same size as %bytes.
+- (void*)deportabalizeStructsAt:(const void*)bytes count:(UIntP)conut;		///<Translate %count structs at %bytes into usable (platform-dependent) in-memory structs. The returned buffer must be the same size as %bytes.
 - (void*)translateStructsAt:(const void*)bytes count:(UIntP)count toFormat:(O3StructType*)format; ///<Translates between two formates, returning a new buffer (that needs to be free()d) on success and nil on failure
 @end

@@ -10,8 +10,8 @@
 /**
  * Represents an instance of a particular struct type. This is a mostly abstract class. 
  * You only have to implement one set of primitive methods and you get the others for free, though you can implement them all for efficiency.
- * Set 1: -initWithData:type:, -bytesAsData, -structKeys
- * Set 2: -initWithBytesNoCopy:type:freeWhenDone:, -writeToBytes, -structKeys
+ * Set 1: -initWithData:type:, -bytesAsData, -structSize
+ * Set 2: -initWithBytesNoCopy:type:freeWhenDone:, -writeToBytes, -structSize
  * Set 2 is more efficient than set one, generally speaking, though it may be impossible through a scripting bridge.
  * @warning The default implementation of the public init methods simply call eachother. If you subclass O3Struct, do not simply call super, call [super initWithType:].
  * @warning Also note that structs should not be mutable.

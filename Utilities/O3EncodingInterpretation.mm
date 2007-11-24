@@ -78,6 +78,7 @@ inline char O3Alignof_helper(unsigned char typecode) {
 #define O3Alignof(type) O3Alignof_helper(*@encode(type))
 #endif
 
+O3EXTERN_C_BLOCK
 NSMutableData* O3SerializeDataOfType(const void* from, const char* objCType, UIntP count, NSMutableData* data) {
 	if (!data) data = [NSMutableData data];
 	O3BufferedWriter bw(data);
@@ -214,6 +215,7 @@ void O3MoveDataOfType(const void* from, void* to, const char* objCType, UIntP co
 	unsigned totalsize = O3AlignedSizeofObjCEncodedType(objCType);
 	memcpy(to, from, totalsize*count);
 }
+O3END_EXTERN_C_BLOCK
 
 ///@fixme Doesn't handle unions or bitfields right
 ///@param align 0 (default) if alignment should be automatically determined, and 1 for "no alignment"
@@ -530,4 +532,3 @@ void O3DeserializeDataOfType(void* to, const char* objCType, O3BufferedReader* r
 	} /*for(i=0; i<count; i++)*/
 	return;
 }
-

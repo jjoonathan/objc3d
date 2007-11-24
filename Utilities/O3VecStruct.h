@@ -28,6 +28,13 @@
 - (double)yaw;
 
 - (double)valueAtIndex:(UIntP)idx;
+
+//Convenience (NOTE: many more types are available. These are simply commonly used)
+O3VecStruct* O3Vec3dStruct(double x, double y, double z);
+O3VecStruct* O3Point3dStruct(double x, double y, double z);
+O3VecStruct* O3Point4dStruct(double x, double y, double z, double w);
+O3VecStruct* O3Scale3dStruct(double x, double y, double z);
+
 @end
 
 double O3VecStructDoubleValueAtIndex(O3VecStruct* self, UIntP idx);

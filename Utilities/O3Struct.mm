@@ -10,6 +10,11 @@
 
 @implementation O3Struct
 
+- (O3Struct*)init {
+	[self release];
+	return nil;
+}
+
 - (O3Struct*)initWithType:(O3StructType*)type {
 	O3SuperInitOrDie();
 	mType = type;
@@ -65,8 +70,7 @@
 }
 
 - (NSArray*)structKeys {
-	[self doesNotRecognizeSelector:_cmd];
-	return nil;
+	return [mType structKeys];
 }
 
 @end

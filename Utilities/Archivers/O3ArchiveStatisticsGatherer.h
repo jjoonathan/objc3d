@@ -16,7 +16,7 @@
 + (void)gatherStatisticsForRootObject:(id)obj KT:(NSArray**)kt ST:(NSArray**)st CT:(NSArray**)ct;
 + (void)gatherStatisticsForRootObject:(id)obj key:(NSString*)k KT:(NSArray**)kt ST:(NSArray**)st CT:(NSArray**)ct classNameMap:(NSDictionary*)cmap;
 - (void)gatherStatisticsIntoKT:(NSArray**)kt ST:(NSArray**)st CT:(NSArray**)ct;
-NSDictionary* O3ArchiveStringMapFromArray(NSArray* a);
+O3EXTERN_C NSDictionary* O3ArchiveStringMapFromArray(NSArray* a);
 @end
 
 @interface O3ArchiveStatistic : NSObject {

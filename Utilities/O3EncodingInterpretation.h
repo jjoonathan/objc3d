@@ -18,17 +18,21 @@
 #define DEFAULT_TO_NULL
 #endif
 
+O3EXTERN_C_BLOCK
 unsigned O3CountObjCEncodedElementsOfType(char type, const char* encoding); ///<Counts the number of elements of encoding type \e type in \e encoding (made with @encode()). For instance, O3CountObjCEncodedElementsOfType('i', "[5i]d") would return 5.
 unsigned O3UnalignedSizeofObjCEncodedType(const char* encoding); ///<Counts the number of bytes taken by Objective C encoding \e encoding in a completely unaligned format.Use the NSGetSizeAndAlignment function to get the aligned size (Note: as of now, apple's docs suck. NSGetSizeAndAlignment returns the aligned size (sizeof for simple types, aligned size for structs) in size and for structs, returns the alignment of the sub-types in alignment. For regular types, align=size)
 unsigned O3AlignedSizeofObjCEncodedType(const char* encoding);
 void O3MoveDataOfType(const void* from, void* to, const char* objCType, UIntP count DEFAULT_TO_1ULL);
+O3END_EXTERN_C
 #ifdef __cplusplus
 void O3SerializeDataOfType(const void* from, const char* objCType, O3BufferedWriter* writer, UIntP count DEFAULT_TO_1ULL);
 void O3DeserializeDataOfType(void* to, const char* objCType, O3BufferedReader* reader, UIntP count DEFAULT_TO_1ULL);
 #endif
 
+O3EXTERN_C_BLOCK
 NSMutableData* O3SerializeDataOfType(const void* from, const char* objCType, UIntP count DEFAULT_TO_1ULL, NSMutableData* data DEFAULT_TO_NULL);
 void O3DeserializeDataOfType(void* to, const char* objCType, NSData* dat);
+O3END_EXTERN_C
 
 #ifdef __cplusplus
 static void* O3DeserializedBytesOfType(const char* objCType, O3BufferedReader* reader, UIntP count, UIntP* size DEFAULT_TO_NULL) {

@@ -68,7 +68,7 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 + (NSString*)classNameForClass:(Class)theClass; ///<@note Shared with NSKeyedArchiver
 - (void)setClassName:(NSString*)mapTo forClass:(Class)mapFrom;
 - (NSString*)classNameForClass:(Class)theClass;
-NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c); ///<This is used in the actual encoding process, it can be useful elsewhere.
+O3EXTERN_C NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c); ///<This is used in the actual encoding process, it can be useful elsewhere.
 @end
 
 @interface NSObject (O3KeyedArchiverSpecialness)

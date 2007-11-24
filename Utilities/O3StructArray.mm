@@ -37,6 +37,21 @@ void initP(O3MutableStructArray* self) {
 	return self;
 }
 
+- (O3MutableStructArray*)initWithType:(O3StructType*)type rawData:(NSData*)dat {
+	O3SuperInitOrDie(); initP(self);
+	[self setStructType:type];
+	[self setRawData:dat];
+	return self;
+}
+
+- (O3MutableStructArray*)initWithType:(O3StructType*)type portableData:(NSData*)dat {
+	O3SuperInitOrDie(); initP(self);
+	[self setStructType:type];
+	[self setPortableData:dat];
+	return self;
+}
+
+
 - (void)dealloc {
 	[mData release];
 	[mAccessLock release];
@@ -71,6 +86,39 @@ void initP(O3MutableStructArray* self) {
 	[mAccessLock unlock];
 	return YES;
 }
+
+- (NSMutableData*)rawData {
+	return mData;
+}
+
+- (void)setRawData:(NSData*)newData {
+	if ([newData length]%mStructSize) {
+		[self release];
+		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.", type, dat);
+		return;
+	}
+	O3Assign([newData mutableCopy], mData);
+	O3Release(mData);
+}
+
+- (NSData*)portableData {
+	NSData* r = [NSMutableData dataWithBytesNoCopy:[mStructType portabalizeStructsAt:[mData bytes] count:[self count]]
+	                                        length:[mData length] 
+	                                  freeWhenDone:YES];
+	return r;
+}
+
+- (void)setPortableData:(NSData*)pdat {
+	UIntP len = [pdat length];
+	if (len%mStructSize) {
+		[self release];
+		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.", type, dat);
+		return;
+	}
+	void* newbuf = [mStructType deportabalizeStructsAt:[pdat bytes] count:len/mStructSize];
+	O3Assign([NSMutableData dataWithBytesNoCopy:newbuf length:len freeWhenDone:YES], mData);
+}
+
 
 /************************************/ #pragma mark NSArray methods /************************************/
 - (UIntP)count {

@@ -151,6 +151,7 @@ void O3Break(); ///<Useful for non-trivial fast breakpoints
 #include "O3Accelerate.h"
 
 /*******************************************************************/ #pragma mark Fast Memory Utils /*******************************************************************/
+#ifdef __cplusplus
 #ifdef O3AllowObjcMemoryManagementHack
 inline id<NSObject> O3Alloc(Class someclass, NSZone* zone) {return NSAllocateObject(someclass, 0, zone);}
 inline id<NSObject> O3Copy(id<NSObject> obj, NSZone* zone)	{return NSCopyObject(obj, 0, zone);}
@@ -166,10 +167,9 @@ inline id<NSObject> O3Retain(id<NSObject> obj) 					{return [obj retain];}
 inline id<NSObject> O3Autorelease(id<NSObject> obj) 			{return [obj autorelease];}
 inline id<NSObject> O3RetainAutorelease(id<NSObject> obj) 		{return O3Autorelease(O3Retain(obj));}
 #endif
-#ifdef __cplusplus
 inline id<NSObject> O3Alloc(Class someclass) {return O3Alloc(someclass, NULL);}
 inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
-#endif
+#endif /*defined(__cplusplus)*/
 
 #ifdef O3AllowObjcInitAndDeallocSpeedHack
 #include <objc-runtime.h>
@@ -221,3 +221,15 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 }
 #define O3DestroyCppMap(type, name) O3DestroyCppContainer(type, name, , ->second)
 #define O3DestroyCppVector(type, name) O3DestroyCppContainer(type, name, *, )
+#ifdef __cplusplus
+#define O3EXTERN_C_BLOCK extern "C" {
+#define O3END_EXTERN_C }
+#define O3END_EXTERN_C_BLOCK }
+#define O3EXTERN_C extern "C" 
+#else
+#define O3EXTERN_C_BLOCK
+#define O3END_EXTERN_C
+#define O3EXTERN_C
+#define O3END_EXTERN_C_BLOCK
+#endif
+
