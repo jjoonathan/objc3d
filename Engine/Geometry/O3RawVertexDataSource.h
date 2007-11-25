@@ -10,7 +10,7 @@
 
 @class O3RawVertexData;
 
-@interface O3RawVertexDataSource : O3VertexDataSource {
+@interface O3RawVertexDataSource : NSObject <O3VertexDataSource> {
 	BOOL				mManagesRawData;	///<YES if <i>mRawVertexData</i> was created by this object
 	O3RawVertexData*	mRawVertexData;		///<The place the receiver gets its data (maybe a VBO maybe not)
 	O3VertexDataType	mType;				///<The type of data refrenced by the object

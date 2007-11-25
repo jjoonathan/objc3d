@@ -22,6 +22,7 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 
 @implementation O3StructType : NSObject
 
+/************************************/ #pragma mark Init /************************************/
 - (O3StructType*)initWithName:(NSString*)name {
 	O3SuperInitOrDie();
 	O3StructType* existingType = name? O3StructTypeForName(name) : nil;
@@ -37,6 +38,11 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 - (void)dealloc {
 	O3Destroy(mName);
 	O3SuperDealloc();
+}
+
+/************************************/ #pragma mark Access /************************************/
+- (NSString*)name {
+	return mName;
 }
 
 - (UIntP)structSize {

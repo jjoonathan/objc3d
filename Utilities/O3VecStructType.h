@@ -59,9 +59,9 @@ enum O3VecStructElementType {
 + (O3VecStructType*)vec4dType;     //Convenience method to return a commonly used struct type (use function instead if possible)
 + (O3VecStructType*)vec4rType;     //Convenience method to return a commonly used struct type (use function instead if possible)
 + (O3VecStructType*)rot3dType;     //Convenience method to return a commonly used struct type (use function instead if possible)
-+ (O3VecStructType*)point3dType;     //Convenience method to return a commonly used struct type (use function instead if possible)
+//+ (O3VecStructType*)point3dType;     //Convenience method to return a commonly used struct type (use function instead if possible)
 + (O3VecStructType*)point3fType;     //Convenience method to return a commonly used struct type (use function instead if possible)
-+ (O3VecStructType*)point4dType;     //Convenience method to return a commonly used struct type (use function instead if possible)
+//+ (O3VecStructType*)point4dType;     //Convenience method to return a commonly used struct type (use function instead if possible)
 + (O3VecStructType*)scale3dType;     //Convenience method to return a commonly used struct type (use function instead if possible)
 + (O3VecStructType*)index3x8Type;     //Convenience method to return a commonly used struct type (use function instead if possible)
 + (O3VecStructType*)index3x16Type;     //Convenience method to return a commonly used struct type (use function instead if possible)
@@ -93,9 +93,9 @@ O3VecStructType* O3Vec4fType(); ///<Convenience function to return a commonly us
 O3VecStructType* O3Vec4dType(); ///<Convenience function to return a commonly used type
 O3VecStructType* O3Vec4rType(); ///<Convenience function to return a commonly used type
 O3VecStructType* O3Rot3dType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Point3dType(); ///<Convenience function to return a commonly used type
+//O3VecStructType* O3Point3dType(); ///<Convenience function to return a commonly used type
 O3VecStructType* O3Point3fType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Point4dType(); ///<Convenience function to return a commonly used type
+//O3VecStructType* O3Point4dType(); ///<Convenience function to return a commonly used type
 O3VecStructType* O3Scale3dType(); ///<Convenience function to return a commonly used type
 O3VecStructType* O3Index3x8Type(); ///<Convenience function to return a commonly used type
 O3VecStructType* O3Index3x16Type(); ///<Convenience function to return a commonly used type

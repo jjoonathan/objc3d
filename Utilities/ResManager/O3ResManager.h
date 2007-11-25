@@ -9,6 +9,7 @@
 
 extern NSString* O3ResManagerKeyWillChangeNotification;
 extern NSString* O3ResManagerKeyDidChangeNotification;
+extern O3ResManager* gO3ResManagerSharedInstance;
 
 @interface O3ResManager : NSObject {
 	NSMutableArray* mResourceSources;

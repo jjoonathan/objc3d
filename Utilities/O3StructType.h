@@ -24,6 +24,7 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, r
 - (Class)instanceClass; ///<The class (conforming to O3Struct's interface) which represents instances of this struct type
 
 //Info
+- (NSString*)name;
 - (NSArray*)structKeys; ///<All KVC keys that represent struct items (used in automatic translation by some classes)
 
 //(Hopefully accelerated) translation between formats

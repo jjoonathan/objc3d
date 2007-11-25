@@ -12,6 +12,8 @@ typedef float real;
 typedef double angle;
 typedef double scale;
 
+#include "O3Geometry.h"
+
 #ifdef __cplusplus
 #include <cmath>
 #include <iostream>

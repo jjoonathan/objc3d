@@ -16,9 +16,9 @@ O3VecStructType* gO3Vec4rType;   O3VecStructType* O3Vec4rType() {return gO3Vec4r
 O3VecStructType* gO3Vec4fType;   O3VecStructType* O3Vec4fType() {return gO3Vec4fType;}
 O3VecStructType* gO3Vec4dType;   O3VecStructType* O3Vec4dType() {return gO3Vec4dType;}
 O3VecStructType* gO3Rot3d;       O3VecStructType* O3Rot3dType()      {return gO3Rot3d;    }
-O3VecStructType* gO3Point3d;     O3VecStructType* O3Point3dType()    {return gO3Point3d;  }
+//O3VecStructType* gO3Point3d;     O3VecStructType* O3Point3dType()    {return gO3Point3d;  }
 O3VecStructType* gO3Point3f;     O3VecStructType* O3Point3fType()    {return gO3Point3f;  }
-O3VecStructType* gO3Point4d;     O3VecStructType* O3Point4dType()    {return gO3Point4d;  }
+//O3VecStructType* gO3Point4d;     O3VecStructType* O3Point4dType()    {return gO3Point4d;  }
 O3VecStructType* gO3Scale3d;     O3VecStructType* O3Scale3dType()    {return gO3Scale3d;  }
 O3VecStructType* gO3Index3x8;    O3VecStructType* O3Index3x8Type()   {return gO3Index3x8; }
 O3VecStructType* gO3Index3x16;   O3VecStructType* O3Index3x16Type()  {return gO3Index3x16;}
@@ -72,9 +72,9 @@ O3END_EXTERN_C_BLOCK
 	gO3Vec4fType = [[O3VecStructType alloc] initWithElementType:O3VecStructFloatElement   specificType:O3VecStructVec count:4 name:@"vec4f"];
 	gO3Vec4dType = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructVec count:4 name:@"vec4d"];
 	gO3Rot3d     = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructRotation count:3 name:@"rot3d"];
-	gO3Point3d   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructPoint count:3 name:@"point3d"];
+	//gO3Point3d   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructPoint count:3 name:@"point3d"];
 	gO3Point3f   = [[O3VecStructType alloc] initWithElementType:O3VecStructFloatElement   specificType:O3VecStructPoint count:3 name:@"point3f"];
-	gO3Point4d   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructPoint count:4 name:@"point4d"];
+	//gO3Point4d   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructPoint count:4 name:@"point4d"];
 	gO3Scale3d   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructScale count:3 name:@"scale3d"];
 	gO3Index3x8  = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt8Element   specificType:O3VecStructIndex count:3 name:@"scale3x8"];
 	gO3Index3x16 = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt16Element  specificType:O3VecStructIndex count:3 name:@"scale3x16"];

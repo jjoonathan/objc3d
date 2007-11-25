@@ -29,6 +29,12 @@
 - (NSData*)portableData; ///<Converts the receiver to its portable representation and returns it
 - (void)setPortableData:(NSData*)pdat; ///<Sets the receiver's contents with a portable representation
 
+//C interface
+- (void)getStruct:(void*)bytes atIndex:(UIntP)idx;
+- (void)setStruct:(const void*)bytes atIndex:(UIntP)idx;
+- (void)addStruct:(const void*)bytes;
+- (void*)cPtr; ///<Returns a C pointer that can be used as a regular C array (after casting). Returns nil for GPU data
+
 //NSArray
 - (UIntP)count;
 - (O3Struct*)objectAtIndex:(UIntP)idx; ///Returns a copy of the objet ad idx, not the object itself (for performance reasons, especially when dealing with O3GPUData)
@@ -39,6 +45,9 @@
 - (void)addObject:(O3Struct*)obj;
 - (void)removeLastObject;
 - (void)replaceObjectAtIndex:(UIntP)idx withObject:(O3Struct*)obj;
+
+//GPU
+- (void)uploadToGPU; //Converts data to O3GPUData, uploading it to the GPU (if necessary)
 @end
 
 typedef O3MutableStructArray O3StructArray;

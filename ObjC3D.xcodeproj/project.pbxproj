@@ -74,8 +74,8 @@
 		FC2C1C2B0C125F400084A599 /* O3RawVertexDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC66909C0B63F5B200C87AF9 /* O3RawVertexDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C2C0C125F420084A599 /* O3RawVertexData.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC348BAF0B4355B7000015FE /* O3RawVertexData.mm */; };
 		FC2C1C2D0C125F430084A599 /* O3RawVertexData.h in Headers */ = {isa = PBXBuildFile; fileRef = FC348BAE0B4355B7000015FE /* O3RawVertexData.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C2E0C125F440084A599 /* O3Mesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC348B890B433F70000015FE /* O3Mesh.mm */; };
-		FC2C1C2F0C125F450084A599 /* O3Mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = FC348AAE0B420B07000015FE /* O3Mesh.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC2C1C2E0C125F440084A599 /* O3MeshType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC348B890B433F70000015FE /* O3MeshType.mm */; };
+		FC2C1C2F0C125F450084A599 /* O3MeshType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC348AAE0B420B07000015FE /* O3MeshType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C300C125F450084A599 /* O3Material.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847B00BDFAB3E00A8FD75 /* O3Material.mm */; };
 		FC2C1C310C125F460084A599 /* O3Material.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847AF0BDFAB3E00A8FD75 /* O3Material.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C320C125F460084A599 /* O3Light.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC2D228B0B14C2CD000C2073 /* O3Light.mm */; };
@@ -193,6 +193,18 @@
 		FC63ED660CF6498700325C54 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = FC63ED630CF6498700325C54 /* BridgeSupport */; };
 		FC63EE050CF897DB00325C54 /* O3GPUData.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE030CF897DB00325C54 /* O3GPUData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE040CF897DB00325C54 /* O3GPUData.mm */; };
+		FC63EE3B0CF9DA8400325C54 /* O3ConcreteMeshType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC63EE3C0CF9DA8400325C54 /* O3ConcreteMeshType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */; };
+		FC63EE450CF9DAB100325C54 /* cache_simulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */; };
+		FC63EE460CF9DAB100325C54 /* graph_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE400CF9DAB100325C54 /* graph_array.h */; };
+		FC63EE470CF9DAB100325C54 /* heap_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE410CF9DAB100325C54 /* heap_array.h */; };
+		FC63EE480CF9DAB100325C54 /* stdafx.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE420CF9DAB100325C54 /* stdafx.h */; };
+		FC63EE490CF9DAB100325C54 /* tri_stripper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE430CF9DAB100325C54 /* tri_stripper.cpp */; };
+		FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE440CF9DAB100325C54 /* tri_stripper.h */; };
+		FC63EE570CF9F3D800325C54 /* O3Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE560CF9F3D800325C54 /* O3Geometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */; };
+		FC63EE880CF9F95F00325C54 /* O3FaceStruct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStruct.h */; };
+		FC63EE890CF9F95F00325C54 /* O3FaceStruct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE870CF9F95F00325C54 /* O3FaceStruct.mm */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
@@ -390,10 +402,10 @@
 		FC2D262D0B168029000C2073 /* O3DirectionalLight.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3DirectionalLight.mm; sourceTree = "<group>"; };
 		FC2D3E9E0BD84F7D004F0A20 /* O3ValueArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ValueArray.h; sourceTree = "<group>"; };
 		FC2D3E9F0BD84F7D004F0A20 /* O3ValueArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ValueArray.mm; sourceTree = "<group>"; };
-		FC348AAE0B420B07000015FE /* O3Mesh.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3Mesh.h; sourceTree = "<group>"; };
+		FC348AAE0B420B07000015FE /* O3MeshType.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3MeshType.h; sourceTree = "<group>"; };
 		FC348B3A0B4303B9000015FE /* O3FramebufferObject.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3FramebufferObject.mm; sourceTree = "<group>"; };
 		FC348B3B0B4303B9000015FE /* O3FramebufferObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3FramebufferObject.h; sourceTree = "<group>"; };
-		FC348B890B433F70000015FE /* O3Mesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Mesh.mm; sourceTree = "<group>"; };
+		FC348B890B433F70000015FE /* O3MeshType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3MeshType.mm; sourceTree = "<group>"; };
 		FC348BAE0B4355B7000015FE /* O3RawVertexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3RawVertexData.h; sourceTree = "<group>"; };
 		FC348BAF0B4355B7000015FE /* O3RawVertexData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RawVertexData.mm; sourceTree = "<group>"; };
 		FC348BC60B435B82000015FE /* O3VertexFormats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexFormats.h; sourceTree = "<group>"; };
@@ -454,6 +466,18 @@
 		FC63ED630CF6498700325C54 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BridgeSupport; sourceTree = SOURCE_ROOT; };
 		FC63EE030CF897DB00325C54 /* O3GPUData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3GPUData.h; sourceTree = "<group>"; };
 		FC63EE040CF897DB00325C54 /* O3GPUData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3GPUData.mm; sourceTree = "<group>"; };
+		FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ConcreteMeshType.h; sourceTree = "<group>"; };
+		FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ConcreteMeshType.mm; sourceTree = "<group>"; };
+		FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cache_simulator.h; path = Other/tri_stripper/cache_simulator.h; sourceTree = SOURCE_ROOT; };
+		FC63EE400CF9DAB100325C54 /* graph_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = graph_array.h; path = Other/tri_stripper/graph_array.h; sourceTree = SOURCE_ROOT; };
+		FC63EE410CF9DAB100325C54 /* heap_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = heap_array.h; path = Other/tri_stripper/heap_array.h; sourceTree = SOURCE_ROOT; };
+		FC63EE420CF9DAB100325C54 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = Other/tri_stripper/stdafx.h; sourceTree = SOURCE_ROOT; };
+		FC63EE430CF9DAB100325C54 /* tri_stripper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tri_stripper.cpp; path = Other/tri_stripper/tri_stripper.cpp; sourceTree = SOURCE_ROOT; };
+		FC63EE440CF9DAB100325C54 /* tri_stripper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tri_stripper.h; path = Other/tri_stripper/tri_stripper.h; sourceTree = SOURCE_ROOT; };
+		FC63EE560CF9F3D800325C54 /* O3Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Geometry.h; sourceTree = "<group>"; };
+		FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Geometry.mm; sourceTree = "<group>"; };
+		FC63EE860CF9F95F00325C54 /* O3FaceStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3FaceStruct.h; sourceTree = "<group>"; };
+		FC63EE870CF9F95F00325C54 /* O3FaceStruct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3FaceStruct.mm; sourceTree = "<group>"; };
 		FC66909B0B63F5B200C87AF9 /* O3RawVertexDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RawVertexDataSource.mm; sourceTree = "<group>"; };
 		FC66909C0B63F5B200C87AF9 /* O3RawVertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3RawVertexDataSource.h; sourceTree = "<group>"; };
 		FC6690A20B63F5EE00C87AF9 /* O3VertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexDataSource.h; sourceTree = "<group>"; };
@@ -716,6 +740,8 @@
 				FC4AD8300AE9B91900812085 /* Transformation */,
 				FCBE37E70AFE2ED9000D82C8 /* Box */,
 				FCC710130AFED85300B43EB5 /* Sphere */,
+				FC63EE560CF9F3D800325C54 /* O3Geometry.h */,
+				FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */,
 			);
 			path = Math;
 			sourceTree = SOURCE_ROOT;
@@ -868,8 +894,11 @@
 		FC348AAC0B420B07000015FE /* Mesh */ = {
 			isa = PBXGroup;
 			children = (
-				FC348AAE0B420B07000015FE /* O3Mesh.h */,
-				FC348B890B433F70000015FE /* O3Mesh.mm */,
+				FC348AAE0B420B07000015FE /* O3MeshType.h */,
+				FC348B890B433F70000015FE /* O3MeshType.mm */,
+				FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */,
+				FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */,
+				FC63EE3E0CF9DAB100325C54 /* tri_stripper */,
 			);
 			path = Mesh;
 			sourceTree = "<group>";
@@ -1012,9 +1041,25 @@
 				FC6052360CEE69580059C883 /* O3ByteStruct.mm */,
 				FC5507300CE52EDB003EE24B /* O3VecStruct.h */,
 				FC5507310CE52EDC003EE24B /* O3VecStruct.mm */,
+				FC63EE860CF9F95F00325C54 /* O3FaceStruct.h */,
+				FC63EE870CF9F95F00325C54 /* O3FaceStruct.mm */,
 			);
 			name = Structs;
 			sourceTree = "<group>";
+		};
+		FC63EE3E0CF9DAB100325C54 /* tri_stripper */ = {
+			isa = PBXGroup;
+			children = (
+				FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */,
+				FC63EE400CF9DAB100325C54 /* graph_array.h */,
+				FC63EE410CF9DAB100325C54 /* heap_array.h */,
+				FC63EE420CF9DAB100325C54 /* stdafx.h */,
+				FC63EE430CF9DAB100325C54 /* tri_stripper.cpp */,
+				FC63EE440CF9DAB100325C54 /* tri_stripper.h */,
+			);
+			name = tri_stripper;
+			path = Other/tri_stripper;
+			sourceTree = SOURCE_ROOT;
 		};
 		FC6690A80B63F60800C87AF9 /* Raw Vertex Data */ = {
 			isa = PBXGroup;
@@ -1210,6 +1255,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC2C1C2F0C125F450084A599 /* O3MeshType.h in Headers */,
+				FC63EE3B0CF9DA8400325C54 /* O3ConcreteMeshType.h in Headers */,
+				FC63EE570CF9F3D800325C54 /* O3Geometry.h in Headers */,
 				FC63EE050CF897DB00325C54 /* O3GPUData.h in Headers */,
 				FC2C1C740C125F880084A599 /* O3Functions.hpp in Headers */,
 				FC2C1C520C125F6E0084A599 /* O3VectorFunctions.hpp in Headers */,
@@ -1246,7 +1294,6 @@
 				FC2C1C290C125F3F0084A599 /* O3Renderable.h in Headers */,
 				FC2C1C2B0C125F400084A599 /* O3RawVertexDataSource.h in Headers */,
 				FC2C1C2D0C125F430084A599 /* O3RawVertexData.h in Headers */,
-				FC2C1C2F0C125F450084A599 /* O3Mesh.h in Headers */,
 				FC2C1C310C125F460084A599 /* O3Material.h in Headers */,
 				FC2C1C330C125F470084A599 /* O3Light.h in Headers */,
 				FC2C1C350C125F490084A599 /* O3GeneratedVertexDataSource.h in Headers */,
@@ -1304,6 +1351,12 @@
 				FC4EF1880CEA90B800B14EBF /* O3VecStruct.h in Headers */,
 				FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */,
 				FC60524A0CEE9A4A0059C883 /* O3ByteStruct.h in Headers */,
+				FC63EE450CF9DAB100325C54 /* cache_simulator.h in Headers */,
+				FC63EE460CF9DAB100325C54 /* graph_array.h in Headers */,
+				FC63EE470CF9DAB100325C54 /* heap_array.h in Headers */,
+				FC63EE480CF9DAB100325C54 /* stdafx.h in Headers */,
+				FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */,
+				FC63EE880CF9F95F00325C54 /* O3FaceStruct.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1556,7 +1609,7 @@
 				FC2C1C280C125F3E0084A599 /* O3RenderBuffer.mm in Sources */,
 				FC2C1C2A0C125F3F0084A599 /* O3RawVertexDataSource.mm in Sources */,
 				FC2C1C2C0C125F420084A599 /* O3RawVertexData.mm in Sources */,
-				FC2C1C2E0C125F440084A599 /* O3Mesh.mm in Sources */,
+				FC2C1C2E0C125F440084A599 /* O3MeshType.mm in Sources */,
 				FC2C1C300C125F450084A599 /* O3Material.mm in Sources */,
 				FC2C1C320C125F460084A599 /* O3Light.mm in Sources */,
 				FC2C1C340C125F480084A599 /* O3GeneratedVertexDataSource.mm in Sources */,
@@ -1596,6 +1649,10 @@
 				FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */,
 				FC6052490CEE9A490059C883 /* O3ByteStruct.mm in Sources */,
 				FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */,
+				FC63EE3C0CF9DA8400325C54 /* O3ConcreteMeshType.mm in Sources */,
+				FC63EE490CF9DAB100325C54 /* tri_stripper.cpp in Sources */,
+				FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */,
+				FC63EE890CF9F95F00325C54 /* O3FaceStruct.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

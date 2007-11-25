@@ -59,6 +59,32 @@ void initP(O3MutableStructArray* self) {
 	O3SuperDealloc();
 }
 
+/************************************/ #pragma mark NSCoding /************************************/
+- (id)initWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding]) {
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+		[self release];
+		return nil;
+	}
+	return [self initWithType:O3StructTypeForName([coder decodeObjectForKey:@"type"])
+	                                                           portableData:[coder decodeObjectForKey:@"data"]];
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding])
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+	[coder encodeObject:[self portableData] forKey:@"data"];
+	[coder encodeObject:[mStructType name] forKey:@"type"];
+}
+
+/************************************/ #pragma mark GPU /************************************/
+- (void)uploadToGPU {
+	O3GPUData* newDat = [[O3GPUData alloc] initWithData:mData];
+	O3Assign(newDat, mData);
+	[newDat release];
+}
+
+
 /************************************/ #pragma mark Access /************************************/
 - (O3StructType*)structType {
 	return mStructType;
@@ -119,6 +145,25 @@ void initP(O3MutableStructArray* self) {
 	O3Assign([NSMutableData dataWithBytesNoCopy:newbuf length:len freeWhenDone:YES], mData);
 }
 
+
+- (void)getStruct:(void*)bytes atIndex:(UIntP)idx {
+	if (idx>=countP(self)) [NSException raise:NSRangeException format:@"tried to access index %i out of bounds %i",idx,countP(self)];
+	[mData getBytes:bytes range:rangeOfIdx(self,idx)];
+}
+
+- (void)setStruct:(const void*)bytes atIndex:(UIntP)idx {
+	if (idx>=countP(self)) [NSException raise:NSRangeException format:@"tried to access index %i out of bounds %i",idx,countP(self)];
+	[mData replaceBytesInRange:rangeOfIdx(self,idx) withBytes:bytes];
+}
+
+- (void)addStruct:(const void*)bytes {
+	[mData appendBytes:bytes length:mStructSize];
+}
+
+- (void*)cPtr {
+	if ([mData isGPUData]) return nil;
+	return [mData bytes];
+}
 
 /************************************/ #pragma mark NSArray methods /************************************/
 - (UIntP)count {
