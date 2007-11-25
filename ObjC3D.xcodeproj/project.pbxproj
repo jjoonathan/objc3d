@@ -191,6 +191,8 @@
 		FC63E35A0CF35D7C00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */; };
 		FC63E3B60CF35D8300325C54 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */; };
 		FC63ED660CF6498700325C54 /* BridgeSupport in Resources */ = {isa = PBXBuildFile; fileRef = FC63ED630CF6498700325C54 /* BridgeSupport */; };
+		FC63EE050CF897DB00325C54 /* O3GPUData.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE030CF897DB00325C54 /* O3GPUData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE040CF897DB00325C54 /* O3GPUData.mm */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
@@ -450,6 +452,8 @@
 		FC63E15D0CF276BE00325C54 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		FC63E3390CF35D6D00325C54 /* Log4Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log4Cocoa.framework; path = build/Support/Log4Cocoa.framework; sourceTree = SOURCE_ROOT; };
 		FC63ED630CF6498700325C54 /* BridgeSupport */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BridgeSupport; sourceTree = SOURCE_ROOT; };
+		FC63EE030CF897DB00325C54 /* O3GPUData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3GPUData.h; sourceTree = "<group>"; };
+		FC63EE040CF897DB00325C54 /* O3GPUData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3GPUData.mm; sourceTree = "<group>"; };
 		FC66909B0B63F5B200C87AF9 /* O3RawVertexDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RawVertexDataSource.mm; sourceTree = "<group>"; };
 		FC66909C0B63F5B200C87AF9 /* O3RawVertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3RawVertexDataSource.h; sourceTree = "<group>"; };
 		FC6690A20B63F5EE00C87AF9 /* O3VertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexDataSource.h; sourceTree = "<group>"; };
@@ -818,6 +822,8 @@
 				FC5BBD630BD6489500894533 /* O3KeyedUnarchiver.mm */,
 				FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */,
 				FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */,
+				FC63EE030CF897DB00325C54 /* O3GPUData.h */,
+				FC63EE040CF897DB00325C54 /* O3GPUData.mm */,
 			);
 			path = Archivers;
 			sourceTree = "<group>";
@@ -1204,6 +1210,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC63EE050CF897DB00325C54 /* O3GPUData.h in Headers */,
 				FC2C1C740C125F880084A599 /* O3Functions.hpp in Headers */,
 				FC2C1C520C125F6E0084A599 /* O3VectorFunctions.hpp in Headers */,
 				FC2C1C5D0C125F760084A599 /* O3Sphere.hpp in Headers */,
@@ -1588,6 +1595,7 @@
 				FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */,
 				FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */,
 				FC6052490CEE9A490059C883 /* O3ByteStruct.mm in Sources */,
+				FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

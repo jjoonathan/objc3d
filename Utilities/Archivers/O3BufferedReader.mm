@@ -405,6 +405,28 @@ void* O3BufferedReader::ReadBytes(UInt64 len, UInt64 extra_bytes) {
 	return to_return;
 }
 
+void O3BufferedReader::ReadBytesInto(void* b, UInt64 len) {
+	AssertOpen();
+	if (BytesLeft(len)) {
+		memcpy(b, mBlockBytes, len);
+		Advance(len);
+	} else {
+		if (!mHandle) [NSException raise:NSInconsistentArchiveException format:@"Attempt to read past end of archived data (archive is corrupt)"];
+		memcpy(b, mBlockBytes, mBlockBytesRemaining);
+		O3Destroy(mBlockData);
+		void* new_pos = (UInt8*)b+mBlockBytesRemaining;
+		UInt64 new_toread = len-mBlockBytesRemaining;
+		mBlockBytesRemaining=0;
+		NSData* newBytes = mHandle_readDataOfLength_(mHandle, @selector(readDataOfLength:), new_toread);
+		if (!mBlockData_bytes) {
+			mBlockData_bytes = (mBlockData_bytes_t)[mBlockData methodForSelector:@selector(bytes)];
+			mBlockData_length = (mBlockData_length_t)[mBlockData methodForSelector:@selector(length)];
+		}
+		O3Assert(mBlockData_length(newBytes, @selector(length))==new_toread , @"Attempt to read outside of file in O3BufferedReader::ReadBytes");
+		memcpy(new_pos, mBlockData_bytes(newBytes, @selector(bytes)), new_toread);
+	}
+}
+
 NSData* O3BufferedReader::ReadData(UInt64 len) {
 	AssertOpen();
 	return [NSData dataWithBytesNoCopy:ReadBytes(len,0) length:len freeWhenDone:YES];

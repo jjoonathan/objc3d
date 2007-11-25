@@ -67,6 +67,7 @@ public:
 	double ReadDouble();
 	NSString* ReadCCString(enum O3CCSTableType = O3CCSStringTable);
 	void* ReadBytes(UInt64 len, UInt64 extra_bytes=0);
+	void ReadBytesInto(void* b, UInt64 len);
 	NSData* ReadData(UInt64 len);
 	enum O3PkgType ReadObjectHeader(UIntP* size, NSString** classname = nil);
 	void SkipObject();
