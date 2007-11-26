@@ -6,6 +6,7 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+#ifdef __cplusplus
 #include <cassert>
 #include <cfloat>
 #include <limits>
@@ -13,6 +14,7 @@
 #include <iostream>
 #include <stdint.h>
 #include <limits>
+#endif
 
 #import "O3BigObject.h"
 
@@ -49,11 +51,13 @@ typedef  SIntM 	  IntM;
 #define O3At() "<" __FILE__ ":" O3TO_STRING(__LINE__) ">"
 #define O3OCAt() @"<" @__FILE__ @":" @O3TO_STRING(__LINE__) @">"
 
+#ifdef __cplusplus
 template <typename TYPE>
 void O3PRINTHEX(const TYPE& to_print) { //inefficent as hell, but hey, it's debug :)
 	const UInt8* printbytes = (const UInt8*)(&to_print);
 	int i; for(i=0;i<sizeof(TYPE);i++) printf("%X", printbytes[i]);
 }
+#endif
 
 /*******************************************************************/ #pragma mark Markers /*******************************************************************/
 #define O3ToImplement() O3LogError(@"O3ToImplement() tag hit");
@@ -77,10 +81,12 @@ void O3FailAssert();
 	#define O3AssertFalse(str, args...) O3Assert(false, @"Supposedly unreachable code has been reached: " str, ##args)
 	#define O3AssertInContext(ctx) O3Assert((ctx) == [NSOpenGLContext currentContext], @"Code called in incorrect OpenGL context.");
 	#define O3Asrt(condition) O3Assert(condition, @"No description of assertion provided. Please report or fix this (better yet do both), as it was probably really not expected to happen.");
+	#define O3VerifyArg(condition, str, args...) {if (!(condition)) {O3FailAssert(); [NSException raise:NSInvalidArgumentException format:@"Argument assertion (" @#condition @") at " @__FILE__ @":" @O3TO_STRING(__LINE__) @" failed: " str, ## args];}}	
 #else
 	#define O3Assert(condition, str, args...)
 	#define O3Verify(condition, str, args...) ({condition;})
 	#define O3AssertArg(condition, str, args...)
+	#define O3VerifyArg(condition, str, args...) {if (!(condition)) {O3FailAssert(); [NSException raise:NSInvalidArgumentException format:@"Argument assertion (" @#condition @") at " @__FILE__ @":" @O3TO_STRING(__LINE__) @" failed: " str, ## args];}}	
 	#define O3AssertIvar(condition)
 	#define O3AssertFalse(str, args...)
 	#define O3AssertInContext(ctx)
@@ -89,16 +95,20 @@ void O3FailAssert();
 #define O3CompileAssert(x, str) typedef bool O3CompileAssert_HELPER[(x) ? 1 : -1 + 0*(int)str]
 
 /*******************************************************************/ #pragma mark Epsilon, Infinity & Equality /*******************************************************************/
+#ifdef __cplusplus
 #define O3Epsilon(x) std::numeric_limits<x>::epsilon()
 #define O3Inf(x) std::numeric_limits<x>::infinity()
 template <typename Ta, typename Tb>
 inline bool O3Equals(Ta a, Tb b) {return ((a-b)<O3Epsilon(Ta)) || ((b-a)<O3Epsilon(Ta));}
 template <typename Ta, typename Tb, typename Tc>
 inline bool O3Equals(Ta a, Tb b, Tc tolerance) {return ((a-b)<tolerance) || ((b-a)<tolerance);}
+#endif
 
 /*******************************************************************/ #pragma mark Numeric Limits /*******************************************************************/
+#ifdef __cplusplus
 #define O3TypeMax(x) std::numeric_limits<x>::max()
 #define O3TypeMin(x) std::numeric_limits<x>::min()
+#endif
 
 /*******************************************************************/ #pragma mark Debug Logging /*******************************************************************/
 ///Just a random NSObject singleton. Feel free to use it. By default it inherits all log4cocoa requests in C
@@ -143,21 +153,25 @@ void O3Break(); ///<Useful for non-trivial fast breakpoints
 #include "O3Accelerate.h"
 
 /*******************************************************************/ #pragma mark Fast Memory Utils /*******************************************************************/
+#ifdef __cplusplus
 #ifdef O3AllowObjcMemoryManagementHack
-inline id<NSObject> O3Alloc(Class someclass, NSZone* zone=NULL) {return NSAllocateObject(someclass, 0, zone);}
-inline id<NSObject> O3Copy(id<NSObject> obj, NSZone* zone=NULL)	{return NSCopyObject(obj, 0, zone);}
+inline id<NSObject> O3Alloc(Class someclass, NSZone* zone) {return NSAllocateObject(someclass, 0, zone);}
+inline id<NSObject> O3Copy(id<NSObject> obj, NSZone* zone)	{return NSCopyObject(obj, 0, zone);}
 inline id<NSObject> O3Release(id<NSObject> obj) 				{if (NSDecrementExtraRefCountWasZero((obj))) {NSDeallocateObject((obj)); return nil;} return obj;}
 inline id<NSObject> O3Retain(id<NSObject> obj) 					{NSIncrementExtraRefCount((obj)); return obj;}
 inline id<NSObject> O3Autorelease(id<NSObject> obj) 			{[(obj) autorelease]; return obj;}
 inline id<NSObject> O3RetainAutorelease(id<NSObject> obj) 		{O3Autorelease(O3Retain(obj)); return obj;}
 #else
-inline id<NSObject> O3Alloc(Class someclass, NSZone* zone=NULL) {return [someclass allocWithZone:zone];}
-inline id<NSCopying> O3Copy(id<NSCopying> obj, NSZone* zone=NULL)	{return [obj copyWithZone:zone];}
+inline id<NSObject> O3Alloc(Class someclass, NSZone* zone) {return [someclass allocWithZone:zone];}
+inline id<NSCopying> O3Copy(id<NSCopying> obj, NSZone* zone)	{return [obj copyWithZone:zone];}
 inline id<NSObject> O3Release(id<NSObject> obj) 				{[obj release]; return obj;}
 inline id<NSObject> O3Retain(id<NSObject> obj) 					{return [obj retain];}
 inline id<NSObject> O3Autorelease(id<NSObject> obj) 			{return [obj autorelease];}
 inline id<NSObject> O3RetainAutorelease(id<NSObject> obj) 		{return O3Autorelease(O3Retain(obj));}
 #endif
+inline id<NSObject> O3Alloc(Class someclass) {return O3Alloc(someclass, NULL);}
+inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
+#endif /*defined(__cplusplus)*/
 
 #ifdef O3AllowObjcInitAndDeallocSpeedHack
 #include <objc-runtime.h>
@@ -209,3 +223,15 @@ inline id<NSObject> O3RetainAutorelease(id<NSObject> obj) 		{return O3Autoreleas
 }
 #define O3DestroyCppMap(type, name) O3DestroyCppContainer(type, name, , ->second)
 #define O3DestroyCppVector(type, name) O3DestroyCppContainer(type, name, *, )
+#ifdef __cplusplus
+#define O3EXTERN_C_BLOCK extern "C" {
+#define O3END_EXTERN_C }
+#define O3END_EXTERN_C_BLOCK }
+#define O3EXTERN_C extern "C" 
+#else
+#define O3EXTERN_C_BLOCK
+#define O3END_EXTERN_C
+#define O3EXTERN_C
+#define O3END_EXTERN_C_BLOCK
+#endif
+

@@ -226,7 +226,7 @@ AnnotationMap* mAnnotationsP(O3CGParameter* self) {
 
 ///@note To get Cg acceleration, \e binding and \e keyPath must be @"value" (it is best but not necessary that the constant string is used) and options must be null. Otherwise plain Objective C bindings are used.
 ///@note \eto is the destination and \e from is the place the value is gotten from. The ordering is to maintain consistency with KVB (PLS).
-void O3CGParameterBindValue_to_(O3CGParameter* to, O3CGParameter* from) {
+O3EXTERN_C void O3CGParameterBindValue_to_(O3CGParameter* to, O3CGParameter* from) {
 	#ifdef O3DEBUG
 	static Class O3CGParameter_class = nil;
 		if (!O3CGParameter_class) O3CGParameter_class = [O3CGParameter class];
@@ -266,7 +266,7 @@ void O3CGParameterBindValue_to_(O3CGParameter* to, O3CGParameter* from) {
 }
 
 ///@returns YES if there was a value to unbind (that was unbound, but this shouldn't fail), NO if there wasn't.
-BOOL O3CGParameterUnbindValue(O3CGParameter* self) {
+O3EXTERN_C BOOL O3CGParameterUnbindValue(O3CGParameter* self) {
 	if (cgGetConnectedParameter(self->mParam)) {
 		cgDisconnectParameter(self->mParam);
 		return YES;

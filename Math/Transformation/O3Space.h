@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3Space.h
@@ -143,3 +144,4 @@ T O3ConvertSpaceToSpace(const T& space_vector, const ObjC3D::Math::Space3* from,
 	if (!from) return O3ConvertRootToSpace(space_vector, to);
 	return from->VectorToSpace(to, space_vector);
 }
+#endif /*defined(__cplusplus)*/

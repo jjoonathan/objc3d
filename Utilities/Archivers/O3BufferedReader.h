@@ -5,23 +5,27 @@
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
 #pragma once
-#include <vector>
-#include <map>
+#ifdef __cplusplus
+	#include <vector>
+	#include <map>
+	using namespace std;
+	class O3BufferedReader;
+#endif /*defined(__cplusplus)*/
 #include "O3ArchiveFormat.h"
-using namespace std;
-class O3BufferedReader;
 
 
 @protocol O3UnarchiverCallbackable
 ///Allows the coder specified in ReadObject(overrides, coder) to read directories (dictionaries) in a custom manner (often lazy loading). 
 ///@returns a new autoreleased dictionary-like (KVCable) object if you have handled the reading and have seeked past the dictionary or nil if the BufferedReader should use its default implementation (read recursively into a plain NSDictionary).
+#ifdef __cplusplus
 - (NSObject*)readO3ADictionaryFrom:(O3BufferedReader*)reader size:(UIntP)size;
 - (NSArray*)readO3AArrayFrom:(O3BufferedReader*)reader size:(UIntP)size;
 - (id)readO3AObjectOfClass:(NSString*)className from:(O3BufferedReader*)reader size:(UIntP)size;
+#endif
 @end 
 
 
-
+#ifdef __cplusplus
 class O3BufferedReader {
 public:
 	NSFileHandle* mHandle; //If NULL, data only comes from the data
@@ -63,6 +67,7 @@ public:
 	double ReadDouble();
 	NSString* ReadCCString(enum O3CCSTableType = O3CCSStringTable);
 	void* ReadBytes(UInt64 len, UInt64 extra_bytes=0);
+	void ReadBytesInto(void* b, UInt64 len);
 	NSData* ReadData(UInt64 len);
 	enum O3PkgType ReadObjectHeader(UIntP* size, NSString** classname = nil);
 	void SkipObject();
@@ -92,3 +97,4 @@ inline void O3BufferedReader::Init() {
 	mHandle_readDataOfLength_ = nil;
 	mKT = mST = mCT = nil;
 }
+#endif /*defined(__cplusplus)*/

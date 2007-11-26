@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3BufferedWriter.h
  *  @license MIT License (see LICENSE.txt)
@@ -5,7 +6,6 @@
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
 #pragma once
-#include <vector>
 #include "O3ArchiveFormat.h"
 using namespace std;
 
@@ -139,3 +139,4 @@ template <typename UIntegerType>
 			WriteByte(b);
 		}
 	}
+#endif /*defined(__cplusplus)*/

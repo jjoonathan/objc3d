@@ -10,8 +10,13 @@
 const NSString* O3TextureFormatUnguessableException      = @"ObjC3D Texture Format Unguessable";
 const NSString* O3TextureUnrecognizedTargetException     = @"ObjC3D Unrecognized Target Exception";
 
+#ifdef __cplusplus
 GLenum*	gCompressedInternalFormats;
 GLint	gNumberCompressedInternalFormats;
+#else
+int*	gCompressedInternalFormats;
+int 	gNumberCompressedInternalFormats;
+#endif
 BOOL		gAutomaticallyUseMipmaps;
 NSMutableDictionary* gAllTextures; //Stores all textures index by their IDs
 O3SupportLevel gPixelBufferSupportLevel;

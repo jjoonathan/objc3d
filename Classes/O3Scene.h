@@ -12,7 +12,7 @@
 ///Groups are more general object collections, but are not necesarily user-visible. For instance, a scene might be divided up into a binary tree, and this binary tree would be the group tree, while a more organized structure would be the region tree.
 ///
 ///O3Scene itself doesn't do much other than call through to the root group.
-@interface O3Scene : NSObject <O3Renderable> {
+@interface O3Scene : NSObject <O3Renderable, NSCoding> {
 	O3Group* mRootGroup; ///<User-visible internal organization of objects
 	BOOL mGroupsNeedUpdate; ///<The region tree has changed and the groups need to be updated
 	O3Region* mRootRegion; ///<User-visible organization of objects

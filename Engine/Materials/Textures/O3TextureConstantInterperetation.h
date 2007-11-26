@@ -6,8 +6,10 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  *  @brief Interperets OpenGL texture constants (isolates dirty work)
  */
+#ifdef __cplusplus
 extern GLenum* gCompressedInternalFormats;		//In O3Texture.mm
 extern GLint gNumberCompressedInternalFormats;	//In O3Texture.mm
+#endif
 
 inline BOOL isFormatCompressedP(GLenum format) {
 	if (format==GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) return YES;
@@ -210,8 +212,8 @@ static void formatAndTypeForInternalFormatAP(GLenum internalFormat, GLenum* form
 			break;
 		default:
 			if (isFormatCompressedP(internalFormat)) {
-				*type = nil;
-				*format = nil;
+				*type = (GLenum)0;
+				*format =(GLenum)0;
 				return;
 			} else {
 				O3CLogWarn(@"Texture format & type were not guessable for internalFormat 0x%X. Assuming NULL and NULL.", internalFormat);

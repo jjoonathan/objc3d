@@ -1,3 +1,4 @@
+#include "ObjCEncoding.h"
 #include "O3BufferedReader.h"
 
 void O3DynamicMatrix::SetTo(const O3DynamicMatrix& other) {
@@ -55,20 +56,20 @@ void O3DynamicMatrix::initWithEncoding_data_(const char* encoding, const void* d
 	SetISA();
 	const char* orig_enc = encoding;
 	
-	O3Verify(*(encoding++)==_C_ARY_B, @"The construction of an O3DynamicMatrix with the encoding \"%s\" was attempted. Only encodings in the format \"[%%i[%%iT]]\" where T is some type are accepted.", orig_enc);
+	O3Verify(*(encoding++)==OCTYPE_ARY_B, @"The construction of an O3DynamicMatrix with the encoding \"%s\" was attempted. Only encodings in the format \"[%%i[%%iT]]\" where T is some type are accepted.", orig_enc);
 	O3Assert(!isdigit(*encoding), @"The construction of an O3DynamicMatrix with the encoding \"%s\" was attempted. Only encodings in the format \"[%%i[%%iT]]\" where T is some type are accepted.", orig_enc);
 	int rows = atoi(encoding);			
 	while (isdigit(*(++encoding)));
 	
-	O3Verify(*(encoding++)==_C_ARY_B, @"The construction of an O3DynamicMatrix with the encoding \"%s\" was attempted. Only encodings in the format \"[%%i[%%iT]]\" where T is some type and i is an integer are accepted.", orig_enc);
+	O3Verify(*(encoding++)==OCTYPE_ARY_B, @"The construction of an O3DynamicMatrix with the encoding \"%s\" was attempted. Only encodings in the format \"[%%i[%%iT]]\" where T is some type and i is an integer are accepted.", orig_enc);
 	O3Assert(!isdigit(*encoding), @"The construction of an O3DynamicMatrix with the encoding \"%s\" was attempted. Only encodings in the format \"[%%i[%%iT]]\" where T is some type and i is an integer are accepted.", orig_enc);
 	int cols = atoi(encoding);			
 	while (isdigit(*(++encoding)));
 	
 	const char* ele_type = encoding;
 	
-	if (*(++encoding) != _C_ARY_E) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicMatrix.", orig_enc); 
-	if (*(++encoding) != _C_ARY_E) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicMatrix.", orig_enc); 
+	if (*(++encoding) != OCTYPE_ARY_E) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicMatrix.", orig_enc); 
+	if (*(++encoding) != OCTYPE_ARY_E) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicMatrix.", orig_enc); 
 	if (*(++encoding)) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicMatrix (extraneous data at the end).", orig_enc); 
 	
 	mMatrixData = data;

@@ -9,18 +9,26 @@
 #import "O3Space.h"
 #import "O3Renderable.h"
 @class O3Camera;
+#ifdef __cplusplus
 using namespace ObjC3D::Math;
+#endif
 
 @interface O3Locateable : NSObject {
+#ifdef __cplusplus
 	O3Translation3 mTranslation;
 	O3Rotation3 mRotation;
 	O3Scale3 mScale;
 	Space3 mSpace;
+#else
+	float mTRS[9];
+	//Ah, screw it. The size'll be off in C.
+#endif
 	BOOL mSpaceNeedsUpdate; ///<Weather the space needs to be remade from mTranslation etc. @note In the current implementation this really isn't used: the space is updated right after changes.
 }
 - (O3Locateable*)initWithCoder:(NSCoder*)coder;
 - (void)encodeWithCoder:(NSCoder*)coder;
 
+#ifdef __cplusplus
 - (Space3*)space;		///<Returns the receiver's space (object space)
 - (Space3*)superspace;	///<Returns the receiver's superspace (space above object space)
 - (void)setSuperspaceToThatOfLocateable:(O3Locateable*)locateable;
@@ -42,7 +50,7 @@ using namespace ObjC3D::Math;
 - (void)setMatrixToSpace:(Space3*)targetspace; ///<glLoads the matrix to transform from the receiver's space to targetspace
 
 - (void)debugDrawIntoSpace:(const Space3&)intospace;
-
+#endif
 @end
 
 typedef O3Locateable<O3Renderable> O3SceneObj;

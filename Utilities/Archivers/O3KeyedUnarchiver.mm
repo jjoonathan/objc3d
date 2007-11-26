@@ -256,7 +256,7 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 		O3CFDictionarySetValue(mObjDict, k, v);
 	} while(reader->Offset()<end);
 	mDepth--;
-	NSObject* to_return = [[objClass alloc] initWithCoder:self];
+	NSObject* to_return = [[[objClass alloc] initWithCoder:self] autorelease];
 	//O3Optimizeable();
 	[mObjDict release];
 	mObjDict = oldDict;

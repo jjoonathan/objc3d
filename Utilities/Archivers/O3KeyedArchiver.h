@@ -5,11 +5,9 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#include "map"
-#include "string"
-#include "vector"
-@class O3VFS;
+#ifdef __cplusplus
 class O3NonlinearWriter;
+#endif
 extern NSString* O3UnkeyedMethodSendToKeyedArchiverException;
 extern NSPropertyListFormat O3ArchiveFormat0;
 
@@ -22,14 +20,15 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 
 ///@todo Make classFallbacksForKeyedArchiver work
 @interface O3KeyedArchiver : NSCoder {
-	//std::map<id, std::vector<std::string> >* mWrittenObjects;
-	//std::vector<O3KeyedArchiverDeferedAlias>* mDeferedAliases;
 	NSMutableSet* mWrittenClasses;
+#ifdef __cplusplus
 	O3NonlinearWriter* mWriter;
-	O3VFS* mVFS; 
-	BOOL mRootObjectWritten;
+#else
+	void* mWriter;
+#endif
 	NSMutableDictionary* mClassNameMappings; ///<Class->NSString
-	/*O3WEAK*/ id mDelegate;
+	id mDelegate;
+	BOOL mRootObjectWritten;
 	BOOL mArchivingBegun; ///<Some variables cannot be changed once archiving has begun
 	BOOL mCompatibility; ///<Should write compatibility data (fallback classes). Defaults to YES.
 	BOOL mCompress; ///<Should go through compression? Defaults to YES.
@@ -49,17 +48,12 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 + (NSData*)archivedDataWithRootObject:(id)obj;				
 + (void)archiveRootObject:(id)obj toFile:(NSString*)file;
 + (void)archiveRootObject:(id)obj toFileDescriptor:(int)fd;	
-+ (NSData*)archivedDataWithRootObject:(id)obj VFS:(O3VFS*)vfs;				///<@param vfs defaults to nil
-+ (void)archiveRootObject:(id)obj toFile:(NSString*)file VFS:(O3VFS*)vfs;	///<@param vfs defaults to nil
-+ (void)archiveRootObject:(id)obj toFileDescriptor:(int)fd VFS:(O3VFS*)vfs;	///<@param vfs defaults to nil
 - (void)finishEncoding;
 
 //All encode:forKey: methods are supported.
 - (void)encodeUInt64:(UInt64)v forKey:(NSString*)k;
 
 //Accessors
-- (O3VFS*)VFS;
-- (void)setVFS:(O3VFS*)vfs;
 - (NSPropertyListFormat)outputFormat;
 - (void)setOutputFormat:(NSPropertyListFormat)newFormat;
 - (id)delegate;
@@ -74,7 +68,7 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 + (NSString*)classNameForClass:(Class)theClass; ///<@note Shared with NSKeyedArchiver
 - (void)setClassName:(NSString*)mapTo forClass:(Class)mapFrom;
 - (NSString*)classNameForClass:(Class)theClass;
-NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c); ///<This is used in the actual encoding process, it can be useful elsewhere.
+O3EXTERN_C NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c); ///<This is used in the actual encoding process, it can be useful elsewhere.
 @end
 
 @interface NSObject (O3KeyedArchiverSpecialness)

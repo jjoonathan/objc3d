@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3Matrix_Square.h
  *  @license MIT License (see LICENSE.txt)
@@ -125,3 +126,4 @@ public: //Specific inversion methods
 	O3Mat_sq_T& InvertLU(); ///<Uses lower-upper inversion technique
 	O3Mat_sq_T& InvertAdjoint(); ///<Uses adjoint inversion technique
 };
+#endif /*defined(__cplusplus)*/

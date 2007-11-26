@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3Translation.h
@@ -47,3 +48,4 @@ public: //O3Mat construction
 
 typedef O3Translation<double, 3> O3Translation3;
 typedef O3Translation<double, 2> O3Translation2;
+#endif /*defined(__cplusplus)*/

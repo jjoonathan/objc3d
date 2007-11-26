@@ -5,10 +5,14 @@
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
 #import "O3Locateable.h"
+#ifdef __cplusplus
 using namespace ObjC3D::Math;
+#endif
 
 @interface O3Camera : O3Locateable {
+#ifdef __cplusplus
 	Space3* mPostProjectionSpace;
+#endif
 	BOOL mPostProjectionSpaceNeedsUpdate;
 	double mAspectRatio;	///<Width/height of whatever is being rendered into
 	double mNearPlane, mFarPlane;	///<The near and far plane distances (like min and max Z values)
@@ -24,10 +28,12 @@ using namespace ObjC3D::Math;
 - (double)farPlaneDistance;  ///<Returns how far away the far plane is
 - (double)nearToFarRatio;    ///<Returns the near-plane to far-plane ratio
 - (double)fovY;				///<Returns the field of view in the Y direction in radians
+#ifdef __cplusplus
 - (O3Mat4x4d)viewMatrix;		///<Returns the view (look-at) matrix
 - (O3Mat4x4d)projectionMatrix; ///<Returns the receiver's projection matrix
 - (O3Mat4x4d)viewProjectionMatrix; ///<Returns the receiver's projection matrix * its view matrix (view then project)
-- (Space3*)postProjectionSpace; ///<Returns the post projective space (projection transform, superspace is camera space). @note the returned Space3 does not "synchronize" with its O3Camera until you call this method. For example, if you called [camera postProjectionSpace]; then [camera setAspectRatio:2];, the Space3 would not update until the next time you called [camera postProjectionSpace]. The return values of both methods would be the same, though.
+- (Space3*)postProjectionSpace; ///<Returns the post projective space (projection transform, superspace is camera space)
+#endif
 
 //Setters
 - (void)setAspectRatio:(double)newAR;	///<Sets the aspect ratio (width/height) of the receiver.

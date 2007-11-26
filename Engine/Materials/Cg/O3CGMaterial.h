@@ -5,19 +5,23 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+#ifdef __cplusplus
 #include <map>
 #include <string>
 using namespace std;
+#endif
 @class O3KVCHelper;
 @class O3CGParameter;
 
 struct O3CGMaterialParameterPair {
 	O3CGParameter* target;
 	O3CGParameter* value;
+#ifdef __cplusplus
 	O3CGMaterialParameterPair() {
 		target = nil;
 		value = nil;
 	}
+#endif
 };
 
 /**
@@ -30,8 +34,13 @@ struct O3CGMaterialParameterPair {
 @interface O3CGMaterial : NSObject {
 	NSObject<O3MultipassDirector, O3HasCGParameters>* mMaterialType;	///<The type of material (the shader that implements this type of material)
 	O3KVCHelper* mParameterKVCHelper;
+#ifdef __cplusplus
 	map<string, O3CGMaterialParameterPair>* mParameters;
 	vector<O3CGParameter*>* mParamsToUnbind; ///<All open bindings that the receiver is responsible for closing
+#else
+	void* mParameters;
+	void* mParamsToUnbind;
+#endif
 }
 //Creation
 - (id)initWithMaterialType:(NSObject<O3MultipassDirector, O3HasCGParameters>*)materialType;

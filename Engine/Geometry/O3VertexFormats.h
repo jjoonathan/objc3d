@@ -9,6 +9,7 @@
 #define O3TypeNotRecognizedException @"O3 OpenGL type not recognized"
 const extern NSString* O3VertexDataTypeUnrecognizedException; //In O3VertexData.mm
 extern GLint gMaximumVertexAttributes; //In O3VertexData.mm
+static GLint gMaximumTexCoords;
 
 #define O3VertexAttributeDataType(n) (  (O3VertexDataType)( O3VertexAttribute0DataType+(n) )  )
 #define O3VertexAttributeNumberForForDataType(n) (  (GLint)((int)(n) - (int)O3VertexAttribute0DataType)  )
@@ -48,10 +49,18 @@ typedef enum O3VertexDataType {
 } O3VertexDataType;
 static const int O3VertexDataTypeCount = 9;
 
+#ifdef __cplusplus
 static inline BOOL O3VertexDataTypeIsVertexAttribute(O3VertexDataType type) {
 	if (!gMaximumVertexAttributes) glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &gMaximumVertexAttributes);
 	int offset = O3VertexAttributeNumberForForDataType(type);
 	if (offset>0 && offset<gMaximumVertexAttributes) return YES;
+	return NO;
+}
+
+static inline BOOL O3VertexDataTypeIsTexCoord(O3VertexDataType type) {
+	if (!gMaximumTexCoords) glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &gMaximumTexCoords);
+	int offset = O3TexCoordNumberForForDataType(type);
+	if (offset>0 && offset<gMaximumTexCoords) return YES;
 	return NO;
 }
 
@@ -93,3 +102,4 @@ static inline int O3SizeofGLType(GLenum type) {
 	}
 	return 0;
 }
+#endif

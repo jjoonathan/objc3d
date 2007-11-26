@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3Vector.h
@@ -7,7 +8,6 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #include "O3Math.h"
-#include <iostream>
 class O3DynamicVector;
 
 #define O3Vec_TT	template <typename TYPE, int NUMBER> 
@@ -171,3 +171,4 @@ typedef O3Vec<real, 4> O3Vec4r;		///<A convenience typedef defines O3Vec4r as a 
 typedef O3Vec<float, 2> O3Vec2f;		///<A convenience typedef defines O3Vec2f as a 2 component single precision floating point vector.
 typedef O3Vec<float, 3> O3Vec3f;		///<A convenience typedef defines O3Vec3f as a 3 component single precision floating point vector.
 typedef O3Vec<float, 4> O3Vec4f;		///<A convenience typedef defines O3Vec4f as a 4 component single precision floating point vector.
+#endif /*defined(__cplusplus)*/

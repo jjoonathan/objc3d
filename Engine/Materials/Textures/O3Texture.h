@@ -74,5 +74,7 @@ const extern NSString* O3TextureUnrecognizedTargetException;
 + (void)assertSupportedAtLeastToLevel:(O3SupportLevel)supportLevel;
 @end
 
+#ifdef __cplusplus
 void O3Texture_bind(O3Texture* tex, int tex_unit=0, bool enable=true); 	///<Provides a quick way of calling -(void)bind on a texture. Instead of calling [texture bind] call O3Texture_bind(texture). This preserves most objective-C dynamicness: you can use it to call -(void)bind on any object with a method of that name, but if the object isn't a O3Texture it will be slightly slower, not faster than calling [object bind]. @note If \e enable is false you do not have to call unbind. Don't use this unless you know what you're doing. @warn This function does NOT recognize swizzled methods (after the first call to it)!
 void O3Texture_unbind(O3Texture* tex, int tex_unit=0);	///<Provides a quick way of calling [texture unbind]
+#endif /*defined(__cplusplus)*/

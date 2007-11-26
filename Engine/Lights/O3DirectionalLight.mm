@@ -13,7 +13,7 @@
 /******************************************************************************************/
 #pragma mark Initializers
 /******************************************************************************************/
-- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor {
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor {
 	[super initWithLocation:(O3Point3)aLocation 
 					ambient:ambientColor
 					diffuse:diffuseColor
@@ -23,7 +23,7 @@
 	return self;
 }
 
-- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation {
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation {
 	[super initWithLocation:(O3Point3)aLocation 
 					ambient:ambientColor
 					diffuse:diffuseColor
@@ -33,7 +33,7 @@
 	return self;
 }
 
-- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff {
+- (O3Light*)initWithLightOriginDirection:(O3Vec3r)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff {
 	[super initWithLocation:(O3Point3)aLocation 
 					ambient:ambientColor
 					diffuse:diffuseColor
@@ -49,9 +49,9 @@
 	
 	GLenum light = GL_LIGHT0 + mIndex;
 	GLfloat wPosition[] = {mLocation->GetX(), mLocation->GetY(), mLocation->GetZ(), 0.};
-	glLightfv(light, GL_AMBIENT, *mAmbient);
-	glLightfv(light, GL_DIFFUSE, *mDiffuse);
-	glLightfv(light, GL_SPECULAR, *mSpecular);
+	glLightfv(light, GL_AMBIENT, mColors);
+	glLightfv(light, GL_DIFFUSE, mColors+4);
+	glLightfv(light, GL_SPECULAR, mColors+8);
 	glLightfv(light, GL_POSITION, wPosition);
 	glLightf(light, GL_CONSTANT_ATTENUATION, mAttenuation->GetC());
 	glLightf(light, GL_LINEAR_ATTENUATION, mAttenuation->GetB());

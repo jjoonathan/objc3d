@@ -394,7 +394,7 @@ using namespace ObjC3D;
 	[md setObject:@"Forty Two!" forKey:@"The Answer"];
 	[md setObject:[NSNumber numberWithInt:42] forKey:@"The Answer Translated"];
 	[md setObject:[NSNumber numberWithFloat:4.2] forKey:@"4.2"];
- 	NSData* dat = [O3KeyedArchiver archivedDataWithRootObject:md VFS:nil];
+ 	NSData* dat = [O3KeyedArchiver archivedDataWithRootObject:md];
 	NSDictionary* dict2 = [O3KeyedUnarchiver unarchiveObjectWithData:dat];
 	if ([dict2 isKindOfClass:[NSDictionary class]]) {
 		NSEnumerator* kenum = [md keyEnumerator];
@@ -492,7 +492,7 @@ using namespace ObjC3D;
 		NSString* filePath = [prefs_path stringByAppendingPathComponent:p];
 		NSDictionary* before = [NSDictionary dictionaryWithContentsOfFile:filePath];
 		before_size_accum += [[[man fileAttributesAtPath:filePath traverseLink:NO] objectForKey:NSFileSize] unsignedLongLongValue];
-		NSData* dat = [O3KeyedArchiver archivedDataWithRootObject:before VFS:nil];
+		NSData* dat = [O3KeyedArchiver archivedDataWithRootObject:before];
 		NSDictionary* after = [O3KeyedUnarchiver unarchiveObjectWithData:dat];
 		after_size_accum += [dat length];
 		NSEnumerator* kEnum = [before keyEnumerator];

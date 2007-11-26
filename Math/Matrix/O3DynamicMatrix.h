@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3DynamicMatrix.h
@@ -67,3 +68,4 @@ private:
 //template <typename T, int R, int C> O3Mat<T,R,C>::operator const O3DynamicMatrix () const;	///<Automatically creates a DynamicMatrix if warranted
 //O3Mat_sq_TT O3Mat_sq_T& O3Mat_sq_T::Set(const O3DynamicMatrix& dynm);	///<Set a matrix to the values represented by a DynamicMatrix (mostly for the ObjC interface)
 //O3Mat_TT2 O3Mat_T& O3Mat_T::Set(const O3DynamicMatrix& dynm);	///<Set a matrix to the values represented by a DynamicMatrix (mostly for the ObjC interface)
+#endif /*defined(__cplusplus)*/

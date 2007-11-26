@@ -6,7 +6,9 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #import "O3VertexFormats.h"
+#ifdef __cplusplus
 #include <set>
+#endif
 
 const extern NSString* O3RawVertexDataDoublyMappedException;
 
@@ -16,7 +18,11 @@ const extern NSString* O3RawVertexDataDoublyMappedException;
 	void*  mVertexArray;	///<If we are in fallback (plain vertex array) mode, this is either 0x1 or a valid pointer to the data buffer after initialization
 	GLenum mAccessHint;
 	void* mMappedBuffer;
+#ifdef __cplusplus
 	std::set<O3VertexDataType>* mBoundTypes;
+#else
+	void* mBoundTypes;
+#endif
 	GLsizeiptr mSize;		///<The size in bytes of the buffer. \note Always holds onto its size incase the buffer is >2GB (forward compatibility) and so virtual and real VBOs act the same. Also makes "size" KVO compliant :)
 	int mTimesMapped;
 }

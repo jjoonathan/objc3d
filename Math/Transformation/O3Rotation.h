@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 #pragma once
 /**
  *  @file O3Rotation.h
@@ -52,3 +53,4 @@ public: //Inspectors
 	O3Quaternion GetQuaternion() const;	///<Gets the receiver's quaternion representation
 	void GetEulerAngles(angle* roll, angle* pitch, angle* yaw) const;	///<Gets the euler angles that compose the receiver's rotation (pass NULL if you don't want one of them)
 };
+#endif /*defined(__cplusplus)*/

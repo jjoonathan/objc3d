@@ -14,6 +14,9 @@
 - (O3Scene*)init {
 	O3SuperInitOrDie();
 	mRegionLock = [NSLock new];
+	O3Region* rr = [[O3Region alloc] init];
+	[self setRootRegion:rr];
+	[rr release];
 	return self;
 }
 
@@ -22,6 +25,22 @@
 	mRegionLock = [NSLock new];
 	[self setRootRegion:root];
 	return self;
+}
+
+- (id)initWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding]) {
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+		[self release];
+		return nil;
+	}
+	O3Region* rr = [coder decodeObjectForKey:@"rootRegion"];
+	return [self initWithRegion:rr];
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding])
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+	[coder encodeObject:mRootRegion forKey:@"rootRegion"];
 }
 
 - (void)dealloc {
@@ -39,6 +58,7 @@
 - (void)setRootRegion:(O3Region*)newRoot {
 	[mRegionLock lock];
 	O3Assign(newRoot, mRootRegion);
+	[newRoot setScene:self];
 	[mRegionLock unlock];
 }
 

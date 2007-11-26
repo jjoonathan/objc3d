@@ -5,7 +5,9 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+#ifdef __cplusplus
 class O3BufferedReader;
+#endif
 
 typedef IntP O3MultiIndexBase;
 ///@warning O3MultiIndexes are indexed starting with 1, not 0, because of the sentinal value
@@ -34,8 +36,10 @@ inline UIntP O3MultiIndexCount(O3MultiIndex idx) {
 //Initialization
 - (id)initWithRawData:(NSData*)rawData objCType:(const char*)objCType dimensions:(O3MultiIndex)dims; ///Init with an in-memory C array of structs
 - (id)initWithPortableData:(NSData*)rawData; ///Init with portable data (which is used when going from one computer to another.)
-- (id)initWithPortableBufferReader:(O3BufferedReader*)br; ///The same as initWithPortableData, except read from \e br instead of a NSData.
 - (id)initWithObjCType:(const char*)objCType dimensions:(O3MultiIndex)dims; ///Create an empty value array with undefined contents
+#ifdef __cplusplus
+- (id)initWithPortableBufferReader:(O3BufferedReader*)br; ///The same as initWithPortableData, except read from \e br instead of a NSData.
+#endif
 
 //Inspectors
 - (UInt64)count;
@@ -43,13 +47,17 @@ inline UIntP O3MultiIndexCount(O3MultiIndex idx) {
 - (NSData*)portableData; ///Portable data should be used whenever transferring a O3ValueArray from one computer to another.
 - (void)getValue:(void*)to atIndex:(O3MultiIndex)index;
 - (NSValue*)valueAtIndex:(O3MultiIndex)index;
+#ifdef __cplusplus
 - (O3DynamicMatrix)matrixAtIndex:(O3MultiIndex)index;
 - (O3DynamicVector)vectorAtIndex:(O3MultiIndex)index;
+#endif
 
 //Mutators
 - (void)setValueAtIndex:(O3MultiIndex)index to:(void*)newVal;
 - (void)setValueAtIndex:(O3MultiIndex)index toValue:(NSValue*)val;
+#ifdef __cplusplus
 - (void)setValueAtIndex:(O3MultiIndex)index toMatrix:(O3DynamicMatrix)val;
 - (void)setValueAtIndex:(O3MultiIndex)index toVector:(O3DynamicVector)val;
+#endif
 
 @end

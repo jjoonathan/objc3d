@@ -9,13 +9,18 @@
 #import "O3Light.h"
 
 @interface O3SpotLight : O3Light {
+#ifdef __cplusplus
 	O3Vec3r *direction;
+#else
+	void* direction;
+#endif
 	angle spreadAngle;
 	float exponent;
 }
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)exponent;
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)exponent;
-- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(Color)ambientColor diffuse:(Color)diffuseColor specular:(Color)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff  direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)exponent;	///<Initializes the receiver, attaches it to the light list, and enables it.
-
+#ifdef __cplusplus
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)exponent;
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)exponent;
+- (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor attenuation:(QuadraticEquationR)reciprocalAttenuation cutoff:(real)cutoff  direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)exponent;	///<Initializes the receiver, attaches it to the light list, and enables it.
+#endif
 
 @end

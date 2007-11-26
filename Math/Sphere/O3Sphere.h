@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3Sphere.h
  *  @license MIT License (see LICENSE.txt)
@@ -59,4 +60,4 @@ public: //Expanders
 	O3Sphere_T& ExpandRadius(const O3Sphere_box_T& O3Box); ///<Expands the receiver (if necesssary) to include O3Box, but does not move the center
 	O3Sphere_T  GetExpandedRadius(const O3Sphere_box_T& O3Box); ///<Returns a copy of the receiver, expanded (if necesssary) to include O3Box, but does not move the center
 };
-
+#endif /*defined(__cplusplus)*/

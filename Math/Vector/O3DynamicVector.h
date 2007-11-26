@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3DynamicVector.h
  *  @license MIT License (see LICENSE.txt)
@@ -6,7 +7,6 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#import "ObjCEncoding.h"
 #import "O3EncodingInterpretation.h"
 class O3DynamicMatrix;
 
@@ -55,3 +55,4 @@ private:
 //These are declared elsewhere, but are here for clarity:
 //template <typename T, int N> O3Vec<T,N>::operator const O3DynamicVector () const;
 //template <typename T, int N> O3Vec<T,N>& O3Vec<T,N>::Set(const O3DynamicVector& dvec);
+#endif /*defined(__cplusplus)*/

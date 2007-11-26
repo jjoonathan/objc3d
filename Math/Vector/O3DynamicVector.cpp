@@ -1,14 +1,15 @@
+#import "ObjCEncoding.h"
 O3DynamicVector::O3DynamicVector(const char* encoding, const void* data) {	
 	const char* orig_enc = encoding;
 	
-	O3Verify(*(encoding++)==_C_ARY_B, @"The construction of an O3DynamicVector with the encoding \"%s\" was attempted. Only encodings in the format \"[%%iT]\" where T is some type and i is an integer are accepted.", orig_enc);
+	O3Verify(*(encoding++)==OCTYPE_ARY_B, @"The construction of an O3DynamicVector with the encoding \"%s\" was attempted. Only encodings in the format \"[%%iT]\" where T is some type and i is an integer are accepted.", orig_enc);
 	O3Assert(!isdigit(*encoding), @"The construction of an O3DynamicVector with the encoding \"%s\" was attempted. Only encodings in the format \"[%%iT]\" where T is some type and i is an integer are accepted.", orig_enc);
 	int ele_count = atoi(encoding);			
 	while (isdigit(*(++encoding)));
 	
 	const char* ele_type = encoding;
 	
-	if (*(++encoding) != _C_ARY_E) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicVector. Should be \"[%%iT]\", where T is a type and i is an integer.", orig_enc); 
+	if (*(++encoding) != OCTYPE_ARY_E) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicVector. Should be \"[%%iT]\", where T is a type and i is an integer.", orig_enc); 
 	if (*(++encoding)) O3CLogWarn(@"Malformed encoding \"%s\" for construction of O3DynamicVector (extraneous data at the end).", orig_enc); 
 	
 	SetISA();

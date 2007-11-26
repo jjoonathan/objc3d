@@ -55,6 +55,13 @@
 			remoteGlobalIDString = FC2C1BB60C123F790084A599;
 			remoteInfo = ObjC3D.framework;
 		};
+		FC63EEC90CFA159200325C54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC57D3160CB7D6A500741F39 /* ObjC3D.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FC63DF100CF1C2A200325C54 /* RubyConsole.app */;
+			remoteInfo = RubyConsole;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -247,6 +254,7 @@
 				FC57D31E0CB7D6A500741F39 /* Tests.octest */,
 				FC57D3200CB7D6A500741F39 /* ObjC3D.framework */,
 				FC57D3220CB7D6A500741F39 /* TestRunner.app */,
+				FC63EECA0CFA159200325C54 /* RubyConsole.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -330,6 +338,13 @@
 			fileType = wrapper.application;
 			path = TestRunner.app;
 			remoteRef = FC57D3210CB7D6A500741F39 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FC63EECA0CFA159200325C54 /* RubyConsole.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = RubyConsole.app;
+			remoteRef = FC63EEC90CFA159200325C54 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
