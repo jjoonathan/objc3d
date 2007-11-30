@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 ##
-## Copyright (C) 2003-2006, Marcelo E. Magallon <mmagallo[]debian org>
-## Copyright (C) 2003-2006, Milan Ikits <milan ikits[]ieee org>
+## Copyright (C) 2003-2007, Marcelo E. Magallon <mmagallo[]debian org>
+## Copyright (C) 2003-2007, Milan Ikits <milan ikits[]ieee org>
 ##
 ## This program is distributed under the terms and conditions of the GNU
 ## General Public License Version 2 as published by the Free Software
@@ -43,16 +43,16 @@ if (@ARGV)
 		#my $pextvar = prefix_varname($extvar);
 
 		print "#ifdef $extname\n";
-		print "  " . $extvar . " = " . $extpre . "GetExtension(\"$extname\");\n";
+		print "  CONST_CAST(" . $extvar . ") = " . $extpre . "GetExtension(\"$extname\");\n";
 		if (keys %$functions)
 		{
 			if ($extname =~ /WGL_.*/)
 			{
-				print "  if (glewExperimental || " . $extvar . "|| crippled) " . $extvar . "= !_glewInit_$extname(GLEW_CONTEXT_ARG_VAR_INIT);\n";
+				print "  if (glewExperimental || " . $extvar . "|| crippled) CONST_CAST(" . $extvar . ")= !_glewInit_$extname(GLEW_CONTEXT_ARG_VAR_INIT);\n";
 			}
 			else
 			{
-				print "  if (glewExperimental || " . $extvar . ") " . $extvar . " = !_glewInit_$extname(GLEW_CONTEXT_ARG_VAR_INIT);\n";
+				print "  if (glewExperimental || " . $extvar . ") CONST_CAST(" . $extvar . ") = !_glewInit_$extname(GLEW_CONTEXT_ARG_VAR_INIT);\n";
 			}
 		}
 		print "#endif /* $extname */\n";

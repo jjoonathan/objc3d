@@ -1,6 +1,6 @@
 ##
-## Copyright (C) 2003-2006, Marcelo E. Magallon <mmagallo[]debian org>
-## Copyright (C) 2003-2006, Milan Ikits <milan ikits[]ieee org>
+## Copyright (C) 2003-2007, Marcelo E. Magallon <mmagallo[]debian org>
+## Copyright (C) 2003-2007, Milan Ikits <milan ikits[]ieee org>
 ##
 ## This program is distributed under the terms and conditions of the GNU
 ## General Public License Version 2 as published by the Free Software
@@ -35,7 +35,9 @@ sub prefix_varname($)
 
 sub make_exact($)
 {
-    return "$_[0]"
+	my $exact = $_[0];
+	$exact =~ s/(; |{)/$1\n/g;
+    return $exact;
 }
 
 sub make_separator($)
@@ -90,7 +92,7 @@ sub parse_ext($)
         {
             if (/$regex{exact}/)
             {
-		push @exacts, $_;
+				push @exacts, $_;
             }
             elsif (/$regex{type}/)
             {

@@ -1,7 +1,7 @@
 #!/bin/bash
 ##
-## Copyright (C) 2003-2006, Marcelo E. Magallon <mmagallo[]debian org>
-## Copyright (C) 2003-2006, Milan Ikits <milan ikits[]ieee org>
+## Copyright (C) 2003-2007, Marcelo E. Magallon <mmagallo[]debian org>
+## Copyright (C) 2003-2007, Milan Ikits <milan ikits[]ieee org>
 ##
 ## This program is distributed under the terms and conditions of the GNU
 ## General Public License Version 2 as published by the Free Software
@@ -168,6 +168,12 @@ EOT
 	void glLoadTransposeMatrixdARB (GLdouble m[16])
 	void glMultTransposeMatrixfARB (GLfloat m[16])
 	void glMultTransposeMatrixdARB (GLdouble m[16])
+EOT
+
+# add missing tokens to GL_EXT_framebuffer_multisample
+	cat >> $1/GL_EXT_framebuffer_multisample <<EOT
+	GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_EXT 0x8D56
+	GL_MAX_SAMPLES_EXT 0x8D57
 EOT
 
 # fix const correctness in GL_ARB_shader_objects

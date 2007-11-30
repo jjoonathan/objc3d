@@ -5,9 +5,13 @@
 #ifdef __glxext_h_
 #error glxext.h included before glxew.h
 #endif
+#ifdef GLX_H
+#error glx.h included before glxew.h
+#endif
 
 #define __glxext_h_
 #define __GLX_glx_h__
+#define GLX_H
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -51,7 +55,7 @@ extern "C" {
 typedef XID GLXDrawable;
 typedef XID GLXPixmap;
 #ifdef __sun
-typedef struct __glXcontextRec *GLXContext;
+typedef struct __glXContextRec *GLXContext;
 #else
 typedef struct __GLXcontextRec *GLXContext;
 #endif
