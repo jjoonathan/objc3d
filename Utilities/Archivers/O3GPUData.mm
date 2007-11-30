@@ -12,7 +12,9 @@ NSString* gO3VertexDataTypeUnrecognizedException = @"O3VertexDataTypeUnrecognize
 struct O3GLBufferObject* O3GLBufferObjectNew() {
 	O3GLBufferObject* r = new O3GLBufferObject();
 	r->references = 1;
-	glGenBuffersARB(1, &(r->id));
+	GLuint b;
+	glGenBuffersARB(1, &b);
+	r->id = b;
 	return r;
 }
 
@@ -103,19 +105,11 @@ inline void willMutateP(O3GPUData* self) {
 ///This function uploads data asynchronously if %fwd is YES (ownership is transfered to the O3GPUData)
 - (O3GPUData*)initWithBytesNoCopy:(void*)bytes length:(UIntP)len freeWhenDone:(BOOL)fwd hint:(GLenum)usageHint {
 	O3SuperInitOrDie();
-	if (!fwd) O3LogInfo(@"[O3GPUData initWithBytes:length:freeWhenDone:NO] causes a stall. Use initWithBytes:length:freeWhenDone:YES if possible.");
 	mBuffer = O3GLBufferObjectNew();
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, mBuffer->id);
-	if (!fwd) {
-		glBufferDataARB(GL_ARRAY_BUFFER_ARB, len, bytes, usageHint);
-		return self;
-	}
-	glBufferDataARB(GL_ARRAY_BUFFER_ARB, len, NULL, usageHint);
-	void* b = glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY);
-	memcpy(b, bytes, len); //According to the spec, this could be put in another thread
-	if (!glUnmapBufferARB(GL_ARRAY_BUFFER_ARB)) O3LogError(@"Couldn't unmap GL buffer for data %@", self);
-	free(bytes);
 	mLength = len;
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, len, bytes, usageHint);
+	if (fwd) free(bytes);
 	return self;
 }
 
@@ -173,6 +167,7 @@ inline void willMutateP(O3GPUData* self) {
 	O3GLBufferObject* nbuf = O3GLBufferObjectDuplicate(mBuffer, NULL, ncap-cap);
 	O3GLBufferObjectRelease(mBuffer);
 	mBuffer = nbuf;
+	mLength = nlen;
 }
 
 - (UIntP)length {
@@ -255,6 +250,10 @@ inline void willMutateP(O3GPUData* self) {
 	void* b = malloc(r.length);
 	[self getBytes:b range:r];
 	return [[[NSMutableData alloc] initWithBytesNoCopy:b length:r.length freeWhenDone:YES] autorelease];
+}
+
+- (NSData*)regularData {
+	return [self subdataWithRange:NSMakeRange(0,mLength)];
 }
 
 /************************************/ #pragma mark Adding Data /************************************/

@@ -19,13 +19,13 @@
 	mData = [arr rawData];
 	mType = t;
 	mStructType = [arr structType];
-	mFormat = [mStructType glFormat];
-	mComponentCount = [mStructType glComponentCount];
-	mOffset = [mStructType glOffset];
+	mFormat = [mStructType glFormatForType:t];
+	mComponentCount = [mStructType glComponentCountForType:t];
+	mOffset = [mStructType glOffsetForType:t];
 	mStride = [mStructType glStride];
 	if (O3VertexDataTypeIsVertexAttribute(t)) {
 		mVertexAttributeNumber = O3VertexAttributeNumberForForDataType(t);
-		mVertexAttributeNormalized = [mStructType glNormalized];
+		mVertexAttributeNormalized = [mStructType glNormalizedForType:t];
 	}
 	return self;
 }

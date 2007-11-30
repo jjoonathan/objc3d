@@ -43,4 +43,12 @@
 	return mListKeysImp(mTarget, mListKeysMethod);
 }
 
++ (void)gdbBreak {
+	O3Break();
+}
+
++ (void)glBreak {
+	O3GLBreak();
+}
+
 @end

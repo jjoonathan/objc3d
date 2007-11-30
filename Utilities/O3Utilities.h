@@ -235,3 +235,5 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 #define O3END_EXTERN_C_BLOCK
 #endif
 
+O3EXTERN_C void O3GLBreak();
+

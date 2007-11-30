@@ -152,7 +152,6 @@
 		FC2C1C7E0C125F990084A599 /* O3Global.h in Headers */ = {isa = PBXBuildFile; fileRef = FCAA6AFE0ABDB78000D2BC75 /* O3Global.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C7F0C125FA10084A599 /* ObjC3D.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2C1BC30C1240020084A599 /* ObjC3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1D430C125FDB0084A599 /* libglew.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C17470C11C9700084A599 /* libglew.a */; };
-		FC2C1D450C125FDB0084A599 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA01CCA0B223F250087DA08 /* AGL.framework */; };
 		FC2C1D460C125FDB0084A599 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FC2C1D470C125FDB0084A599 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2D24830B16237A000C2073 /* OpenGL.framework */; };
 		FC2C1D480C125FDB0084A599 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3AABD70B372A710033122E /* Carbon.framework */; };
@@ -166,17 +165,11 @@
 		FC4605C20CA602E9006F0122 /* O3ResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4605C00CA602E9006F0122 /* O3ResSource.mm */; };
 		FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507230CDF5354003EE24B /* O3StructArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4EF1850CEA90B500B14EBF /* O3VecStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072B0CE01E12003EE24B /* O3VecStructType.mm */; };
-		FC4EF1860CEA90B600B14EBF /* O3Struct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4EF1670CE88A9F00B14EBF /* O3Struct.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4EF1870CEA90B700B14EBF /* O3StructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507260CDF539D003EE24B /* O3StructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC4EF1880CEA90B800B14EBF /* O3VecStruct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507300CE52EDB003EE24B /* O3VecStruct.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC4EF1890CEA90B800B14EBF /* O3Struct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4EF1680CE88A9F00B14EBF /* O3Struct.mm */; };
-		FC4EF18A0CEA90B900B14EBF /* O3VecStruct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5507310CE52EDC003EE24B /* O3VecStruct.mm */; };
 		FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5507240CDF5354003EE24B /* O3StructArray.mm */; };
 		FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC55072A0CE01E12003EE24B /* O3VecStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072E0CE17B7D003EE24B /* O3StructType.mm */; };
 		FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5B48770C205A4100879D56 /* O3BigObject.mm */; };
-		FC6052490CEE9A490059C883 /* O3ByteStruct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC6052360CEE69580059C883 /* O3ByteStruct.mm */; };
-		FC60524A0CEE9A4A0059C883 /* O3ByteStruct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC6052350CEE69580059C883 /* O3ByteStruct.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63DF5D0CF1C51800325C54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */; };
 		FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63DF770CF1C5E800325C54 /* RubyConsole_main.mm */; };
 		FC63DF800CF1C62800325C54 /* ObjC3D.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
@@ -200,8 +193,8 @@
 		FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE440CF9DAB100325C54 /* tri_stripper.h */; };
 		FC63EE570CF9F3D800325C54 /* O3Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE560CF9F3D800325C54 /* O3Geometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */; };
-		FC63EE880CF9F95F00325C54 /* O3FaceStruct.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStruct.h */; };
-		FC63EE890CF9F95F00325C54 /* O3FaceStruct.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE870CF9F95F00325C54 /* O3FaceStruct.mm */; };
+		FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */; };
+		FC63EE890CF9F95F00325C54 /* O3FaceStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE870CF9F95F00325C54 /* O3FaceStructType.mm */; };
 		FC63EF800CFA22F200325C54 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
 		FC63EF810CFA22FB00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
 		FC63EFA30CFA255C00325C54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -210,6 +203,7 @@
 		FC63EFCF0CFA287600325C54 /* O3StructArrayVDS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EFCD0CFA287600325C54 /* O3StructArrayVDS.mm */; };
 		FC63F10C0CFA83F200325C54 /* window.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC63F10B0CFA83F200325C54 /* window.rb */; };
 		FC63F1160CFA88AA00325C54 /* window.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63F10B0CFA83F200325C54 /* window.rb */; };
+		FC63F12A0CFA8C7500325C54 /* o3lib.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63F1290CFA8C6F00325C54 /* o3lib.rb */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
@@ -349,6 +343,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				FC63F12A0CFA8C7500325C54 /* o3lib.rb in CopyFiles */,
 				FC63F1160CFA88AA00325C54 /* window.rb in CopyFiles */,
 				FC63E1DB0CF276F200325C54 /* MainMenu.nib in CopyFiles */,
 				FC63E1590CF1CA0A00325C54 /* console.rb in CopyFiles */,
@@ -437,8 +432,6 @@
 		FC4AD8340AE9BA3D00812085 /* O3Quaternion.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Quaternion.cpp; sourceTree = "<group>"; };
 		FC4AD8400AE9BAB300812085 /* O3Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Rotation.h; sourceTree = "<group>"; };
 		FC4AD8410AE9BAB300812085 /* O3Rotation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Rotation.cpp; sourceTree = "<group>"; };
-		FC4EF1670CE88A9F00B14EBF /* O3Struct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Struct.h; sourceTree = "<group>"; };
-		FC4EF1680CE88A9F00B14EBF /* O3Struct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Struct.mm; sourceTree = "<group>"; };
 		FC4EF36E0B39F411006F3284 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		FC5265380B7549BC00BAA016 /* O3VectorFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VectorFunctions.h; sourceTree = "<group>"; };
 		FC5267030B757E3900BAA016 /* O3TestSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestSpace.h; sourceTree = "<group>"; };
@@ -448,8 +441,6 @@
 		FC55072A0CE01E12003EE24B /* O3VecStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VecStructType.h; sourceTree = "<group>"; };
 		FC55072B0CE01E12003EE24B /* O3VecStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3VecStructType.mm; sourceTree = "<group>"; };
 		FC55072E0CE17B7D003EE24B /* O3StructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3StructType.mm; sourceTree = "<group>"; };
-		FC5507300CE52EDB003EE24B /* O3VecStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VecStruct.h; sourceTree = "<group>"; };
-		FC5507310CE52EDC003EE24B /* O3VecStruct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3VecStruct.mm; sourceTree = "<group>"; };
 		FC5B48760C205A4100879D56 /* O3BigObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3BigObject.h; path = ../Utilities/O3BigObject.h; sourceTree = "<group>"; };
 		FC5B48770C205A4100879D56 /* O3BigObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3BigObject.mm; path = ../Utilities/O3BigObject.mm; sourceTree = "<group>"; };
 		FC5BBBB90BD58B7200894533 /* O3TestUtilities.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestUtilities.mm; sourceTree = "<group>"; };
@@ -463,8 +454,6 @@
 		FC5BBD5F0BD6488000894533 /* O3KeyedArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3KeyedArchiver.mm; sourceTree = "<group>"; };
 		FC5BBD620BD6489500894533 /* O3KeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3KeyedUnarchiver.h; sourceTree = "<group>"; };
 		FC5BBD630BD6489500894533 /* O3KeyedUnarchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3KeyedUnarchiver.mm; sourceTree = "<group>"; };
-		FC6052350CEE69580059C883 /* O3ByteStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ByteStruct.h; sourceTree = "<group>"; };
-		FC6052360CEE69580059C883 /* O3ByteStruct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ByteStruct.mm; sourceTree = "<group>"; };
 		FC62DA090BC879440053C30F /* ibeam.verts */ = {isa = PBXFileReference; lastKnownFileType = file; path = ibeam.verts; sourceTree = "<group>"; };
 		FC62DE820BCBB9510053C30F /* red_terr.cgfx */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = red_terr.cgfx; sourceTree = "<group>"; };
 		FC63DF100CF1C2A200325C54 /* RubyConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RubyConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -487,12 +476,13 @@
 		FC63EE440CF9DAB100325C54 /* tri_stripper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tri_stripper.h; path = Other/tri_stripper/tri_stripper.h; sourceTree = SOURCE_ROOT; };
 		FC63EE560CF9F3D800325C54 /* O3Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Geometry.h; sourceTree = "<group>"; };
 		FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Geometry.mm; sourceTree = "<group>"; };
-		FC63EE860CF9F95F00325C54 /* O3FaceStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3FaceStruct.h; sourceTree = "<group>"; };
-		FC63EE870CF9F95F00325C54 /* O3FaceStruct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3FaceStruct.mm; sourceTree = "<group>"; };
+		FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3FaceStructType.h; sourceTree = "<group>"; };
+		FC63EE870CF9F95F00325C54 /* O3FaceStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3FaceStructType.mm; sourceTree = "<group>"; };
 		FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Log4Cocoa.framework; path = build/Log4Cocoa.framework; sourceTree = SOURCE_ROOT; };
 		FC63EFCC0CFA287600325C54 /* O3StructArrayVDS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3StructArrayVDS.h; sourceTree = "<group>"; };
 		FC63EFCD0CFA287600325C54 /* O3StructArrayVDS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3StructArrayVDS.mm; sourceTree = "<group>"; };
 		FC63F10B0CFA83F200325C54 /* window.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = window.rb; sourceTree = "<group>"; };
+		FC63F1290CFA8C6F00325C54 /* o3lib.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = o3lib.rb; sourceTree = "<group>"; };
 		FC66909B0B63F5B200C87AF9 /* O3RawVertexDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RawVertexDataSource.mm; sourceTree = "<group>"; };
 		FC66909C0B63F5B200C87AF9 /* O3RawVertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3RawVertexDataSource.h; sourceTree = "<group>"; };
 		FC6690A20B63F5EE00C87AF9 /* O3VertexDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexDataSource.h; sourceTree = "<group>"; };
@@ -627,7 +617,6 @@
 			files = (
 				FC63E2FA0CF3174500325C54 /* Cg.framework in Frameworks */,
 				FC2C1D430C125FDB0084A599 /* libglew.a in Frameworks */,
-				FC2C1D450C125FDB0084A599 /* AGL.framework in Frameworks */,
 				FC2C1D460C125FDB0084A599 /* Cocoa.framework in Frameworks */,
 				FC2C1D470C125FDB0084A599 /* OpenGL.framework in Frameworks */,
 				FC2C1D480C125FDB0084A599 /* Carbon.framework in Frameworks */,
@@ -726,6 +715,7 @@
 				FC63E15C0CF276BE00325C54 /* MainMenu.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				FC63F10B0CFA83F200325C54 /* window.rb */,
+				FC63F1290CFA8C6F00325C54 /* o3lib.rb */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1062,14 +1052,8 @@
 				FC55072B0CE01E12003EE24B /* O3VecStructType.mm */,
 				FC5507230CDF5354003EE24B /* O3StructArray.h */,
 				FC5507240CDF5354003EE24B /* O3StructArray.mm */,
-				FC4EF1670CE88A9F00B14EBF /* O3Struct.h */,
-				FC4EF1680CE88A9F00B14EBF /* O3Struct.mm */,
-				FC6052350CEE69580059C883 /* O3ByteStruct.h */,
-				FC6052360CEE69580059C883 /* O3ByteStruct.mm */,
-				FC5507300CE52EDB003EE24B /* O3VecStruct.h */,
-				FC5507310CE52EDC003EE24B /* O3VecStruct.mm */,
-				FC63EE860CF9F95F00325C54 /* O3FaceStruct.h */,
-				FC63EE870CF9F95F00325C54 /* O3FaceStruct.mm */,
+				FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */,
+				FC63EE870CF9F95F00325C54 /* O3FaceStructType.mm */,
 			);
 			name = Structs;
 			sourceTree = "<group>";
@@ -1391,17 +1375,14 @@
 				FCCF22640CA6D98400B0A16B /* O3DirectoryResSource.h in Headers */,
 				FC4055420CAC86B5005908DF /* O3FileResSource.h in Headers */,
 				FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */,
-				FC4EF1860CEA90B600B14EBF /* O3Struct.h in Headers */,
 				FC4EF1870CEA90B700B14EBF /* O3StructType.h in Headers */,
-				FC4EF1880CEA90B800B14EBF /* O3VecStruct.h in Headers */,
 				FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */,
-				FC60524A0CEE9A4A0059C883 /* O3ByteStruct.h in Headers */,
 				FC63EE450CF9DAB100325C54 /* cache_simulator.h in Headers */,
 				FC63EE460CF9DAB100325C54 /* graph_array.h in Headers */,
 				FC63EE470CF9DAB100325C54 /* heap_array.h in Headers */,
 				FC63EE480CF9DAB100325C54 /* stdafx.h in Headers */,
 				FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */,
-				FC63EE880CF9F95F00325C54 /* O3FaceStruct.h in Headers */,
+				FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */,
 				FC63EFCE0CFA287600325C54 /* O3StructArrayVDS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1692,16 +1673,13 @@
 				FCE25C570CCC0A900064CA75 /* O3Region.mm in Sources */,
 				FCE25C5B0CCC0AB90064CA75 /* O3Scene.mm in Sources */,
 				FC4EF1850CEA90B500B14EBF /* O3VecStructType.mm in Sources */,
-				FC4EF1890CEA90B800B14EBF /* O3Struct.mm in Sources */,
-				FC4EF18A0CEA90B900B14EBF /* O3VecStruct.mm in Sources */,
 				FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */,
 				FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */,
-				FC6052490CEE9A490059C883 /* O3ByteStruct.mm in Sources */,
 				FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */,
 				FC63EE3C0CF9DA8400325C54 /* O3ConcreteMeshType.mm in Sources */,
 				FC63EE490CF9DAB100325C54 /* tri_stripper.cpp in Sources */,
 				FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */,
-				FC63EE890CF9F95F00325C54 /* O3FaceStruct.mm in Sources */,
+				FC63EE890CF9F95F00325C54 /* O3FaceStructType.mm in Sources */,
 				FC63EFCF0CFA287600325C54 /* O3StructArrayVDS.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2199,6 +2177,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2223,6 +2202,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -2245,6 +2225,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -2267,6 +2248,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;

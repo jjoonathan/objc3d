@@ -1,7 +1,7 @@
 /*
 ** The OpenGL Extension Wrangler Library
-** Copyright (C) 2002-2006, Milan Ikits <milan ikits[]ieee org>
-** Copyright (C) 2002-2006, Marcelo E. Magallon <mmagallo[]debian org>
+** Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>
+** Copyright (C) 2002-2007, Marcelo E. Magallon <mmagallo[]debian org>
 ** Copyright (C) 2002, Lev Povalahev
 ** All rights reserved.
 ** 
@@ -55,9 +55,13 @@
 #ifdef __glxext_h_
 #error glxext.h included before glxew.h
 #endif
+#ifdef GLX_H
+#error glx.h included before glxew.h
+#endif
 
 #define __glxext_h_
 #define __GLX_glx_h__
+#define GLX_H
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -101,7 +105,7 @@ extern "C" {
 typedef XID GLXDrawable;
 typedef XID GLXPixmap;
 #ifdef __sun
-typedef struct __glXcontextRec *GLXContext;
+typedef struct __glXContextRec *GLXContext;
 #else
 typedef struct __GLXcontextRec *GLXContext;
 #endif
@@ -224,8 +228,24 @@ typedef XID GLXFBConfigID;
 typedef XID GLXWindow;
 typedef XID GLXPbuffer;
 typedef struct __GLXFBConfigRec *GLXFBConfig;
-typedef struct { int event_type; int draw_type; unsigned long serial; Bool send_event; Display *display; GLXDrawable drawable; unsigned int buffer_mask; unsigned int aux_buffer; int x, y; int width, height; int count; } GLXPbufferClobberEvent;
-typedef union __GLXEvent { GLXPbufferClobberEvent glxpbufferclobber; long pad[24]; } GLXEvent;
+
+typedef struct {
+  int event_type; 
+  int draw_type; 
+  unsigned long serial; 
+  Bool send_event; 
+  Display *display; 
+  GLXDrawable drawable; 
+  unsigned int buffer_mask; 
+  unsigned int aux_buffer; 
+  int x, y; 
+  int width, height; 
+  int count; 
+} GLXPbufferClobberEvent;
+typedef union __GLXEvent {
+  GLXPbufferClobberEvent glxpbufferclobber; 
+  long pad[24]; 
+} GLXEvent;
 
 typedef GLXFBConfig* ( * PFNGLXCHOOSEFBCONFIGPROC) (Display *dpy, int screen, const int *attrib_list, int *nelements);
 typedef GLXContext ( * PFNGLXCREATENEWCONTEXTPROC) (Display *dpy, GLXFBConfig config, int render_type, GLXContext share_list, Bool direct);
@@ -710,6 +730,73 @@ typedef XVisualInfo* ( * PFNGLXGETVISUALFROMFBCONFIGSGIXPROC) (Display *dpy, GLX
 
 #endif /* GLX_SGIX_fbconfig */
 
+/* --------------------------- GLX_SGIX_hyperpipe -------------------------- */
+
+#ifndef GLX_SGIX_hyperpipe
+#define GLX_SGIX_hyperpipe 1
+
+#define GLX_HYPERPIPE_DISPLAY_PIPE_SGIX 0x00000001
+#define GLX_PIPE_RECT_SGIX 0x00000001
+#define GLX_PIPE_RECT_LIMITS_SGIX 0x00000002
+#define GLX_HYPERPIPE_RENDER_PIPE_SGIX 0x00000002
+#define GLX_HYPERPIPE_STEREO_SGIX 0x00000003
+#define GLX_HYPERPIPE_PIXEL_AVERAGE_SGIX 0x00000004
+#define GLX_HYPERPIPE_PIPE_NAME_LENGTH_SGIX 80
+#define GLX_BAD_HYPERPIPE_CONFIG_SGIX 91
+#define GLX_BAD_HYPERPIPE_SGIX 92
+#define GLX_HYPERPIPE_ID_SGIX 0x8030
+
+typedef struct {
+  char pipeName[GLX_HYPERPIPE_PIPE_NAME_LENGTH_SGIX]; 
+  int  networkId; 
+} GLXHyperpipeNetworkSGIX;
+typedef struct {
+  char pipeName[GLX_HYPERPIPE_PIPE_NAME_LENGTH_SGIX]; 
+  int XOrigin; 
+  int YOrigin; 
+  int maxHeight; 
+  int maxWidth; 
+} GLXPipeRectLimits;
+typedef struct {
+  char pipeName[GLX_HYPERPIPE_PIPE_NAME_LENGTH_SGIX]; 
+  int channel; 
+  unsigned int participationType; 
+  int timeSlice; 
+} GLXHyperpipeConfigSGIX;
+typedef struct {
+  char pipeName[GLX_HYPERPIPE_PIPE_NAME_LENGTH_SGIX]; 
+  int srcXOrigin; 
+  int srcYOrigin; 
+  int srcWidth; 
+  int srcHeight; 
+  int destXOrigin; 
+  int destYOrigin; 
+  int destWidth; 
+  int destHeight; 
+} GLXPipeRect;
+
+typedef int ( * PFNGLXBINDHYPERPIPESGIXPROC) (Display *dpy, int hpId);
+typedef int ( * PFNGLXDESTROYHYPERPIPECONFIGSGIXPROC) (Display *dpy, int hpId);
+typedef int ( * PFNGLXHYPERPIPEATTRIBSGIXPROC) (Display *dpy, int timeSlice, int attrib, int size, void *attribList);
+typedef int ( * PFNGLXHYPERPIPECONFIGSGIXPROC) (Display *dpy, int networkId, int npipes, GLXHyperpipeConfigSGIX *cfg, int *hpId);
+typedef int ( * PFNGLXQUERYHYPERPIPEATTRIBSGIXPROC) (Display *dpy, int timeSlice, int attrib, int size, void *returnAttribList);
+typedef int ( * PFNGLXQUERYHYPERPIPEBESTATTRIBSGIXPROC) (Display *dpy, int timeSlice, int attrib, int size, void *attribList, void *returnAttribList);
+typedef GLXHyperpipeConfigSGIX * ( * PFNGLXQUERYHYPERPIPECONFIGSGIXPROC) (Display *dpy, int hpId, int *npipes);
+typedef GLXHyperpipeNetworkSGIX * ( * PFNGLXQUERYHYPERPIPENETWORKSGIXPROC) (Display *dpy, int *npipes);
+
+#define glXBindHyperpipeSGIX GLXEW_GET_FUN(__glewXBindHyperpipeSGIX)
+#define glXDestroyHyperpipeConfigSGIX GLXEW_GET_FUN(__glewXDestroyHyperpipeConfigSGIX)
+#define glXHyperpipeAttribSGIX GLXEW_GET_FUN(__glewXHyperpipeAttribSGIX)
+#define glXHyperpipeConfigSGIX GLXEW_GET_FUN(__glewXHyperpipeConfigSGIX)
+#define glXQueryHyperpipeAttribSGIX GLXEW_GET_FUN(__glewXQueryHyperpipeAttribSGIX)
+#define glXQueryHyperpipeBestAttribSGIX GLXEW_GET_FUN(__glewXQueryHyperpipeBestAttribSGIX)
+#define glXQueryHyperpipeConfigSGIX GLXEW_GET_FUN(__glewXQueryHyperpipeConfigSGIX)
+#define glXQueryHyperpipeNetworkSGIX GLXEW_GET_FUN(__glewXQueryHyperpipeNetworkSGIX)
+
+#define GLXEW_SGIX_hyperpipe GLXEW_GET_VAR(__GLXEW_SGIX_hyperpipe)
+
+#endif /* GLX_SGIX_hyperpipe */
+
 /* ---------------------------- GLX_SGIX_pbuffer --------------------------- */
 
 #ifndef GLX_SGIX_pbuffer
@@ -975,6 +1062,15 @@ extern PFNGLXGETFBCONFIGATTRIBSGIXPROC __glewXGetFBConfigAttribSGIX;
 extern PFNGLXGETFBCONFIGFROMVISUALSGIXPROC __glewXGetFBConfigFromVisualSGIX;
 extern PFNGLXGETVISUALFROMFBCONFIGSGIXPROC __glewXGetVisualFromFBConfigSGIX;
 
+extern PFNGLXBINDHYPERPIPESGIXPROC __glewXBindHyperpipeSGIX;
+extern PFNGLXDESTROYHYPERPIPECONFIGSGIXPROC __glewXDestroyHyperpipeConfigSGIX;
+extern PFNGLXHYPERPIPEATTRIBSGIXPROC __glewXHyperpipeAttribSGIX;
+extern PFNGLXHYPERPIPECONFIGSGIXPROC __glewXHyperpipeConfigSGIX;
+extern PFNGLXQUERYHYPERPIPEATTRIBSGIXPROC __glewXQueryHyperpipeAttribSGIX;
+extern PFNGLXQUERYHYPERPIPEBESTATTRIBSGIXPROC __glewXQueryHyperpipeBestAttribSGIX;
+extern PFNGLXQUERYHYPERPIPECONFIGSGIXPROC __glewXQueryHyperpipeConfigSGIX;
+extern PFNGLXQUERYHYPERPIPENETWORKSGIXPROC __glewXQueryHyperpipeNetworkSGIX;
+
 extern PFNGLXCREATEGLXPBUFFERSGIXPROC __glewXCreateGLXPbufferSGIX;
 extern PFNGLXDESTROYGLXPBUFFERSGIXPROC __glewXDestroyGLXPbufferSGIX;
 extern PFNGLXGETSELECTEDEVENTSGIXPROC __glewXGetSelectedEventSGIX;
@@ -1043,6 +1139,7 @@ GLXEW_EXPORT GLboolean __GLXEW_SGIS_color_range;
 GLXEW_EXPORT GLboolean __GLXEW_SGIS_multisample;
 GLXEW_EXPORT GLboolean __GLXEW_SGIS_shared_multisample;
 GLXEW_EXPORT GLboolean __GLXEW_SGIX_fbconfig;
+GLXEW_EXPORT GLboolean __GLXEW_SGIX_hyperpipe;
 GLXEW_EXPORT GLboolean __GLXEW_SGIX_pbuffer;
 GLXEW_EXPORT GLboolean __GLXEW_SGIX_swap_barrier;
 GLXEW_EXPORT GLboolean __GLXEW_SGIX_swap_group;
@@ -1070,12 +1167,12 @@ extern GLboolean glxewContextIsSupported (GLXEWContext* ctx, const char* name);
 #define glxewInit() glxewContextInit(glxewGetContext())
 #define glxewIsSupported(x) glxewContextIsSupported(glxewGetContext(), x)
 
-#define GLXEW_GET_VAR(x) glxewGetContext()->x
+#define GLXEW_GET_VAR(x) (*(const GLboolean*)&(glxewGetContext()->x))
 #define GLXEW_GET_FUN(x) x
 
 #else /* GLEW_MX */
 
-#define GLXEW_GET_VAR(x) x
+#define GLXEW_GET_VAR(x) (*(const GLboolean*)&x)
 #define GLXEW_GET_FUN(x) x
 
 extern GLboolean glxewIsSupported (const char* name);

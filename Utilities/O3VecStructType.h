@@ -76,13 +76,6 @@ enum O3VecStructElementType {
 - (enum O3VecStructSpecificType)specificType;
 - (short)elementCount;
 
-//O3StructType protocol
-- (UIntP)structSize;
-- (NSArray*)structKeys;
-- (void*)portabalizeStructsAt:(const void*)obytes count:(UIntP)count;
-- (void*)deportabalizeStructsAt:(const void*)obytes count:(UIntP)conut;
-- (void*)translateStructsAt:(const void*)bytes count:(UIntP)count toFormat:(O3StructType*)oformat;
-
 @end
 
 O3EXTERN_C_BLOCK
@@ -109,4 +102,16 @@ O3VecStructType* O3Index4x64Type(); ///<Convenience function to return a commonl
 UIntP* O3VecStructTypePermsAndMultiplier(O3VecStructType* self, double* multiplier); ///<Gets a vec struct type's permutation array and element multiplier
 void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, enum O3VecStructElementType* type, short* count, enum O3VecStructSpecificType* stype);
 UIntP O3VecStructSize(O3VecStructType* type);
+
+NSNumber* O3VecStructGetElement(O3VecStructType* self, UIntP i, const void* bytes);
+void O3WriteNumberTo(O3VecStructElementType eleType, UIntP i, void* bytes, NSNumber* num);
 O3END_EXTERN_C
+
+#ifdef __cplusplus
+double O3DoubleValueOfType_at_withIndex_(enum O3VecStructElementType type, const void* bytes, UIntP idx = 0);
+Int64 O3Int64ValueOfType_at_withIndex_(enum O3VecStructElementType type, const void* bytes, UIntP idx = 0);
+UInt64 O3UInt64ValueOfType_at_withIndex_(enum O3VecStructElementType type, const void* bytes, UIntP idx = 0);
+void O3SetValueOfType_at_toDouble_withIndex_(enum O3VecStructElementType type, void* bytes, double v, UIntP idx = 0);
+void O3SetValueOfType_at_toInt64_withIndex_(enum O3VecStructElementType type, void* bytes, Int64 v, UIntP idx = 0);
+void O3SetValueOfType_at_toUInt64_withIndex_(enum O3VecStructElementType type, void* bytes, UInt64 v, UIntP idx = 0);
+#endif

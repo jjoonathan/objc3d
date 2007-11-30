@@ -6,6 +6,7 @@ extern "C" {
 
 int main(int argc, const char *argv[]) {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	O3Init();
     int ret = RBApplicationMain("console.rb", argc, argv);
 	[pool release]; //Doesn't matter, but prevents whining
 	return ret;

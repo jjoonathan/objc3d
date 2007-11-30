@@ -14,3 +14,6 @@
 
 #include "O3Global.h"
 #include "O3Math.h"
+
+//You must call this before making any calls to ObjC3D. Main.m is a great place to do it.
+O3EXTERN_C void O3Init();

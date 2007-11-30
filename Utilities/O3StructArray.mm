@@ -7,7 +7,6 @@
 //
 #import "O3GPUData.h"
 #import "O3StructArray.h"
-#import "O3Struct.h"
 #import "O3StructType.h"
 
 @implementation O3StructArray
@@ -108,17 +107,15 @@ void initP(O3StructArray* self) {
 	O3Assert(structType, @"Cannot change structure type from %@ to nil", mStructType);
 	UIntP newStructSize = [structType structSize];
 	if (mStructType&&mData) {
-		UIntP count = countP(self);
-		void* newBuffer = [mStructType translateStructsAt:[mData mutableBytes] count:count toFormat:structType];
-		if (!newBuffer) {
+		NSMutableData* newData = [mStructType translateStructs:mData toFormat:structType];
+		if (!newData) {
 			[mAccessLock unlock];
 			return NO;
 		}
-		O3Assign([NSData dataWithBytesNoCopy:newBuffer length:count*newStructSize freeWhenDone:YES], mData);
+		O3Assign(newData, mData);
 	}
 	O3Assign(structType, mStructType);
 	mStructSize = newStructSize;
-	mInstanceClass = [structType instanceClass];
 	if (mScratchBuffer) free(mScratchBuffer);
 	mScratchBuffer = malloc(newStructSize);
 	[mAccessLock unlock];
@@ -145,10 +142,7 @@ void initP(O3StructArray* self) {
 }
 
 - (NSData*)portableData {
-	NSData* r = [NSMutableData dataWithBytesNoCopy:[mStructType portabalizeStructsAt:[mData bytes] count:[self count]]
-	                                        length:[mData length] 
-	                                  freeWhenDone:YES];
-	return r;
+	return [mStructType portabalizeStructs:mData];
 }
 
 - (void)setPortableData:(NSData*)pdat {
@@ -158,7 +152,7 @@ void initP(O3StructArray* self) {
 		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.", mStructType, pdat);
 		return;
 	}
-	void* newbuf = [mStructType deportabalizeStructsAt:[pdat bytes] count:len/mStructSize];
+	void* newbuf = [mStructType deportabalizeStructs:pdat];
 	O3Assign([NSMutableData dataWithBytesNoCopy:newbuf length:len freeWhenDone:YES], mData);
 }
 
@@ -191,22 +185,23 @@ void initP(O3StructArray* self) {
 	return countP(self);
 }
 
-- (O3Struct*)objectAtIndex:(UIntP)idx {
+- (NSDictionary*)objectAtIndex:(UIntP)idx {
 	[mAccessLock lock];
-	O3AssertIvar(mInstanceClass);
-	O3Assert(idx<countP(self), @"Index %i out of array %@ bounds (%i)", idx, self, countP(self));
-	void* b = malloc(mStructSize);
-	[mData getBytes:b range:rangeOfIdx(self, idx)];
-	O3Struct* ret = [(O3Struct*)[mInstanceClass alloc] initWithBytesNoCopy:b type:mStructType freeWhenDone:YES];
+	if (idx>=countP(self)) {
+		[mAccessLock unlock];
+		[NSException raise:NSRangeException format:@"Index %i out of array %@ bounds (%i)", idx, self, countP(self)];
+	}
+	[mData getBytes:mScratchBuffer range:rangeOfIdx(self, idx)];
+	NSDictionary* ret = [mStructType dictWithBytes:mScratchBuffer];
 	[mAccessLock unlock];
 	return ret;
 }
 
 /************************************/ #pragma mark NSMutableArray /************************************/
-- (void)insertObject:(O3Struct*)obj atIndex:(UIntP)idx {
+- (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx {
 	[mAccessLock lock];
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
-	[obj writeToBytes:mScratchBuffer];
+	[mStructType writeDict:obj toBytes:mScratchBuffer];
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:mScratchBuffer length:mStructSize];
 	[mAccessLock unlock];
 }
@@ -218,9 +213,9 @@ void initP(O3StructArray* self) {
 	[mAccessLock unlock];	
 }
 
-- (void)addObject:(O3Struct*)obj {
+- (void)addObject:(NSDictionary*)obj {
 	[mAccessLock lock];
-	[obj writeToBytes:mScratchBuffer];
+	[mStructType writeDict:obj toBytes:mScratchBuffer];
 	[mData appendBytes:mScratchBuffer length:mStructSize];
 	[mAccessLock unlock];	
 }
@@ -233,10 +228,10 @@ void initP(O3StructArray* self) {
 	[mAccessLock unlock];	
 }
 
-- (void)replaceObjectAtIndex:(UIntP)idx withObject:(O3Struct*)obj {
+- (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj {
 	[mAccessLock lock];
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
-	[obj writeToBytes:mScratchBuffer];
+	[mStructType writeDict:obj toBytes:mScratchBuffer];
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:mScratchBuffer length:mStructSize];
 	[mAccessLock unlock];	
 }

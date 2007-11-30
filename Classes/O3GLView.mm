@@ -210,7 +210,7 @@ inline void initP(O3GLView* self) {
 	if (mScene) {
 		O3RenderContext ctx;
 		ctx.camera = [self camera];
-		[mContext makeCurrentContext];
+		[[self context] makeCurrentContext];
 		float r=0.; float g=0.; float b=0.; float a=1.;
 		[mBackgroundColor getRed:&r green:&g blue:&b alpha:&a];
 		glClearColor(r,g,b,a);

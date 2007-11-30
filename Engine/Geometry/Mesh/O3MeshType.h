@@ -12,6 +12,7 @@
 ///@todo Assert that the proper data sources are attached for the material (else garbage ensues)
 ///@todo Refactor setMaterial to setDefaultMaterial
 
+///An abstract class that represents a general type of mesh-like object. It has a default material and a list of vertex data sources. All other data (like the vertex data itself) is provided by the subclass. The abstract class itself does not really implement O3Renderable, it is only listed for convenience.
 @interface O3MeshType : NSObject <O3Renderable, NSCoding> {
 	NSMutableArray*                          mVertexDataSources;	///<Holds the vertx data sources associated with the mesh keyed by the type of data they represent as an unsigned integer. @note Index and "vertex location" arrays are opaquely stored in different variables.
 	NSObject<O3MultipassDirector,NSCoding>*  mDefaultMaterial;	    ///<The object which directs the rendering of the receiver (usually the material, hence the name)

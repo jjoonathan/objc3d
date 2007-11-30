@@ -1,7 +1,7 @@
 /*
 ** The OpenGL Extension Wrangler Library
-** Copyright (C) 2002-2006, Milan Ikits <milan ikits[]ieee org>
-** Copyright (C) 2002-2006, Marcelo E. Magallon <mmagallo[]debian org>
+** Copyright (C) 2002-2007, Milan Ikits <milan ikits[]ieee org>
+** Copyright (C) 2002-2007, Marcelo E. Magallon <mmagallo[]debian org>
 ** Copyright (C) 2002, Lev Povalahev
 ** All rights reserved.
 ** 
@@ -1245,6 +1245,15 @@ static void _glewInfo_GL_ATI_separate_stencil (void)
 
 #endif /* GL_ATI_separate_stencil */
 
+#ifdef GL_ATI_shader_texture_lod
+
+static void _glewInfo_GL_ATI_shader_texture_lod (void)
+{
+  glewPrintExt("GL_ATI_shader_texture_lod", GLEW_ATI_shader_texture_lod, glewIsSupported("GL_ATI_shader_texture_lod"), glewGetExtension("GL_ATI_shader_texture_lod"));
+}
+
+#endif /* GL_ATI_shader_texture_lod */
+
 #ifdef GL_ATI_text_fragment_shader
 
 static void _glewInfo_GL_ATI_text_fragment_shader (void)
@@ -1751,6 +1760,18 @@ static void _glewInfo_GL_EXT_geometry_shader4 (void)
 }
 
 #endif /* GL_EXT_geometry_shader4 */
+
+#ifdef GL_EXT_gpu_program_parameters
+
+static void _glewInfo_GL_EXT_gpu_program_parameters (void)
+{
+  glewPrintExt("GL_EXT_gpu_program_parameters", GLEW_EXT_gpu_program_parameters, glewIsSupported("GL_EXT_gpu_program_parameters"), glewGetExtension("GL_EXT_gpu_program_parameters"));
+
+  glewInfoFunc("glProgramEnvParameters4fvEXT", glProgramEnvParameters4fvEXT == NULL);
+  glewInfoFunc("glProgramLocalParameters4fvEXT", glProgramLocalParameters4fvEXT == NULL);
+}
+
+#endif /* GL_EXT_gpu_program_parameters */
 
 #ifdef GL_EXT_gpu_shader4
 
@@ -2731,6 +2752,15 @@ static void _glewInfo_GL_NV_depth_clamp (void)
 
 #endif /* GL_NV_depth_clamp */
 
+#ifdef GL_NV_depth_range_unclamped
+
+static void _glewInfo_GL_NV_depth_range_unclamped (void)
+{
+  glewPrintExt("GL_NV_depth_range_unclamped", GLEW_NV_depth_range_unclamped, glewIsSupported("GL_NV_depth_range_unclamped"), glewGetExtension("GL_NV_depth_range_unclamped"));
+}
+
+#endif /* GL_NV_depth_range_unclamped */
+
 #ifdef GL_NV_evaluators
 
 static void _glewInfo_GL_NV_evaluators (void)
@@ -2849,6 +2879,15 @@ static void _glewInfo_GL_NV_geometry_program4 (void)
 }
 
 #endif /* GL_NV_geometry_program4 */
+
+#ifdef GL_NV_geometry_shader4
+
+static void _glewInfo_GL_NV_geometry_shader4 (void)
+{
+  glewPrintExt("GL_NV_geometry_shader4", GLEW_NV_geometry_shader4, glewIsSupported("GL_NV_geometry_shader4"), glewGetExtension("GL_NV_geometry_shader4"));
+}
+
+#endif /* GL_NV_geometry_shader4 */
 
 #ifdef GL_NV_gpu_program4
 
@@ -4406,6 +4445,21 @@ static void _glewInfo_WGL_NV_float_buffer (void)
 
 #endif /* WGL_NV_float_buffer */
 
+#ifdef WGL_NV_gpu_affinity
+
+static void _glewInfo_WGL_NV_gpu_affinity (void)
+{
+  glewPrintExt("WGL_NV_gpu_affinity", WGLEW_NV_gpu_affinity, wglewIsSupported("WGL_NV_gpu_affinity"), wglewGetExtension("WGL_NV_gpu_affinity"));
+
+  glewInfoFunc("wglCreateAffinityDCNV", wglCreateAffinityDCNV == NULL);
+  glewInfoFunc("wglDeleteDCNV", wglDeleteDCNV == NULL);
+  glewInfoFunc("wglEnumGpuDevicesNV", wglEnumGpuDevicesNV == NULL);
+  glewInfoFunc("wglEnumGpusFromAffinityDCNV", wglEnumGpusFromAffinityDCNV == NULL);
+  glewInfoFunc("wglEnumGpusNV", wglEnumGpusNV == NULL);
+}
+
+#endif /* WGL_NV_gpu_affinity */
+
 #ifdef WGL_NV_render_depth_texture
 
 static void _glewInfo_WGL_NV_render_depth_texture (void)
@@ -4771,6 +4825,24 @@ static void _glewInfo_GLX_SGIX_fbconfig (void)
 
 #endif /* GLX_SGIX_fbconfig */
 
+#ifdef GLX_SGIX_hyperpipe
+
+static void _glewInfo_GLX_SGIX_hyperpipe (void)
+{
+  glewPrintExt("GLX_SGIX_hyperpipe", GLXEW_SGIX_hyperpipe, glxewIsSupported("GLX_SGIX_hyperpipe"), glxewGetExtension("GLX_SGIX_hyperpipe"));
+
+  glewInfoFunc("glXBindHyperpipeSGIX", glXBindHyperpipeSGIX == NULL);
+  glewInfoFunc("glXDestroyHyperpipeConfigSGIX", glXDestroyHyperpipeConfigSGIX == NULL);
+  glewInfoFunc("glXHyperpipeAttribSGIX", glXHyperpipeAttribSGIX == NULL);
+  glewInfoFunc("glXHyperpipeConfigSGIX", glXHyperpipeConfigSGIX == NULL);
+  glewInfoFunc("glXQueryHyperpipeAttribSGIX", glXQueryHyperpipeAttribSGIX == NULL);
+  glewInfoFunc("glXQueryHyperpipeBestAttribSGIX", glXQueryHyperpipeBestAttribSGIX == NULL);
+  glewInfoFunc("glXQueryHyperpipeConfigSGIX", glXQueryHyperpipeConfigSGIX == NULL);
+  glewInfoFunc("glXQueryHyperpipeNetworkSGIX", glXQueryHyperpipeNetworkSGIX == NULL);
+}
+
+#endif /* GLX_SGIX_hyperpipe */
+
 #ifdef GLX_SGIX_pbuffer
 
 static void _glewInfo_GLX_SGIX_pbuffer (void)
@@ -5112,6 +5184,9 @@ static void glewInfo (void)
 #ifdef GL_ATI_separate_stencil
   _glewInfo_GL_ATI_separate_stencil();
 #endif /* GL_ATI_separate_stencil */
+#ifdef GL_ATI_shader_texture_lod
+  _glewInfo_GL_ATI_shader_texture_lod();
+#endif /* GL_ATI_shader_texture_lod */
 #ifdef GL_ATI_text_fragment_shader
   _glewInfo_GL_ATI_text_fragment_shader();
 #endif /* GL_ATI_text_fragment_shader */
@@ -5226,6 +5301,9 @@ static void glewInfo (void)
 #ifdef GL_EXT_geometry_shader4
   _glewInfo_GL_EXT_geometry_shader4();
 #endif /* GL_EXT_geometry_shader4 */
+#ifdef GL_EXT_gpu_program_parameters
+  _glewInfo_GL_EXT_gpu_program_parameters();
+#endif /* GL_EXT_gpu_program_parameters */
 #ifdef GL_EXT_gpu_shader4
   _glewInfo_GL_EXT_gpu_shader4();
 #endif /* GL_EXT_gpu_shader4 */
@@ -5469,6 +5547,9 @@ static void glewInfo (void)
 #ifdef GL_NV_depth_clamp
   _glewInfo_GL_NV_depth_clamp();
 #endif /* GL_NV_depth_clamp */
+#ifdef GL_NV_depth_range_unclamped
+  _glewInfo_GL_NV_depth_range_unclamped();
+#endif /* GL_NV_depth_range_unclamped */
 #ifdef GL_NV_evaluators
   _glewInfo_GL_NV_evaluators();
 #endif /* GL_NV_evaluators */
@@ -5499,6 +5580,9 @@ static void glewInfo (void)
 #ifdef GL_NV_geometry_program4
   _glewInfo_GL_NV_geometry_program4();
 #endif /* GL_NV_geometry_program4 */
+#ifdef GL_NV_geometry_shader4
+  _glewInfo_GL_NV_geometry_shader4();
+#endif /* GL_NV_geometry_shader4 */
 #ifdef GL_NV_gpu_program4
   _glewInfo_GL_NV_gpu_program4();
 #endif /* GL_NV_gpu_program4 */
@@ -5891,6 +5975,9 @@ static void wglewInfo ()
 #ifdef WGL_NV_float_buffer
   _glewInfo_WGL_NV_float_buffer();
 #endif /* WGL_NV_float_buffer */
+#ifdef WGL_NV_gpu_affinity
+  _glewInfo_WGL_NV_gpu_affinity();
+#endif /* WGL_NV_gpu_affinity */
 #ifdef WGL_NV_render_depth_texture
   _glewInfo_WGL_NV_render_depth_texture();
 #endif /* WGL_NV_render_depth_texture */
@@ -5997,6 +6084,9 @@ static void glxewInfo ()
 #ifdef GLX_SGIX_fbconfig
   _glewInfo_GLX_SGIX_fbconfig();
 #endif /* GLX_SGIX_fbconfig */
+#ifdef GLX_SGIX_hyperpipe
+  _glewInfo_GLX_SGIX_hyperpipe();
+#endif /* GLX_SGIX_hyperpipe */
 #ifdef GLX_SGIX_pbuffer
   _glewInfo_GLX_SGIX_pbuffer();
 #endif /* GLX_SGIX_pbuffer */

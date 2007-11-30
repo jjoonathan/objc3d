@@ -5,13 +5,12 @@
 //  Created by Jonathan deWerd on 11/5/07.
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
-@class O3StructType, O3Struct;
+@class O3StructType;
 
 @interface O3StructArray : NSMutableArray {
 	O3StructType* mStructType;
 	NSMutableData* mData;
 	UIntP mStructSize;
-	Class mInstanceClass;
 	NSLock* mAccessLock;
 	void* mScratchBuffer;
 }
@@ -35,18 +34,18 @@
 - (void)getStruct:(void*)bytes atIndex:(UIntP)idx;
 - (void)setStruct:(const void*)bytes atIndex:(UIntP)idx;
 - (void)addStruct:(const void*)bytes;
-- (void*)cPtr; ///<Returns a C pointer that can be used as a regular C array (after casting). Returns nil for GPU data
+- (void*)cPtr; ///<Returns a C pointer that can be used as a regular C array (after casting). Returns nil for GPU data (call rawData -bytes and -relinquishBytes manually)
 
 //NSArray
 - (UIntP)count;
-- (O3Struct*)objectAtIndex:(UIntP)idx; ///Returns a copy of the objet ad idx, not the object itself (for performance reasons, especially when dealing with O3GPUData)
+- (NSDictionary*)objectAtIndex:(UIntP)idx; ///Returns a copy of the objet ad idx, not the object itself (for performance reasons, especially when dealing with O3GPUData)
 
 //NSMutableArray
-- (void)insertObject:(O3Struct*)obj atIndex:(UIntP)idx;
+- (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx;
 - (void)removeObjectAtIndex:(UIntP)idx;
-- (void)addObject:(O3Struct*)obj;
+- (void)addObject:(NSDictionary*)obj;
 - (void)removeLastObject;
-- (void)replaceObjectAtIndex:(UIntP)idx withObject:(O3Struct*)obj;
+- (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj;
 
 //GPU
 - (void)uploadToGPU; //Converts data to O3GPUData, uploading it to the GPU (if necessary)

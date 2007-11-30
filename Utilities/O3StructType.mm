@@ -1,11 +1,12 @@
 //
-//  O3Struct.mm
+//  O3StructType.mm
 //  ObjC3D
 //
 //  Created by Jonathan deWerd on 11/5/07.
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
-#import "O3Struct.h"
+#import "O3StructType.h"
+#import "O3GPUData.h"
 
 /************************************/ #pragma mark Struct naming /************************************/
 NSMutableDictionary* gO3StructTypesForNames = nil;
@@ -50,58 +51,82 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return 0;
 }
 
-- (Class)instanceClass {
-	[self doesNotRecognizeSelector:_cmd];
-	return Nil;
+- (NSDictionary*)dictWithBytes:(const void*)bytes {
+	return [self dictWithData:[NSData dataWithBytesNoCopy:(void*)bytes length:[self structSize] freeWhenDone:NO]];
 }
 
-- (NSArray*)structKeys {
-	[self doesNotRecognizeSelector:_cmd];
-	return nil;	
+- (NSDictionary*)dictWithData:(NSData*)data {
+	O3Assert([self methodForSelector:@selector(dictWithData:)]!=[O3StructType instanceMethodForSelector:@selector(dictWithData:)], @"%@ struct type must override one of dictWithBytes: or dictWithData:.", self);
+	O3Assert([data length]==[self structSize], @"%@ was not the correct size for struct type %@", data, self);
+	NSDictionary* dict = [self dictWithBytes:[data bytes]];
+	[data relinquishBytes];
+	return dict;
 }
 
-- (void*)portabalizeStructsAt:(const void*)bytes count:(UIntP)count {
+- (void)writeDict:(NSDictionary*)dict toBytes:(void*)bytes {
+	NSData* dat = [self writeDictToData:dict];
+	const void* b = [dat bytes];
+	memcpy(bytes, b, [dat length]);
+}
+
+- (NSData*)writeDictToData:(NSDictionary*)dict {
+	O3Assert([self methodForSelector:@selector(writeDict:toBytes:)]!=[O3StructType instanceMethodForSelector:@selector(writeDict:toBytes:)], @"%@ struct type must override one of writeDictToData: or writeDict:toBytes:.", self);
+	UIntP s = [self structSize];
+	void* b = malloc(s);
+	[self writeDict:dict toBytes:b];
+	return [NSData dataWithBytesNoCopy:b length:s freeWhenDone:YES];
+}
+
+- (NSMutableData*)portabalizeStructs:(NSData*)indata {
 	[self doesNotRecognizeSelector:_cmd];
 	return nil;
 }
 
-- (void*)deportabalizeStructsAt:(const void*)bytes count:(UIntP)conut {
+- (NSMutableData*)deportabalizeStructs:(NSData*)indata {
 	[self doesNotRecognizeSelector:_cmd];
 	return nil;
 }
 
-- (void*)translateStructsAt:(const void*)bytes count:(UIntP)count toFormat:(O3StructType*)format {
-	[self doesNotRecognizeSelector:_cmd];
-	return nil;
+- (NSMutableData*)translateStructs:(NSData*)instructs toFormat:(O3StructType*)format {
+	UIntP insize = [self structSize];
+	UIntP outsize = [format structSize];
+	UIntP count = [instructs length] / insize;
+	NSMutableData* rdata = [[NSMutableData alloc] initWithLength:count*outsize];
+	UInt8* outbytes = (UInt8*)[rdata mutableBytes];
+	UInt8* inbytes = (UInt8*)[instructs bytes];
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];	
+	UIntP i; for(i=0; i<count; i++) {
+		NSDictionary* d = [self dictWithBytes:inbytes+i*insize];
+		[format writeDict:d toBytes:outbytes+i*outsize];
+	}
+	[pool release];
+	return [rdata autorelease];
 }
 
-- (GLenum)glFormat {
+- (GLenum)glFormatForType:(O3VertexDataType)type {
 	[self doesNotRecognizeSelector:_cmd];
 	return GL_ZERO;
 }
 
-- (GLint)glComponentCount {
-	[self doesNotRecognizeSelector:_cmd];
+- (GLint)glComponentCountForType:(O3VertexDataType)type {
 	return 0;
 }
 
-- (GLsizeiptr)glOffset {
-	[self doesNotRecognizeSelector:_cmd];
+- (GLsizeiptr)glOffsetForType:(O3VertexDataType)type {
 	return 0;
 }
 
 - (GLsizeiptr)glStride {
-	[self doesNotRecognizeSelector:_cmd];
 	return 0;
 }
 
-- (GLboolean)glNormalized {
-	[self doesNotRecognizeSelector:_cmd];
-	return 0;
+- (GLboolean)glNormalizedForType:(O3VertexDataType)type {
+	return GL_FALSE;
 }
 
 - (int)glVertsPerStruct {
 	return 1;
 }
+
 
 @end

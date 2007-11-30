@@ -6,7 +6,7 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3ConcreteMeshType.h"
-#import "O3FaceStruct.h"
+#import "O3FaceStructType.h"
 #import "O3StructType.h"
 #import "O3StructArrayVDS.h"
 #import "O3StructArray.h"
