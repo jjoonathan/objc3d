@@ -119,7 +119,7 @@ inline NSObject* NSObjectPlainObjectSingleton() {
 }
 
 #ifdef O3DEBUG
-void O3Break(); ///<Useful for non-trivial fast breakpoints
+O3EXTERN_C void O3Break(); ///<Useful for non-trivial fast breakpoints
 //Debug these (O3Log*) by putting a break on @sel(callAppenders:).
 #include <Log4Cocoa/Log4Cocoa.h>
 #define O3LogDebug(format, args...) log4Debug(([NSString stringWithFormat:format, ##args]))
