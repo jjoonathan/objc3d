@@ -32,9 +32,10 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, r
 - (NSString*)name;
 
 //(Hopefully accelerated) translation between formats
-- (NSMutableData*)portabalizeStructs:(NSData*)indata;
+- (NSMutableData*)portabalizeStructs:(NSData*)indata stride:(UIntP)s;
+- (void)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s;
 - (NSMutableData*)deportabalizeStructs:(NSData*)indata;
-- (NSMutableData*)translateStructs:(NSData*)instructs toFormat:(O3StructType*)format;
+- (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format;
 
 //GL info (expected to remain constant over the lifetime of a type)
 - (GLenum)glFormatForType:(O3VertexDataType)type;

@@ -161,6 +161,7 @@
 		FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */ = {isa = PBXBuildFile; fileRef = FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */; };
 		FC4055420CAC86B5005908DF /* O3FileResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4055400CAC86B5005908DF /* O3FileResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4055430CAC86B5005908DF /* O3FileResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4055410CAC86B5005908DF /* O3FileResSource.mm */; };
+		FC438B690D02676900DFA46F /* O3CompoundStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC438B680D02676900DFA46F /* O3CompoundStructType.mm */; };
 		FC4605C10CA602E9006F0122 /* O3ResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4605BF0CA602E9006F0122 /* O3ResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4605C20CA602E9006F0122 /* O3ResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4605C00CA602E9006F0122 /* O3ResSource.mm */; };
 		FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507230CDF5354003EE24B /* O3StructArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -424,6 +425,8 @@
 		FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = deportabalize.sh; sourceTree = "<group>"; };
 		FC4055400CAC86B5005908DF /* O3FileResSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3FileResSource.h; sourceTree = "<group>"; };
 		FC4055410CAC86B5005908DF /* O3FileResSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3FileResSource.mm; sourceTree = "<group>"; };
+		FC438B670D02676900DFA46F /* O3CompoundStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3CompoundStructType.h; sourceTree = "<group>"; };
+		FC438B680D02676900DFA46F /* O3CompoundStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3CompoundStructType.mm; sourceTree = "<group>"; };
 		FC4605BF0CA602E9006F0122 /* O3ResSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ResSource.h; sourceTree = "<group>"; };
 		FC4605C00CA602E9006F0122 /* O3ResSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ResSource.mm; sourceTree = "<group>"; };
 		FC4AD8310AE9BA1600812085 /* O3Translation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Translation.h; sourceTree = "<group>"; };
@@ -1054,6 +1057,8 @@
 				FC5507240CDF5354003EE24B /* O3StructArray.mm */,
 				FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */,
 				FC63EE870CF9F95F00325C54 /* O3FaceStructType.mm */,
+				FC438B670D02676900DFA46F /* O3CompoundStructType.h */,
+				FC438B680D02676900DFA46F /* O3CompoundStructType.mm */,
 			);
 			name = Structs;
 			sourceTree = "<group>";
@@ -1689,6 +1694,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */,
+				FC438B690D02676900DFA46F /* O3CompoundStructType.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

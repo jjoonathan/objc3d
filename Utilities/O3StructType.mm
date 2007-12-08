@@ -77,26 +77,43 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return [NSData dataWithBytesNoCopy:b length:s freeWhenDone:YES];
 }
 
-- (NSMutableData*)portabalizeStructs:(NSData*)indata {
+- (NSMutableData*)portabalizeStructs:(NSData*)indata stride:(UIntP)s {
 	[self doesNotRecognizeSelector:_cmd];
+	return nil;
+}
+
+- (void)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s {
+	NSData* dep = [self deportabalizeStructs:indata];
+	UIntP strS = [self structSize];
+	UIntP count = [dep length] / strS;
+	const UInt8* origin = (UInt8*)[indata bytes];
+	UInt8* dest = (UInt8*)to;
+	UIntP i; for(i=0; i<count; i++) {
+		origin += strS;
+		dest += s;
+		memcpy(dest, origin, strS);
+	}
 	return nil;
 }
 
 - (NSMutableData*)deportabalizeStructs:(NSData*)indata {
-	[self doesNotRecognizeSelector:_cmd];
-	return nil;
+	SEL osel = @selector(deportabalizeStructs:to:stride:);
+	O3Assert([self methodForSelector:osel]!=[O3StructType instanceMethodForSelector:osel], @"%@ struct type must override one of %@ or %@.", self, NSStringFromSelector(osel), NSStringFromSelector(_cmd));
+	UIntP len = [indata length];
+	void* b = malloc(len);
+	[self deportabalizeStructs:indata to:b stride:[self structSize]];
+	return [NSMutableData dataWithBytesNoCopy:b length:len];
 }
 
-- (NSMutableData*)translateStructs:(NSData*)instructs toFormat:(O3StructType*)format {
-	UIntP insize = [self structSize];
+- (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format {
 	UIntP outsize = [format structSize];
-	UIntP count = [instructs length] / insize;
+	UIntP count = [instructs length] / s;
 	NSMutableData* rdata = [[NSMutableData alloc] initWithLength:count*outsize];
 	UInt8* outbytes = (UInt8*)[rdata mutableBytes];
 	UInt8* inbytes = (UInt8*)[instructs bytes];
-	NSAutoreleasePool *pool = [NSAutoreleasePool new];	
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	UIntP i; for(i=0; i<count; i++) {
-		NSDictionary* d = [self dictWithBytes:inbytes+i*insize];
+		NSDictionary* d = [self dictWithBytes:inbytes+i*s];
 		[format writeDict:d toBytes:outbytes+i*outsize];
 	}
 	[pool release];

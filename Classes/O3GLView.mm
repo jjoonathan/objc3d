@@ -219,7 +219,7 @@ inline void initP(O3GLView* self) {
 		[mScene renderWithContext:&ctx];
 		
 		[mContext flushBuffer];
-		[NSOpenGLContext clearCurrentContext];
+		[self setNeedsDisplay:YES];
 	} else {
 		[self drawBlackScreenOfDeath:@"No Scene"];
 	}
@@ -548,5 +548,8 @@ inline void initP(O3GLView* self) {
 	else if ([abstr isEqualToString:@"Minimum"]) [self setPolicy:NSOpenGLPFAMinimumPolicy];
 	else [self setPolicy:NSOpenGLPFAMaximumPolicy];	
 }
+
+/************************************/ #pragma mark Events /************************************/
+
 
 @end
