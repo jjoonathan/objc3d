@@ -82,27 +82,13 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return nil;
 }
 
-- (void)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s {
-	NSData* dep = [self deportabalizeStructs:indata];
-	UIntP strS = [self structSize];
-	UIntP count = [dep length] / strS;
-	const UInt8* origin = (UInt8*)[indata bytes];
-	UInt8* dest = (UInt8*)to;
-	UIntP i; for(i=0; i<count; i++) {
-		origin += strS;
-		dest += s;
-		memcpy(dest, origin, strS);
-	}
-	return nil;
+- (NSMutableData*)portabalizeStructsAt:(void*)at count:(UIntP)ct stride:(UIntP)s {
+	[self doesNotRecognizeSelector:_cmd];
+	return nil;	
 }
 
-- (NSMutableData*)deportabalizeStructs:(NSData*)indata {
-	SEL osel = @selector(deportabalizeStructs:to:stride:);
-	O3Assert([self methodForSelector:osel]!=[O3StructType instanceMethodForSelector:osel], @"%@ struct type must override one of %@ or %@.", self, NSStringFromSelector(osel), NSStringFromSelector(_cmd));
-	UIntP len = [indata length];
-	void* b = malloc(len);
-	[self deportabalizeStructs:indata to:b stride:[self structSize]];
-	return [NSMutableData dataWithBytesNoCopy:b length:len];
+- (void)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s {
+	[self doesNotRecognizeSelector:_cmd];
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format {

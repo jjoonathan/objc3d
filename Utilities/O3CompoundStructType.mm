@@ -25,6 +25,7 @@
 	UIntP i; for(i=0; i<j; i++) {
 		mSize += [[mComponentTypes objectAtIndex:i] structSize];
 	}
+	return mSize;
 }
 
 - (NSDictionary*)dictWithBytes:(const void*)bytes {
@@ -33,7 +34,7 @@
 	const UInt8* b = (const UInt8*)bytes;
 	UIntP i; for(i=0; i<j; i++) {
 		O3StructType* type = [mComponentTypes objectAtIndex:i];
-		[dict addObject:[type dictWithBytes:b] forKey:[type name]];
+		[dict setObject:[type dictWithBytes:b] forKey:[type name]];
 		b += [type structSize];
 	}
 	return dict;
@@ -41,7 +42,7 @@
 
 - (void)writeDict:(NSDictionary*)dict toBytes:(void*)bytes {
 	UIntP j = [mComponentTypes count];
-	const UInt8* b = (const UInt8*)bytes;
+	UInt8* b = (UInt8*)bytes;
 	UIntP i; for(i=0; i<j; i++) {
 		O3StructType* type = [mComponentTypes objectAtIndex:i];
 		[type writeDict:[dict objectForKey:[type name]] toBytes:b];
@@ -49,33 +50,40 @@
 	}
 }
 
-- (NSMutableData*)portabalizeStructs:(NSData*)indata stride:(UIntP)s {
+- (NSMutableData*)portabalizeStructsAt:(void*)at count:(UIntP)ct stride:(UIntP)s {
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSMutableData* dat = [NSMutableData data];
 	O3BufferedWriter bw(dat);
 	UIntP j = [mComponentTypes count];
+	UInt8* src = (UInt8*)at;
 	UIntP i; for(i=0; i<j; i++) {
 		O3StructType* type = [mComponentTypes objectAtIndex:i];
-		NSData* d = [type portabalizeStructs:indata ]
-		NSData* d = [type writeDictToData:[dict objectForKey:[type name]]];
+		NSData* d = [type portabalizeStructsAt:src count:ct stride:s];
 		bw.WriteUCInt([d length]);
 		bw.WriteData(d);
+		src += [type structSize];
 	}
+	[pool release];
 	return dat;
 }
 
 - (void)deportabalizeStructs:(NSData*)indata to:(void*)target stride:(UIntP)s {
-	UIntP count = [indata length]/mSize;
-	UInt8* bytes = [indata bytes];
-	if (!s) s = mSize;
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
+	if (!s) s = [self structSize];
+	UIntP count = [indata length]/s;
+	O3BufferedReader r(indata);
+	UInt8* to = (UInt8*)target;
 	UIntP i; for(i=0; i<count; i++) {
 		O3StructType* type = [mComponentTypes objectAtIndex:i];
-		UInt8* startbytes = bytes+[type structSize];
-		
+		UIntP len = r.ReadUCIntAsUInt64();
+		[type deportabalizeStructs:r.ReadDataNoCopy(len) to:to stride:s];
+		to += [type structSize];
 	}
+	[pool release];
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format {
-	
+	return nil;
 }
 
 

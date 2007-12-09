@@ -118,6 +118,18 @@ inline NSObject* NSObjectPlainObjectSingleton() {
 	return obj;
 }
 
+#ifdef __cplusplus
+#define O3EXTERN_C_BLOCK extern "C" {
+#define O3END_EXTERN_C }
+#define O3END_EXTERN_C_BLOCK }
+#define O3EXTERN_C extern "C" 
+#else
+#define O3EXTERN_C_BLOCK
+#define O3END_EXTERN_C
+#define O3EXTERN_C
+#define O3END_EXTERN_C_BLOCK
+#endif
+
 #ifdef O3DEBUG
 O3EXTERN_C void O3Break(); ///<Useful for non-trivial fast breakpoints
 //Debug these (O3Log*) by putting a break on @sel(callAppenders:).
@@ -223,17 +235,6 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 }
 #define O3DestroyCppMap(type, name) O3DestroyCppContainer(type, name, , ->second)
 #define O3DestroyCppVector(type, name) O3DestroyCppContainer(type, name, *, )
-#ifdef __cplusplus
-#define O3EXTERN_C_BLOCK extern "C" {
-#define O3END_EXTERN_C }
-#define O3END_EXTERN_C_BLOCK }
-#define O3EXTERN_C extern "C" 
-#else
-#define O3EXTERN_C_BLOCK
-#define O3END_EXTERN_C
-#define O3EXTERN_C
-#define O3END_EXTERN_C_BLOCK
-#endif
 
 O3EXTERN_C void O3GLBreak();
 

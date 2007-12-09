@@ -107,7 +107,7 @@ void initP(O3StructArray* self) {
 	O3Assert(structType, @"Cannot change structure type from %@ to nil", mStructType);
 	UIntP newStructSize = [structType structSize];
 	if (mStructType&&mData) {
-		NSMutableData* newData = [mStructType translateStructs:mData toFormat:structType];
+		NSMutableData* newData = [mStructType translateStructs:mData stride:0 toFormat:structType];
 		if (!newData) {
 			[mAccessLock unlock];
 			return NO;

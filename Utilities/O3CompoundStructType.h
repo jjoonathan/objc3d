@@ -5,8 +5,9 @@
 //  Created by Jonathan deWerd on 12/1/07.
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
+#import "O3StructType.h"
 
-@interface O3CompoundStructType : NSObject {
+@interface O3CompoundStructType : O3StructType {
 	NSArray* /*O3StructType*/ mComponentTypes;
 	UIntP mSize;
 }

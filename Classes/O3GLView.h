@@ -14,7 +14,6 @@
 	NSString* mSceneName;
 	O3Scene* mScene;
 	O3Camera* mCamera;
-	NSMutableDictionary* 
 	
 	//Pixel format attribs
 	NSOpenGLPixelFormatAttribute mMultisampleStyle;

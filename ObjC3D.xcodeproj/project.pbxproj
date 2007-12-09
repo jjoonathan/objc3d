@@ -161,7 +161,6 @@
 		FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */ = {isa = PBXBuildFile; fileRef = FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */; };
 		FC4055420CAC86B5005908DF /* O3FileResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4055400CAC86B5005908DF /* O3FileResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4055430CAC86B5005908DF /* O3FileResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4055410CAC86B5005908DF /* O3FileResSource.mm */; };
-		FC438B690D02676900DFA46F /* O3CompoundStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC438B680D02676900DFA46F /* O3CompoundStructType.mm */; };
 		FC4605C10CA602E9006F0122 /* O3ResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4605BF0CA602E9006F0122 /* O3ResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4605C20CA602E9006F0122 /* O3ResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4605C00CA602E9006F0122 /* O3ResSource.mm */; };
 		FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507230CDF5354003EE24B /* O3StructArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -205,6 +204,8 @@
 		FC63F10C0CFA83F200325C54 /* window.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC63F10B0CFA83F200325C54 /* window.rb */; };
 		FC63F1160CFA88AA00325C54 /* window.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63F10B0CFA83F200325C54 /* window.rb */; };
 		FC63F12A0CFA8C7500325C54 /* o3lib.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63F1290CFA8C6F00325C54 /* o3lib.rb */; };
+		FC66FFCF0D0CABCB00BDD15F /* O3CompoundStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC438B680D02676900DFA46F /* O3CompoundStructType.mm */; };
+		FC66FFD00D0CABCC00BDD15F /* O3CompoundStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC438B670D02676900DFA46F /* O3CompoundStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
@@ -1389,6 +1390,7 @@
 				FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */,
 				FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */,
 				FC63EFCE0CFA287600325C54 /* O3StructArrayVDS.h in Headers */,
+				FC66FFD00D0CABCC00BDD15F /* O3CompoundStructType.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1686,6 +1688,7 @@
 				FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */,
 				FC63EE890CF9F95F00325C54 /* O3FaceStructType.mm in Sources */,
 				FC63EFCF0CFA287600325C54 /* O3StructArrayVDS.mm in Sources */,
+				FC66FFCF0D0CABCB00BDD15F /* O3CompoundStructType.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1694,7 +1697,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */,
-				FC438B690D02676900DFA46F /* O3CompoundStructType.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1775,7 +1777,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 0.1.0d;
+				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/Support";
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -1812,7 +1814,7 @@
 		C01FCF5008A954540054247B /* Release_OneArch */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 0.1.0d;
+				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/Support";
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -1844,8 +1846,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 3;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
@@ -1866,6 +1869,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
+				VERSIONING_SYSTEM = "apple-generic";
 				ZERO_LINK = NO;
 			};
 			name = Debug;
@@ -1873,8 +1877,9 @@
 		FC2C1BBB0C123F7A0084A599 /* Debug_Optimized */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 3;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
@@ -1892,6 +1897,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
+				VERSIONING_SYSTEM = "apple-generic";
 				ZERO_LINK = NO;
 			};
 			name = Debug_Optimized;
@@ -1900,9 +1906,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
@@ -1921,6 +1928,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
+				VERSIONING_SYSTEM = "apple-generic";
 				ZERO_LINK = NO;
 			};
 			name = Release_OneArch;
@@ -1928,8 +1936,9 @@
 		FC2C1BBD0C123F7A0084A599 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CURRENT_PROJECT_VERSION = 3;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
@@ -1948,6 +1957,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
+				VERSIONING_SYSTEM = "apple-generic";
 				ZERO_LINK = YES;
 			};
 			name = Release;
@@ -1995,7 +2005,7 @@
 					ppc,
 					i386,
 				);
-				CURRENT_PROJECT_VERSION = 0.1.0d;
+				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/Support";
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2143,7 +2153,7 @@
 		FCDAAED40AD07FD90074B780 /* Debug_Optimized */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 0.1.0d;
+				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/Support";
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;

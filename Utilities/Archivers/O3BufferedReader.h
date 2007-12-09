@@ -69,6 +69,7 @@ public:
 	void* ReadBytes(UInt64 len, UInt64 extra_bytes=0);
 	void ReadBytesInto(void* b, UInt64 len);
 	NSData* ReadData(UInt64 len);
+	NSData* ReadDataNoCopy(UInt64 len); ///<Only works if the receiver is based on an NSData*, and the returned data will only be valid as long as the input data is alive. Use with caution.
 	enum O3PkgType ReadObjectHeader(UIntP* size, NSString** classname = nil);
 	void SkipObject();
 	id ReadObject(NSCoder<O3UnarchiverCallbackable>* coder = nil, NSZone* z = nil);

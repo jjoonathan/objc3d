@@ -432,6 +432,15 @@ NSData* O3BufferedReader::ReadData(UInt64 len) {
 	return [NSData dataWithBytesNoCopy:ReadBytes(len,0) length:len freeWhenDone:YES];
 }
 
+NSData* O3BufferedReader::ReadDataNoCopy(UInt64 len) {
+	if (BytesLeft(len)) {
+		return [NSData dataWithBytesNoCopy:mBlockBytes length:len freeWhenDone:NO];
+		Advance(len);
+	}
+	O3Assert(false, @"ReadDataNoCopy does not work with readers that weren't made from an NSData. This could also be an attempt to read outside of the file.")
+	return nil;
+}
+
 void O3BufferedReader::Close() {
 	AssertOpen();
 	O3Destroy(mHandle);
