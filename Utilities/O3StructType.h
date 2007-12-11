@@ -8,6 +8,11 @@
 #import "O3VertexFormats.h"
 @class O3StructType;
 
+typedef struct {
+	void* bytes;
+	UIntP length;
+} O3RawData;
+
 //Struct naming
 O3StructType* O3StructTypeForName(NSString* name);
 void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, register your singletons here (for encoding/decoding)
@@ -32,8 +37,10 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, r
 - (NSString*)name;
 
 //(Hopefully accelerated) translation between formats
-- (NSMutableData*)portabalizeStructsAt:(void*)at count:(UIntP)ct stride:(UIntP)s;
-- (void)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s;
+- (NSMutableData*)portabalizeStructs:(NSData*)dat;    //Convenience method (do not override)
+- (NSMutableData*)deportabalizeStructs:(NSData*)dat;  //Convenience method (do not override)
+- (NSMutableData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s;
+- (O3RawData)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s;
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format;
 
 //GL info (expected to remain constant over the lifetime of a type)

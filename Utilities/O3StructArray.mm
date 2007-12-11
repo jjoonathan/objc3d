@@ -8,6 +8,7 @@
 #import "O3GPUData.h"
 #import "O3StructArray.h"
 #import "O3StructType.h"
+#import "O3CompoundStructType.h"
 
 @implementation O3StructArray
 
@@ -55,10 +56,46 @@ void initP(O3StructArray* self) {
 	return self;
 }
 
+- (O3StructArray*)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat {
+	O3SuperInitOrDie(); initP(self);
+	[self setStructType:type];
+	[self setRawDataNoCopy:dat];
+	return self;
+}
+
 - (O3StructArray*)initWithType:(O3StructType*)type portableData:(NSData*)dat {
 	O3SuperInitOrDie(); initP(self);
 	[self setStructType:type];
 	[self setPortableData:dat];
+	return self;
+}
+
+- (O3StructArray*)initByCompoundingArrays:(O3StructArray*)arr,... {
+	va_list arrs;
+	O3StructArray* a;
+	NSMutableArray* types = [[NSMutableArray alloc] init];
+	UIntP stride = 0;
+	UIntP firstCount = [arr count];
+	va_start(arrs,arr);
+	while (a=va_arg(arrs,O3StructArray*)) {
+		O3StructType* t = [a structType];
+		if ([a count]!=firstCount) {
+			[NSException raise:NSInvalidArgumentException format:@"During initByCompoundingArrays:%@... array %@ had count != the count of the others (%@)", types, a, [a count], firstCount];
+			[self release];
+			return nil;
+		}
+		stride += [t structSize];
+		[types addObject:t];
+	}
+	va_end(arrs);
+	O3CompoundStructType* cst = [[O3CompoundStructType alloc] initWithName:nil types:types];
+	NSMutableData* mdat = [[NSMutableData alloc] initWithLength:stride*firstCount];
+	
+	//copy in the data
+	if (![self initWithType:cst rawDataNoCopy:mdat]) return nil;
+	[mdat release];
+	[cst release];
+	[types release];
 	return self;
 }
 
@@ -139,6 +176,15 @@ void initP(O3StructArray* self) {
 	}
 	O3Assign([newData mutableCopy], mData);
 	O3Release(mData);
+}
+
+- (void)setRawDataNoCopy:(NSMutableData*)newData {
+	if ([newData length]%mStructSize) {
+		[self release];
+		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.", mStructType, newData);
+		return;
+	}
+	O3Assign(newData, mData);
 }
 
 - (NSData*)portableData {

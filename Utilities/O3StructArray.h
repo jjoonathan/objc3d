@@ -17,15 +17,18 @@
 //Init
 - (O3StructArray*)initWithType:(O3StructType*)type;
 - (O3StructArray*)initWithType:(O3StructType*)type rawData:(NSData*)dat;
+- (O3StructArray*)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat;
 - (O3StructArray*)initWithType:(O3StructType*)type portableData:(NSData*)dat;
 - (O3StructArray*)initWithType:(O3StructType*)type capacity:(UIntP)countGuess;
 - (O3StructArray*)initWithTypeNamed:(NSString*)name;
+- (O3StructArray*)initByCompoundingArrays:(O3StructArray*)arr,...;
 
 //Access
 - (O3StructType*)structType; ///<The type of structure contained in the receiver
 - (BOOL)setStructType:(O3StructType*)structType; ///<Tries to convert the receiver's contents to structType. Returns YES on success and NO on failure.
 - (NSMutableData*)rawData; ///<Access the data that backs the receiver
 - (void)setRawData:(NSData*)newData; ///<Change the data that backs the receiver
+- (void)setRawDataNoCopy:(NSMutableData*)newData;
 - (NSData*)portableData; ///<Converts the receiver to its portable representation and returns it
 - (void)setPortableData:(NSData*)pdat; ///<Sets the receiver's contents with a portable representation
 

@@ -24,6 +24,7 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 @implementation O3StructType : NSObject
 
 /************************************/ #pragma mark Init /************************************/
+///@param name nil is a valid value
 - (O3StructType*)initWithName:(NSString*)name {
 	O3SuperInitOrDie();
 	O3StructType* existingType = name? O3StructTypeForName(name) : nil;
@@ -82,13 +83,28 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return nil;
 }
 
-- (NSMutableData*)portabalizeStructsAt:(void*)at count:(UIntP)ct stride:(UIntP)s {
+- (NSMutableData*)portabalizeStructs:(NSData*)dat {
+	UIntP slen = [self structSize];
+	NSMutableData* ret = [self portabalizeStructsAt:[dat bytes] count:[dat length]/slen stride:slen];
+	[dat relinquishBytes];
+	return ret;
+}
+
+- (NSMutableData*)deportabalizeStructs:(NSData*)dat {
+	O3RawData rdat = [self deportabalizeStructs:dat to:nil stride:0];
+	return [NSMutableData dataWithBytesNoCopy:rdat.bytes length:rdat.length freeWhenDone:YES];
+}
+
+- (NSMutableData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s {
 	[self doesNotRecognizeSelector:_cmd];
 	return nil;	
 }
 
-- (void)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s {
+///Deportabalizes the structs of the receiver's type in indata. If %s = 0 it is replaced with [self structSize] and if %bytes is nil a new buffer is allocated and returned. Returned value is unspecified if %bytes!=0, and can be ignored in such cases.
+- (O3RawData)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s {
 	[self doesNotRecognizeSelector:_cmd];
+	O3RawData r = {nil, 0};
+	return r;
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format {
