@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3Matrix.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -431,3 +432,4 @@ std::string O3Mat_T::Description() const {
 	}
 	return to_return.str();
 }
+#endif /*defined(__cplusplus)*/

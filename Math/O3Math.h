@@ -22,13 +22,12 @@ typedef double scale;
 namespace ObjC3D {
 	namespace Math {};	///<The Math namespace holds all math classes along with a few constants.
 };
+#endif /*defined(__cplusplus)*/
 
 #include "O3Functions.h"
 #include "O3Vector.h"
-#include "O3DynamicVector.h"
 #include "O3Matrix.h"
 #include "O3Matrix_Square.h"
-#include "O3DynamicMatrix.h"
 #include "O3QuadraticEquation.h"
 #include "O3Point.h"
 #include "O3LineSegment.h"
@@ -44,15 +43,12 @@ namespace ObjC3D {
 
 #include "O3Functions.hpp"
 #include "O3Vector.hpp"
-#include "O3DynamicVector.hpp"
 #include "O3Matrix.hpp"
 #include "O3Matrix_Square.hpp"
 #include "O3MatrixFunctions.hpp"
-#include "O3DynamicMatrix.hpp"
 #include "O3QuadraticEquation.hpp"
 #include "O3LineSegment.hpp"
 #include "O3Box.hpp"
 #include "O3Sphere.hpp"
 
-#endif /*defined(__cplusplus)*/
 #endif /*defined(O3FILE_MATH)*/

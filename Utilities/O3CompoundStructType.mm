@@ -6,6 +6,8 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3CompoundStructType.h"
+#import "O3BufferedWriter.h"
+#import "O3BufferedReader.h"
 
 @implementation O3CompoundStructType
 

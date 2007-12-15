@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3MatrixFunctions.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -198,3 +199,4 @@ O3Mat<TYPE, 4, 4>& operator-=(O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot) {
 	mat=(-rot).GetMatrix()*mat;
 	return mat;
 }
+#endif /*defined(__cplusplus)*/

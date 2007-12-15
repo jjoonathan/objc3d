@@ -8,7 +8,6 @@
 #import "O3CGParameter.h"
 #import "O3KVCHelper.h"
 #import "O3CGAnnotation.h"
-#import "O3Value.h"
 #import "O3CGParameterSupport.h"
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>

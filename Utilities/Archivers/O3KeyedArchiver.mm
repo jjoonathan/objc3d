@@ -8,7 +8,6 @@
 #import "O3ArchiveFormat.h"
 #import "O3KeyedArchiver.h"
 #import "O3NonlinearWriter.h"
-#import "O3Value.h"
 #import "O3ArchiveStatisticsGatherer.h"
 
 NSString* O3UnkeyedMethodSendToKeyedArchiverException = @"O3UnkeyedMethodSendToKeyedArchiverException";
@@ -258,8 +257,10 @@ inline void encodeInt64P(O3KeyedArchiver* self, NSString* k, UInt64 v, BOOL nega
 inline void writeValueP(O3KeyedArchiver* self, NSValue* v, NSString* k) {
 	O3AssertIvar(self->mWriter);  beginEncodingIfNecessaryP(v, k);
 	UIntP header_placeholder = self->mWriter->ReservePlaceholder();
-	self->mWriter->WriteDataAtPlaceholder([v portableData], self->mWriter->ReservePlaceholder());
-	UIntP size = self->mWriter->BytesWrittenAfterPlaceholder(header_placeholder);
+	const char* vtype = [v objCType];
+	unsigned int size; NSGetSizeAndAlignment(vtype, &size, nil);
+	void* buf = malloc(size);
+	self->mWriter->WriteBytesAtPlaceholder(buf, size, self->mWriter->ReservePlaceholder(), NO);
 	self->mWriter->WriteKVHeaderAtPlaceholder(k, nil, size, O3PkgTypeValue, header_placeholder);
 }
 
@@ -351,15 +352,15 @@ NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c) {
 }
 
 - (void)encodePoint:(NSPoint)pt forKey:(NSString*)k {
-	writeValueP(self, [O3Value valueWithPoint:pt], k);
+	writeValueP(self, [NSValue valueWithPoint:pt], k);
 }
 
 - (void)encodeRect:(NSRect)r forKey:(NSString*)k {
-	writeValueP(self, [O3Value valueWithRect:r], k);
+	writeValueP(self, [NSValue valueWithRect:r], k);
 }
 
 - (void)encodeSize:(NSSize)s forKey:(NSString*)k {
-	writeValueP(self, [O3Value valueWithSize:s], k);
+	writeValueP(self, [NSValue valueWithSize:s], k);
 }
 
 @end

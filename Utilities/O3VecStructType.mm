@@ -37,7 +37,7 @@ UIntP* O3VecStructTypePermsAndMultiplier(O3VecStructType* self, double* multipli
 	return self->mPermutations;
 }
 
-void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, enum O3VecStructElementType* type, short* count, O3VecStructSpecificType* stype) {
+void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, O3VecStructElementType* type, short* count, O3VecStructSpecificType* stype) {
 	if (type) *type = self->mElementType;
 	if (count) *count = self->mElementCount;
 	if (stype) *stype = self->mSpecificType;
@@ -64,7 +64,7 @@ O3END_EXTERN_C_BLOCK
 /************************************/ #pragma mark Class Methods /************************************/
 + (void)load {
 	O3CompileAssert(*@encode(real)=='f' || *@encode(real)=='d', @"O3VecStructType assumes that real is eather float or double");
-	enum O3VecStructElementType rtype = *@encode(real)=='f'? O3VecStructFloatElement : O3VecStructDoubleElement;
+	O3VecStructElementType rtype = *@encode(real)=='f'? O3VecStructFloatElement : O3VecStructDoubleElement;
 	gO3Vec3rType = [[O3VecStructType alloc] initWithElementType:rtype                     specificType:O3VecStructVec count:3 name:@"vec3r"];
 	gO3Vec3fType = [[O3VecStructType alloc] initWithElementType:O3VecStructFloatElement   specificType:O3VecStructVec count:3 name:@"vec3f"];
 	gO3Vec3dType = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructVec count:3 name:@"vec3d"];
@@ -107,8 +107,8 @@ O3END_EXTERN_C_BLOCK
 + (O3VecStructType*)index4x64Type {return O3Index4x64Type();}
 
 ///@returns a new autoreleased vector 
-+ (O3VecStructType*)vecStructTypeWithElementType:(enum O3VecStructElementType)type
-                                    specificType:(enum O3VecStructSpecificType)stype
++ (O3VecStructType*)vecStructTypeWithElementType:(O3VecStructElementType)type
+                                    specificType:(O3VecStructSpecificType)stype
                                            count:(int)count
                                             name:(NSString*)name {
 	O3StructType* existingType = name? O3StructTypeForName(name) : nil;
@@ -117,7 +117,7 @@ O3END_EXTERN_C_BLOCK
 }
 
 /************************************/ #pragma mark Init /************************************/
-- (O3VecStructType*)initWithElementType:(enum O3VecStructElementType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name {
+- (O3VecStructType*)initWithElementType:(O3VecStructElementType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name {
 	[super initWithName:name];
 	mMultiplier = 1;
 	mElementType = type;
@@ -132,11 +132,11 @@ O3END_EXTERN_C_BLOCK
 }
 
 /************************************/ #pragma mark Custom Accessors /************************************/
-- (enum O3VecStructElementType)elementType {
+- (O3VecStructElementType)elementType {
 	return mElementType;
 }
 
-- (enum O3VecStructSpecificType)specificType {
+- (O3VecStructSpecificType)specificType {
 	return mSpecificType;
 }
 
@@ -403,7 +403,7 @@ O3EXTERN_C void O3WriteNumberTo(O3VecStructElementType eleType, UIntP i, void* b
 
 @end
 
-double O3DoubleValueOfType_at_withIndex_(enum O3VecStructElementType type, const void* bytes, UIntP idx) {
+double O3DoubleValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx) {
 	switch (type) {
 		case O3VecStructFloatElement:  return *((float*)bytes+idx);
 		case O3VecStructDoubleElement: return *((double*)bytes+idx);
@@ -420,7 +420,7 @@ double O3DoubleValueOfType_at_withIndex_(enum O3VecStructElementType type, const
 	return 0;
 }
 
-Int64 O3Int64ValueOfType_at_withIndex_(enum O3VecStructElementType type, const void* bytes, UIntP idx) {
+Int64 O3Int64ValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx) {
 	switch (type) {
 		case O3VecStructFloatElement:  return *((float*)bytes+idx);
 		case O3VecStructDoubleElement: return *((double*)bytes+idx);
@@ -437,7 +437,7 @@ Int64 O3Int64ValueOfType_at_withIndex_(enum O3VecStructElementType type, const v
 	return 0;
 }
 
-UInt64 O3UInt64ValueOfType_at_withIndex_(enum O3VecStructElementType type, const void* bytes, UIntP idx) {
+UInt64 O3UInt64ValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx) {
 	switch (type) {
 		case O3VecStructFloatElement:  return *((float*)bytes+idx);
 		case O3VecStructDoubleElement: return *((double*)bytes+idx);
@@ -454,7 +454,7 @@ UInt64 O3UInt64ValueOfType_at_withIndex_(enum O3VecStructElementType type, const
 	return 0;
 }
 
-void O3SetValueOfType_at_toDouble_withIndex_(enum O3VecStructElementType type, void* bytes, double v, UIntP idx) {
+void O3SetValueOfType_at_toDouble_withIndex_(O3VecStructElementType type, void* bytes, double v, UIntP idx) {
 	switch (type) {
 		case O3VecStructFloatElement:  *((float*)bytes+idx)  = v; return;  
 		case O3VecStructDoubleElement: *((double*)bytes+idx) = v; return; 
@@ -470,7 +470,7 @@ void O3SetValueOfType_at_toDouble_withIndex_(enum O3VecStructElementType type, v
 	O3AssertFalse("Unknown type \"%i\"", (int)type);
 }
 
-void O3SetValueOfType_at_toInt64_withIndex_(enum O3VecStructElementType type, void* bytes, Int64 v, UIntP idx) {
+void O3SetValueOfType_at_toInt64_withIndex_(O3VecStructElementType type, void* bytes, Int64 v, UIntP idx) {
 	switch (type) {
 		case O3VecStructFloatElement:  *((float*)bytes+idx)  = v; return;  
 		case O3VecStructDoubleElement: *((double*)bytes+idx) = v; return; 
@@ -486,7 +486,7 @@ void O3SetValueOfType_at_toInt64_withIndex_(enum O3VecStructElementType type, vo
 	O3AssertFalse("Unknown type \"%i\"", (int)type);	
 }
 
-void O3SetValueOfType_at_toUInt64_withIndex_(enum O3VecStructElementType type, void* bytes, UInt64 v, UIntP idx) {
+void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type, void* bytes, UInt64 v, UIntP idx) {
 	switch (type) {
 		case O3VecStructFloatElement:  *((float*)bytes+idx)  = v; return;  
 		case O3VecStructDoubleElement: *((double*)bytes+idx) = v; return; 

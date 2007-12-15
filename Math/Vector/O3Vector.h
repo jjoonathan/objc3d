@@ -8,7 +8,6 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #include "O3Math.h"
-class O3DynamicVector;
 
 #define O3Vec_TT	template <typename TYPE, int NUMBER> 
 #define O3Vec_T	O3Vec<TYPE, NUMBER>
@@ -23,19 +22,17 @@ class O3DynamicVector;
 */
 O3Vec_TT class O3Vec {
 private:
-	friend class O3DynamicMatrix; //Depends on Values being named that, and being a 1-D array
-	friend class O3DynamicVector; //Depends on Values being named that, and being a 1-D array
-	TYPE Values[NUMBER]; ///<Stores the array of values.
+	TYPE v[NUMBER]; ///<Stores the array of values.
 		
 public: //Constructors
 	static O3Vec_T GetZero();			///<Returns a vector initialized to zero.
-	O3Vec() {};					///<Default constructor. Values are NOT initialized to 0 for performance reasons.
+	O3Vec() {};					///<Default constructor. v are NOT initialized to 0 for performance reasons.
 	O3Vec(TYPE x)							{Set(x);}			///<Constructs a vector and sets each element equal to x
 	O3Vec(TYPE x, TYPE y)					{Set(x,y);}			///<Constructs a 2 or more dimensional vector with the given values. If the vector type has more than 2 dimensions, the unprovided dimensions are filled with 1.
 	O3Vec(TYPE x, TYPE y, TYPE z)			{Set(x,y,z);}		///<Constructs a 3 or more dimensional vector with the given values. If the vector type has more than 3 dimensions, the unprovided dimensions are filled with 1.
 	O3Vec(TYPE x, TYPE y, TYPE z, TYPE w)	{Set(x,y,z,w);}		///<Constructs a 4 or more dimensional vector with the given values. If the vector type has more than 4 dimensions, the unprovided dimensions are filled with 1.
-	O3Vec(const O3DynamicVector& dvec)		{Set(dvec);}			///<Constructs a vector from a dynamic vector. If dvec's type does not match the type being created, the values are cast. Any values in dvec beyond the dimensions 
-	template <typename TYPE2>			 O3Vec(const TYPE2 *array, unsigned len = NUMBER)	{Set(array, len);}		///<Constructs a vector with the information pointed at by array. If array isn't the same size as the vector you are constructing, pass its length in \e len.
+	O3Vec(NSValue* val)						{SetValue((NSValue*)val);}			///<Constructs a 4 or more dimensional vector with the given NSValue.
+	template <typename TYPE2>			 O3Vec(const TYPE2 *array, unsigned len)	{Set(array, len);}		///<Constructs a vector with the information pointed at by array. If array isn't the same size as the vector you are constructing, pass its length in \e len.
 	template <typename TYPE2, int SIZE2> O3Vec(const O3Vec<TYPE2, SIZE2>& v)				{Set(v);};				///<Constructs a vector from another vector.
 	
 public: //Setters
@@ -43,8 +40,8 @@ public: //Setters
 	O3Vec_T& Set(TYPE x, TYPE y);
 	O3Vec_T& Set(TYPE x, TYPE y, TYPE z);
 	O3Vec_T& Set(TYPE x, TYPE y, TYPE z, TYPE w);
-	O3Vec_T& Set(const O3DynamicVector& dvec); ///<This is defined in O3DynamicVector.hpp
-	template <typename TYPE2>			 O3Vec_T& Set(const TYPE2 *array, unsigned arraylen = NUMBER);
+	O3Vec_T& SetValue(NSValue* val);
+	template <typename TYPE2>			 O3Vec_T& Set(const TYPE2 *array, unsigned arraylen);
 	template <typename TYPE2, int SIZE2> O3Vec_T& Set(const O3Vec<TYPE2, SIZE2>& v);
 	
 public: //Methods and Method-accessors
@@ -77,8 +74,8 @@ public: //Meta-attributes
 	double Angle(const O3Vec_T& v) const; ///<Returns the angle between the receiver and v
 	
 public: //Overloaded Operators
-	operator TYPE* () {return Values;}							///<Implicit conversion from a vector to a C array
-	operator const TYPE* () const {return Values;}				///<Implicit conversion from a constant vector to a constant C array
+	operator TYPE* () {return v;}							///<Implicit conversion from a vector to a C array
+	operator const TYPE* () const {return v;}				///<Implicit conversion from a constant vector to a constant C array
 	TYPE& operator[](int index);								///<Array index operator (returns reference element at index <i>index</i>). Assignment (foo[0] = 1.;) works.
 	const TYPE& operator[](int index) const;					///<Constant array operator returns a constant reference to the element at index <i>index</i>.
 	bool operator==(const O3Vec_T& v) const;					///<Equality operator tests exact equality. Use IsEqualTo(O3Vec<TYPE, NUMBER> other, TYPE tolerance = epsilon(TYPE)) to test for similarity.
@@ -107,8 +104,8 @@ public: //Overloaded Operators
 	template<typename TYPE2> O3Vec_T& operator=(const O3Vec<TYPE2, NUMBER>& v2);		///<Assignment operator.
 	
 public: //Accessors
-	TYPE* Data() {return Values;}			///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED UNLESS ABSOLUTELY NECESSARY.
-	const TYPE* Data() const {return Values;}			///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED UNLESS ABSOLUTELY NECESSARY.
+	TYPE* Data() {return v;}			///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED UNLESS ABSOLUTELY NECESSARY.
+	const TYPE* Data() const {return v;}			///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED UNLESS ABSOLUTELY NECESSARY.
 	int Size() const {return NUMBER;}				///<Returns the number of components in a vector.
 	const char* ElementType() {return @encode(TYPE);} ///<Returns the ObjC encoding of TYPE
 	void Get(TYPE* x, TYPE* y) const;						///<Fetch the values of x and y into *x and *y. Can accept NULL for x or y.
@@ -117,31 +114,28 @@ public: //Accessors
 	void GetA(TYPE* x, TYPE* y) const;						///<Fetch the values of x and y into *x and *y. DOES NOT CHECK IF X OR Y ARE NULL.
 	void GetA(TYPE* x, TYPE* y, TYPE* z) const;				///<Fetch the values of x, y, and z into *x, *y, and *z. DOES NOT CHECK IF X, Y, OR Z ARE NULL.
 	void GetA(TYPE* x, TYPE* y, TYPE* z, TYPE* w) const;	///<Fetch the values of x, y, z, and w into *x, *y, *z, and *w. DOES NOT CHECK IF X, Y, Z, OR W ARE NULL.
-	TYPE& X() {return Values[0];}  ///<Synonymous to receiver[0]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& Y() {return Values[1];}  ///<Synonymous to receiver[1]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& Z() {return Values[2];}  ///<Synonymous to receiver[2]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& W() {return Values[3];}  ///<Synonymous to receiver[3]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& U() {return Values[0];}  ///<Synonymous to receiver[0]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& V() {return Values[1];}  ///<Synonymous to receiver[1]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& S() {return Values[0];}  ///<Synonymous to receiver[0]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& T() {return Values[1];}  ///<Synonymous to receiver[1]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& R() {return Values[2];}  ///<Synonymous to receiver[2]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE& G() {return Values[3];}  ///<Synonymous to receiver[3]. Allows assignment (as in a_vector.x() = 5.;).
-	TYPE  GetX() const {return Values[0];}                	///<Acts just the same as receiver[0] but does not allow assignment.
-	TYPE  GetY() const {return Values[1];}                	///<Acts just the same as receiver[1] but does not allow assignment.
-	TYPE  GetZ() const {return Values[2];}                	///<Acts just the same as receiver[2] but does not allow assignment.
-	TYPE  GetW() const {return (NUMBER>=3)?Values[3]:1.0;}	///<Acts just the same as receiver[3] but does not allow assignment.
-	TYPE  GetU() const {return Values[0];}                	///<Acts just the same as receiver[0] but does not allow assignment
-	TYPE  GetV() const {return Values[1];}                	///<Acts just the same as receiver[1] but does not allow assignment.
-	TYPE  GetS() const {return Values[0];}                	///<Acts just the same as receiver[0] but does not allow assignment.
-	TYPE  GetT() const {return Values[1];}                	///<Acts just the same as receiver[1] but does not allow assignment.
-	TYPE  GetR() const {return Values[2];}                	///<Acts just the same as receiver[2] but does not allow assignment.
-	TYPE  GetG() const {return Values[3];}                	///<Acts just the same as receiver[3] but does not allow assignment.
-
-public: //Automatic Type Conversion
-	//Defined in O3DynamicVector.hpp
-	operator const O3DynamicVector () const; ///<Automatically converts an O3Vec into an O3Vector if appropriate
-
+	TYPE& X() {return v[0];}  ///<Synonymous to receiver[0]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& Y() {return v[1];}  ///<Synonymous to receiver[1]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& Z() {return v[2];}  ///<Synonymous to receiver[2]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& W() {return v[3];}  ///<Synonymous to receiver[3]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& U() {return v[0];}  ///<Synonymous to receiver[0]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& V() {return v[1];}  ///<Synonymous to receiver[1]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& S() {return v[0];}  ///<Synonymous to receiver[0]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& T() {return v[1];}  ///<Synonymous to receiver[1]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& R() {return v[2];}  ///<Synonymous to receiver[2]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE& G() {return v[3];}  ///<Synonymous to receiver[3]. Allows assignment (as in a_vector.x() = 5.;).
+	TYPE  GetX() const {return v[0];}                	///<Acts just the same as receiver[0] but does not allow assignment.
+	TYPE  GetY() const {return v[1];}                	///<Acts just the same as receiver[1] but does not allow assignment.
+	TYPE  GetZ() const {return v[2];}                	///<Acts just the same as receiver[2] but does not allow assignment.
+	TYPE  GetW() const {return (NUMBER>=3)?v[3]:1.0;}	///<Acts just the same as receiver[3] but does not allow assignment.
+	TYPE  GetU() const {return v[0];}                	///<Acts just the same as receiver[0] but does not allow assignment
+	TYPE  GetV() const {return v[1];}                	///<Acts just the same as receiver[1] but does not allow assignment.
+	TYPE  GetS() const {return v[0];}                	///<Acts just the same as receiver[0] but does not allow assignment.
+	TYPE  GetT() const {return v[1];}                	///<Acts just the same as receiver[1] but does not allow assignment.
+	TYPE  GetR() const {return v[2];}                	///<Acts just the same as receiver[2] but does not allow assignment.
+	TYPE  GetG() const {return v[3];}                	///<Acts just the same as receiver[3] but does not allow assignment.
+	NSValue* Value() const {return [NSValue valueWithBytes:this objCType:@encode(O3Vec_T)];}
+	
 public: //Interface
 	std::string Description() const; ///<Returns a string description of the object. The caller is responsible for free()ing the returned char*.
 };
@@ -153,15 +147,6 @@ O3Vec_TT O3Vec_T operator*(const TYPE scalar, const O3Vec_T& v);
 O3Vec_TT O3Vec_T operator/(const TYPE scalar, const O3Vec_T& v);
 
 /************************************/ #pragma mark Convenience Typedefs /************************************/
-typedef O3Vec<real, 2> real2;		///<A convenience typedef defines real2 as a 2 component "real" floating point vector.
-typedef O3Vec<real, 3> real3;		///<A convenience typedef defines real3 as a 3 component "real" floating point vector.
-typedef O3Vec<real, 4> real4;		///<A convenience typedef defines real4 as a 4 component "real" floating point vector.
-typedef O3Vec<float, 2> float2;	///<A convenience typedef defines float2 as a 2 component single precision vector.
-typedef O3Vec<float, 3> float3;	///<A convenience typedef defines float3 as a 3 component single precision vector.
-typedef O3Vec<float, 4> float4;	///<A convenience typedef defines float4 as a 4 component single precision vector.
-typedef O3Vec<double, 2> double2;	///<A convenience typedef defines double2 as a 2 component double precision floating point vector.
-typedef O3Vec<double, 3> double3;	///<A convenience typedef defines double3 as a 3 component double precision floating point vector.
-typedef O3Vec<double, 4> double4;	///<A convenience typedef defines double4 as a 4 component double precision floating point vector.
 typedef O3Vec<double, 2> O3Vec2d;	///<A convenience typedef defines O3Vec2d as a 2 component double precision floating point vector.
 typedef O3Vec<double, 3> O3Vec3d;	///<A convenience typedef defines O3Vec3d as a 3 component double precision floating point vector.
 typedef O3Vec<double, 4> O3Vec4d;	///<A convenience typedef defines O3Vec4d as a 4 component double precision floating point vector.
@@ -171,4 +156,14 @@ typedef O3Vec<real, 4> O3Vec4r;		///<A convenience typedef defines O3Vec4r as a 
 typedef O3Vec<float, 2> O3Vec2f;		///<A convenience typedef defines O3Vec2f as a 2 component single precision floating point vector.
 typedef O3Vec<float, 3> O3Vec3f;		///<A convenience typedef defines O3Vec3f as a 3 component single precision floating point vector.
 typedef O3Vec<float, 4> O3Vec4f;		///<A convenience typedef defines O3Vec4f as a 4 component single precision floating point vector.
+#else /*!defined(__cplusplus)*/
+typedef struct {real v[2];} O3Vec2r;
+typedef struct {real v[3];} O3Vec3r;
+typedef struct {real v[4];} O3Vec4r;
+typedef struct {float v[2];} O3Vec2f;
+typedef struct {float v[3];} O3Vec3f;
+typedef struct {float v[4];} O3Vec4f;
+typedef struct {double v[2];} O3Vec2d;
+typedef struct {double v[3];} O3Vec3d;
+typedef struct {double v[4];} O3Vec4d;
 #endif /*defined(__cplusplus)*/

@@ -62,8 +62,6 @@ template <typename T> struct O3swap_implementation {
 
 /************************************/ #pragma mark Byteswapping /************************************/
 #ifdef __cplusplus
-template <typename T> struct O3ByteswapImplementation;
-template <typename TYPE> inline TYPE O3Byteswap(const TYPE& to_swap) {return O3ByteswapImplementation<TYPE>::byteswap(to_swap);}
 template <typename TYPE> struct O3ByteswapImplementation {
 	static inline TYPE byteswap(const TYPE& to_swap) {
 		TYPE to_return;
@@ -74,6 +72,7 @@ template <typename TYPE> struct O3ByteswapImplementation {
 		return to_return;
 	}
 };
+template <typename TYPE> inline TYPE O3Byteswap(const TYPE& to_swap) {O3ByteswapImplementation<TYPE> t; return t.byteswap(to_swap);}
 
 #ifdef O3UseCoreFoundation
 template <> struct O3ByteswapImplementation<Int32>	{static inline Int32  byteswap(Int32 to_swap) {return CFSwapInt32(to_swap);}};

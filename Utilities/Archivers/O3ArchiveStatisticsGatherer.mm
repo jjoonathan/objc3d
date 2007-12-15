@@ -7,6 +7,7 @@
  */
 #import "O3ArchiveStatisticsGatherer.h"
 #import "O3KeyedArchiver.h"
+#import "O3ArchiveFormat.h"
 
 @implementation O3ArchiveStatistic
 inline NSString* getKey(O3ArchiveStatistic* self) {return self->key;}

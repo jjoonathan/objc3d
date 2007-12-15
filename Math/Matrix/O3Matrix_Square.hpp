@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3Matrix_Square.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -696,3 +697,4 @@ bool O3Mat_sq_T::GetPerspective(double& fovy, double& aspectRatio, double& zNear
 	aspectRatio = (right-left)/(top-bottom);
 	return true;
 }
+#endif /*defined(__cplusplus)*/

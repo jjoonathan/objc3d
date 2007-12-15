@@ -31,7 +31,6 @@ public: //Operators
 	
 public: //Mutators
 	O3Translation<TYPE, DIMENSIONS>& Set() {vec::Set(0.); return *this;}
-	O3Translation<TYPE, DIMENSIONS>& Set(const O3DynamicVector& dvec) {vec::Set(dvec); return *this;}
 	template<typename TYPE2, int DIM2> O3Translation<TYPE, DIMENSIONS>& Set(const O3Translation<TYPE2,DIM2>& other) {vec::Set(other); return *this;}
 	
 public: //O3Mat construction

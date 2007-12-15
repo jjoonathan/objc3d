@@ -10,7 +10,6 @@
 #import "O3Space.h"
 #import "O3Locateable.h"
 @class O3Scene;
-using namespace ObjC3D::Math;
 
 @interface O3Region : O3Locateable <O3Group, O3Renderable, NSCoding> {
 	O3Region* mParentRegion;

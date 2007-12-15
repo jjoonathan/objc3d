@@ -9,7 +9,6 @@
 #ifdef __cplusplus
 extern GLenum* gCompressedInternalFormats;		//In O3Texture.mm
 extern GLint gNumberCompressedInternalFormats;	//In O3Texture.mm
-#endif
 
 inline BOOL isFormatCompressedP(GLenum format) {
 	if (format==GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) return YES;
@@ -226,3 +225,4 @@ inline unsigned sizeForIneternalFormatAndPixelsP(GLenum internalFormat, unsigned
 	formatAndTypeForInternalFormatAP(internalFormat, &format, &type);
 	return sizeForFormatAndNumberPixelsP(format, type, pixels);
 }
+#endif /*defined(__cplusplus)*/

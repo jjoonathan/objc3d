@@ -20,7 +20,6 @@ public: //Constructors
 	static O3Mat_sq_T  GetZero();
 	static O3Mat_sq_T  GetIdentity();
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
-	O3Mat(const O3DynamicMatrix& dynm) {Set(dynm);}; ///<Construct a matrix from a dynamic matrix representation
 	O3Mat_sq_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);}; ///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_sq_TTT2 O3Mat(const O3Mat_sq_T2& other_matrix) {Set(other_matrix);}; ///<Construct a matrix with the contents of other_matrix
 	O3Mat_sq_TTT2 O3Mat(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat) {Set(other_mat);} ///<Construct a matrix from a smaller matrix (other_mat is put in the upper left corner of the receiver, and everything else is padded with identity values)
@@ -31,7 +30,6 @@ public: //Setters
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Mat_sq_T2& other_matrix);		///<Fills the receiver with the contents of other_matrix.
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat); ///<Set a matrix to a smaller matrix (other_mat is put in the upper left corner of the receiver, and everything else is padded with identity values)
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Vec<TYPE2, 3> v1, const O3Vec<TYPE2, 3> v2, const O3Vec<TYPE2, 3> v3);		///<Fills the orthonormal base of the receiver. Valid on 3x3 and 4x4 matricies.
-	O3Mat_sq_T& Set(const O3DynamicMatrix& dynm);	///<Set a matrix to the values represented by a DynamicMatrix (mostly for the ObjC interface)
 	
 	
 	
@@ -113,8 +111,6 @@ public: //Type detection
 	O3Mat_sq_TTT2 bool IsEqual(const O3Mat_sq_T2& other, double tolerance = O3Epsilon(TYPE)) const {return Equals(other, tolerance);}
 	
 public: //Type conversion
-	//Defined in O3DynamicMatrix.hpp
-	operator const O3DynamicMatrix () const; ///<Automatically convert the receiver to an O3DynamicMatrix if appropriate.
 	operator const TYPE* () const {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
 	operator TYPE* () {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
 	

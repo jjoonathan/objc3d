@@ -23,8 +23,6 @@ public: //Constructors
 public: //Mutators
 	O3Scale<TYPE,DIMENSIONS>& Set() {vec::Set(1); return *this;}
 	template<typename TYPE2, int DIM2> O3Scale<TYPE, DIMENSIONS>& Set(const O3Scale<TYPE2,DIM2>& other) {vec::Set(other); return *this;}
-	O3Scale<TYPE, DIMENSIONS>& Set(const O3DynamicVector& dvec) {vec::Set(dvec); return *this;}
-
 	
 public: //Operators
 	bool operator==(const O3Scale& other_scale) {return vec::operator==(other_scale);};

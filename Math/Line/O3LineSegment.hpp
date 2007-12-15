@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3LineSegment.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -59,3 +60,4 @@ bool  LineSeg_T::Parallel(const LineSeg_T& other_segment, real tollerance = O3Ep
 	if (!O3Equals(my_xzslope, other_xzslope, O3Epsilon(real)*2.)) return false;
 	return true;
 }
+#endif /*defined(__cplusplus)*/

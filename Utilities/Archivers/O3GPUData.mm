@@ -9,8 +9,8 @@
 
 NSString* gO3VertexDataTypeUnrecognizedException = @"O3VertexDataTypeUnrecognizedException";
 
-struct O3GLBufferObject* O3GLBufferObjectNew() {
-	O3GLBufferObject* r = new O3GLBufferObject();
+O3GLBufferObj* O3GLBufferObjNew() {
+	O3GLBufferObj* r = new O3GLBufferObj();
 	r->references = 1;
 	GLuint b;
 	glGenBuffersARB(1, &b);
@@ -18,14 +18,14 @@ struct O3GLBufferObject* O3GLBufferObjectNew() {
 	return r;
 }
 
-struct O3GLBufferObject* O3GLBufferObjectCopy(O3GLBufferObject* o) {
+O3GLBufferObj* O3GLBufferObjCopy(O3GLBufferObj* o) {
 	o->references++;
 	return o;
 }
 
-struct O3GLBufferObject* O3GLBufferObjectDuplicate(O3GLBufferObject* o, GLenum* usage, UIntP extraBytes) {
+O3GLBufferObj* O3GLBufferObjDuplicate(O3GLBufferObj* o, GLenum* usage, UIntP extraBytes) {
 	O3CLogInfo(@"Stall on buffer (%i) copy", o->id);
-	O3GLBufferObject* r = O3GLBufferObjectNew();
+	O3GLBufferObj* r = O3GLBufferObjNew();
 
 	//Get o's size, bytes, and usage
 	GLsizeiptrARB s;
@@ -50,13 +50,13 @@ struct O3GLBufferObject* O3GLBufferObjectDuplicate(O3GLBufferObject* o, GLenum* 
 ///Copies a buffer to allow changes to it.
 ///@warning o should not be mapped
 ///@param usage nil means the usage is copied from the old buffer. Otherwise, *usage is used.
-struct O3GLBufferObject* O3GLBufferObjectPrepareForChanges(O3GLBufferObject* o, GLenum* usage) {
+O3GLBufferObj* O3GLBufferObjPrepareForChanges(O3GLBufferObj* o, GLenum* usage) {
 	if (o->references==1) return o;
 	o->references--;
-	return O3GLBufferObjectDuplicate(o, usage, 0);
+	return O3GLBufferObjDuplicate(o, usage, 0);
 }
 
-void O3GLBufferObjectRelease(O3GLBufferObject* o) {
+void O3GLBufferObjRelease(O3GLBufferObj* o) {
 	o->references--;
 	if (!o->references) {
 		glDeleteBuffersARB(1, &(o->id));
@@ -90,7 +90,7 @@ inline void prepareForUseP(O3GPUData* self) {
 }
 
 inline void willMutateP(O3GPUData* self) {
-	self->mBuffer = O3GLBufferObjectPrepareForChanges(self->mBuffer, NULL);
+	self->mBuffer = O3GLBufferObjPrepareForChanges(self->mBuffer, NULL);
 }
 
 /************************************/ #pragma mark Init /************************************/ 
@@ -105,7 +105,7 @@ inline void willMutateP(O3GPUData* self) {
 ///This function uploads data asynchronously if %fwd is YES (ownership is transfered to the O3GPUData)
 - (O3GPUData*)initWithBytesNoCopy:(void*)bytes length:(UIntP)len freeWhenDone:(BOOL)fwd hint:(GLenum)usageHint {
 	O3SuperInitOrDie();
-	mBuffer = O3GLBufferObjectNew();
+	mBuffer = O3GLBufferObjNew();
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, mBuffer->id);
 	mLength = len;
 	glBufferDataARB(GL_ARRAY_BUFFER_ARB, len, bytes, usageHint);
@@ -121,14 +121,14 @@ inline void willMutateP(O3GPUData* self) {
 	UIntP olen = [other length];
 	if (![other isGPUData]) return [self initWithBytes:[other bytes] length:olen];
 	O3SuperInitOrDie();
-	mBuffer = O3GLBufferObjectCopy(((O3GPUData*)other)->mBuffer);
+	mBuffer = O3GLBufferObjCopy(((O3GPUData*)other)->mBuffer);
 	mLength = olen;
 	return self;
 }
 
 - (O3GPUData*)initWithReader:(O3BufferedReader*)r length:(UIntP)len hint:(GLenum)usageHint {
 	O3SuperInitOrDie();
-	mBuffer = O3GLBufferObjectNew();
+	mBuffer = O3GLBufferObjNew();
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, mBuffer->id);
 	glBufferDataARB(GL_ARRAY_BUFFER_ARB, len, NULL, usageHint);
 	void* b = glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY);
@@ -140,14 +140,14 @@ inline void willMutateP(O3GPUData* self) {
 
 - (O3GPUData*)initWithCapacity:(UIntP)cap hint:(GLenum)hint {
 	O3SuperInitOrDie();
-	mBuffer = O3GLBufferObjectNew();
+	mBuffer = O3GLBufferObjNew();
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, mBuffer->id);
 	glBufferDataARB(GL_ARRAY_BUFFER_ARB, cap, NULL, hint);
 	return self;	
 }
 
 - (void)dealloc {
-	O3GLBufferObjectRelease(mBuffer);
+	O3GLBufferObjRelease(mBuffer);
 	O3SuperDealloc();
 }
 
@@ -164,8 +164,8 @@ inline void willMutateP(O3GPUData* self) {
 	}
 	UIntP inc = nlen-cap;
 	UIntP ncap = nlen+(mCapacityOverruns++)*inc;
-	O3GLBufferObject* nbuf = O3GLBufferObjectDuplicate(mBuffer, NULL, ncap-cap);
-	O3GLBufferObjectRelease(mBuffer);
+	O3GLBufferObj* nbuf = O3GLBufferObjDuplicate(mBuffer, NULL, ncap-cap);
+	O3GLBufferObjRelease(mBuffer);
 	mBuffer = nbuf;
 	mLength = nlen;
 }

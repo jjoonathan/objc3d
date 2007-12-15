@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3Box.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -149,3 +150,4 @@ void O3Box_T::FixCorners() {
 		if(MyMin[i]>MyMax[i]) O3swap(MyMin[i], MyMax[i]);
 	}
 }
+#endif /*defined(__cplusplus)*/

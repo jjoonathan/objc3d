@@ -1,4 +1,5 @@
 #pragma once
+#ifdef __cplusplus
 /**
  *  @file O3Vector.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -6,56 +7,96 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+#include <ctype.h>
 #include "O3Functions.h"
 using namespace ObjC3D::Math;
 
 /*******************************************************************/ #pragma mark DEPRICATED /*******************************************************************/
 O3Vec_TT
-TYPE O3Vec_T::Distance(const O3Vec_T &v) {
-	O3Vec_T difference = *this - v;
+TYPE O3Vec_T::Distance(const O3Vec_T &vec) {
+	O3Vec_T difference = *this - vec;
 	return difference.Length();
 }
 
 O3Vec_TT
-TYPE O3Vec_T::DistanceSquared(const O3Vec_T &v) {
-	O3Vec_T difference = *this - v;
+TYPE O3Vec_T::DistanceSquared(const O3Vec_T &vec) {
+	O3Vec_T difference = *this - vec;
 	return difference.LengthSquared();	
 }
 
 /*******************************************************************/ #pragma mark Setters /*******************************************************************/
+///Leniantly interperets objc encodings: don't pass it a value that isn't an array of some primitive type or it'll barf
+O3Vec_TT O3Vec_T& O3Vec_T::SetValue(NSValue* val) {
+	if (!val) return Set(0);
+	const char* type = [val objCType];
+	const char* origtype = type;
+	while (*type && *type!='[') type++;
+	O3Assert(*type, @"Could not find an opening bracket indicating a vector type in %@", val);
+	if (!type) return Set(0);
+	type++;
+	int len = atoi(type);
+	while (isdigit(*type)) type++;
+	char octype = *type; type++;
+	O3Assert(*type==']', @"Missing end brace in objCType of val %@. Must be a type like ...[%%i%%c]...", val);
+	unsigned int bsize; NSGetSizeAndAlignment(origtype, &bsize, nil);
+	void* buf = malloc(len*bsize);
+	[val getValue:buf];
+	#define USE_ENC_TYPE(t, enct) case enct: for (UIntP i=0; i<NUMBER; i++) operator[](i) = ((t*)buf)[i];	break;
+	switch (octype) {
+		USE_ENC_TYPE(float, 'f');
+		USE_ENC_TYPE(double, 'd');
+		USE_ENC_TYPE(char, 'c');
+		USE_ENC_TYPE(unsigned char, 'C');
+		USE_ENC_TYPE(short, 's');
+		USE_ENC_TYPE(unsigned short, 'S');
+		USE_ENC_TYPE(int, 'i');
+		USE_ENC_TYPE(unsigned int, 'I');
+		USE_ENC_TYPE(long, 'l');
+		USE_ENC_TYPE(unsigned long, 'L');
+		USE_ENC_TYPE(long long, 'q');
+		USE_ENC_TYPE(unsigned long long, 'Q');
+		default:
+		O3Assert(false,@"Undefined type for O3Vec_T::Set(NSValue* val) (octype=%c)",octype);
+		Set(0);
+	}
+	#undef USE_ENC_TYPE
+	free(buf);
+	return *this;
+}
+
 ///Fills all elements of a vector with the value x.
 O3Vec_TT O3Vec_T& O3Vec_T::Set(TYPE x) {
-	int i; for (i=0;i<NUMBER;i++) Values[i]=x;
+	int i; for (i=0;i<NUMBER;i++) v[i]=x;
 	return *this;
 }
 
 ///Zero fills any elements not specified. You cannot specify more elements than are in a vector.
 O3Vec_TT O3Vec_T& O3Vec_T::Set(TYPE x, TYPE y) {
 	O3CompileAssert(NUMBER>=2, "Must have 2 or more dimensions to set a x and a y");
-	Values[0]=x; 
-	Values[1]=y; 
-	int i; for (i=2;i<NUMBER;i++) Values[i]=0;
+	v[0]=x; 
+	v[1]=y; 
+	int i; for (i=2;i<NUMBER;i++) v[i]=0;
 	return *this;
 }
 
 ///Zero fills any elements not specified. You cannot specify more elements than are in a vector.
 O3Vec_TT O3Vec_T& O3Vec_T::Set(TYPE x, TYPE y, TYPE z) {
 	O3CompileAssert(NUMBER>=3, "Must have 3 or more dimensions to set a x, y, and z");
-	Values[0]=x; 
-	Values[1]=y; 
-	Values[2]=z;
-	int i; for (i=3;i<NUMBER;i++) Values[i]=0;
+	v[0]=x; 
+	v[1]=y; 
+	v[2]=z;
+	int i; for (i=3;i<NUMBER;i++) v[i]=0;
 	return *this;
 }
 
 ///Zero fills any elements not specified. You cannot specify more elements than are in a vector.
 O3Vec_TT O3Vec_T& O3Vec_T::Set(TYPE x, TYPE y, TYPE z, TYPE w) {
 	O3CompileAssert(NUMBER>=4, "Must have 4 or more dimensions to set a x, y, z, and w");
-	Values[0]=x; 
-	Values[1]=y; 
-	Values[2]=z; 
-	Values[3]=w; 
-	int i; for (i=4;i<NUMBER;i++) Values[i]=0;
+	v[0]=x; 
+	v[1]=y; 
+	v[2]=z; 
+	v[3]=w; 
+	int i; for (i=4;i<NUMBER;i++) v[i]=0;
 	return *this;
 }
 
@@ -64,17 +105,17 @@ O3Vec_TT template <typename TYPE2>
 O3Vec_T& O3Vec_T::Set(const TYPE2 *array, unsigned arraylen) {
 	int i;
 	int j = O3Min(arraylen, NUMBER);
-	for (i=0;i<j;i++) Values[i] = array[i];
-	for (i=j;i<NUMBER;i++) Values[i] = 0;
+	for (i=0;i<j;i++) v[i] = array[i];
+	for (i=j;i<NUMBER;i++) v[i] = 0;
 	return *this;
 }
 
-///Sets the receiver's elements to the values of \e v's elements, filling in 0 anywhere where v doesn't have a corresponding element
+///Sets the receiver's elements to the values of \e vec's elements, filling in 0 anywhere where vec doesn't have a corresponding element
 O3Vec_TT
 template <typename TYPE2, int SIZE2>
-O3Vec_T& O3Vec_T::Set(const O3Vec<TYPE2, SIZE2> &v) {
-	int i; for (i=0;i<SIZE2;i++) Values[i] = v[i];
-	for (; i<NUMBER;i++)Values[i] = 0;
+O3Vec_T& O3Vec_T::Set(const O3Vec<TYPE2, SIZE2> &vec) {
+	int i; for (i=0;i<SIZE2;i++) v[i] = vec[i];
+	for (; i<NUMBER;i++)v[i] = 0;
 	return *this;
 }
 
@@ -83,7 +124,7 @@ O3Vec_TT
 TYPE O3Vec_T::Length() const {
 	TYPE sum = 0;
 	int i; for (i=0;i<NUMBER;i++) {
-		TYPE value = Values[i];
+		TYPE value = v[i];
 		sum += value*value;
 	}
 	return sqrt(sum);
@@ -93,7 +134,7 @@ O3Vec_TT
 TYPE O3Vec_T::LengthSquared() const {
 	TYPE sum = 0;
 	int i; for (i=0;i<NUMBER;i++) {
-		TYPE value = Values[i];
+		TYPE value = v[i];
 		sum += value*value;
 	}
 	return sum;
@@ -126,15 +167,15 @@ bool O3Vec_T::IsZero(TYPE tolerance) const {
 }
 
 O3Vec_TT
-bool O3Vec_T::IsEqualTo(const O3Vec_T& v, TYPE tolerance = O3Epsilon(TYPE)) const {
+bool O3Vec_T::IsEqualTo(const O3Vec_T& vec, TYPE tolerance = O3Epsilon(TYPE)) const {
 	id self = nil; O3Optimizable();
-	TYPE lengthsq = (*this-v).LengthSquared();
+	TYPE lengthsq = (*this-vec).LengthSquared();
 	return O3Equals(lengthsq, 0., tolerance*2); //Not Strictly Correct
 }
 
 O3Vec_TT
-double O3Vec_T::Angle(const O3Vec_T& v) const {
-	double cos_a = ((*this)|v) / sqrt(Length()*v.Length());
+double O3Vec_T::Angle(const O3Vec_T& vec) const {
+	double cos_a = ((*this)|vec) / sqrt(Length()*vec.Length());
 	return abs(acos(cos_a));
 }
 
@@ -142,66 +183,66 @@ double O3Vec_T::Angle(const O3Vec_T& v) const {
 O3Vec_TT
 TYPE &O3Vec_T::operator[](int index) {
 	O3Assert(index<NUMBER, @"Attempt to access index %i of vector with size %i", index, NUMBER);
-	return Values[index];
+	return v[index];
 }
 
 O3Vec_TT
 const TYPE &O3Vec_T::operator[](int index) const {
 	O3Assert(index<NUMBER, @"Attempt to access index %i of vector with size %i", index, NUMBER);
-	return Values[index];
+	return v[index];
 }
 
 /*******************************************************************/ #pragma mark Assignment Operator /*******************************************************************/
 O3Vec_TT
 template <typename TYPE2>
 O3Vec_T& O3Vec_T::operator=(const O3Vec<TYPE2, NUMBER>& v2) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = v2[i];
+	int i; for (i=0;i<NUMBER;i++) v[i] = v2[i];
 	return *this;
 }
 
 /*******************************************************************/ #pragma mark Equality Operators /*******************************************************************/
 O3Vec_TT
-bool  O3Vec_T::operator==(const O3Vec_T& v) const {
-	int i; for (i=0;i<NUMBER;i++) if (Values[i] != v[i]) return false;
+bool  O3Vec_T::operator==(const O3Vec_T& vec) const {
+	int i; for (i=0;i<NUMBER;i++) if (v[i] != vec[i]) return false;
 	return true;
 }
 
 O3Vec_TT
-bool  O3Vec_T::operator!=(const O3Vec_T& v) const {
-	int i; for (i=0;i<NUMBER;i++) if (Values[i] == v[i]) return false;
+bool  O3Vec_T::operator!=(const O3Vec_T& vec) const {
+	int i; for (i=0;i<NUMBER;i++) if (v[i] == vec[i]) return false;
 	return true;
 }
 
 /*******************************************************************/ #pragma mark O3Vec Products /*******************************************************************/
 O3Vec_TT
-TYPE O3Vec_T::operator|(const O3Vec_T &v) const { //Dot product
+TYPE O3Vec_T::operator|(const O3Vec_T &vec) const { //Dot product
 	O3Vec_T
 v2; 	//We do it this way in order to allow the compiler to parallelize the following code
-	int i; for (i=0;i<NUMBER;i++) v2[i] = v[i] * Values[i];
-	TYPE total = 0.0; for (i=0;i<NUMBER;i++) total += Values[i];
+	int i; for (i=0;i<NUMBER;i++) v2[i] = vec[i] * v[i];
+	TYPE total = 0.0; for (i=0;i<NUMBER;i++) total += v[i];
 	return total;
 }
 
 
 O3Vec_TT
-O3Vec_T O3Vec_T::operator^(const O3Vec_T &v) const { //Cross product
+O3Vec_T O3Vec_T::operator^(const O3Vec_T &vec) const { //Cross product
 	O3CompileAssert(NUMBER==3, "Cannot cross non-3D vectors. Fix if you need to.");
 	int X=0, Y=1, Z=2;
-	return O3Vec_T(	Values[Y] * v[Z] - Values[Z] * v[Y],
-									Values[Z] * v[X] - Values[X] * v[Z],
-									Values[X] * v[Y] - Values[Y] * v[X]  );
+	return O3Vec_T(	v[Y] * vec[Z] - v[Z] * vec[Y],
+									v[Z] * vec[X] - v[X] * vec[Z],
+									v[X] * vec[Y] - v[Y] * vec[X]  );
 }
 
 /*******************************************************************/ #pragma mark O3Vec In-Place Products /*******************************************************************/
 O3Vec_TT
-O3Vec_T& O3Vec_T::operator^=(const O3Vec_T &v) { //Cross product
+O3Vec_T& O3Vec_T::operator^=(const O3Vec_T &vec) { //Cross product
 	O3CompileAssert(NUMBER==3, "Cannot cross non-3D vectors. Fix if you need to.");
-	TYPE NewX = Values[Y] * v[Z] - Values[Z] * v[Y];
-	TYPE NewY = Values[Z] * v[X] - Values[X] * v[Z];
-	TYPE NewZ = Values[X] * v[Y] - Values[Y] * v[X];
-	Values[X] = NewX;
-	Values[Y] = NewY;
-	Values[Z] = NewZ;
+	TYPE NewX = v[Y] * vec[Z] - v[Z] * vec[Y];
+	TYPE NewY = v[Z] * vec[X] - v[X] * vec[Z];
+	TYPE NewZ = v[X] * vec[Y] - v[Y] * vec[X];
+	v[X] = NewX;
+	v[Y] = NewY;
+	v[Z] = NewZ;
 }
 
 /*******************************************************************/ #pragma mark O3Vec Unary Operators /*******************************************************************/
@@ -209,7 +250,7 @@ O3Vec_TT
 O3Vec_T O3Vec_T::operator+() const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = abs(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = abs(v[i]);
 	return to_return;
 }
 
@@ -217,7 +258,7 @@ O3Vec_TT
 O3Vec_T O3Vec_T::operator-() const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = -Values[i];
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = -v[i];
 	return to_return;
 }
 
@@ -226,7 +267,7 @@ O3Vec_TT
 O3Vec_T O3Vec_T::operator+(const TYPE scalar) const {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] + scalar; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] + scalar; 
 	return to_return;
 }
 
@@ -234,7 +275,7 @@ O3Vec_TT
 O3Vec_T O3Vec_T::operator-(const TYPE scalar) const {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] - scalar; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] - scalar; 
 	return to_return;
 }
 
@@ -242,7 +283,7 @@ O3Vec_TT
 O3Vec_T O3Vec_T::operator*(const TYPE scalar) const {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] * scalar; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] * scalar; 
 	return to_return;
 }
 
@@ -251,173 +292,173 @@ O3Vec_T O3Vec_T::operator/(const TYPE scalar) const {
 	O3Vec_T
 to_return; 
 	TYPE reciprocal = O3recip(scalar);
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] * reciprocal; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] * reciprocal; 
 	return to_return;
 }
 
 /*******************************************************************/ #pragma mark O3Vec - Scaler In-Place Operators /*******************************************************************/
 O3Vec_TT
 O3Vec_T& O3Vec_T::operator+=(const TYPE scalar) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] += scalar; 
+	int i; for (i=0;i<NUMBER;i++) v[i] += scalar; 
 	return *this;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::operator-=(const TYPE scalar) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] -= scalar; 
+	int i; for (i=0;i<NUMBER;i++) v[i] -= scalar; 
 	return *this;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::operator*=(const TYPE scalar) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] *= scalar; 
+	int i; for (i=0;i<NUMBER;i++) v[i] *= scalar; 
 	return *this;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::operator/=(const TYPE scalar) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] /= scalar; 
+	int i; for (i=0;i<NUMBER;i++) v[i] /= scalar; 
 	return *this;
 }
 
 /*******************************************************************/ #pragma mark Scalar - O3Vec Operators /*******************************************************************/
 O3Vec_TT
-O3Vec_T operator+(const TYPE scalar, const O3Vec_T& v) {
+O3Vec_T operator+(const TYPE scalar, const O3Vec_T& vec) {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] + scalar; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = vec[i] + scalar; 
 	return to_return;
 }
 
 O3Vec_TT
-O3Vec_T operator-(const TYPE scalar, const O3Vec_T& v) {
+O3Vec_T operator-(const TYPE scalar, const O3Vec_T& vec) {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = scalar - v[i]; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = scalar - vec[i]; 
 	return to_return;
 }
 
 O3Vec_TT
-O3Vec_T operator*(const TYPE scalar, const O3Vec_T& v) {
+O3Vec_T operator*(const TYPE scalar, const O3Vec_T& vec) {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = scalar * v[i]; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = scalar * vec[i]; 
 	return to_return;
 }
 
 O3Vec_TT
-O3Vec_T operator/(const TYPE scalar, const O3Vec_T& v) {
+O3Vec_T operator/(const TYPE scalar, const O3Vec_T& vec) {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = scalar / v[i]; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = scalar / vec[i]; 
 	return to_return;
 }
 
 /*******************************************************************/ #pragma mark O3Vec - O3Vec Operators /*******************************************************************/
 O3Vec_TT
-O3Vec_T O3Vec_T::operator+(const O3Vec_T& v) const {
+O3Vec_T O3Vec_T::operator+(const O3Vec_T& vec) const {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] + v[i]; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] + vec[i]; 
 	return to_return;
 }
 
 O3Vec_TT
-O3Vec_T O3Vec_T::operator-(const O3Vec_T& v) const {
+O3Vec_T O3Vec_T::operator-(const O3Vec_T& vec) const {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] - v[i]; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] - vec[i]; 
 	return to_return;
 }
 
 O3Vec_TT
-O3Vec_T O3Vec_T::operator*(const O3Vec_T& v) const {
+O3Vec_T O3Vec_T::operator*(const O3Vec_T& vec) const {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] * v[i]; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] * vec[i]; 
 	return to_return;
 }
 
 O3Vec_TT
-O3Vec_T O3Vec_T::operator/(const O3Vec_T& v) const {
+O3Vec_T O3Vec_T::operator/(const O3Vec_T& vec) const {
 	O3Vec_T
 to_return; 
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = Values[i] / v[i]; 
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = v[i] / vec[i]; 
 	return to_return;
 }
 
 /*******************************************************************/ #pragma mark O3Vec - O3Vec In-Place Operators /*******************************************************************/
 O3Vec_TT
-O3Vec_T& O3Vec_T::operator+=(const O3Vec_T& v) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] += v[i]; 
+O3Vec_T& O3Vec_T::operator+=(const O3Vec_T& vec) {
+	int i; for (i=0;i<NUMBER;i++) v[i] += vec[i]; 
 	return *this;
 }
 
 O3Vec_TT
-O3Vec_T& O3Vec_T::operator-=(const O3Vec_T& v) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] -= v[i]; 
+O3Vec_T& O3Vec_T::operator-=(const O3Vec_T& vec) {
+	int i; for (i=0;i<NUMBER;i++) v[i] -= vec[i]; 
 	return *this;
 }
 
 O3Vec_TT
-O3Vec_T& O3Vec_T::operator*=(const O3Vec_T& v) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] *= v[i]; 
+O3Vec_T& O3Vec_T::operator*=(const O3Vec_T& vec) {
+	int i; for (i=0;i<NUMBER;i++) v[i] *= vec[i]; 
 	return *this;
 }
 
 O3Vec_TT
-O3Vec_T& O3Vec_T::operator/=(const O3Vec_T& v) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] /= v[i]; 
+O3Vec_T& O3Vec_T::operator/=(const O3Vec_T& vec) {
+	int i; for (i=0;i<NUMBER;i++) v[i] /= vec[i]; 
 	return *this;
 }
 
 /*******************************************************************/ #pragma mark Accessors /*******************************************************************/
 O3Vec_TT
 void O3Vec_T::Get(TYPE* x, TYPE* y) const {
-	if (x) *x = Values[0];
-	if (y) *y = Values[1];
+	if (x) *x = v[0];
+	if (y) *y = v[1];
 }	
 
 O3Vec_TT
 void O3Vec_T::Get(TYPE* x, TYPE* y, TYPE* z) const {
-	if (x) *x = Values[0];
-	if (y) *y = Values[1];
-	if (z) *z = Values[2];
+	if (x) *x = v[0];
+	if (y) *y = v[1];
+	if (z) *z = v[2];
 }
 
 O3Vec_TT
 void O3Vec_T::Get(TYPE* x, TYPE* y, TYPE* z, TYPE* w) const {
-	if (x) *x = Values[0];
-	if (y) *y = Values[1];
-	if (z) *z = Values[2];
-	if (w) *w = Values[3];
+	if (x) *x = v[0];
+	if (y) *y = v[1];
+	if (z) *z = v[2];
+	if (w) *w = v[3];
 }
 
 O3Vec_TT
 void O3Vec_T::GetA(TYPE* x, TYPE* y) const {
-	*x = Values[0];
-	*y = Values[1];
+	*x = v[0];
+	*y = v[1];
 }	
 
 O3Vec_TT
 void O3Vec_T::GetA(TYPE* x, TYPE* y, TYPE* z) const {
-	*x = Values[0];
-	*y = Values[1];
-	*z = Values[2];
+	*x = v[0];
+	*y = v[1];
+	*z = v[2];
 }
 
 O3Vec_TT
 void O3Vec_T::GetA(TYPE* x, TYPE* y, TYPE* z, TYPE* w) const {
-	*x = Values[0];
-	*y = Values[1];
-	*z = Values[2];
-	*w = Values[3];
+	*x = v[0];
+	*y = v[1];
+	*z = v[2];
+	*w = v[3];
 }
 
 /*******************************************************************/ #pragma mark Methods and Method-accessors /*******************************************************************/
 O3Vec_TT
 O3Vec_T& O3Vec_T::Zero() {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = 0.;
+	int i; for (i=0;i<NUMBER;i++) v[i] = 0.;
 	return *this;
 }
 
@@ -425,7 +466,7 @@ O3Vec_TT
 O3Vec_T& O3Vec_T::Normalize() {
 	TYPE len = Length();
 	TYPE rlength = O3recip(len);
-	int i; for (i=0;i<NUMBER;i++) Values[i] = rlength*(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) v[i] = rlength*(v[i]);
 	return *this;
 }
 
@@ -434,13 +475,13 @@ O3Vec_T O3Vec_T::GetNormalized() const {
 	O3Vec_T
 to_return;
 	TYPE rlength = O3recip(Length());
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = rlength*(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = rlength*(v[i]);
 	return to_return;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::Floor() {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = floor(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) v[i] = floor(v[i]);
 	return *this;
 }
 
@@ -448,13 +489,13 @@ O3Vec_TT
 O3Vec_T O3Vec_T::GetFloored() const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = floor(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = floor(v[i]);
 	return to_return;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::Ceil() {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = ceil(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) v[i] = ceil(v[i]);
 	return *this;
 }
 
@@ -462,13 +503,13 @@ O3Vec_TT
 O3Vec_T O3Vec_T::GetCeiled() const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = ceil(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = ceil(v[i]);
 	return to_return;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::Round() {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = round(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) v[i] = round(v[i]);
 	return *this;
 }
 
@@ -476,13 +517,13 @@ O3Vec_TT
 O3Vec_T O3Vec_T::GetRounded() const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = round(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = round(v[i]);
 	return to_return;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::Clamp(TYPE min, TYPE max) {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = clamp(Values[i], min, max);
+	int i; for (i=0;i<NUMBER;i++) v[i] = clamp(v[i], min, max);
 	return *this;
 }
 
@@ -490,13 +531,13 @@ O3Vec_TT
 O3Vec_T O3Vec_T::GetClamped(TYPE min, TYPE max) const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = clamp(Values[i], min, max);
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = clamp(v[i], min, max);
 	return to_return;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::Abs() {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = abs(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) v[i] = abs(v[i]);
 	return *this;
 }
 
@@ -504,13 +545,13 @@ O3Vec_TT
 O3Vec_T O3Vec_T::GetAbs() const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = abs(Values[i]);
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = abs(v[i]);
 	return to_return;
 }
 
 O3Vec_TT
 O3Vec_T& O3Vec_T::Negate() {
-	int i; for (i=0;i<NUMBER;i++) Values[i] = -Values[i];
+	int i; for (i=0;i<NUMBER;i++) v[i] = -v[i];
 	return *this;
 }
 
@@ -518,7 +559,7 @@ O3Vec_TT
 O3Vec_T O3Vec_T::GetNegated() const {
 	O3Vec_T
 to_return;
-	int i; for (i=0;i<NUMBER;i++) to_return[i] = -Values[i];
+	int i; for (i=0;i<NUMBER;i++) to_return[i] = -v[i];
 	return to_return;
 }
 
@@ -534,3 +575,4 @@ std::string O3Vec_T::Description() const {
 	to_return<<"}";
 	return to_return.str();
 }
+#endif /*defined(__cplusplus)*/

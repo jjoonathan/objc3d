@@ -6,7 +6,6 @@
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #import "O3Locateable.h"
-#import "O3Value.h"
 #import <iostream>
 using namespace std;
 using namespace ObjC3D::Math;
@@ -31,19 +30,18 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 
 - (O3Locateable*)initWithCoder:(NSCoder*)coder {
 	O3SuperInitOrDie();
-	O3Vec3d rot([[coder decodeObjectForKey:@"rotation"] vectorValue]);
+	O3Vec3d rot([coder decodeObjectForKey:@"rotation"]);
 	mRotation.Set(rot.X(), rot.Y(), rot.Z());
-	mTranslation.Set([[coder decodeObjectForKey:@"translation"] vectorValue]);
-	mScale.Set([[coder decodeObjectForKey:@"scale"] vectorValue]);
+ 	mScale.SetValue([coder decodeObjectForKey:@"scale"]);
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
 	angle roll, pitch, yaw;
 	mRotation.GetEulerAngles(&roll, &pitch, &yaw);
-	[coder encodeObject:[O3Value valueWithVector:O3Vec3d(roll,pitch,yaw)] forKey:@"rotation"];
-	[coder encodeObject:[O3Value valueWithVector:mTranslation] forKey:@"translation"];
-	[coder encodeObject:[O3Value valueWithVector:mScale] forKey:@"scale"];
+	[coder encodeObject:O3Vec3d(roll,pitch,yaw).Value() forKey:@"rotation"];
+	[coder encodeObject:mTranslation.Value() forKey:@"translation"];
+	[coder encodeObject:mScale.Value() forKey:@"scale"];
 }
 
 - (BOOL)isEqual:(O3Locateable*)other {

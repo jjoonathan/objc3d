@@ -7,7 +7,6 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-class O3DynamicMatrix;
 
 #define O3Mat_TT	template <typename TYPE, int ROWS, int COLUMNS>
 #define O3Mat_T	O3Mat<TYPE, ROWS, COLUMNS>
@@ -27,10 +26,8 @@ O3Mat_TT class O3Mat {
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
 	O3Mat_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);};		///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_TTT2 O3Mat(const O3Mat_T2& other_matrix) {Set(other_matrix);};				///<Construct a matrix with the contents of other_matrix
-	O3Mat_TTT2 O3Mat(const O3DynamicMatrix& dynm) {Set(dynm);};
 	
   public: //Setters
-	O3Mat_T& Set(const O3DynamicMatrix& dynm);	///<Set a matrix to the values represented by a DynamicMatrix (mostly for the ObjC interface)
 	O3Mat_TTT2 O3Mat_T& Set(const TYPE2* array, bool row_major=false, unsigned arows=ROWS, unsigned acols=COLUMNS);	///<Fills the receiver with the elements in array, specifying weather array is row or column major (or not).
 	O3Mat_TTT2 O3Mat_T& Set(const O3Mat_T2& other_matrix);		///<Fills the receiver with the contents of other_matrix.
 	
@@ -84,8 +81,6 @@ O3Mat_TT class O3Mat {
 	const TYPE* Data(BOOL* row_major=NULL) const;		///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED.
 	
   public: //Type conversion
-	//Defined in O3DynamicMatrix.hpp
-	operator const O3DynamicMatrix () const; ///<Automatically convert the receiver to an O3DynamicMatrix if appropriate.
 	operator const TYPE* () const {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
 	operator TYPE* () {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
 	

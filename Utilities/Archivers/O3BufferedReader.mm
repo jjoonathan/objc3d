@@ -5,8 +5,6 @@
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
 #include "O3BufferedReader.h"
-#include "O3Value.h"
-#include "O3ValueArray.h"
 #include <string>
 
 /************************************/ #pragma mark Init and Destruction /************************************/
@@ -105,8 +103,8 @@ id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone
 		case O3PkgTypeTrue:			to_return = [[NSNumber allocWithZone:z] initWithBool:YES];                                               break;
 		case O3PkgTypePositiveInt:	to_return = [[NSNumber allocWithZone:z] initWithUnsignedLongLong:ReadBytesAsUInt64(size)];               break;
 		case O3PkgTypeNegativeInt:	to_return = [[NSNumber allocWithZone:z] initWithLongLong:-(Int64)ReadBytesAsUInt64(size)];               break;
-		case O3PkgTypeValue:		to_return = [[O3Value allocWithZone:z] initByReadingFrom:this];                                      break;
-		case O3PkgTypeValueArray:   to_return = [[[O3ValueArray allocWithZone:z] initWithPortableBufferReader:this] autorelease];        break;
+		//case O3PkgTypeValue:		to_return = [[O3Value allocWithZone:z] initByReadingFrom:this];                                      break;
+		//case O3PkgTypeValueArray:   to_return = [[[O3ValueArray allocWithZone:z] initWithPortableBufferReader:this] autorelease];        break;
 		//case O3PkgType01Fixed:		to_return = [[NSNumber allocWithZone:z] initWithDouble:ReadBytesAsUInt64(size)/(double)(1<<(8*size)-1)]; break;
 		case O3PkgTypeRawData:      to_return = ReadData(size);                                                              break;
 		case O3PkgTypeFloat:{	 	

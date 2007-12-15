@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3QuadraticEquation.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -30,3 +31,4 @@ O3QuadraticEquation<TYPE>& O3QuadraticEquation<TYPE>::Set(TYPE high_x_intercept,
 	SetC(constant);
 	return *this;
 }
+#endif /*defined(__cplusplus)*/

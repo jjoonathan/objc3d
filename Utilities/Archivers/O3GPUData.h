@@ -7,13 +7,13 @@
 //
 #import "O3BufferedReader.h"
 
-struct O3GLBufferObject {
+typedef struct {
 	GLuint id;
 	UInt32 references;
-};
+} O3GLBufferObj;
 
 @interface O3GPUData : NSMutableData <NSCopying, NSCoding> {
-	O3GLBufferObject* mBuffer;
+	O3GLBufferObj* mBuffer;
 	UIntP mLength; ///<May differ from the capacity of mBuffer
 	int mCapacityOverruns; ///<For hinting how much to increase capacity when the length is overrun
 }

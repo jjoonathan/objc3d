@@ -1,3 +1,4 @@
+#ifdef __cplusplus
 /**
  *  @file O3Sphere.hpp
  *  @license MIT License (see LICENSE.txt)
@@ -174,3 +175,4 @@ O3Sphere_TT
 O3Sphere_T  O3Sphere_T::GetExpanded(const O3Box_T& O3Box) {
 	return GetExpanded(O3Box.GetCorners());
 }
+#endif /*defined(__cplusplus)*/
