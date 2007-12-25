@@ -19,17 +19,19 @@
 */
 O3Mat_TT class O3Mat {	
   public:
-	TYPE Values[COLUMNS*ROWS]; //DynamicMatrix depends on this. Do not change the name or the type without first modifying DynamicMatrix.
+	TYPE v[COLUMNS*ROWS]; //DynamicMatrix depends on this. Do not change the name or the type without first modifying DynamicMatrix.
 
   public: //Constructors
 	static O3Mat_T  GetZero();
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
 	O3Mat_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);};		///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_TTT2 O3Mat(const O3Mat_T2& other_matrix) {Set(other_matrix);};				///<Construct a matrix with the contents of other_matrix
+	O3Mat(NSValue* v) {SetValue(v);}
 	
   public: //Setters
 	O3Mat_TTT2 O3Mat_T& Set(const TYPE2* array, bool row_major=false, unsigned arows=ROWS, unsigned acols=COLUMNS);	///<Fills the receiver with the elements in array, specifying weather array is row or column major (or not).
 	O3Mat_TTT2 O3Mat_T& Set(const O3Mat_T2& other_matrix);		///<Fills the receiver with the contents of other_matrix.
+	O3Mat_T& SetValue(NSValue* val);
 	
   public: //RowAccessor helper class
 	class RowAccessor { ///<RowAccessor is a helper class which allows matricies to be accessed like mat[i][j]
@@ -81,8 +83,9 @@ O3Mat_TT class O3Mat {
 	const TYPE* Data(BOOL* row_major=NULL) const;		///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED.
 	
   public: //Type conversion
-	operator const TYPE* () const {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
-	operator TYPE* () {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
+	operator const TYPE* () const {return v;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
+	operator TYPE* () {return v;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
+	NSValue* Value() const {return [NSValue valueWithBytes:this objCType:@encode(O3Mat_T)];}
 	
   public: //Interface
 	std::string Description() const; ///<Returns a string describing the receiver
@@ -112,11 +115,14 @@ template <typename TYPE, typename TYPE2, int ROWS, int INTERNAL, int COLUMNS>	O3
 template <typename TYPE, typename TYPE2, int SIZE> O3Mat<TYPE, SIZE, SIZE>& operator*=(O3Mat<TYPE, SIZE, SIZE> m2, const O3Mat<TYPE2, SIZE-1, SIZE-1> m1);
 O3Mat_TT std::ostream& operator<<(std::ostream &stream, const O3Mat_T &m);
 
-/************************************/ #pragma mark Convenience Typedefs /************************************/
-typedef O3Mat<real, 3, 3> O3Mat3x3r;
-typedef O3Mat<double, 3, 3> O3Mat3x3d;
-typedef O3Mat<float, 3, 3> O3Mat3x3f;
-typedef O3Mat<real, 4, 4> O3Mat4x4r;
-typedef O3Mat<double, 4, 4> O3Mat4x4d;
-typedef O3Mat<float, 4, 4> O3Mat4x4f;
+#define O3MatDefType(TYPE,ROWS,COLS, NAME) typedef O3Mat<TYPE,ROWS,COLS> NAME
+#else /*!defined(__cplusplus)*/
+#define O3MatDefType(TYPE,ROWS,COLS, NAME) struct NAME {TYPE v[ROWS*COLS];};
 #endif /*defined(__cplusplus)*/
+
+O3MatDefType(real,3,3,O3Mat3x3r);
+O3MatDefType(double,3,3,O3Mat3x3d);
+O3MatDefType(float,3,3,O3Mat3x3f);
+O3MatDefType(real,4,4,O3Mat4x4r);
+O3MatDefType(double,4,4,O3Mat4x4d);
+O3MatDefType(float,4,4,O3Mat4x4f);

@@ -10,7 +10,6 @@
 #import "O3BufferedReader.h"
 #import "O3EncodingInterpretation.h"
 #import "O3NonlinearWriter.h"
-#import "O3Value.h"
 #import "O3KeyedArchiver.h"
 #import "O3KeyedUnarchiver.h"
 #import "O3Camera.h"
@@ -386,10 +385,10 @@ using namespace ObjC3D;
 	typedef struct {int a; char b;} test_t;
 	test_t test; *(UInt64*)&test = 0ull; //NSValue bug radar://5470798
 	test.a = 1; test.b = 2;
-	[md setObject:[O3Value valueWithVector:O3Vec3d(1,2,3)] forKey:@"vector"];
+	[md setObject:O3Vec3d(1,2,3).Value() forKey:@"vector"];
 	[md setObject:[NSNumber numberWithUnsignedChar:0xAA] forKey:@"Some character"];
 	[md setObject:[NSMutableData dataWithLength:500] forKey:@"semirandom data"];
-	[md setObject:[O3Value valueWithMatrix:O3Mat4x4r()] forKey:@"vector2"];
+	[md setObject:O3Mat4x4r().Value() forKey:@"vector2"];
 	[md setObject:[@"/System/Library/Extensions/ACard62xxM.kext/Contents/Resources/English.lproj/InfoPlist.strings" pathComponents] forKey:@"Path array"];
 	[md setObject:@"Forty Two!" forKey:@"The Answer"];
 	[md setObject:[NSNumber numberWithInt:42] forKey:@"The Answer Translated"];
@@ -436,41 +435,6 @@ using namespace ObjC3D;
 	NSData* dict2data = [O3KeyedArchiver archivedDataWithRootObject:dict2];
 	NSDate* data2dict = [O3KeyedUnarchiver unarchiveObjectWithData:dict2data];
 	STAssertTrue([data2dict isEqual:dict2], @"Archiving a dictionary failed. %@ != %@", dict2, data2dict);
-}
-
-- (void)testArchiverBestCase {
-	UIntP count = 100;
-	NSMutableDictionary* wdict = [[NSMutableDictionary alloc] init];
-	for (UIntP i=0; i<count; i++) {
-		NSString* k = [NSString stringWithFormat:@"%p", i];
-		NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:[O3Value valueWithVector:O3Vec3r(1,2,3)],@"Location",[O3Value valueWithVector:O3Vec3r(1,2,3)],@"Rotation", [NSNumber numberWithInt:100], @"Awesomeness", nil];
-		[wdict setObject:dict forKey:k];
-	}
-	
-	NSMutableData* d1 = [NSMutableData data];
-	NSAutoreleasePool *pool = [NSAutoreleasePool new];
-	O3KeyedArchiver* a1 = [[O3KeyedArchiver alloc] initForWritingWithMutableData:d1];
-	[a1 setShouldCompress:NO];
-	[a1 encodeObject:wdict forKey:@""];
-	[a1 finishEncoding];
-	UIntP s1 = [d1 length];	
-	[pool release];
-
-	
-	NSMutableData* d2 = [NSMutableData data];
-	pool = [NSAutoreleasePool new];
-	O3KeyedArchiver* a2 = [[O3KeyedArchiver alloc] initForWritingWithMutableData:d2];
-	[a2 setShouldCompress:YES];
-	[a2 encodeObject:wdict forKey:@""];
-	[a2 finishEncoding];
-	UIntP s2 = [d2 length];
-	[pool release];
-	
-	NSLog(@"Compression winnage for %i objects is %i-%i = %i = %f%%, or %f rather than %f bytes per object.", count, s1, s2, s1-s2, s2*100./s1, (double)s2/count, (double)s1/count);
-	
-	[a1 release];
-	[a2 release];
-	[wdict release];
 }
 
 - (void)testStressO3KeyedArchiver {

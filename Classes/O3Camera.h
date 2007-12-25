@@ -28,10 +28,10 @@ using namespace ObjC3D::Math;
 - (double)farPlaneDistance;  ///<Returns how far away the far plane is
 - (double)nearToFarRatio;    ///<Returns the near-plane to far-plane ratio
 - (double)fovY;				///<Returns the field of view in the Y direction in radians
-#ifdef __cplusplus
 - (O3Mat4x4d)viewMatrix;		///<Returns the view (look-at) matrix
 - (O3Mat4x4d)projectionMatrix; ///<Returns the receiver's projection matrix
 - (O3Mat4x4d)viewProjectionMatrix; ///<Returns the receiver's projection matrix * its view matrix (view then project)
+#ifdef __cplusplus
 - (Space3*)postProjectionSpace; ///<Returns the post projective space (projection transform, superspace is camera space)
 #endif
 

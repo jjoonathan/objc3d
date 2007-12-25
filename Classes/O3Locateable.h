@@ -31,6 +31,7 @@ using namespace ObjC3D::Math;
 #ifdef __cplusplus
 - (Space3*)space;		///<Returns the receiver's space (object space)
 - (Space3*)superspace;	///<Returns the receiver's superspace (space above object space)
+#endif
 - (void)setSuperspaceToThatOfLocateable:(O3Locateable*)locateable;
 
 - (void)rotateBy:(O3Rotation3)relativeRotation;
@@ -50,7 +51,6 @@ using namespace ObjC3D::Math;
 - (void)setMatrixToSpace:(Space3*)targetspace; ///<glLoads the matrix to transform from the receiver's space to targetspace
 
 - (void)debugDrawIntoSpace:(const Space3&)intospace;
-#endif
 @end
 
 typedef O3Locateable<O3Renderable> O3SceneObj;

@@ -221,7 +221,6 @@
 		FCEF50FE0C186FE000B97983 /* O3TestRotate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5BBBC90BD58BF000894533 /* O3TestRotate.mm */; };
 		FCEF50FF0C186FE000B97983 /* O3TestSpace.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5BBBBB0BD58BA800894533 /* O3TestSpace.mm */; };
 		FCEF51000C186FE000B97983 /* O3TestUtilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5BBBB90BD58B7200894533 /* O3TestUtilities.mm */; };
-		FCEF51010C186FE000B97983 /* O3TestValue.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCFB0E780BB4480E00994ADB /* O3TestValue.mm */; };
 		FCF4383F0C20E9DF00263F34 /* O3TestBigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCF4383D0C20E9DF00263F34 /* O3TestBigObject.mm */; };
 		FCF438520C217FE500263F34 /* O3BigObjSubclass.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCF438500C217FE500263F34 /* O3BigObjSubclass.mm */; };
 		FCF438A00C21865800263F34 /* O3NonlinearWriter.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC7DD1E00C1B311A009D36A2 /* O3NonlinearWriter.mm */; };
@@ -584,8 +583,6 @@
 		FCF4383D0C20E9DF00263F34 /* O3TestBigObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestBigObject.mm; sourceTree = "<group>"; };
 		FCF4384F0C217FE500263F34 /* O3BigObjSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3BigObjSubclass.h; sourceTree = "<group>"; };
 		FCF438500C217FE500263F34 /* O3BigObjSubclass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3BigObjSubclass.mm; sourceTree = "<group>"; };
-		FCFB0E770BB4480E00994ADB /* O3TestValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestValue.h; sourceTree = "<group>"; };
-		FCFB0E780BB4480E00994ADB /* O3TestValue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestValue.mm; sourceTree = "<group>"; };
 		FCFB70B50B72DB0B00BB2243 /* O3Space.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Space.h; sourceTree = "<group>"; };
 		FCFB70B60B72DB0B00BB2243 /* O3Space.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Space.cpp; sourceTree = "<group>"; };
 		FCFB70E50B74DD2C00BB2243 /* O3TestMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3TestMatrix.h; path = Math/O3TestMatrix.h; sourceTree = "<group>"; };
@@ -1092,8 +1089,6 @@
 		FC79C1E50B12A11800834C4D /* Math */ = {
 			isa = PBXGroup;
 			children = (
-				FCFB0E770BB4480E00994ADB /* O3TestValue.h */,
-				FCFB0E780BB4480E00994ADB /* O3TestValue.mm */,
 				FCFB70E50B74DD2C00BB2243 /* O3TestMatrix.h */,
 				FC5BBBCD0BD58C0000894533 /* O3TestMatrix.mm */,
 				FC9542870B614FC9009551D2 /* O3TestRotate.h */,
@@ -1362,6 +1357,7 @@
 				FC2C1BB40C123F790084A599 /* Sources */,
 				FC2C1BB20C123F790084A599 /* Headers */,
 				FC2C1BB30C123F790084A599 /* Resources */,
+				FCE0A2770D1CBDD600A800F8 /* Copy in BridgeSupport */,
 				FC2C1BB50C123F790084A599 /* Frameworks */,
 				FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */,
 			);
@@ -1546,7 +1542,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rm -f $PROJECT_DIR/build/Cg.framework\nln -s $PROJECT_DIR/Other/Cg.framework $PROJECT_DIR/build/Cg.framework\n\ngen_bridge_metadata -f $PROJECT_DIR/build/ObjC3D.framework -o $PROJECT_DIR/BridgeSupport/ObjC3D.bridgesupport";
+			shellScript = "rm -f $PROJECT_DIR/build/Cg.framework\nln -s $PROJECT_DIR/Other/Cg.framework $PROJECT_DIR/build/Cg.framework\n\nEXCEP_FILE=$CONFIGURATION_TEMP_DIR/ObjC3D.exceptions\ngen_bridge_metadata -F exceptions-template -f $PROJECT_DIR/build/ObjC3D.framework -o $EXCEP_FILE\nINT_FILE=$CONFIGURATION_TEMP_DIR/ObjC3D_untweaked.bridgesupport\ngen_bridge_metadata -f $PROJECT_DIR/build/ObjC3D.framework -e $EXCEP_FILE -o $INT_FILE\nOUT_FILE=$PROJECT_DIR/BridgeSupport/ObjC3D.bridgesupport\nchmod +x $PROJECT_DIR/cpptouch.rb\n$PROJECT_DIR/cpptouch.rb $INT_FILE > $OUT_FILE";
 		};
 		FC63E32B0CF35BE900325C54 /* Make Cg Embedable */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1561,6 +1557,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "CGF=$PROJECT_DIR/Other/Cg.framework\nAALINK=$CGF/Versions/AA\nrm -f $AALINK\nln -s $CGF/Versions/Current $AALINK\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Cg.framework/Versions/AA/Cg\" $CGF/Versions/AA/Cg\n";
+		};
+		FCE0A2770D1CBDD600A800F8 /* Copy in BridgeSupport */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy in BridgeSupport";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "RESF=$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\nBSF=$RESF/BridgeSupport\nif [ ! -d $BSF ]; then mkdir $BSF; fi\ncp -f $PROJECT_DIR/BridgeSupport/ObjC3D.bridgesupport $BSF\n";
 		};
 		FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1664,7 +1674,6 @@
 				FCEF50FE0C186FE000B97983 /* O3TestRotate.mm in Sources */,
 				FCEF50FF0C186FE000B97983 /* O3TestSpace.mm in Sources */,
 				FCEF51000C186FE000B97983 /* O3TestUtilities.mm in Sources */,
-				FCEF51010C186FE000B97983 /* O3TestValue.mm in Sources */,
 				FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */,
 				FCF4383F0C20E9DF00263F34 /* O3TestBigObject.mm in Sources */,
 				FCF438520C217FE500263F34 /* O3BigObjSubclass.mm in Sources */,

@@ -30,6 +30,7 @@ class ConsoleWindowController < OSX::NSObject
 
   def run
     @console.performSelector_withObject_afterDelay("run:", self, 0)
+	OSX::O3KVCHelper.gdbBreak
   end
 
   def windowWillClose(notification)
@@ -319,9 +320,8 @@ $delegate = ApplicationDelegate.alloc.init
 OSX::NSApplication.sharedApplication.setDelegate($delegate)
 
 #move into the OSX namespace and allow loading of other scripts in Resources
-include OSX
-$LOAD_PATH.unshift(NSBundle.mainBundle.resourcePath.to_s) 
 load 'o3lib.rb'
+$LOAD_PATH.unshift(NSBundle.mainBundle.resourcePath.to_s) 
 
 # run the main loop
 OSX.NSApplicationMain(0, nil)

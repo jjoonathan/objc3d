@@ -9,6 +9,33 @@
   <depends_on path='/System/Library/Frameworks/CoreFoundation.framework'/>
   <depends_on path='/System/Library/Frameworks/AppKit.framework'/>
   <depends_on path='/System/Library/Frameworks/Foundation.framework'/>
+  <struct name='O3CGAutoSetParameter' type='{_O3CGAutoSetParameter=&quot;param&quot;^{_CGparameter}&quot;matrix&quot;i&quot;transform&quot;i}'/>
+  <struct name='O3CGAutoSetParameterTemplate' type='{_O3CGAutoSetParameterTemplate=&quot;name&quot;*&quot;matrix&quot;i&quot;transform&quot;i}'/>
+  <struct name='O3GLBufferObj' type='{_O3GLBufferObj=&quot;id&quot;I&quot;references&quot;I}'/>
+  <struct name='O3Mat3x3d' type='{O3Mat&lt;double,3,3&gt;=&quot;v&quot;[9d]}'/>
+  <struct name='O3Mat3x3f' type='{O3Mat&lt;float,3,3&gt;=&quot;v&quot;[9f]}'/>
+  <struct name='O3Mat3x3r' type='{O3Mat&lt;real,3,3&gt;=&quot;v&quot;[9f]}'/>
+  <struct name='O3Mat4x4d' type='{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}'/>
+  <struct name='O3Mat4x4f' type='{O3Mat&lt;float,4,4&gt;=&quot;v&quot;[16f]}'/>
+  <struct name='O3Mat4x4r' type='{O3Mat&lt;real,4,4&gt;=&quot;v&quot;[16f]}'/>
+  <struct name='O3RawData' type='{_O3RawData=&quot;bytes&quot;^v&quot;length&quot;I}'/>
+  <struct name='O3RenderContext' type='{_O3RenderContext=&quot;camera&quot;@&quot;O3Camera&quot;}'/>
+  <struct name='O3Vec2d' type='{O3Vec&lt;double,2&gt;=&quot;v&quot;[2d]}'/>
+  <struct name='O3Vec2f' type='{O3Vec&lt;float,2&gt;=&quot;v&quot;[2f]}'/>
+  <struct name='O3Vec2r' type='{O3Vec&lt;real,2&gt;=&quot;v&quot;[2f]}'/>
+  <struct name='O3Vec3d' type='{O3Vec&lt;double,3&gt;=&quot;v&quot;[3d]}'/>
+  <struct name='O3Vec3f' type='{O3Vec&lt;float,3&gt;=&quot;v&quot;[3f]}'/>
+  <struct name='O3Vec3r' type='{O3Vec&lt;real,3&gt;=&quot;v&quot;[3f]}'/>
+  <struct name='O3Vec4d' type='{O3Vec&lt;double,4&gt;=&quot;v&quot;[4d]}'/>
+  <struct name='O3Vec4f' type='{O3Vec&lt;float,4&gt;=&quot;v&quot;[4f]}'/>
+  <struct name='O3Vec4r' type='{O3Vec&lt;real,4&gt;=&quot;v&quot;[4f]}'/>
+  <struct name='O3Vec2i' type='{O3Vec&lt;int,2&gt;=&quot;v&quot;[2i]}'/>
+  <struct name='tTest' type='{_tTest=&quot;v&quot;[2d]}'/>
+  <struct name='tTest2' type='{tTes2=&quot;v&quot;[2f]}'/>
+  <struct name='tTes2' type='{tTes2=&quot;v&quot;[2f]}'/>
+  <struct name='tTes1' type='{tTes1=&quot;m&quot;f&quot;n&quot;f}'/>
+  <struct name='tTestType2' type='{tTes&lt;real,2&gt;=&quot;v&quot;[2f]}'/>
+  <struct name='tTestType2a' type='{_tTestType2=&quot;m&quot;f}'/>
   <constant name='O3ArchiveFormat0' type='I'/>
   <constant name='O3CGActionUndoableWhenPrecompiledError' type='I'/>
   <constant name='O3ConcreteMeshFaceRenderMode' type='@'/>
@@ -125,7 +152,7 @@
     <retval type='I'/>
   </function>
   <function name='O3DeserializeDataOfType'>
-    <arg type='^v'/>
+    <arg NEW='1' type='^v' type_modifier='o'/>
     <arg type='*'/>
     <arg type='@'/>
   </function>
@@ -140,11 +167,11 @@
     <arg type='B'/>
   </function>
   <function name='O3GetCGAnnotationValue'>
-    <arg type='^{_CGannotation=}'/>
+    <arg NEW='1' type='^{_CGannotation=}' type_modifier='o'/>
     <retval type='@'/>
   </function>
   <function name='O3GetCGParameterValue'>
-    <arg type='^{_CGparameter=}'/>
+    <arg NEW='1' type='^{_CGparameter=}' type_modifier='o'/>
     <retval type='@'/>
   </function>
   <function name='O3GlobalCGContext'>
@@ -181,8 +208,8 @@
     <retval type='@'/>
   </function>
   <function name='O3MoveDataOfType'>
-    <arg type='^v'/>
-    <arg type='^v'/>
+    <arg NEW='1' type='^v' type_modifier='o'/>
+    <arg NEW='1' type='^v' type_modifier='o'/>
     <arg type='*'/>
     <arg type='L'/>
   </function>
@@ -200,18 +227,18 @@
     <retval type='@'/>
   </function>
   <function name='O3SerializeDataOfType'>
-    <arg type='^v'/>
+    <arg NEW='1' type='^v' type_modifier='o'/>
     <arg type='*'/>
     <arg type='L'/>
     <arg type='@'/>
     <retval type='@'/>
   </function>
   <function name='O3SetCGAnnotationToValue'>
-    <arg type='^{_CGannotation=}'/>
+    <arg NEW='1' type='^{_CGannotation=}' type_modifier='o'/>
     <arg type='@'/>
   </function>
   <function name='O3SetCGParameterToValue'>
-    <arg type='^{_CGparameter=}'/>
+    <arg NEW='1' type='^{_CGparameter=}' type_modifier='o'/>
     <arg type='@'/>
   </function>
   <function name='O3StructTypeForName'>
@@ -247,7 +274,7 @@
   <function name='O3VecStructGetElement'>
     <arg type='@'/>
     <arg type='L'/>
-    <arg type='^v'/>
+    <arg NEW='1' type='^v' type_modifier='o'/>
     <retval type='@'/>
   </function>
   <function name='O3VecStructSize'>
@@ -256,19 +283,19 @@
   </function>
   <function name='O3VecStructTypeGetType_count_specificType_'>
     <arg type='@'/>
-    <arg type='^i'/>
-    <arg type='^s'/>
-    <arg type='^i'/>
+    <arg NEW='1' type='^i' type_modifier='o'/>
+    <arg NEW='1' type='^s' type_modifier='o'/>
+    <arg NEW='1' type='^i' type_modifier='o'/>
   </function>
   <function name='O3VecStructTypePermsAndMultiplier'>
     <arg type='@'/>
-    <arg type='^d'/>
+    <arg NEW='1' type='^d' type_modifier='o'/>
     <retval type='^I'/>
   </function>
   <function name='O3WriteNumberTo'>
     <arg type='i'/>
     <arg type='L'/>
-    <arg type='^v'/>
+    <arg NEW='1' type='^v' type_modifier='o'/>
     <arg type='@'/>
   </function>
   <class name='NSCoder'>
@@ -285,6 +312,18 @@
     <method selector='isSpeciallyHandledByO3Archiver'>
       <retval type='B'/>
     </method>
+    <method selector='renderWithContext:'>
+      <arg NEW='1' type='^{_O3RenderContext=@}' index='0' type_modifier='o'/>
+    </method>
+    <method selector='addObject:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='indexOfObject:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='insertObject:atIndex:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
   </class>
   <class name='O3CGAnnotation'>
     <method selector='boolValue'>
@@ -298,6 +337,12 @@
     </method>
     <method selector='setFreeWhenDone:'>
       <arg type='B' index='0'/>
+    </method>
+    <method class_method='true' selector='annotationOfAnnotation:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='initWithAnnotation:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
   </class>
   <class name='O3CGEffect'>
@@ -314,15 +359,42 @@
     </method>
     <method selector='setDoubleMatrixValue:rows:columns:rowMajor:'>
       <arg type='B' index='3'/>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
     <method selector='setFloatMatrixValue:rows:columns:rowMajor:'>
       <arg type='B' index='3'/>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
     <method selector='setFreeWhenDone:'>
       <arg type='B' index='0'/>
     </method>
     <method selector='setIntMatrixValue:rows:columns:rowMajor:'>
       <arg type='B' index='3'/>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='initWithParameter:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method class_method='true' selector='parameterWithParameter:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setDoubleArrayValue:count:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setDoubleMatrixValue:rows:columns:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setFloatArrayValue:count:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setFloatMatrixValue:rows:columns:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setIntArrayValue:count:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setIntMatrixValue:rows:columns:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
   </class>
   <class name='O3CGProgram'>
@@ -348,6 +420,9 @@
   <class name='O3CGTechnique'>
     <method selector='isValid'>
       <retval type='B'/>
+    </method>
+    <method selector='initWithTechnique:fromEffect:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
   </class>
   <class name='O3DirectoryResSource'>
@@ -403,6 +478,7 @@
   <class name='O3GPUData'>
     <method selector='initWithBytesNoCopy:length:freeWhenDone:hint:'>
       <arg type='B' index='2'/>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
   </class>
   <class name='O3GeneratedVertexDataSource'>
@@ -440,6 +516,12 @@
     <method selector='skimDictionaryAtOffset:levelOne:'>
       <arg type='B' index='1'/>
     </method>
+    <method selector='decodeBytesForKey:returnedLength:'>
+      <arg NEW='1' index='1' type_modifier='o'/>
+    </method>
+    <method selector='setObjectZone:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
   </class>
   <class name='O3Light'>
     <method selector='isEnabled'>
@@ -457,6 +539,20 @@
   <class name='O3RawVertexDataSource'>
     <method selector='vertexAttributeNormalized'>
       <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3Region'>
+    <method selector='renderWithContext:'>
+      <arg NEW='1' type='^{_O3RenderContext=@}' index='0' type_modifier='o'/>
+    </method>
+    <method selector='addObject:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='indexOfObject:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='insertObject:atIndex:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
   </class>
   <class name='O3Renderbuffer'>
@@ -480,10 +576,39 @@
       <retval type='B'/>
     </method>
   </class>
+  <class name='O3Scene'>
+    <method selector='renderWithContext:'>
+      <arg NEW='1' type='^{_O3RenderContext=@}' index='0' type_modifier='o'/>
+    </method>
+  </class>
   <class name='O3StructArray'>
     <method variadic='true' selector='initByCompoundingArrays:'/>
     <method selector='setStructType:'>
       <retval type='B'/>
+    </method>
+    <method selector='addStruct:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='getStruct:atIndex:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setStruct:atIndex:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+  </class>
+  <class name='O3StructType'>
+    <method selector='deportabalizeStructs:to:stride:'>
+      <arg NEW='1' index='1' type_modifier='o'/>
+      <retval type='{_O3RawData=^vI}'/>
+    </method>
+    <method selector='dictWithBytes:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='portabalizeStructsAt:count:stride:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+    <method selector='writeDict:toBytes:'>
+      <arg NEW='1' index='1' type_modifier='o'/>
     </method>
   </class>
   <class name='O3Texture'>
@@ -500,6 +625,7 @@
   <class name='O3VecStructType'>
     <method selector='setPermutations:freeWhenDone:'>
       <arg type='B' index='1'/>
+      <arg NEW='1' index='0' type_modifier='o'/>
     </method>
   </class>
   <informal_protocol name='O3KeyedArchiverSpecialness'>
@@ -516,4 +642,41 @@
     <method type='@8@0:4' selector='stringValue'/>
     <method type='@8@0:4' selector='value'/>
   </informal_protocol>
+  <class name='NSValue'>
+    <method class_method='true' selector='valueWithBytes:cgType:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+  </class>
+  <class name='O3ArchiveStatisticsGatherer'>
+    <method class_method='true' selector='gatherStatisticsForRootObject:KT:ST:CT:'>
+      <arg NEW='1' index='1' type_modifier='o'/>
+      <arg NEW='1' index='2' type_modifier='o'/>
+      <arg NEW='1' index='3' type_modifier='o'/>
+    </method>
+    <method class_method='true' selector='gatherStatisticsForRootObject:key:KT:ST:CT:classNameMap:'>
+      <arg NEW='1' index='2' type_modifier='o'/>
+      <arg NEW='1' index='3' type_modifier='o'/>
+      <arg NEW='1' index='4' type_modifier='o'/>
+    </method>
+    <method selector='gatherStatisticsIntoKT:ST:CT:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+      <arg NEW='1' index='1' type_modifier='o'/>
+      <arg NEW='1' index='2' type_modifier='o'/>
+    </method>
+  </class>
+  <class name='O3CGPass'>
+    <method selector='initWithPass:'>
+      <arg NEW='1' index='0' type_modifier='o'/>
+    </method>
+  </class>
+  <class name='O3CubeMap'>
+    <method selector='loadbuffersWithSize:positiveXFace:negativeXFace:positiveYFace:negativeYFace:positiveZFace:negativeZFace:'>
+      <arg NEW='1' index='1' type_modifier='o'/>
+      <arg NEW='1' index='2' type_modifier='o'/>
+      <arg NEW='1' index='3' type_modifier='o'/>
+      <arg NEW='1' index='4' type_modifier='o'/>
+      <arg NEW='1' index='5' type_modifier='o'/>
+      <arg NEW='1' index='6' type_modifier='o'/>
+    </method>
+  </class>
 </signatures>
