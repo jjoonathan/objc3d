@@ -152,7 +152,7 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	return [NSString stringWithFormat:@"{O3Locateable: x:%.6f y:%.6f z:%.6f xrot:%.6f yrot:%.6f zrot:%.6f xscl:%.6f yscl:%.6f zscl:%.6f}", x, y, z, rotx, roty, rotz, mScale.GetX(), mScale.GetY(), mScale.GetZ()];
 }
 
-- (void)debugDrawIntoSpace:(const Space3&)intospace {
+- (void)debugDrawIntoSpace:(const Space3*)intospace {
 	glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);

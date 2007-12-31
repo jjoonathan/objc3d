@@ -11,8 +11,12 @@
 
 @implementation O3Scene
 /************************************/ #pragma mark Init & Dealloc /************************************/
+inline void initP(O3Scene* self) {
+	self->mSceneState = [[NSMutableDictionary alloc] init];
+}
+
 - (O3Scene*)init {
-	O3SuperInitOrDie();
+	O3SuperInitOrDie(); initP(self);
 	mRegionLock = [NSLock new];
 	O3Region* rr = [[O3Region alloc] init];
 	[self setRootRegion:rr];
@@ -21,7 +25,7 @@
 }
 
 - (O3Scene*)initWithRegion:(O3Region*)root {
-	O3SuperInitOrDie();
+	O3SuperInitOrDie(); initP(self);
 	mRegionLock = [NSLock new];
 	[self setRootRegion:root];
 	return self;
@@ -47,7 +51,13 @@
 	[mRegionLock release];
 	[mRootGroup release];
 	[mRootRegion release];
+	[mSceneState release];
 	O3SuperDealloc();
+}
+
+/************************************/ #pragma mark Misc /************************************/
+- (NSMutableDictionary*)sceneState {
+	return mSceneState;
 }
 
 /************************************/ #pragma mark Region Tree /************************************/
@@ -88,6 +98,14 @@
 	[mRegionLock lock];
 	[[self rootGroup] renderWithContext:context];
 	[mRegionLock unlock];
+}
+
+- (void)tickWithContext:(O3RenderContext*)context {
+}
+
+/************************************/ #pragma mark Convenience /************************************/
+- (void)addObject:(id<O3Renderable, NSObject>)obj {
+	[[self rootRegion] addObject:obj];
 }
 
 @end

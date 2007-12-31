@@ -9,8 +9,16 @@
 #import "O3ResManager.h"
 #import "O3Camera.h"
 #import "O3Scene.h"
+#import "O3GLViewController.h"
 
 @implementation O3GLView
+
+inline void updateContextIfNecessary(O3GLView* self) {
+	if (self->mContextNeedsUpdate) {
+		[self setContext:[self generateContext]];
+		self->mContextNeedsUpdate = NO;
+	}
+}
 
 /************************************/ #pragma mark Init&Destruction /************************************/
 + (void)initialize {
@@ -42,6 +50,7 @@ inline void initP(O3GLView* self) {
 	self->mNoRecovery = NO;
 	self->mContextNeedsUpdate = YES;
 	[self setSceneName:@"defaultScene"];
+	[self setUpdateInterval:1/35];
 }
 
 - (O3GLView*)initWithFrame:(NSRect)frameRect {
@@ -55,6 +64,7 @@ inline void initP(O3GLView* self) {
 	[mSceneName release];
 	[mScene release];
 	[mContext release];
+	[mFrameTimer release];
 	O3SuperDealloc();
 }
 
@@ -146,6 +156,16 @@ inline void initP(O3GLView* self) {
 }
 
 /************************************/ #pragma mark Accessors /************************************/
+- (void)installDefaultViewController {
+	O3LogWarn(@"This method causes a leak. Don't use in real code.");
+	O3GLViewController* cont = [[O3GLViewController alloc] init];
+	[cont setRepresentedView:self];
+}
+
+- (NSMutableDictionary*)viewState {
+	return mViewState;
+}
+
 - (O3ResManager*)resourceManager {
 	return mResManager?:[O3ResManager sharedManager];
 }
@@ -168,6 +188,12 @@ inline void initP(O3GLView* self) {
 	return mScene;
 }
 
+- (O3Scene*)setDefaultScene {
+	O3Scene* s = [[O3Scene alloc] init];
+	[self setScene:s];
+	return s;
+}
+
 - (void)setScene:(O3Scene*)scene {
 	O3Assert([scene conformsToProtocol:@protocol(O3Renderable)], @"Scene %@ (possibly named \"%@\") doesn't implement O3Renderable.", scene, mSceneName); 
 	O3Assign(scene, mScene);
@@ -185,7 +211,7 @@ inline void initP(O3GLView* self) {
 }
 
 - (NSOpenGLContext*)context {
-	if (mContextNeedsUpdate) [self setContext:[self generateContext]];
+	updateContextIfNecessary(self);
 	return mContext;
 }
 
@@ -204,12 +230,25 @@ inline void initP(O3GLView* self) {
 	O3Assign(color, mBackgroundColor);
 }
 
+- (O3GLViewController*)controller {
+	if ([[self nextResponder] isKindOfClass:[O3GLViewController class]]) return (O3GLViewController*)[self nextResponder];
+	return nil;
+}
+
 
 /************************************/ #pragma mark Drawing /************************************/
 - (void)drawRect:(NSRect)rect {
 	if (mScene) {
 		O3RenderContext ctx;
 		ctx.camera = [self camera];
+		if (mNotFirstFrame) {
+			ctx.elapsedTime = 0;
+			mNotFirstFrame = YES;
+			O3StartTimer(mFrameTimer);
+		} else {
+			ctx.elapsedTime = O3ElapsedTime(mFrameTimer);
+			O3StartTimer(mFrameTimer);
+		}
 		[[self context] makeCurrentContext];
 		float r=0.; float g=0.; float b=0.; float a=1.;
 		[mBackgroundColor getRed:&r green:&g blue:&b alpha:&a];
@@ -221,13 +260,22 @@ inline void initP(O3GLView* self) {
 		[mContext flushBuffer];
 		[self setNeedsDisplay:YES];
 	} else {
+		[self lockFocus];
 		[self drawBlackScreenOfDeath:@"No Scene"];
+		[self unlockFocus];
 	}
 }
 
-- (void)update {
+- (void)lazyUpdate {
+	updateContextIfNecessary(self);
 	[mContext update];
 	[self setNeedsDisplay:YES];
+}
+
+- (void)update {
+	updateContextIfNecessary(self);
+	[mContext update];
+	[self drawRect:[self frame]];
 }
 
 - (void)drawBlackScreenOfDeath:(NSString*)message {
@@ -550,6 +598,19 @@ inline void initP(O3GLView* self) {
 }
 
 /************************************/ #pragma mark Events /************************************/
+- (double)updateInterval {
+	if (!mUpdateTimer) return -1.0;
+	return [mUpdateTimer timeInterval];
+}
+
+- (void)setUpdateInterval:(double)newInt {
+	NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:newInt target:self selector:@selector(update) userInfo:nil repeats:YES];
+	O3Assign(t, mUpdateTimer);
+}
+
+- (BOOL)acceptsFirstResponder {
+	return YES;
+}
 
 
 @end

@@ -55,4 +55,6 @@ public: //Equality and assignment methods and operators
 	bool operator==(const O3Quaternion& q) const;	///<Tests for exact (no epsilon tolerance) equality of two quaternions.
 	bool operator!=(const O3Quaternion& q) const;	///<Tests for exact (no epsilon tolerance) inequality of two quaternions.
 };
+#else
+typedef struct {double v[4];} O3Quaternion;
 #endif /*defined(__cplusplus)*/

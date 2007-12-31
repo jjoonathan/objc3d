@@ -50,7 +50,7 @@ using namespace ObjC3D::Math;
 - (O3Mat4x4d)matrixToSpaceOfLocateable:(O3Locateable*)locateable;
 - (void)setMatrixToSpace:(Space3*)targetspace; ///<glLoads the matrix to transform from the receiver's space to targetspace
 
-- (void)debugDrawIntoSpace:(const Space3&)intospace;
+- (void)debugDrawIntoSpace:(const Space3*)intospace;
 @end
 
 typedef O3Locateable<O3Renderable> O3SceneObj;

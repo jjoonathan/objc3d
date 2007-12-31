@@ -17,6 +17,7 @@
 	BOOL mGroupsNeedUpdate; ///<The region tree has changed and the groups need to be updated
 	O3Region* mRootRegion; ///<User-visible organization of objects
 	NSLock* mRegionLock; ///<Weather or not mRootRegion can be modified
+	NSMutableDictionary* mSceneState; ///<A scratch dictionary that contains stuff about the scene (maybe a history of framerate or whatever). *Will* be constant over the life of the scene.
 }
 //Region
 - (O3Region*)rootRegion; ///<@note bu sure to obey rootRegionLock
@@ -25,6 +26,10 @@
 
 //Rendering
 - (void)renderWithContext:(O3RenderContext*)context;
+
+//Misc
+///A scratch dictionary that contains stuff about the scene (maybe a history of framerate or whatever). *Will* be constant over the life of the scene.
+- (NSMutableDictionary*)sceneState;
 
 //Private
 - (void)subregionChanged:(O3Region*)region; ///<A notification from the root region that it has changed

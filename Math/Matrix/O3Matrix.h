@@ -117,7 +117,7 @@ O3Mat_TT std::ostream& operator<<(std::ostream &stream, const O3Mat_T &m);
 
 #define O3MatDefType(TYPE,ROWS,COLS, NAME) typedef O3Mat<TYPE,ROWS,COLS> NAME
 #else /*!defined(__cplusplus)*/
-#define O3MatDefType(TYPE,ROWS,COLS, NAME) struct NAME {TYPE v[ROWS*COLS];};
+#define O3MatDefType(TYPE,ROWS,COLS, NAME) typedef struct {TYPE v[ROWS*COLS];} NAME
 #endif /*defined(__cplusplus)*/
 
 O3MatDefType(real,3,3,O3Mat3x3r);

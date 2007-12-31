@@ -8,10 +8,12 @@
 @class O3Camera;
 typedef struct {
 	O3Camera* camera;
+	double elapsedTime; ///<The time elapsed since the last frame. Note that elapsedTime is in "seconds," but may be positive, 0, or negative (you may want to pause or rewind, so to speak.)
 } O3RenderContext;
 
 //typedef void (*O3RenderWithContextFunc)(id self, SEL _cmd, O3RenderContext* context);
 
 @protocol O3Renderable
-- (void)renderWithContext:(O3RenderContext*)context; ///<Render with info about the context (hints, etc) \e context. Note that \e context may be nil. The default implementation calls doesNotRespondToSelector: (do not call super)
+- (void)tickWithContext:(O3RenderContext*)context; ///<Advances the receiver's state (to get elapsed time since last frame etc, check in context). Default implementation does nothing.
+- (void)renderWithContext:(O3RenderContext*)context; ///<Render with info about the context (hints, etc) \e context. Note that \e context may be nil. There is no default implementation.
 @end

@@ -72,4 +72,8 @@
 	O3LogError(@"You must override renderWithContext: in subclasses of O3MeshType and not call super");
 }
 
+- (void)tickWithContext:(O3RenderContext*)ctx {
+}
+
+
 @end

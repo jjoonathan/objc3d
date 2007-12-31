@@ -122,4 +122,8 @@ public: //Accessors
 public: //Interface
 	std::string Description() const;
 };
+#else
+typedef struct {
+	O3Mat4x4d MyTransform, MyInverseTransform;
+} O3Transformation3;
 #endif /*defined(__cplusplus)*/

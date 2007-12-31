@@ -13,6 +13,11 @@
 }
 @end
 
+@implementation NSObject (O3RegionSupport)
+- (void)setParentRegion:(O3Region*)newParent {
+}
+@end
+
 @implementation O3Region
 inline void changed(O3Region* self) {
 	if (self->mParentRegion) [self->mParentRegion subregionChanged:self];
@@ -140,6 +145,8 @@ inline void changed(O3Region* self) {
 	O3AssertIvar(mObjects);
 	[mObjects makeObjectsPerformSelector:@selector(renderWithContext:) withObject:(id)context]; //Bad, but it should work. context isn't a real object.
 }
+
+- (void)tickWithContext:(O3RenderContext*)context {}
 
 
 /************************************/ #pragma mark Notifications /************************************/

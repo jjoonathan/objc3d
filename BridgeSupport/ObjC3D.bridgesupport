@@ -18,8 +18,15 @@
   <struct name='O3Mat4x4d' type='{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}'/>
   <struct name='O3Mat4x4f' type='{O3Mat&lt;float,4,4&gt;=&quot;v&quot;[16f]}'/>
   <struct name='O3Mat4x4r' type='{O3Mat&lt;real,4,4&gt;=&quot;v&quot;[16f]}'/>
+  <struct name='O3Quaternion' type='{_O3Quaternion=&quot;v&quot;[4d]}'/>
   <struct name='O3RawData' type='{_O3RawData=&quot;bytes&quot;^v&quot;length&quot;I}'/>
   <struct name='O3RenderContext' type='{_O3RenderContext=&quot;camera&quot;@&quot;O3Camera&quot;}'/>
+  <struct name='O3Rotation3' type='{_O3Rotation3=&quot;v&quot;[4d]}'/>
+  <struct name='O3Scale2' type='{_O3Scale2=&quot;v&quot;[2d]}'/>
+  <struct name='O3Scale3' type='{_O3Scale3=&quot;v&quot;[3d]}'/>
+  <struct name='O3Transformation3' type='{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}'/>
+  <struct name='O3Translation2' type='{_O3Translation2=&quot;v&quot;[2d]}'/>
+  <struct name='O3Translation3' type='{_O3Translation3=&quot;v&quot;[3d]}'/>
   <struct name='O3Vec2d' type='{O3Vec&lt;double,2&gt;=&quot;v&quot;[2d]}'/>
   <struct name='O3Vec2f' type='{O3Vec&lt;float,2&gt;=&quot;v&quot;[2f]}'/>
   <struct name='O3Vec2r' type='{O3Vec&lt;real,2&gt;=&quot;v&quot;[2f]}'/>
@@ -29,13 +36,7 @@
   <struct name='O3Vec4d' type='{O3Vec&lt;double,4&gt;=&quot;v&quot;[4d]}'/>
   <struct name='O3Vec4f' type='{O3Vec&lt;float,4&gt;=&quot;v&quot;[4f]}'/>
   <struct name='O3Vec4r' type='{O3Vec&lt;real,4&gt;=&quot;v&quot;[4f]}'/>
-  <struct name='O3Vec2i' type='{O3Vec&lt;int,2&gt;=&quot;v&quot;[2i]}'/>
-  <struct name='tTest' type='{_tTest=&quot;v&quot;[2d]}'/>
-  <struct name='tTest2' type='{tTes2=&quot;v&quot;[2f]}'/>
-  <struct name='tTes2' type='{tTes2=&quot;v&quot;[2f]}'/>
-  <struct name='tTes1' type='{tTes1=&quot;m&quot;f&quot;n&quot;f}'/>
-  <struct name='tTestType2' type='{tTes&lt;real,2&gt;=&quot;v&quot;[2f]}'/>
-  <struct name='tTestType2a' type='{_tTestType2=&quot;m&quot;f}'/>
+  <struct name='Space3' type='{_Space3=&quot;mSuperspace&quot;^{_Space3}&quot;mFromSuperspace&quot;{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}&quot;mFromRootspace&quot;{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}&quot;mPseudohash&quot;I&quot;mSuperPseudohash&quot;I}'/>
   <constant name='O3ArchiveFormat0' type='I'/>
   <constant name='O3CGActionUndoableWhenPrecompiledError' type='I'/>
   <constant name='O3ConcreteMeshFaceRenderMode' type='@'/>
@@ -425,6 +426,17 @@
       <arg NEW='1' index='0' type_modifier='o'/>
     </method>
   </class>
+  <class name='O3Camera'>
+    <method selector='projectionMatrix'>
+      <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+    </method>
+    <method selector='viewMatrix'>
+      <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+    </method>
+    <method selector='viewProjectionMatrix'>
+      <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+    </method>
+  </class>
   <class name='O3DirectoryResSource'>
     <method selector='isBig'>
       <retval type='B'/>
@@ -526,6 +538,51 @@
   <class name='O3Light'>
     <method selector='isEnabled'>
       <retval type='B'/>
+    </method>
+  </class>
+  <class name='O3Locateable'>
+    <method selector='debugDrawIntoSpace:'>
+      <arg NEW='1' type='^{_Space3=^{_Space3}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}II}' index='0' type_modifier='o'/>
+    </method>
+    <method selector='matrixToSpace:'>
+      <arg NEW='1' type='^{_Space3=^{_Space3}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}II}' index='0' type_modifier='o'/>
+      <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+    </method>
+    <method selector='matrixToSpaceOfLocateable:'>
+      <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+    </method>
+    <method selector='rotateBy:'>
+      <arg type='{_O3Quaternion=[4d]}' index='0'/>
+    </method>
+    <method selector='rotation'>
+      <retval type='{_O3Quaternion=[4d]}'/>
+    </method>
+    <method selector='scale'>
+      <retval type='{_O3Scale3=[3d]}'/>
+    </method>
+    <method selector='scaleBy:'>
+      <arg type='{_O3Scale3=[3d]}' index='0'/>
+    </method>
+    <method selector='setMatrixToSpace:'>
+      <arg NEW='1' type='^{_Space3=^{_Space3}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}II}' index='0' type_modifier='o'/>
+    </method>
+    <method selector='setRotation:'>
+      <arg type='{_O3Quaternion=[4d]}' index='0'/>
+    </method>
+    <method selector='setScale:'>
+      <arg type='{_O3Scale3=[3d]}' index='0'/>
+    </method>
+    <method selector='setTranslation:'>
+      <arg type='{_O3Scale3=[3d]}' index='0'/>
+    </method>
+    <method selector='translateBy:'>
+      <arg type='{_O3Scale3=[3d]}' index='0'/>
+    </method>
+    <method selector='translateInObjectSpaceBy:'>
+      <arg type='{_O3Scale3=[3d]}' index='0'/>
+    </method>
+    <method selector='translation'>
+      <retval type='{_O3Scale3=[3d]}'/>
     </method>
   </class>
   <class name='O3RawVertexData'>

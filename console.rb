@@ -30,7 +30,6 @@ class ConsoleWindowController < OSX::NSObject
 
   def run
     @console.performSelector_withObject_afterDelay("run:", self, 0)
-	OSX::O3KVCHelper.gdbBreak
   end
 
   def windowWillClose(notification)

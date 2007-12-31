@@ -33,6 +33,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		FC0BBD410D233F0700E5B388 /* O3Renderable.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC0BBD400D233EF900E5B388 /* O3Renderable.mm */; };
+		FC0BBD480D23FE6800E5B388 /* O3Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD460D23FE6800E5B388 /* O3Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC0BBD4C0D24122200E5B388 /* O3GLViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD4A0D24122200E5B388 /* O3GLViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC0BBD4D0D24122200E5B388 /* O3GLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC0BBD4B0D24122200E5B388 /* O3GLViewController.mm */; };
+		FC0BBD980D2563CF00E5B388 /* O3GLViewActionCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD960D2563CF00E5B388 /* O3GLViewActionCollection.h */; };
+		FC0BBDBB0D256B0900E5B388 /* O3GLViewActionCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC0BBD970D2563CF00E5B388 /* O3GLViewActionCollection.mm */; };
 		FC2C1BBE0C123FB00084A599 /* O3Accelerate.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB016F90B4F403000FBFAC2 /* O3Accelerate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C040C125EB20084A599 /* O3Camera.h in Headers */ = {isa = PBXBuildFile; fileRef = FC953F940B5EE920009551D2 /* O3Camera.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C050C125EB20084A599 /* O3Camera.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC953F970B5EE9CF009551D2 /* O3Camera.mm */; };
@@ -183,13 +189,13 @@
 		FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE440CF9DAB100325C54 /* tri_stripper.h */; };
 		FC63EE570CF9F3D800325C54 /* O3Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE560CF9F3D800325C54 /* O3Geometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */; };
-		FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */; };
+		FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE890CF9F95F00325C54 /* O3FaceStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE870CF9F95F00325C54 /* O3FaceStructType.mm */; };
 		FC63EF800CFA22F200325C54 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
 		FC63EF810CFA22FB00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
 		FC63EFA30CFA255C00325C54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FC63EFAA0CFA259B00325C54 /* Log4Cocoa.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
-		FC63EFCE0CFA287600325C54 /* O3StructArrayVDS.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EFCC0CFA287600325C54 /* O3StructArrayVDS.h */; };
+		FC63EFCE0CFA287600325C54 /* O3StructArrayVDS.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EFCC0CFA287600325C54 /* O3StructArrayVDS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EFCF0CFA287600325C54 /* O3StructArrayVDS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EFCD0CFA287600325C54 /* O3StructArrayVDS.mm */; };
 		FC63F10C0CFA83F200325C54 /* window.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC63F10B0CFA83F200325C54 /* window.rb */; };
 		FC63F1160CFA88AA00325C54 /* window.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63F10B0CFA83F200325C54 /* window.rb */; };
@@ -221,6 +227,8 @@
 		FCEF50FE0C186FE000B97983 /* O3TestRotate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5BBBC90BD58BF000894533 /* O3TestRotate.mm */; };
 		FCEF50FF0C186FE000B97983 /* O3TestSpace.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5BBBBB0BD58BA800894533 /* O3TestSpace.mm */; };
 		FCEF51000C186FE000B97983 /* O3TestUtilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5BBBB90BD58B7200894533 /* O3TestUtilities.mm */; };
+		FCF2AB170D21931B003B8F67 /* O3TestTet.h in Headers */ = {isa = PBXBuildFile; fileRef = FCF2AA940D217C04003B8F67 /* O3TestTet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FCF2AB1D0D21953C003B8F67 /* O3TestTet.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCF2AA950D217C04003B8F67 /* O3TestTet.mm */; };
 		FCF4383F0C20E9DF00263F34 /* O3TestBigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCF4383D0C20E9DF00263F34 /* O3TestBigObject.mm */; };
 		FCF438520C217FE500263F34 /* O3BigObjSubclass.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCF438500C217FE500263F34 /* O3BigObjSubclass.mm */; };
 		FCF438A00C21865800263F34 /* O3NonlinearWriter.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC7DD1E00C1B311A009D36A2 /* O3NonlinearWriter.mm */; };
@@ -367,6 +375,12 @@
 		FC02C30C0B3AE719000DC47C /* O3RenderBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RenderBuffer.mm; sourceTree = "<group>"; };
 		FC02C4530B3B271E000DC47C /* O3TestDXT1Convert.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestDXT1Convert.mm; sourceTree = "<group>"; };
 		FC030FB40A953A89007E04C1 /* Todo.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Todo.rtf; sourceTree = "<group>"; };
+		FC0BBD400D233EF900E5B388 /* O3Renderable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Renderable.mm; sourceTree = "<group>"; };
+		FC0BBD460D23FE6800E5B388 /* O3Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Timer.h; sourceTree = "<group>"; };
+		FC0BBD4A0D24122200E5B388 /* O3GLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3GLViewController.h; sourceTree = "<group>"; };
+		FC0BBD4B0D24122200E5B388 /* O3GLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3GLViewController.mm; sourceTree = "<group>"; };
+		FC0BBD960D2563CF00E5B388 /* O3GLViewActionCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3GLViewActionCollection.h; sourceTree = "<group>"; };
+		FC0BBD970D2563CF00E5B388 /* O3GLViewActionCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3GLViewActionCollection.mm; sourceTree = "<group>"; };
 		FC11C3100B5964410069119E /* O3EncodingInterpretation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3EncodingInterpretation.h; sourceTree = "<group>"; };
 		FC11C3110B5964410069119E /* O3EncodingInterpretation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3EncodingInterpretation.mm; sourceTree = "<group>"; };
 		FC11C4460B59E09F0069119E /* O3CGParameterSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3CGParameterSupport.h; sourceTree = "<group>"; };
@@ -579,6 +593,8 @@
 		FCEF231D0C6D78B80022A0D7 /* O3ArchiveStatisticsGatherer.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ArchiveStatisticsGatherer.mm; sourceTree = "<group>"; };
 		FCEF50D70C17C1C900B97983 /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCEF50D80C17C1C900B97983 /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
+		FCF2AA940D217C04003B8F67 /* O3TestTet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestTet.h; sourceTree = "<group>"; };
+		FCF2AA950D217C04003B8F67 /* O3TestTet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestTet.mm; sourceTree = "<group>"; };
 		FCF4383C0C20E9DF00263F34 /* O3TestBigObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestBigObject.h; sourceTree = "<group>"; };
 		FCF4383D0C20E9DF00263F34 /* O3TestBigObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestBigObject.mm; sourceTree = "<group>"; };
 		FCF4384F0C217FE500263F34 /* O3BigObjSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3BigObjSubclass.h; sourceTree = "<group>"; };
@@ -649,6 +665,10 @@
 				FCDC8D600B7823AB00D48155 /* O3Locateable.mm */,
 				FCE25C2D0CC855D00064CA75 /* O3GLView.h */,
 				FCE25C2E0CC855D00064CA75 /* O3GLView.mm */,
+				FC0BBD4A0D24122200E5B388 /* O3GLViewController.h */,
+				FC0BBD4B0D24122200E5B388 /* O3GLViewController.mm */,
+				FC0BBD960D2563CF00E5B388 /* O3GLViewActionCollection.h */,
+				FC0BBD970D2563CF00E5B388 /* O3GLViewActionCollection.mm */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
@@ -719,6 +739,7 @@
 				FC02C30B0B3AE719000DC47C /* O3Renderbuffer.h */,
 				FC02C30C0B3AE719000DC47C /* O3RenderBuffer.mm */,
 				FC11C4A60B5A9C410069119E /* O3Renderable.h */,
+				FC0BBD400D233EF900E5B388 /* O3Renderable.mm */,
 			);
 			path = Rendering;
 			sourceTree = "<group>";
@@ -806,6 +827,7 @@
 				FC78BB2F0B8B4F8D00F75030 /* O3KVCHelper.mm */,
 				FC11C4460B59E09F0069119E /* O3CGParameterSupport.h */,
 				FC11C4470B59E09F0069119E /* O3CGParameterSupport.mm */,
+				FC0BBD460D23FE6800E5B388 /* O3Timer.h */,
 				FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */,
 			);
 			path = Utilities;
@@ -893,6 +915,8 @@
 				FC348B890B433F70000015FE /* O3MeshType.mm */,
 				FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */,
 				FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */,
+				FCF2AA940D217C04003B8F67 /* O3TestTet.h */,
+				FCF2AA950D217C04003B8F67 /* O3TestTet.mm */,
 				FC63EE3E0CF9DAB100325C54 /* tri_stripper */,
 			);
 			path = Mesh;
@@ -1243,6 +1267,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCF2AB170D21931B003B8F67 /* O3TestTet.h in Headers */,
 				FCE25C2F0CC855D00064CA75 /* O3GLView.h in Headers */,
 				FCE25C560CCC0A900064CA75 /* O3Region.h in Headers */,
 				FCE25C5A0CCC0AB90064CA75 /* O3Scene.h in Headers */,
@@ -1342,6 +1367,9 @@
 				FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */,
 				FC63EFCE0CFA287600325C54 /* O3StructArrayVDS.h in Headers */,
 				FC66FFD00D0CABCC00BDD15F /* O3CompoundStructType.h in Headers */,
+				FC0BBD480D23FE6800E5B388 /* O3Timer.h in Headers */,
+				FC0BBD4C0D24122200E5B388 /* O3GLViewController.h in Headers */,
+				FC0BBD980D2563CF00E5B388 /* O3GLViewActionCollection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1593,6 +1621,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC0BBDBB0D256B0900E5B388 /* O3GLViewActionCollection.mm in Sources */,
 				FC2C1C1A0C125EF70084A599 /* O3KeyedUnarchiver.mm in Sources */,
 				FC2C1C1B0C125EF70084A599 /* O3KVCHelper.mm in Sources */,
 				FC2C1C050C125EB20084A599 /* O3Camera.mm in Sources */,
@@ -1651,6 +1680,9 @@
 				FC63EE890CF9F95F00325C54 /* O3FaceStructType.mm in Sources */,
 				FC63EFCF0CFA287600325C54 /* O3StructArrayVDS.mm in Sources */,
 				FC66FFCF0D0CABCB00BDD15F /* O3CompoundStructType.mm in Sources */,
+				FCF2AB1D0D21953C003B8F67 /* O3TestTet.mm in Sources */,
+				FC0BBD410D233F0700E5B388 /* O3Renderable.mm in Sources */,
+				FC0BBD4D0D24122200E5B388 /* O3GLViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

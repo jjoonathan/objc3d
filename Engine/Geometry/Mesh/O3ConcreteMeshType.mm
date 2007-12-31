@@ -135,4 +135,7 @@ NSString* O3ConcreteMeshStrippedRenderMode = @"Triangle Strips";
 	}
 }
 
+- (void)tickWithContext:(O3RenderContext*)context {
+}
+
 @end

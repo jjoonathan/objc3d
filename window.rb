@@ -2,3 +2,5 @@
 @w.makeKeyAndOrderFront nil
 @o = O3GLView.alloc.initWithFrame NSRect.new(0,0,500,500)
 @w.setContentView @o
+@w.makeFirstResponder @o
+@o.installDefaultViewController

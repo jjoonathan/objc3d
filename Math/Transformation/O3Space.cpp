@@ -95,10 +95,10 @@ const O3Mat4x4d& Space3::MatrixFromRoot() const {
 	return mFromRootspace.O3Mat();
 }
 
-O3Mat4x4d Space3::MatrixToSpace(const Space3& other) const {
-	if (other.IsSame(mSuperspace))
+O3Mat4x4d Space3::MatrixToSpace(const Space3* other) const {
+	if (other->IsSame(mSuperspace))
 		return mFromSuperspace.InverseMatrix();
-	return other.MatrixFromRoot()*MatrixToRoot();
+	return other->MatrixFromRoot()*MatrixToRoot();
 }
 
 const O3Mat4x4d& Space3::MatrixToRoot() const {
@@ -110,12 +110,12 @@ const O3Mat4x4d& Space3::MatrixToSuper() const {
 	return mFromSuperspace.InverseMatrix();
 }
 
-O3Vec3d Space3::VectorToSpace(const Space3& other, O3Vec3d oldvec) const {
+O3Vec3d Space3::VectorToSpace(const Space3* other, O3Vec3d oldvec) const {
 	const O3Mat4x4d& mat = MatrixToSpace(other);
 	return O3Vec3d(mat*O3Vec4d(oldvec));
 }
 
-O3Vec4d Space3::VectorToSpace(const Space3& other, O3Vec4d oldvec) const {
+O3Vec4d Space3::VectorToSpace(const Space3* other, O3Vec4d oldvec) const {
 	const O3Mat4x4d& mat = MatrixToSpace(other);
 	return mat*oldvec;	
 }

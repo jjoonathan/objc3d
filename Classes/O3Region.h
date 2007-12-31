@@ -44,6 +44,7 @@
 - (void)subregionChanged:(O3Region*)region; ///<A notification that a subregion has changed (added or removed an object)
 
 //Rendering
+- (void)tickWithContext:(O3RenderContext*)context;
 - (void)renderWithContext:(O3RenderContext*)context;
 
 @end

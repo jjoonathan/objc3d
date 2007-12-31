@@ -71,4 +71,7 @@ typedef enum O3SupportLevel {
 	
 	//Allows the skiping of initialization where it would be pointless (assumes NSObject's -init does nothing, which is true in Cocoa)
 	#define O3AllowInitHack
+	
+	//Allows the use of mach calls to increase speed
+	#define O3AllowMachCalls
 #endif

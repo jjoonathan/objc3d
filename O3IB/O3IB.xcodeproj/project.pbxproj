@@ -59,7 +59,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FC57D3160CB7D6A500741F39 /* ObjC3D.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FC63DF100CF1C2A200325C54 /* RubyConsole.app */;
+			remoteGlobalIDString = FC63DF100CF1C2A200325C54;
 			remoteInfo = RubyConsole;
 		};
 /* End PBXContainerItemProxy section */

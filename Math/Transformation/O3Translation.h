@@ -47,4 +47,7 @@ public: //O3Mat construction
 
 typedef O3Translation<double, 3> O3Translation3;
 typedef O3Translation<double, 2> O3Translation2;
+#else
+typedef struct {double v[3];} O3Translation3;
+typedef struct {double v[2];} O3Translation2;
 #endif /*defined(__cplusplus)*/

@@ -50,12 +50,12 @@ namespace ObjC3D {
 			Space3* Superspace() const {return mSuperspace;};
 			const O3Mat4x4d& MatrixFromSuper() const; ///<Gets the matrix that transforms from the receiver's superspace to the receiver's space
 			const O3Mat4x4d& MatrixFromRoot() const;  ///<Gets the matrix that transforms from the root space to the receiver's space
-			O3Mat4x4d MatrixToSpace(const Space3& other) const; ///<Gets the matrix that transforms from the receiver's space to other's space
+			O3Mat4x4d MatrixToSpace(const Space3* other) const; ///<Gets the matrix that transforms from the receiver's space to other's space
 			const O3Mat4x4d& MatrixToRoot() const; ///<Gets the matrix that transforms from the receiver's space to the root space
 			const O3Mat4x4d& MatrixToSuper() const; ///<Gets the matrix that transforms from the receiver's space to its superspace
 			bool IsSame(const Space3* other) const {return this==other;}
-			O3Vec3d VectorToSpace(const Space3& other, O3Vec3d oldvec) const;
-			O3Vec4d VectorToSpace(const Space3& other, O3Vec4d oldvec) const;
+			O3Vec3d VectorToSpace(const Space3* other, O3Vec3d oldvec) const;
+			O3Vec4d VectorToSpace(const Space3* other, O3Vec4d oldvec) const;
 			O3Vec3d VectorToRoot(O3Vec3d oldvec) const;
 			O3Vec4d VectorToRoot(O3Vec4d oldvec) const;
 			O3Vec3d VectorFromRoot(O3Vec3d oldvec) const;
@@ -144,4 +144,14 @@ T O3ConvertSpaceToSpace(const T& space_vector, const ObjC3D::Math::Space3* from,
 	if (!from) return O3ConvertRootToSpace(space_vector, to);
 	return from->VectorToSpace(to, space_vector);
 }
+#else
+struct _Space3 {
+	_Space3* mSuperspace;
+	O3Transformation3 mFromSuperspace;
+	O3Transformation3 mFromRootspace;
+	unsigned mPseudohash;
+	unsigned mSuperPseudohash;
+};
+	
+typedef struct _Space3 Space3;
 #endif /*defined(__cplusplus)*/

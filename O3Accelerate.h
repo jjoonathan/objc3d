@@ -72,6 +72,12 @@ inline NSNull* O3NSNull() {
 	return gNull;
 }
 
+inline NSNumber* O3TrueObject() {
+	static NSNumber* gTrue = nil;
+	if (!gTrue) gTrue = [[NSNumber alloc] initWithBool:YES];
+	return gTrue;
+}
+
 #ifndef O3UseCoreFoundation
 static IMP NSStringInitWithBytesLengthEncoding = nil;
 static IMP NSStringInitWithBytesNoCopyEtc = nil;

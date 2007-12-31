@@ -46,4 +46,7 @@ public: //O3Mat construction
 
 typedef O3Scale<double, 2> O3Scale2;
 typedef O3Scale<double, 3> O3Scale3;
+#else
+typedef struct {double v[3];} O3Scale3;
+typedef struct {double v[2];} O3Scale2;
 #endif /*defined(__cplusplus)*/

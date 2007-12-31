@@ -48,6 +48,32 @@ ObjectSpace.each_object(Class) {|c|
 	end
 }
 
+###### Add O3Rotation3 methods
+def O3Rotation3
+  def euler_angles
+    qx=v[0]
+    qy=v[1]
+    qz=v[2]
+    qw=v[3]
+  	zz2 = 2*qz*qz
+  	qxqy2_qzqw2 = 2.0 * (qx*qy + qz*qw)
+  	z = asin(qxqy2_qzqw2)
+  	if abs(qxqy2_qzqw2-1.0) < 00001 then
+  		y = 2*atan2(qx,qw)
+  		x = 0.0
+  		return x,y,z
+  	end
+  	if abs(qxqy2_qzqw2+1.0) < 00001 then
+  		y = -2*atan2(qx,qw)
+  		x = 0.0
+  		return x,y,z
+  	end
+  	x = atan2(2.0*(qx*qw-qy*qz) , 1.0 - 2.0*qx*qx - qzqz2)
+  	y = atan2(2.0*(qy*qw-qx*qz) , 1.0 - 2.0*qy*qy - qzqz2)
+  	return x,y,z
+  end
+end
+
 
 ###### Add O3Matrix methods
 mat_regex = /O3Mat(\d)x(\d)([rfd])/

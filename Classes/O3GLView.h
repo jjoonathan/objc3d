@@ -5,7 +5,8 @@
 //  Created by Jonathan deWerd on 10/18/07.
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
-@class O3ResManager, O3Camera, O3Scene;
+#import "O3Timer.h"
+@class O3ResManager, O3Camera, O3Scene, O3GLViewController;
 
 @interface O3GLView : NSView {
 	NSOpenGLContext* mContext;
@@ -31,9 +32,18 @@
 	BOOL mStereoBuffer:1;
 	BOOL mNoRecovery:1;
 	BOOL mContextNeedsUpdate:1;
+	
+	BOOL mNotFirstFrame:1;
+	NSTimer* mUpdateTimer;
+	O3Timer mFrameTimer; ///<Measures the actual time between frames
+	NSMutableDictionary* mViewState; ///<A scratch dictionary
 }
 //Init
 - (O3GLView*)initWithFrame:(NSRect)frameRect;
+
+//Convenience
+- (void)installDefaultViewController;
+- (O3GLViewController*)controller;
 
 //Attributes
 - (O3ResManager*)resourceManager;
@@ -47,8 +57,13 @@
 - (NSOpenGLContext*)context;
 - (NSColor*)backgroundColor;
 - (void)setBackgroundColor:(NSColor*)color;
+- (O3Scene*)setDefaultScene;
+- (double)updateInterval; ///<-1 if automatic updates are disabled
+- (void)setUpdateInterval:(double)newInt;
+- (NSMutableDictionary*)viewState; ///<The receiver's scratch dictionary
 
 //Rendering
+- (void)update;
 - (void)drawBlackScreenOfDeath:(NSString*)message;
 
 //Pixel format attributes
