@@ -17,34 +17,55 @@ end
 
 ###### Add O3Vector methods
 mat_regex = /O3Vec(\d)([rfd])/
+vec_defs = lambda { |c,count,type_chr|
+  c.class_eval do
+	  @@mCount = count
+	  @@mEleTypeChr = type_chr
+
+		def count
+			@@mCount
+		end
+
+		def ele_type_chr
+			@@mEleTypeChr
+		end
+
+		def to_a
+		  self.v
+	  end
+	end
+
+	def to_s
+	  self.to_a.to_s
+  end
+
+  def [](idx)
+    self.v[idx]
+  end
+
+  def []=(idx,val)
+    self.v[idx]=val
+  end
+
+  def to_a
+    self.v
+  end
+
+  Array.class_eval do
+      define_method(("to_"+c.name[7..-1]).downcase.intern) do
+        c.new(self)
+      end
+    end
+}
+
+vec_defs.call O3Translation3,3,"d"
+vec_defs.call O3Translation2,2,"d"
+vec_defs.call O3Scale3,3,"d"
+vec_defs.call O3Scale2,2,"d"
+
 ObjectSpace.each_object(Class) {|c|
 	if c.name =~ mat_regex then
-		c.class_eval do
-		  @@mCount = $1.to_i
-		  @@mEleTypeChr = $2
-		  
-			def count
-				@@mCount
-			end
-			
-			def ele_type_chr
-				@@mEleTypeChr
-			end
-			
-			def to_a
-			  self.v
-		  end
-		end
-		
-		def to_s
-		  self.to_a.to_s
-	  end
-		
-    Array.class_eval do
-        define_method(("to_"+c.name[7..-1]).downcase.intern) do
-          c.new(self)
-        end
-      end
+	  vec_defs.call c,$1.to_i,$2
 	end
 }
 
@@ -74,6 +95,27 @@ def O3Rotation3
   end
 end
 
+Array.class_eval do
+  define_method("to_rot") do
+    half_x=self[0]*0.5
+    half_y=self[1]*0.5
+    half_z=self[2]*0.5
+    c1 = cos(half_y);
+    s1 = sin(half_y);
+    c2 = cos(half_z);
+    s2 = sin(half_z);
+    c3 = cos(half_x);
+    s3 = sin(half_x);
+    c1c2 = c1*c2;
+    s1s2 = s1*s2;
+    x = c1c2*s3  + s1s2*c3;
+    y = s1*c2*c3 + c1*s2*s3;
+    z = c1*s2*c3 - s1*c2*s3;
+    w = c1c2*c3  - s1s2*s3;
+    O3Rotation3.new([x,y,z,w])
+  end
+end
+
 
 ###### Add O3Matrix methods
 mat_regex = /O3Mat(\d)x(\d)([rfd])/
@@ -86,38 +128,38 @@ ObjectSpace.each_object(Class) {|c|
 			def rows
 				@@mRows
 			end
-			
+
 			def cols
 				@@mCols
 			end
-			
+
 			def ele_type_chr
 				@@mEleTypeChr
 			end
 		end
-		
+
 		def [](i,j)
       self.v[i+@@mRows*j]
     end
-    
+
     def []=(i,j,val)
       self.v[i+@@mRows*j]=val
     end
-    
+
     def row(r)
       Array.new(@@mCols) {|i| self[r,i]}
     end
-    
+
     def col(c)
       Array.new(@@mRows) {|i| self[i,r]}
     end
-    
+
     def to_s
       @@mRows.times {|r|
         puts "["+self.row(r).join(', ')+"]"
       }
     end
-		
+
     Array.class_eval do
         define_method(("to_"+c.name[7..-1]).downcase.intern) do
           c.new(self)

@@ -18,5 +18,11 @@
 + (void)stopFlyingLeft:(O3GLView*)view {       [[view viewState] removeObjectForKey:@"flyingLeft"];   }
 + (void)startFlyingRight:(O3GLView*)view {     [[view viewState] setObject:O3TrueObject() forKey:@"flyingRight"];   }
 + (void)stopFlyingRight:(O3GLView*)view {      [[view viewState] removeObjectForKey:@"flyingRight"];   }
++ (void)startFlyingDown:(O3GLView*)view {      [[view viewState] setObject:O3TrueObject() forKey:@"flyingDown"];   }
++ (void)stopFlyingDown:(O3GLView*)view {       [[view viewState] removeObjectForKey:@"flyingDown"];   }
++ (void)startFlyingUp:(O3GLView*)view {     [[view viewState] setObject:O3TrueObject() forKey:@"flyingUp"];   }
++ (void)stopFlyingUp:(O3GLView*)view {      [[view viewState] removeObjectForKey:@"flyingUp"];   }
++ (void)startFlyingFast:(O3GLView*)view {     [[view viewState] setObject:O3TrueObject() forKey:@"flyingFast"];   }
++ (void)stopFlyingFast:(O3GLView*)view {      [[view viewState] removeObjectForKey:@"flyingFast"];   }
 
 @end

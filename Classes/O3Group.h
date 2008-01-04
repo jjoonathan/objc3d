@@ -7,7 +7,7 @@
 //
 #import "O3Renderable.h"
 
-@protocol O3Group
+@protocol O3Group <O3Renderable>
 
 //Accessors
 - (void)addObject:(id<O3Renderable>*)aObject;

@@ -88,4 +88,7 @@ inline NSRect O3CenterSizeInRect(NSSize s, NSRect rect) {
 	return NSMakeRect(rect.origin.x+xpadding, rect.origin.y+ypadding, s.width, s.height);
 }
 
+#define O3CenterOfNSRect(rect) NSMakePoint(rect.origin.x+.5*rect.size.width,  rect.origin.y+.5*rect.size.height)
+#define O3CenterOfCGRect(rect) CGPointMake(rect.origin.x+.5*rect.size.width,  rect.origin.y+.5*rect.size.height)
+
 #include "O3Functions.hpp"

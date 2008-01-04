@@ -7,7 +7,8 @@
 //
 #import <Cocoa/Cocoa.h>
 #import "O3Renderable.h"
+#import "O3Locateable.h"
 
-@interface O3TestTet : NSObject <O3Renderable> {
+@interface O3TestTet : O3Locateable <O3Renderable> {
 }
 @end

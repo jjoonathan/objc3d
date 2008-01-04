@@ -146,7 +146,9 @@ inline void changed(O3Region* self) {
 	[mObjects makeObjectsPerformSelector:@selector(renderWithContext:) withObject:(id)context]; //Bad, but it should work. context isn't a real object.
 }
 
-- (void)tickWithContext:(O3RenderContext*)context {}
+- (void)tickWithContext:(O3RenderContext*)context {
+	[mObjects makeObjectsPerformSelector:@selector(renderWithContext:) withObject:(id)context]; //Bad, but it should work. context isn't a real object.
+}
 
 
 /************************************/ #pragma mark Notifications /************************************/

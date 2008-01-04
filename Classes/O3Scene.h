@@ -16,12 +16,10 @@
 	O3Group* mRootGroup; ///<User-visible internal organization of objects
 	BOOL mGroupsNeedUpdate; ///<The region tree has changed and the groups need to be updated
 	O3Region* mRootRegion; ///<User-visible organization of objects
-	NSLock* mRegionLock; ///<Weather or not mRootRegion can be modified
 	NSMutableDictionary* mSceneState; ///<A scratch dictionary that contains stuff about the scene (maybe a history of framerate or whatever). *Will* be constant over the life of the scene.
 }
 //Region
 - (O3Region*)rootRegion; ///<@note bu sure to obey rootRegionLock
-- (NSLock*)rootRegionLock; ///<Always lock this when using rootRegion. This can be depended on to be invariant for each O3Scene (so you can cache it)
 - (void)setRootRegion:(O3Region*)newRoot;
 
 //Rendering

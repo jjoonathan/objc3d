@@ -6,6 +6,7 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3TestTet.h"
+#import "O3Camera.h"
 
 float O3TestTetVerts[3*4] = {0,0,0,
                             1,0,0,
@@ -27,6 +28,9 @@ UInt8 O3TestTetIndicies[3*4] = {1,2,3,
 - (void)renderWithContext:(O3RenderContext*)ctx {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);
+	Space3* cspace = [ctx->camera space];
+	O3Mat4x4d mat = [self matrixToSpace:cspace];
+	glLoadMatrixd(mat.Data());
 	glColorPointer(4, GL_FLOAT, 4*sizeof(float), O3TestTetColors);
 	glVertexPointer(3, GL_FLOAT, 3*sizeof(float), O3TestTetVerts);
 	glDrawElements(GL_TRIANGLES, 4, GL_UNSIGNED_BYTE, (GLvoid*)O3TestTetIndicies);

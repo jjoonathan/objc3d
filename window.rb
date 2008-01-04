@@ -4,3 +4,4 @@
 @w.setContentView @o
 @w.makeFirstResponder @o
 @o.installDefaultViewController
+@o.setDefaultScene

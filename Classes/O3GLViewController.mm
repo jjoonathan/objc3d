@@ -7,6 +7,7 @@
 //
 #import "O3GLViewController.h"
 #import "O3GLViewActionCollection.h"
+#import "O3GLView.h"
 
 @implementation O3GLViewController
 /************************************/ #pragma mark Init and Dealloc /************************************/
@@ -18,6 +19,7 @@ inline void initP(O3GLViewController* self) {
 
 - (id)init {
 	O3SuperInitOrDie(); initP(self);
+	[self setDefaultActions];
 	return self;
 }
 
@@ -84,7 +86,7 @@ static BOOL lookupAndSend(O3GLViewController* self, NSDictionary* dict, id targe
 	O3LogDebug(@"Dispatching method %@ from dict %@ to %@ for event named %@", actionStr, self->mKeyDownActions==dict?@"mKeyDownActions":(self->mKeyUpActions==dict?@"mKeyUpActions":dict), target, name);
 	if (!actionStr) return NO;
 	SEL action = NSSelectorFromString(actionStr);
-	[target performSelector:action withObject:self];
+	[target performSelector:action withObject:self->mView];
 	return YES;
 }
 
@@ -170,6 +172,23 @@ static NSString* nameForEvent(NSEvent* event) {
 	return @"UnknownKey";
 }
 
+- (void)setDefaultActions {
+	[mKeyDownActions setObject:@"startFlyingLeft:" forKey:@"a"];
+	[mKeyUpActions setObject:@"stopFlyingLeft:" forKey:@"a"];
+	[mKeyDownActions setObject:@"startFlyingRight:" forKey:@"e"];
+	[mKeyUpActions setObject:@"stopFlyingRight:" forKey:@"e"];
+	[mKeyDownActions setObject:@"startFlyingForward:" forKey:@","];
+	[mKeyUpActions setObject:@"stopFlyingForward:" forKey:@","];
+	[mKeyDownActions setObject:@"startFlyingBackward:" forKey:@"o"];
+	[mKeyUpActions setObject:@"stopFlyingBackward:" forKey:@"o"];
+	[mKeyDownActions setObject:@"startFlyingUp:" forKey:@"p"];
+	[mKeyUpActions setObject:@"stopFlyingUp:" forKey:@"p"];
+	[mKeyDownActions setObject:@"startFlyingDown:" forKey:@"u"];
+	[mKeyUpActions setObject:@"stopFlyingDown:" forKey:@"u"];
+	[mKeyDownActions setObject:@"startFlyingFast:" forKey:@"NSShiftKey"];
+	[mKeyUpActions setObject:@"stopFlyingFast:" forKey:@"NSShiftKey"];
+}
+
 #define luas(dict, name) lookupAndSend(self, dict, mTarget, name)
 
 ///Forwards the action up the responder chain if no action is defined, but otherwise calls the selector it found on %target. The sender argument is the view, not the controller.
@@ -182,6 +201,10 @@ static NSString* nameForEvent(NSEvent* event) {
 - (void)keyUp:(NSEvent*)event {
 	if ([event isARepeat]) return;
 	if (!luas(mKeyUpActions, nameForEvent(event))); // [super keyDown:event];
+}
+
+- (void)mouseDown:(NSEvent*)e {
+	[mView toggleMouseLock];
 }
 
 - (void)flagsChanged:(NSEvent *)theEvent {

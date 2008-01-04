@@ -205,6 +205,7 @@
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
+		FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB959A80D2DCC650083B948 /* ApplicationServices.framework */; };
 		FCC1E92A0C198A3E0041415C /* ObjC3D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
 		FCC1E9860C198AB50041415C /* ObjC3D.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */; };
 		FCCF22640CA6D98400B0A16B /* O3DirectoryResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FCCF22620CA6D98400B0A16B /* O3DirectoryResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -527,6 +528,7 @@
 		FCB055E60BC3D22D00F4B778 /* O3Protocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Protocols.h; sourceTree = "<group>"; };
 		FCB811130CA5F9A700DC8387 /* O3ResManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ResManager.h; sourceTree = "<group>"; };
 		FCB811140CA5F9A700DC8387 /* O3ResManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ResManager.mm; sourceTree = "<group>"; };
+		FCB959A80D2DCC650083B948 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		FCBE37E80AFE2EF7000D82C8 /* O3Box.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Box.h; sourceTree = "<group>"; };
 		FCBE37E90AFE2EF7000D82C8 /* O3Box.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = O3Box.hpp; sourceTree = "<group>"; };
 		FCC7101E0AFEDAC000B43EB5 /* O3Sphere.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3Sphere.h; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				FC2C1D470C125FDB0084A599 /* OpenGL.framework in Frameworks */,
 				FC2C1D480C125FDB0084A599 /* Carbon.framework in Frameworks */,
 				FC63EF800CFA22F200325C54 /* Log4Cocoa.framework in Frameworks */,
+				FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -934,6 +937,7 @@
 		FC3AA9490B3728110033122E /* Apple */ = {
 			isa = PBXGroup;
 			children = (
+				FCB959A80D2DCC650083B948 /* ApplicationServices.framework */,
 				FC63E1110CF1C6AE00325C54 /* RubyCocoa.framework */,
 				FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */,
 				FC3AABD70B372A710033122E /* Carbon.framework */,

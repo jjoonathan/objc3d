@@ -28,7 +28,8 @@ namespace ObjC3D {
 
 		private: //Common Init
 			void Init() {
-				mPseudohash = mSuperPseudohash = 0;
+				mPseudohash = 1;
+				mSuperPseudohash = 0;
 			}
 
 		public: //Init
@@ -63,7 +64,7 @@ namespace ObjC3D {
 
 		protected: //Private
 			virtual void UpdateRootspaceTransform() const;
-			virtual void Modified() const {mPseudohash++; if (mSuperPseudohash) mSuperPseudohash--;}
+			virtual void Modified() const {mPseudohash++; if (mSuperPseudohash) mSuperPseudohash=0;}
 
 		public: //Operators
 			Space3& operator=(const Space3& other);

@@ -10,6 +10,40 @@
 #import "O3Camera.h"
 #import "O3Scene.h"
 #import "O3GLViewController.h"
+#import <ApplicationServices/ApplicationServices.h>
+
+CGDirectDisplayID NSViewDisplayID(NSView* self) {
+	return (CGDirectDisplayID)[[[[[self window] screen] deviceDescription] objectForKey:@"NSScreenNumber"] unsignedIntValue];
+}
+
+void O3SetMouseLocation(CGPoint pt) {
+	CGWarpMouseCursorPosition(pt);
+}
+
+inline CGPoint O3TranslatePointNSToCGScreen(NSPoint pt, NSView* view) {
+	NSRect sf = [[[view window] screen] frame];
+	float h = sf.size.height;
+	return CGPointMake(pt.x, h-pt.y);
+}
+
+inline NSPoint O3TranslatePointCGToNSScreen(CGPoint pt, NSView* view) {
+	NSRect sf = [[[view window] screen] frame];
+	float h = sf.size.height;
+	return NSMakePoint(pt.x, h-pt.y);
+}
+
+CGPoint O3ScreenCenterOfView(NSView* view) {
+	NSPoint centerInSelfCoords = O3CenterOfNSRect([view bounds]);
+	NSPoint c = [[view window] convertBaseToScreen:[view convertPoint:centerInSelfCoords toView:nil]];
+	return O3TranslatePointNSToCGScreen(c,view);
+}
+
+O3Vec2d O3CenterMouse(NSView* view, NSEvent* e) {
+	CGPoint pt = !e? O3TranslatePointNSToCGScreen([NSEvent mouseLocation], view) : CGPointMake(0,0);
+	CGPoint center = O3ScreenCenterOfView(view);
+	O3SetMouseLocation(center);
+	return e? O3Vec2d([e deltaX], [e deltaY]) : O3Vec2d(pt.x-center.x, pt.y-center.y);
+}
 
 @implementation O3GLView
 
@@ -49,8 +83,10 @@ inline void initP(O3GLView* self) {
 	self->mStereoBuffer = NO;
 	self->mNoRecovery = NO;
 	self->mContextNeedsUpdate = YES;
+	self->mViewState = [[NSMutableDictionary alloc] init];
 	[self setSceneName:@"defaultScene"];
 	[self setUpdateInterval:1/35];
+	[[self window] setAcceptsMouseMovedEvents:YES];
 }
 
 - (O3GLView*)initWithFrame:(NSRect)frameRect {
@@ -60,11 +96,12 @@ inline void initP(O3GLView* self) {
 }
 
 - (void)dealloc {
+	[mViewState release];
 	[mCamera release];
 	[mSceneName release];
 	[mScene release];
 	[mContext release];
-	[mFrameTimer release];
+	[self unlockMouse];
 	O3SuperDealloc();
 }
 
@@ -155,6 +192,54 @@ inline void initP(O3GLView* self) {
 	return self;
 }
 
+/************************************/ #pragma mark Mouse /************************************/
+- (void)lockMouse {
+	if (mOwnsMouse) return;
+	mOwnsMouse = YES;
+	CGDisplayHideCursor(NSViewDisplayID(self));
+	O3CenterMouse(self,nil);
+}
+
+- (void)unlockMouse {
+	if (!mOwnsMouse) return;
+	mOwnsMouse = NO;
+	CGDisplayShowCursor(NSViewDisplayID(self));
+	O3CenterMouse(self,nil);
+}
+
+- (void)lockedMouseMoved:(O3Vec2d)amount {
+	O3LogDebug(@"Locked mouse moved: {%f,%f}",amount.X(),amount.Y());
+}
+
+inline void mouseMoved(O3GLView* self, NSEvent* e) {
+	if (self->mOwnsMouse) {
+		[self lockedMouseMoved:O3CenterMouse(self,e)];
+	}
+}
+
+- (void)mouseMoved:(NSEvent*)e {
+	mouseMoved(self, e);
+	[super mouseMoved:e];
+}
+
+- (void)mouseDragged:(NSEvent*)e {
+	mouseMoved(self, e);
+	[super mouseDragged:e];
+}
+
+- (BOOL)mouseLocked {
+	return mOwnsMouse;
+}
+
+- (void)toggleMouseLock {
+	if (mOwnsMouse) [self unlockMouse];
+	else            [self lockMouse];
+}
+
+- (void)viewDidMoveToWindow {
+	[[self window] setAcceptsMouseMovedEvents:YES];
+}
+
 /************************************/ #pragma mark Accessors /************************************/
 - (void)installDefaultViewController {
 	O3LogWarn(@"This method causes a leak. Don't use in real code.");
@@ -240,6 +325,8 @@ inline void initP(O3GLView* self) {
 - (void)drawRect:(NSRect)rect {
 	if (mScene) {
 		O3RenderContext ctx;
+		ctx.objCCompatibility = [NSNull class];
+		ctx.view = self;
 		ctx.camera = [self camera];
 		if (mNotFirstFrame) {
 			ctx.elapsedTime = 0;
@@ -250,6 +337,10 @@ inline void initP(O3GLView* self) {
 			O3StartTimer(mFrameTimer);
 		}
 		[[self context] makeCurrentContext];
+
+		[mCamera tickWithContext:&ctx];
+		[mScene tickWithContext:&ctx];
+
 		float r=0.; float g=0.; float b=0.; float a=1.;
 		[mBackgroundColor getRed:&r green:&g blue:&b alpha:&a];
 		glClearColor(r,g,b,a);

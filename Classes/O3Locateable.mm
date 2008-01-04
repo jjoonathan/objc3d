@@ -67,9 +67,9 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 - (void)translateInObjectSpaceBy:(O3Translation3)trans {
 	O3Locateable_UpdateSpaceIfNecessary(self);
 	const O3Mat4x4d themat = mSpace.MatrixToSuper();
-	mTranslation += O3Vec3d(themat*O3Vec4d(trans));
+	O3Vec3d corrtrans = themat*O3Vec4d(trans);
+	mTranslation += corrtrans;
 	mSpaceNeedsUpdate = YES;
-	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (void)scaleBy:(O3Scale3)scale {
@@ -129,7 +129,8 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 
 - (O3Mat4x4d)matrixToSpace:(Space3*)targetspace {
 	O3Locateable_UpdateSpaceIfNecessary(self);
-	return mSpace.MatrixToSpace(targetspace);
+	O3Mat4x4d themat = mSpace.MatrixToSpace(targetspace);
+	return themat;
 }
 
 - (O3Mat4x4d)matrixToSpaceOfLocateable:(O3Locateable*)locateable {

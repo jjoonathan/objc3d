@@ -25,12 +25,12 @@ O3Transformation3& O3Transformation3::Set(const O3Scale3& scale) {
 	real x = scale.GetX();
 	real y = scale.GetY();
 	real z = scale.GetZ();
-	MyTransform[0][0] = x;
-	MyTransform[1][1] = y;
-	MyTransform[2][2] = z;
-	MyInverseTransform[0][0] = -x;
-	MyInverseTransform[1][1] = -y;
-	MyInverseTransform[2][2] = -z;
+	MyTransform(0,0) = x;
+	MyTransform(1,1) = y;
+	MyTransform(2,2) = z;
+	MyInverseTransform(0,0) = -x;
+	MyInverseTransform(1,1) = -y;
+	MyInverseTransform(2,2) = -z;
 	return *this;
 }
 
@@ -58,12 +58,12 @@ O3Transformation3& O3Transformation3::Set(const O3Translation3& trans) {
 	real x = trans.GetX();
 	real y = trans.GetY();
 	real z = trans.GetZ();
-	MyTransform[0][3] = x;
-	MyTransform[1][3] = y;
-	MyTransform[2][3] = z;
-	MyInverseTransform[0][3] = -x;
-	MyInverseTransform[1][3] = -y;
-	MyInverseTransform[2][3] = -z;
+	MyTransform(0,3) = x;
+	MyTransform(1,3) = y;
+	MyTransform(2,3) = z;
+	MyInverseTransform(0,3) = -x;
+	MyInverseTransform(1,3) = -y;
+	MyInverseTransform(2,3) = -z;
 	return *this;
 }
 
@@ -75,9 +75,9 @@ O3Transformation3& O3Transformation3::Set(const O3Transformation3& transf) {
 
 O3Transformation3& O3Transformation3::Set(const O3Mat3x3r ob, O3Translation3 tr) {
 	MyTransform.Set(ob);
-	MyTransform[0][2] = tr.GetX();
-	MyTransform[1][2] = tr.GetX();
-	MyTransform[2][2] = tr.GetX();
+	MyTransform(0,2) = tr.GetX();
+	MyTransform(1,2) = tr.GetX();
+	MyTransform(2,2) = tr.GetX();
 	MyInverseTransform = MyTransform.GetInverted();
 	return *this;
 }

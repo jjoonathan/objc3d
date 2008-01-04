@@ -5,6 +5,7 @@
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
 #import "O3Camera.h"
+#import "O3GLView.h"
 #define mLocation (*(self->mpLocation))
 #define mDirection (*(self->mpDirection))
 #define mUp (*(self->mpUp))
@@ -120,6 +121,18 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixd(O3Camera_postProjectiveSpace(self)->MatrixFromSuper());
 	glMatrixMode(GL_MODELVIEW);
+}
+
+- (void)tickWithContext:(O3RenderContext*)context {
+	double t = context->elapsedTime * 1/3;
+	NSDictionary* d = [context->view viewState];
+	if ([d objectForKey:@"flyingFast"]) t *= 10;
+	if ([d objectForKey:@"flyingForward"])  {[self translateInObjectSpaceBy:O3Translation3(0,0,t)];}
+	if ([d objectForKey:@"flyingBackward"]) {[self translateInObjectSpaceBy:O3Translation3(0,0,-t)]; }
+	if ([d objectForKey:@"flyingLeft"])     {[self translateInObjectSpaceBy:O3Translation3(t,0,0)];}
+	if ([d objectForKey:@"flyingRight"])    {[self translateInObjectSpaceBy:O3Translation3(-t,0,0)]; }
+	if ([d objectForKey:@"flyingUp"])       {[self translateInObjectSpaceBy:O3Translation3(0,-t,0)]; }
+	if ([d objectForKey:@"flyingDown"])     {[self translateInObjectSpaceBy:O3Translation3(0,t,0)];}
 }
 
 @end

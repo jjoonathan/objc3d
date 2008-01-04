@@ -45,6 +45,7 @@ using namespace ObjC3D::Math;
 - (void)setViewMatrix; ///<Multiplies the current matrix by the receiver's view matrix @warning This method is a candidate for deprication.
 - (void)setProjectionMatrix; ///<Multiplies the current matrix by the receiver's projection matrix @warning This method is a candidate for deprication.
 //- (void)debugDraw; ///<Draw a wireframe model of the receiver
+- (void)tickWithContext:(O3RenderContext*)context;
 @end
 
 @interface NSView (AspectRatio)

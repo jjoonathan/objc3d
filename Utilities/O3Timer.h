@@ -28,7 +28,7 @@ static inline double O3TimerRawToSecondsMultiplier() {
 	if (mult==0) {
 		mach_timebase_info_data_t info;
 		mach_timebase_info(&info);
-		mult = (double)info.numer / (double)info.denom;
+		mult = 1e-9 * (double)info.numer / (double)info.denom;
 	}
 	return mult;
 }

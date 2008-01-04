@@ -32,6 +32,7 @@
 	BOOL mStereoBuffer:1;
 	BOOL mNoRecovery:1;
 	BOOL mContextNeedsUpdate:1;
+	BOOL mOwnsMouse:1; ///<YES if the receiver has made the mouse invisible and centered it
 	
 	BOOL mNotFirstFrame:1;
 	NSTimer* mUpdateTimer;
@@ -44,6 +45,12 @@
 //Convenience
 - (void)installDefaultViewController;
 - (O3GLViewController*)controller;
+- (void)toggleMouseLock;
+
+//Mouse
+- (void)lockMouse;
+- (void)unlockMouse;
+- (BOOL)mouseLocked;
 
 //Attributes
 - (O3ResManager*)resourceManager;

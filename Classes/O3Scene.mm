@@ -17,7 +17,6 @@ inline void initP(O3Scene* self) {
 
 - (O3Scene*)init {
 	O3SuperInitOrDie(); initP(self);
-	mRegionLock = [NSLock new];
 	O3Region* rr = [[O3Region alloc] init];
 	[self setRootRegion:rr];
 	[rr release];
@@ -26,7 +25,6 @@ inline void initP(O3Scene* self) {
 
 - (O3Scene*)initWithRegion:(O3Region*)root {
 	O3SuperInitOrDie(); initP(self);
-	mRegionLock = [NSLock new];
 	[self setRootRegion:root];
 	return self;
 }
@@ -48,7 +46,6 @@ inline void initP(O3Scene* self) {
 }
 
 - (void)dealloc {
-	[mRegionLock release];
 	[mRootGroup release];
 	[mRootRegion release];
 	[mSceneState release];
@@ -66,22 +63,12 @@ inline void initP(O3Scene* self) {
 }
 
 - (void)setRootRegion:(O3Region*)newRoot {
-	[mRegionLock lock];
 	O3Assign(newRoot, mRootRegion);
 	[newRoot setScene:self];
-	[mRegionLock unlock];
-}
-
-- (NSLock*)rootRegionLock {
-	return mRegionLock;
 }
 
 /************************************/ #pragma mark Private /************************************/
 - (void)subregionChanged:(O3Region*)region {
-	if ([mRegionLock tryLock]) {
-		O3LogWarn(@"Subregion changed while the region tree was locked!");
-		[mRegionLock unlock];
-	}
 	mGroupsNeedUpdate = YES;
 }
 
@@ -95,12 +82,11 @@ inline void initP(O3Scene* self) {
 
 /************************************/ #pragma mark Rendering /************************************/
 - (void)renderWithContext:(O3RenderContext*)context {
-	[mRegionLock lock];
 	[[self rootGroup] renderWithContext:context];
-	[mRegionLock unlock];
 }
 
 - (void)tickWithContext:(O3RenderContext*)context {
+	[[self rootGroup] tickWithContext:context];
 }
 
 /************************************/ #pragma mark Convenience /************************************/
