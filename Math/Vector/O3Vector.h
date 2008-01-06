@@ -43,6 +43,7 @@ public: //Setters
 	O3Vec_T& SetValue(NSValue* val);
 	template <typename TYPE2>			 O3Vec_T& Set(const TYPE2 *array, unsigned arraylen);
 	template <typename TYPE2, int SIZE2> O3Vec_T& Set(const O3Vec<TYPE2, SIZE2>& v);
+	template <typename TYPE2>			 O3Vec_T& set_array(const TYPE2 array, unsigned arraylen=NUMBER);
 	
 public: //Methods and Method-accessors
 	O3Vec_T& Zero();								///<Fills the vector with zeros.
@@ -101,7 +102,9 @@ public: //Overloaded Operators
 	O3Vec_T& operator-=(const O3Vec<TYPE, NUMBER>& v);		///<Subtracts a vector component-wise from the receiver.
 	O3Vec_T& operator*=(const O3Vec<TYPE, NUMBER>& v);		///<Component-wise multiplies the receiver by a vector.
 	O3Vec_T& operator/=(const O3Vec<TYPE, NUMBER>& v);		///<Component-wise divides the receiver by a vector.
+	O3Vec_T& operator+=(const TYPE* carr);		///<Adds a vector component-wise to the receiver.
 	template<typename TYPE2> O3Vec_T& operator=(const O3Vec<TYPE2, NUMBER>& v2);		///<Assignment operator.
+	template <class T2> bool equals(const T2) const;					///<Equality operator tests exact equality. Use IsEqualTo(O3Vec<TYPE, NUMBER> other, TYPE tolerance = epsilon(TYPE)) to test for similarity.
 	
 public: //Accessors
 	TYPE* Data() {return v;}			///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED UNLESS ABSOLUTELY NECESSARY.

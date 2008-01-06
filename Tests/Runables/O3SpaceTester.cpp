@@ -9,9 +9,9 @@ using namespace ObjC3D::Math;
 
 int main(int argc, char *argv[]) {
 	TRSSpace3 space1(O3Translation3(1,1,1));
-	Space3 space2(O3Translation3(1,1,1), &space1);
-	Space3 space3(O3Translation3(1,1,1), &space2);
-	Space3 space4(O3Translation3(1,1,1), &space3);
+	O3Space3 space2(O3Translation3(1,1,1), &space1);
+	O3Space3 space3(O3Translation3(1,1,1), &space2);
+	O3Space3 space4(O3Translation3(1,1,1), &space3);
 	TRSSpace3 space5(O3Translation3(0,0,0), O3Rotation3(O3DegreesToRadians(90),0,0), O3Scale3(1,1,1), &space4);
 	O3Mat4x4r trans = space5.MatrixToRoot();
 	space1 += O3Translation3(1,1,1);

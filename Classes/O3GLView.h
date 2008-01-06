@@ -33,6 +33,7 @@
 	BOOL mNoRecovery:1;
 	BOOL mContextNeedsUpdate:1;
 	BOOL mOwnsMouse:1; ///<YES if the receiver has made the mouse invisible and centered it
+	BOOL mIgnoreNextRot:1; //If the mouse appears to "jump," so does the view, so the jumps need to be ignored
 	
 	BOOL mNotFirstFrame:1;
 	NSTimer* mUpdateTimer;

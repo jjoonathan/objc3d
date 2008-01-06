@@ -198,6 +198,7 @@ inline void initP(O3GLView* self) {
 	mOwnsMouse = YES;
 	CGDisplayHideCursor(NSViewDisplayID(self));
 	O3CenterMouse(self,nil);
+	mIgnoreNextRot = YES;
 }
 
 - (void)unlockMouse {
@@ -208,7 +209,10 @@ inline void initP(O3GLView* self) {
 }
 
 - (void)lockedMouseMoved:(O3Vec2d)amount {
-	O3LogDebug(@"Locked mouse moved: {%f,%f}",amount.X(),amount.Y());
+	NSResponder* nr = [self nextResponder];
+	if (!mIgnoreNextRot && [nr respondsToSelector:@selector(lockedMouseMoved:)])
+		[(O3GLView*)nr lockedMouseMoved:amount];
+	mIgnoreNextRot = NO;
 }
 
 inline void mouseMoved(O3GLView* self, NSEvent* e) {
@@ -328,6 +332,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 		ctx.objCCompatibility = [NSNull class];
 		ctx.view = self;
 		ctx.camera = [self camera];
+		ctx.cameraSpace = [ctx.camera space];
 		if (mNotFirstFrame) {
 			ctx.elapsedTime = 0;
 			mNotFirstFrame = YES;
@@ -336,6 +341,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 			ctx.elapsedTime = O3ElapsedTime(mFrameTimer);
 			O3StartTimer(mFrameTimer);
 		}
+		[mCamera setProjectionMatrix];
 		[[self context] makeCurrentContext];
 
 		[mCamera tickWithContext:&ctx];
@@ -344,6 +350,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 		float r=0.; float g=0.; float b=0.; float a=1.;
 		[mBackgroundColor getRed:&r green:&g blue:&b alpha:&a];
 		glClearColor(r,g,b,a);
+		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		
 		[mScene renderWithContext:&ctx];

@@ -12,7 +12,7 @@
 namespace ObjC3D {
 	namespace Math {
 
-		class TRSSpace3 : public Space3 {
+		class TRSSpace3 : public O3Space3 {
 		protected:
 			O3Translation3 mTranslation;
 			O3Rotation3 mRotation;
@@ -22,17 +22,17 @@ namespace ObjC3D {
 
 		public: //Init
 			void Init();
-			TRSSpace3(Space3* supers = NULL) 								{Init(); Space3::SetSuperspace(supers); Space3::SetSuperspace(supers);}
-			TRSSpace3(const TRSSpace3& other, Space3* supers = NULL) 			{Init(); Set(other); Space3::SetSuperspace(supers);}
-			TRSSpace3(const O3Translation3& trans, const O3Rotation3& rot, const O3Scale3& scale, Space3* supers = NULL) {Init(); Set(trans, rot, scale); Space3::SetSuperspace(supers);}
-			TRSSpace3(const O3Translation3& trans, Space3* supers = NULL) : mTranslation(trans) {Init(); Space3::SetSuperspace(supers);}
-			TRSSpace3(const O3Rotation3& rot, Space3* supers = NULL) : mRotation(rot) {Init(); Space3::SetSuperspace(supers);}
-			TRSSpace3(const O3Scale3& scale, Space3* supers = NULL) : mScale(scale) {Init(); Space3::SetSuperspace(supers);}
+			TRSSpace3(O3Space3* supers = NULL) 								{Init(); O3Space3::SetSuperspace(supers); O3Space3::SetSuperspace(supers);}
+			TRSSpace3(const TRSSpace3& other, O3Space3* supers = NULL) 			{Init(); Set(other); O3Space3::SetSuperspace(supers);}
+			TRSSpace3(const O3Translation3& trans, const O3Rotation3& rot, const O3Scale3& scale, O3Space3* supers = NULL) {Init(); Set(trans, rot, scale); O3Space3::SetSuperspace(supers);}
+			TRSSpace3(const O3Translation3& trans, O3Space3* supers = NULL) : mTranslation(trans) {Init(); O3Space3::SetSuperspace(supers);}
+			TRSSpace3(const O3Rotation3& rot, O3Space3* supers = NULL) : mRotation(rot) {Init(); O3Space3::SetSuperspace(supers);}
+			TRSSpace3(const O3Scale3& scale, O3Space3* supers = NULL) : mScale(scale) {Init(); O3Space3::SetSuperspace(supers);}
 
 		public: //Inspectors
 			const O3Mat4x4d& MatrixFromSuper() const; ///<Gets the matrix that transforms from the receiver's superspace to the receiver's space
 			const O3Mat4x4d& MatrixFromRoot() const;  ///<Gets the matrix that transforms from the root space to the receiver's space
-			O3Mat4x4d MatrixToSpace(const Space3& other) const; ///<Gets the matrix that transforms from the receiver's space to other's space
+			O3Mat4x4d MatrixToSpace(const O3Space3& other) const; ///<Gets the matrix that transforms from the receiver's space to other's space
 			const O3Mat4x4d& MatrixToRoot() const; ///<Gets the matrix that transforms from the receiver's space to the root space
 			const O3Mat4x4d& MatrixToSuper() const; ///<Gets the matrix that transforms from the receiver's space to its superspace
 				
@@ -54,9 +54,9 @@ namespace ObjC3D {
 
 		protected: //Private (just call super)
 			void UpdateSuperspaceTransform() const;
-			inline void UpdateRootspaceTransform() const {UpdateSuperspaceTransform(); Space3::UpdateRootspaceTransform();};
-			inline void Modified() const {mTRSPseudohash++; Space3::Modified();};
-			inline bool IsSame(const Space3* other) const {return this==other;}
+			inline void UpdateRootspaceTransform() const {UpdateSuperspaceTransform(); O3Space3::UpdateRootspaceTransform();};
+			inline void Modified() const {mTRSPseudohash++; O3Space3::Modified();};
+			inline bool IsSame(const O3Space3* other) const {return this==other;}
 
 		public: //Operators
 			TRSSpace3& operator+=(const O3Scale3& scale);
@@ -80,12 +80,12 @@ namespace ObjC3D {
 			TRSSpace3  operator-(const O3Translation3& trans) const
 				{TRSSpace3 to_return(*this); return to_return-=trans;}
 
-			bool operator==(const Space3& other) const {return Space3::operator==(other);}
+			bool operator==(const O3Space3& other) const {return O3Space3::operator==(other);}
 
 		public: //Other methods
-			bool Equals(const Space3& other, double tolerance = O3Epsilon(real)) const {return Space3::Equals(other, tolerance);}
-			bool IsEqual(const Space3& other, double tolerance = O3Epsilon(real)) const {return Space3::IsEqual(other, tolerance);}
-			bool IsValid(double tolerance = 1.0e-6) const {return Space3::IsValid(tolerance);}
+			bool Equals(const O3Space3& other, double tolerance = O3Epsilon(real)) const {return O3Space3::Equals(other, tolerance);}
+			bool IsEqual(const O3Space3& other, double tolerance = O3Epsilon(real)) const {return O3Space3::IsEqual(other, tolerance);}
+			bool IsValid(double tolerance = 1.0e-6) const {return O3Space3::IsValid(tolerance);}
 	};
 
 } // /Math

@@ -14,7 +14,7 @@ using namespace std;
 @implementation O3TestSpace
 
 - (void)testNestedTranslations {
-	Space3 space, space2;
+	O3Space3 space, space2;
 	space += O3Translation3(1,2,3);
 	space -= O3Translation3(1,2,3);
 	space2 = space2 + O3Translation3(1,2,3) - O3Translation3(1,2,3);
@@ -37,26 +37,26 @@ using namespace std;
 }
 
 - (void)testNestedTRS {
-	Space3 thespace;
+	O3Space3 thespace;
 	thespace += O3Translation3(2,10,10);
-	Space3 aspace(&thespace);
+	O3Space3 aspace(&thespace);
 	aspace += O3Rotation3(O3DegreesToRadians(90),0,0);
-	Space3 scalespace(O3Scale3(2,2,2), &aspace);
-	Space3 otherspace(O3Translation3(1,1,1), NULL);
+	O3Space3 scalespace(O3Scale3(2,2,2), &aspace);
+	O3Space3 otherspace(O3Translation3(1,1,1), NULL);
 	STAssertTrue(aspace.IsValid(1.0e-5), @"Migrated CPTAssertion failed, look at the source.");	
 }
 
 - (void)testDeepNest {
-	Space3 space1(O3Translation3(1,1,1), NULL);
-	Space3 space2(O3Translation3(1,1,1), &space1);
-	Space3 space3(O3Translation3(1,1,1), &space2);
-	Space3 space4(O3Translation3(1,1,1), &space3);
-	Space3 space5(O3Translation3(1,1,1), &space4);
-	Space3 space6(O3Translation3(1,1,1), &space5);
-	Space3 space7(O3Translation3(1,1,1), &space6);
-	Space3 space8(O3Translation3(1,1,1), &space7);
-	Space3 space9(O3Translation3(1,1,1), &space8);
-	Space3 space10(O3Translation3(1,1,1), &space9);
+	O3Space3 space1(O3Translation3(1,1,1), NULL);
+	O3Space3 space2(O3Translation3(1,1,1), &space1);
+	O3Space3 space3(O3Translation3(1,1,1), &space2);
+	O3Space3 space4(O3Translation3(1,1,1), &space3);
+	O3Space3 space5(O3Translation3(1,1,1), &space4);
+	O3Space3 space6(O3Translation3(1,1,1), &space5);
+	O3Space3 space7(O3Translation3(1,1,1), &space6);
+	O3Space3 space8(O3Translation3(1,1,1), &space7);
+	O3Space3 space9(O3Translation3(1,1,1), &space8);
+	O3Space3 space10(O3Translation3(1,1,1), &space9);
 	O3Mat4x4r trans = space10.MatrixToRoot();
 	space1 += O3Translation3(1,1,1);
 	STAssertTrue(!(trans==space10.MatrixToRoot()), @"Migrated CPTAssertion failed, look at the source.");
@@ -67,9 +67,9 @@ using namespace std;
 - (void)testTRSSpace {
 	TRSSpace3 space1(O3Translation3(1,2,3));
 	cout<<space1.MatrixFromSuper();
-	Space3 space2(O3Translation3(1,1,1), &space1);
-	Space3 space3(O3Translation3(1,1,1), &space2);
-	Space3 space4(O3Translation3(1,1,1), &space3);
+	O3Space3 space2(O3Translation3(1,1,1), &space1);
+	O3Space3 space3(O3Translation3(1,1,1), &space2);
+	O3Space3 space4(O3Translation3(1,1,1), &space3);
 	TRSSpace3 space5(O3Translation3(0,0,0), O3Rotation3(O3DegreesToRadians(90),0,0), O3Scale3(1,1,1), &space4);
 	O3Mat4x4r trans = space5.MatrixToRoot();
 	space1 += O3Translation3(1,1,1);

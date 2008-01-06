@@ -5,11 +5,14 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+#import "O3Space.h"
 @class O3Camera, O3GLView;
+
 typedef struct {
 	Class objCCompatibility;
 	O3GLView* view;
 	O3Camera* camera;
+	O3Space3*   cameraSpace;
 	double elapsedTime; ///<The time elapsed since the last frame. Note that elapsedTime is in "seconds," but may be positive, 0, or negative (you may want to pause or rewind, so to speak.)
 } O3RenderContext;
 

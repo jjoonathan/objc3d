@@ -18,7 +18,7 @@ using namespace ObjC3D::Math;
 	O3Translation3 mTranslation;
 	O3Rotation3 mRotation;
 	O3Scale3 mScale;
-	Space3 mSpace;
+	O3Space3 mSpace;
 #else
 	float mTRS[9];
 	//Ah, screw it. The size'll be off in C.
@@ -29,28 +29,30 @@ using namespace ObjC3D::Math;
 - (void)encodeWithCoder:(NSCoder*)coder;
 
 #ifdef __cplusplus
-- (Space3*)space;		///<Returns the receiver's space (object space)
-- (Space3*)superspace;	///<Returns the receiver's superspace (space above object space)
+- (O3Space3*)space;		///<Returns the receiver's space (object space)
+- (O3Space3*)superspace;	///<Returns the receiver's superspace (space above object space)
 #endif
 - (void)setSuperspaceToThatOfLocateable:(O3Locateable*)locateable;
 
 - (void)rotateBy:(O3Rotation3)relativeRotation;
-- (void)translateBy:(O3Translation3)trans;
-- (void)translateInObjectSpaceBy:(O3Translation3)trans;
-- (void)scaleBy:(O3Scale3)scale;
+- (void)rotateOverOSAxis:(O3Vec3d)axis angle:(angle)theta; ///<Rotate over an object space axis
+- (void)rotateOverAxis:(O3Vec3d)axis angle:(angle)theta; ///<Rotate over an object space axis
+- (void)translateBy:(O3Vec3d)trans;
+- (void)translateInObjectSpaceBy:(O3Vec3d)trans;
+- (void)scaleBy:(O3Vec3d)scale;
 
 - (O3Rotation3)rotation;
 - (void)setRotation:(O3Rotation3)newRot;
-- (O3Translation3)translation; ///<The location of the receiver in its superspace
-- (void)setTranslation:(O3Translation3)newTrans;
-- (O3Scale3)scale;
-- (void)setScale:(O3Scale3)newScale;
+- (O3Vec3d)translation; ///<The location of the receiver in its superspace
+- (void)setTranslation:(O3Vec3d)newTrans;
+- (O3Vec3d)scale;
+- (void)setScale:(O3Vec3d)newScale;
 
-- (O3Mat4x4d)matrixToSpace:(Space3*)targetspace;
+- (O3Mat4x4d)matrixToSpace:(O3Space3*)targetspace;
 - (O3Mat4x4d)matrixToSpaceOfLocateable:(O3Locateable*)locateable;
-- (void)setMatrixToSpace:(Space3*)targetspace; ///<glLoads the matrix to transform from the receiver's space to targetspace
+- (void)setMatrixToSpace:(O3Space3*)targetspace; ///<glLoads the matrix to transform from the receiver's space to targetspace
 
-- (void)debugDrawIntoSpace:(const Space3*)intospace;
+- (void)debugDrawIntoSpace:(const O3Space3*)intospace;
 @end
 
 typedef O3Locateable<O3Renderable> O3SceneObj;

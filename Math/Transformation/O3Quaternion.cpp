@@ -13,6 +13,7 @@ using namespace std;
 
 /*******************************************************************/ #pragma mark Constructors /*******************************************************************/
 void O3Quaternion::Set(angle theta, O3Vec3d axis) {
+	axis.Normalize();
 	double half_theta = theta * .5;
 	double sin_half_theta = sin(half_theta);
 	W() = cos(half_theta);
@@ -221,10 +222,10 @@ O3Quaternion O3Quaternion::GetSlerped(scale amount, const O3Quaternion& q1, cons
 	}
 	
 	c2 *= flip;
-	return O3Quaternion(	c1*q1.GetX() + c2*q2.GetX(),
-						c1*q1.GetY() + c2*q2.GetY(),
-						c1*q1.GetZ() + c2*q2.GetZ(),
-						c1*q1.GetW() + c2*q2.GetW()  );
+	return O3Quaternion(  c1*q1.GetX() + c2*q2.GetX(),
+	                      c1*q1.GetY() + c2*q2.GetY(),
+	                      c1*q1.GetZ() + c2*q2.GetZ(),
+	                      c1*q1.GetW() + c2*q2.GetW()  );
 }
 
 O3Quaternion O3Quaternion::GetNlerped(scale amount, const O3Quaternion& q1, const O3Quaternion& q2) const {
@@ -249,17 +250,17 @@ O3Quaternion O3Quaternion::operator*(const O3Quaternion& q2) const {
 	double x, y, z, w, qx, qy, qz, qw;
 	GetA(&x, &y, &z, &w);
 	q2.GetA(&qx, &qy, &qz, &qw);
-	return O3Quaternion(	w*qx + w*qw + y*qz - z*qy,
-						w*qy + y*qw + z*qx - x*qz,
-						w*qz + z*qw + x*qy - y*qx,
-						w*qw - x*qx - y*qy - z*qz  );
+	return O3Quaternion(  w*qx + x*qw + y*qz - z*qy,
+						  w*qy + y*qw + z*qx - x*qz,
+						  w*qz + z*qw + x*qy - y*qx,
+						  w*qw - x*qx - y*qy - z*qz  );
 }
 
 O3Quaternion& O3Quaternion::operator*=(const O3Quaternion& q2) {
 	double x, y, z, w, qx, qy, qz, qw;
 	q2.GetA(&x, &y, &z, &w);			//Flipped, turning *= into premultiplication
 	GetA(&qx, &qy, &qz, &qw);
-	X() = w*qx + w*qw + y*qz - z*qy;
+	X() = w*qx + x*qw + y*qz - z*qy;
 	Y() = w*qy + y*qw + z*qx - x*qz;
 	Z() = w*qz + z*qw + x*qy - y*qx;
 	W() = w*qw - x*qx - y*qy - z*qz;

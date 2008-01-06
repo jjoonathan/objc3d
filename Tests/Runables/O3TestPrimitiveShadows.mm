@@ -20,7 +20,7 @@ using namespace ObjC3D::Math;
 
 typedef struct {
 	O3Mesh* mesh;
-	Space3  space;
+	O3Space3  space;
 	BOOL    casts_shadows;
 	double	minz, maxz;
 } RenderObj;
@@ -31,7 +31,7 @@ RenderObj* terr_obj;
 
 O3Camera* cam;
 O3Camera* shadowCamera;
-Space3* cameraSpace;
+O3Space3* cameraSpace;
 
 BOOL useShadowCameraAsMain;
 O3FramebufferObject* shadowFBO;
@@ -102,7 +102,7 @@ double DistanceBetweenBeamAndPlane() {
 
 void SetBeamOffset(double offs) {
 	beam_offset = offs;
-	Space3& objspace = renderObjects.at(1)->space;
+	O3Space3& objspace = renderObjects.at(1)->space;
 	objspace.Set();
 	objspace += O3Translation3(0,0,2 + offs);
 	//objspace += O3Scale3(1,1,1);

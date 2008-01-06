@@ -11,18 +11,24 @@ using namespace ObjC3D::Math;
 
 @interface O3Camera : O3Locateable {
 #ifdef __cplusplus
-	Space3* mPostProjectionSpace;
+	O3Space3* mPostProjectionSpace;
 #endif
 	BOOL mPostProjectionSpaceNeedsUpdate;
 	double mAspectRatio;	///<Width/height of whatever is being rendered into
 	double mNearPlane, mFarPlane;	///<The near and far plane distances (like min and max Z values)
 	double mFOVY;
+	float mFlySpeed; ///<Units/sec
+	float mRotRate;  ///<Rad/tick
 }
 //Init
 - (O3Camera*)initWithCoder:(NSCoder*)coder;
 - (void)encodeWithCoder:(NSCoder*)coder;
 
 //Accessors
+- (float)flySpeed; ///<Units/sec
+- (void)setFlySpeed:(float)fs;
+- (float)rotRate;  ///<Rad/tick
+- (void)setRotRate:(float)rr;
 - (double)aspectRatio;	///<Returns the aspect ratio (width/height) of the receiver.
 - (double)nearPlaneDistance; ///<Returns how far away the near plane is
 - (double)farPlaneDistance;  ///<Returns how far away the far plane is
@@ -32,10 +38,11 @@ using namespace ObjC3D::Math;
 - (O3Mat4x4d)projectionMatrix; ///<Returns the receiver's projection matrix
 - (O3Mat4x4d)viewProjectionMatrix; ///<Returns the receiver's projection matrix * its view matrix (view then project)
 #ifdef __cplusplus
-- (Space3*)postProjectionSpace; ///<Returns the post projective space (projection transform, superspace is camera space)
+- (O3Space3*)postProjectionSpace; ///<Returns the post projective space (projection transform, superspace is camera space)
 #endif
 
 //Setters
+- (void)rotateForMouseMoved:(O3Vec2d)amount;
 - (void)setAspectRatio:(double)newAR;	///<Sets the aspect ratio (width/height) of the receiver.
 - (void)setNearPlaneDistance:(double)newDist;	///<Sets how far away the near plane is
 - (void)setFarPlaneDistance:(double)newDist;	///<Sets how far away the far plane is @note This change will not take effect until -(void)set is called (usually in the next frame). This behavior is usually desired.
@@ -43,7 +50,7 @@ using namespace ObjC3D::Math;
 
 //Use
 - (void)setViewMatrix; ///<Multiplies the current matrix by the receiver's view matrix @warning This method is a candidate for deprication.
-- (void)setProjectionMatrix; ///<Multiplies the current matrix by the receiver's projection matrix @warning This method is a candidate for deprication.
+- (void)setProjectionMatrix; ///<Sets the projection matrix to the receiver's matrix
 //- (void)debugDraw; ///<Draw a wireframe model of the receiver
 - (void)tickWithContext:(O3RenderContext*)context;
 @end

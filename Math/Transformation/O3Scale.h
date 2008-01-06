@@ -33,6 +33,10 @@ public: //Operators
 		for (i=0;i<DIMENSIONS;i++) to_return[i] = O3recip(vec::operator[](i));
 		return to_return;
 	}
+	using vec::operator TYPE*;
+	using vec::operator +=;
+	using vec::operator ==;
+	using vec::operator !=;
 	
 public: //O3Mat construction
 	O3Mat<TYPE,4,4> GetMatrix() { ///<Returns the matrix representing the receiver
@@ -47,6 +51,7 @@ public: //O3Mat construction
 typedef O3Scale<double, 2> O3Scale2;
 typedef O3Scale<double, 3> O3Scale3;
 #else
-typedef struct {double v[3];} O3Scale3;
-typedef struct {double v[2];} O3Scale2;
+//This type is not legal in the bridge. Instead, you should allow the user to input a double[2] or double[3]. The types will be automatically converted in your objc code, and you will be able to use the less awkward [x,y,z] syntax in ruby code.
+//typedef struct {double v[3];} O3Scale3;
+//typedef struct {double v[2];} O3Scale2;
 #endif /*defined(__cplusplus)*/

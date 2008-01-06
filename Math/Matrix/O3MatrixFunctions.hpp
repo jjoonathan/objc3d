@@ -180,23 +180,23 @@ template <typename TYPE> O3Mat<TYPE, 4, 4>& operator-=(O3Mat<TYPE, 4, 4>& mat, c
 /*******************************************************************/ #pragma mark Rotation /*******************************************************************/
 template <typename TYPE>
 O3Mat<TYPE, 4, 4> operator+(const O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot) {
-	return rot.GetMatrix()*mat;
+	return rot.GetMatrix(YES)*mat;
 }
 
 template <typename TYPE>
 O3Mat<TYPE, 4, 4>& operator+=(O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot) {
-	mat=rot.GetMatrix()*mat;
+	mat=rot.GetMatrix(YES)*mat;
 	return mat;
 }
 
 template <typename TYPE>
 O3Mat<TYPE, 4, 4> operator-(const O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot) {
-	return (-rot).GetMatrix()*mat;
+	return (-rot).GetMatrix(YES)*mat;
 }
 
 template <typename TYPE>
 O3Mat<TYPE, 4, 4>& operator-=(O3Mat<TYPE, 4, 4>& mat, const O3Rotation3& rot) {
-	mat=(-rot).GetMatrix()*mat;
+	mat=(-rot).GetMatrix(YES)*mat;
 	return mat;
 }
 #endif /*defined(__cplusplus)*/

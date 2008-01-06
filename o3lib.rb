@@ -16,7 +16,7 @@ def class_named(name)
 end
 
 ###### Add O3Vector methods
-mat_regex = /O3Vec(\d)([rfd])/
+vec_regex = /O3Vec(\d)([rfd])/
 vec_defs = lambda { |c,count,type_chr|
   c.class_eval do
 	  @@mCount = count
@@ -36,15 +36,12 @@ vec_defs = lambda { |c,count,type_chr|
 	end
 
 	def to_s
-	  self.to_a.to_s
+	  "["+self.to_a.join(", ")+"]"
   end
-
+  
+  public
   def [](idx)
     self.v[idx]
-  end
-
-  def []=(idx,val)
-    self.v[idx]=val
   end
 
   def to_a
@@ -52,67 +49,43 @@ vec_defs = lambda { |c,count,type_chr|
   end
 
   Array.class_eval do
-      define_method(("to_"+c.name[7..-1]).downcase.intern) do
+      mname = ("to_"+c.name[7..-1]).downcase.intern
+      define_method(mname) do
         c.new(self)
       end
     end
 }
 
-vec_defs.call O3Translation3,3,"d"
-vec_defs.call O3Translation2,2,"d"
-vec_defs.call O3Scale3,3,"d"
-vec_defs.call O3Scale2,2,"d"
-
-ObjectSpace.each_object(Class) {|c|
-	if c.name =~ mat_regex then
-	  vec_defs.call c,$1.to_i,$2
-	end
-}
-
-###### Add O3Rotation3 methods
-def O3Rotation3
-  def euler_angles
-    qx=v[0]
-    qy=v[1]
-    qz=v[2]
-    qw=v[3]
-  	zz2 = 2*qz*qz
-  	qxqy2_qzqw2 = 2.0 * (qx*qy + qz*qw)
-  	z = asin(qxqy2_qzqw2)
-  	if abs(qxqy2_qzqw2-1.0) < 00001 then
-  		y = 2*atan2(qx,qw)
-  		x = 0.0
-  		return x,y,z
-  	end
-  	if abs(qxqy2_qzqw2+1.0) < 00001 then
-  		y = -2*atan2(qx,qw)
-  		x = 0.0
-  		return x,y,z
-  	end
-  	x = atan2(2.0*(qx*qw-qy*qz) , 1.0 - 2.0*qx*qx - qzqz2)
-  	y = atan2(2.0*(qy*qw-qx*qz) , 1.0 - 2.0*qy*qy - qzqz2)
-  	return x,y,z
-  end
-end
-
+###### Add O3Rotation3 methods to Array
 Array.class_eval do
-  define_method("to_rot") do
-    half_x=self[0]*0.5
-    half_y=self[1]*0.5
-    half_z=self[2]*0.5
-    c1 = cos(half_y);
-    s1 = sin(half_y);
-    c2 = cos(half_z);
-    s2 = sin(half_z);
-    c3 = cos(half_x);
-    s3 = sin(half_x);
-    c1c2 = c1*c2;
-    s1s2 = s1*s2;
-    x = c1c2*s3  + s1s2*c3;
-    y = s1*c2*c3 + c1*s2*s3;
-    z = c1*s2*c3 - s1*c2*s3;
-    w = c1c2*c3  - s1s2*s3;
-    O3Rotation3.new([x,y,z,w])
+  def to_rot
+    if self.size==3 then
+      half_x=self[0]*0.5
+      half_y=self[1]*0.5
+      half_z=self[2]*0.5
+      c1 = Math.cos(half_y);
+      s1 = Math.sin(half_y);
+      c2 = Math.cos(half_z);
+      s2 = Math.sin(half_z);
+      c3 = Math.cos(half_x);
+      s3 = Math.sin(half_x);
+      c1c2 = c1*c2;
+      s1s2 = s1*s2;
+      x = c1c2*s3  + s1s2*c3;
+      y = s1*c2*c3 + c1*s2*s3;
+      z = c1*s2*c3 - s1*c2*s3;
+      w = c1c2*c3  - s1s2*s3;
+      return O3Rotation3.new([[x,y,z,w]])
+    elsif self.size==4 #[axis x, axis y, axis z, theta]
+      nf = self[0]**2 + self[1]**2 + self[2]**2
+      self[0] /= nf
+      self[1] /= nf
+      self[2] /= nf
+      ht = self[3] * 0.5;
+    	sht = Math.sin(ht);
+    	return O3Rotation3.new([[self[0]*sht, self[1]*sht, self[2]*sht, cos(ht)]])
+    end
+    nil
   end
 end
 
@@ -142,10 +115,6 @@ ObjectSpace.each_object(Class) {|c|
       self.v[i+@@mRows*j]
     end
 
-    def []=(i,j,val)
-      self.v[i+@@mRows*j]=val
-    end
-
     def row(r)
       Array.new(@@mCols) {|i| self[r,i]}
     end
@@ -165,5 +134,49 @@ ObjectSpace.each_object(Class) {|c|
           c.new(self)
         end
       end
+	end
+}
+
+########## Define O3Rotation3 methods
+class O3Rotation3
+  include Math
+  def euler_angles
+    qx=q.v[0]
+    qy=q.v[1]
+    qz=q.v[2]
+    qw=q.v[3]
+  	qzqz2 = 2*qz*qz
+  	qxqy2_qzqw2 = 2.0 * (qx*qy + qz*qw)
+  	z = Math.asin(qxqy2_qzqw2)
+  	if (qxqy2_qzqw2-1.0).abs < 00001 then
+  		y = 2*Math.atan2(qx,qw)
+  		x = 0.0
+  		return x,y,z
+  	end
+  	if (qxqy2_qzqw2+1.0).abs < 00001 then
+  		y = -2*atan2(qx,qw)
+  		x = 0.0
+  		return x,y,z
+  	end
+  	x = atan2(2.0*(qx*qw-qy*qz) , 1.0 - 2.0*qx*qx - qzqz2)
+  	y = atan2(2.0*(qy*qw-qx*qz) , 1.0 - 2.0*qy*qy - qzqz2)
+  	return x,y,z
+  end
+  
+  def to_s
+    e = euler_angles
+    "<O3Rotation3>{roll:"+e[0].to_s+", pitch:"+e[1].to_s+", yaw:"+e[2].to_s+"}"
+  end
+end
+
+##########Perform vec defs
+#vec_defs.call O3Translation3,3,"d"
+#vec_defs.call O3Translation2,2,"d"
+#vec_defs.call O3Scale3,3,"d"
+#vec_defs.call O3Scale2,2,"d"
+
+ObjectSpace.each_object(Class) {|c|
+	if c.name =~ vec_regex then
+	  vec_defs.call c,$1.to_i,$2
 	end
 }

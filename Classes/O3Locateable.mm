@@ -45,9 +45,9 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 }
 
 - (BOOL)isEqual:(O3Locateable*)other {
-	if (mRotation!=[other rotation]) return NO;
-	if (mTranslation!=[other translation]) return NO;
-	if (mScale!=[other scale]) return NO;
+	if (mRotation!=([other rotation])) return NO;
+	if (!mTranslation.equals([other translation])) return NO;
+	if (!mScale.equals([other scale])) return NO;
 	return YES;
 }
 
@@ -58,33 +58,47 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
-- (void)translateBy:(O3Translation3)trans {
+- (void)translateBy:(O3Vec3d)trans {
 	mTranslation += trans;	
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
-- (void)translateInObjectSpaceBy:(O3Translation3)trans {
+- (void)translateInObjectSpaceBy:(O3Vec3d)trans {
 	O3Locateable_UpdateSpaceIfNecessary(self);
-	const O3Mat4x4d themat = mSpace.MatrixToSuper();
-	O3Vec3d corrtrans = themat*O3Vec4d(trans);
+	const O3Mat4x4d& themat = mSpace.MatrixToSuper();
+	O3Vec3d corrtrans = themat*O3Vec4d(trans[0],trans[1],trans[2],0);
 	mTranslation += corrtrans;
 	mSpaceNeedsUpdate = YES;
 }
 
-- (void)scaleBy:(O3Scale3)scale {
+- (void)rotateOverAxis:(O3Vec3d)axis angle:(angle)theta {
+	O3Locateable_UpdateSpaceIfNecessary(self);
+	mRotation += O3Rotation3(theta, axis);
+	mSpaceNeedsUpdate = YES;	
+}
+
+- (void)rotateOverOSAxis:(O3Vec3d)axis angle:(angle)theta {
+	O3Locateable_UpdateSpaceIfNecessary(self);
+	const O3Mat4x4d& themat = mSpace.MatrixToSuper();
+	O3Vec3d corraxis = themat*O3Vec4d(axis[0],axis[1],axis[2],0);
+	mRotation += O3Rotation3(theta, corraxis);
+	mSpaceNeedsUpdate = YES;	
+}
+
+- (void)scaleBy:(O3Vec3d)scale {
 	mScale += scale;	
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 ///Returns the receiver's space (object space)
-- (Space3*)space {		
+- (O3Space3*)space {		
 	O3Locateable_UpdateSpaceIfNecessary(self);
 	return &mSpace;
 }
 
-- (Space3*)superspace {	///<Returns the receiver's superspace (space above object space)
+- (O3Space3*)superspace {	///<Returns the receiver's superspace (space above object space)
 	//O3Locateable_UpdateSpaceIfNecessary(self);
 	return mSpace.Superspace();
 }
@@ -93,15 +107,15 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	return mRotation;
 }
 
-- (O3Translation3)translation {
+- (O3Vec3d)translation {
 	return mTranslation;
 }
 
-- (O3Scale3)scale {
+- (O3Vec3d)scale {
 	return mScale;
 }
 
-- (void)setSuperspace:(Space3*)space {
+- (void)setSuperspace:(O3Space3*)space {
 	mSpace.SetSuperspace(space);
 }
 
@@ -115,19 +129,19 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
-- (void)setTranslation:(O3Translation3)newTrans {
-	mTranslation.Set(newTrans);
+- (void)setTranslation:(O3Vec3d)newTrans {
+	mTranslation.set_array(newTrans);
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
-- (void)setScale:(O3Scale3)newScale {
-	mScale.Set(newScale);
+- (void)setScale:(O3Vec3d)newScale {
+	mScale.set_array(newScale);
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
-- (O3Mat4x4d)matrixToSpace:(Space3*)targetspace {
+- (O3Mat4x4d)matrixToSpace:(O3Space3*)targetspace {
 	O3Locateable_UpdateSpaceIfNecessary(self);
 	O3Mat4x4d themat = mSpace.MatrixToSpace(targetspace);
 	return themat;
@@ -138,7 +152,7 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	return mSpace.MatrixToSpace([locateable space]);
 }
 
-- (void)setMatrixToSpace:(Space3*)targetspace {
+- (void)setMatrixToSpace:(O3Space3*)targetspace {
 	O3Locateable_UpdateSpaceIfNecessary(self);
 	O3Mat4x4d themat = mSpace.MatrixToSpace(targetspace);
 	glLoadMatrixd(themat);
@@ -153,7 +167,7 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	return [NSString stringWithFormat:@"{O3Locateable: x:%.6f y:%.6f z:%.6f xrot:%.6f yrot:%.6f zrot:%.6f xscl:%.6f yscl:%.6f zscl:%.6f}", x, y, z, rotx, roty, rotz, mScale.GetX(), mScale.GetY(), mScale.GetZ()];
 }
 
-- (void)debugDrawIntoSpace:(const Space3*)intospace {
+- (void)debugDrawIntoSpace:(const O3Space3*)intospace {
 	glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);

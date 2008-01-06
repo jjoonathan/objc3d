@@ -62,7 +62,7 @@ const O3Mat4x4d& TRSSpace3::MatrixFromRoot() const {
 	return mFromRootspace.O3Mat();
 }
 
-O3Mat4x4d TRSSpace3::MatrixToSpace(const Space3& other) const {
+O3Mat4x4d TRSSpace3::MatrixToSpace(const O3Space3& other) const {
 	if (other.IsSame(mSuperspace))
 		return mFromSuperspace.InverseMatrix();
 	return other.MatrixFromRoot()*MatrixToRoot();

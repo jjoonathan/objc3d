@@ -8,6 +8,7 @@
 #import "O3GLViewController.h"
 #import "O3GLViewActionCollection.h"
 #import "O3GLView.h"
+#import "O3Camera.h"
 
 @implementation O3GLViewController
 /************************************/ #pragma mark Init and Dealloc /************************************/
@@ -187,6 +188,11 @@ static NSString* nameForEvent(NSEvent* event) {
 	[mKeyUpActions setObject:@"stopFlyingDown:" forKey:@"u"];
 	[mKeyDownActions setObject:@"startFlyingFast:" forKey:@"NSShiftKey"];
 	[mKeyUpActions setObject:@"stopFlyingFast:" forKey:@"NSShiftKey"];
+}
+
+//Mouse motion action
+- (void)lockedMouseMoved:(O3Vec2d)amount {
+	[[mView camera] rotateForMouseMoved:amount];
 }
 
 #define luas(dict, name) lookupAndSend(self, dict, mTarget, name)

@@ -14,12 +14,14 @@ using namespace ObjC3D::Math;
 @implementation O3Camera
 
 inline void O3Camera_init(O3Camera* self) {
-	self->mPostProjectionSpace = new Space3(self->mSpace);
+	self->mPostProjectionSpace = new O3Space3(self->mSpace);
 	self->mAspectRatio = 1.;
 	self->mNearPlane = .1;
 	self->mFarPlane = 100.;
 	self->mFOVY = 90.; //In degrees?!
 	self->mPostProjectionSpaceNeedsUpdate = YES;
+	self->mFlySpeed = 1./3.;
+	self->mRotRate = .015;
 }
 
 inline double O3Camera_aspectRatio(O3Camera* self) {
@@ -34,7 +36,7 @@ inline O3Mat3x3d O3Camera_orthonormalBase(O3Camera* self) {
 	return O3Mat3x3d(xcol, ycol, zcol);
 }
 
-inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
+inline O3Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	if (!self->mPostProjectionSpaceNeedsUpdate) return self->mPostProjectionSpace;
 	O3Mat4x4d themat;
 	themat.SetPerspective(self->mFOVY, self->mAspectRatio, self->mNearPlane, self->mFarPlane);
@@ -63,6 +65,8 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	self->mNearPlane = [coder decodeDoubleForKey:@"nearPlane"];
 	self->mFarPlane = [coder decodeDoubleForKey:@"farPlane"];
 	self->mFOVY = [coder decodeDoubleForKey:@"fovYDegrees"];
+	self->mFlySpeed = [coder decodeDoubleForKey:@"flySpeed"];
+	self->mRotRate = [coder decodeDoubleForKey:@"rotRate"];
 	return self;
 }
 
@@ -72,6 +76,8 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	[coder encodeDouble:mNearPlane forKey:@"nearPlane"];
 	[coder encodeDouble:mFarPlane forKey:@"farPlane"];
 	[coder encodeDouble:mFOVY forKey:@"fovYDegrees"];	
+	[coder encodeDouble:mFlySpeed forKey:@"flySpeed"];	
+	[coder encodeDouble:mRotRate forKey:@"rotRate"];	
 }
 
 - (BOOL)isEqual:(O3Camera*)camera {
@@ -102,7 +108,7 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	return O3Camera_postProjectiveSpace(self)->MatrixFromRoot();
 }
 
-- (Space3*)postProjectionSpace {
+- (O3Space3*)postProjectionSpace {
 	return O3Camera_postProjectiveSpace(self);
 }
 
@@ -111,6 +117,10 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 - (void)setNearPlaneDistance:(double)newDist {mNearPlane = newDist; mPostProjectionSpaceNeedsUpdate = YES;}	///<@note This change will not take effect until -(void)set is called (usually in the next frame). This behavior is usually desired but can cause confusion since the accessors will return the new value.
 - (void)setFarPlaneDistance:(double)newDist {mFarPlane = newDist; mPostProjectionSpaceNeedsUpdate = YES;}	///<@note This change will not take effect until -(void)set is called (usually in the next frame). This behavior is usually desired but can cause confusion since the accessors will return the new value.
 - (void)setFovY:(double)newFOVY {mFOVY = newFOVY; mPostProjectionSpaceNeedsUpdate = YES;}	///<@note This change will not take effect until -(void)set is called (usually in the next frame). This behavior is usually desired but can cause confusion since the accessors will return the new value.
+- (float)flySpeed {return mFlySpeed;}
+- (void)setFlySpeed:(float)fs {mFlySpeed = fs;}
+- (float)rotRate {return mRotRate;}
+- (void)setRotRate:(float)rr {mRotRate = rr;}
 
 /************************************/ #pragma mark Use /************************************/
 - (void)setViewMatrix {
@@ -124,15 +134,20 @@ inline Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 }
 
 - (void)tickWithContext:(O3RenderContext*)context {
-	double t = context->elapsedTime * 1/3;
+	double t = context->elapsedTime * mFlySpeed;
 	NSDictionary* d = [context->view viewState];
 	if ([d objectForKey:@"flyingFast"]) t *= 10;
-	if ([d objectForKey:@"flyingForward"])  {[self translateInObjectSpaceBy:O3Translation3(0,0,t)];}
-	if ([d objectForKey:@"flyingBackward"]) {[self translateInObjectSpaceBy:O3Translation3(0,0,-t)]; }
-	if ([d objectForKey:@"flyingLeft"])     {[self translateInObjectSpaceBy:O3Translation3(t,0,0)];}
-	if ([d objectForKey:@"flyingRight"])    {[self translateInObjectSpaceBy:O3Translation3(-t,0,0)]; }
-	if ([d objectForKey:@"flyingUp"])       {[self translateInObjectSpaceBy:O3Translation3(0,-t,0)]; }
-	if ([d objectForKey:@"flyingDown"])     {[self translateInObjectSpaceBy:O3Translation3(0,t,0)];}
+	if ([d objectForKey:@"flyingForward"])  {[self translateInObjectSpaceBy:O3Vec3d(0,0,t)];}
+	if ([d objectForKey:@"flyingBackward"]) {[self translateInObjectSpaceBy:O3Vec3d(0,0,-t)]; }
+	if ([d objectForKey:@"flyingLeft"])     {[self translateInObjectSpaceBy:O3Vec3d(t,0,0)];}
+	if ([d objectForKey:@"flyingRight"])    {[self translateInObjectSpaceBy:O3Vec3d(-t,0,0)]; }
+	if ([d objectForKey:@"flyingUp"])       {[self translateInObjectSpaceBy:O3Vec3d(0,-t,0)]; }
+	if ([d objectForKey:@"flyingDown"])     {[self translateInObjectSpaceBy:O3Vec3d(0,t,0)];}
+}
+
+- (void)rotateForMouseMoved:(O3Vec2d)amount {
+	[self rotateOverOSAxis:O3Vec3d(0,1,0) angle:-mRotRate*amount[0]];
+	[self rotateOverOSAxis:O3Vec3d(1,0,0) angle:-mRotRate*amount[1]];
 }
 
 @end

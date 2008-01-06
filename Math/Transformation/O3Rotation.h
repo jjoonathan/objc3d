@@ -48,11 +48,16 @@ public: //Operators & Methods
 	O3Rotation3 operator-() const;						///<Gets an inverted copy of the receiver.
 	
 public: //Inspectors
+	angle Angle() const {return MyQuat.GetAngle();}; ///<Efficently returns the angle for an axis-angle representation (i.e. ToAxisAngle speed wise = GetAxis + GetAngle)
+	O3Vec3d Axis() const {return MyQuat.GetAxis();}; ///<Efficently returns the axis for axis for an axis-angle representation (i.e. ToAxisAngle speed wise = GetAxis + GetAngle)
 	O3Rotation3 GetInverse();
 	O3Mat3x3d GetMatrix() const;			///<Gets the 3x3 matrix that performs the receiver's rotation
 	O3Quaternion GetQuaternion() const;	///<Gets the receiver's quaternion representation
 	void GetEulerAngles(angle* roll, angle* pitch, angle* yaw) const;	///<Gets the euler angles that compose the receiver's rotation (pass NULL if you don't want one of them)
 };
 #else
-typedef struct {double v[4];} O3Rotation3;
+typedef struct {double v[4];} O3Quaternion;
+typedef struct {
+	O3Quaternion quat;
+} O3Rotation3;
 #endif /*defined(__cplusplus)*/

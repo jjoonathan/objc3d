@@ -100,14 +100,20 @@ O3Vec_TT O3Vec_T& O3Vec_T::Set(TYPE x, TYPE y, TYPE z, TYPE w) {
 	return *this;
 }
 
-///Zero fills any elements not specified. You can specify more elements than are in a vector.
 O3Vec_TT template <typename TYPE2> 
-O3Vec_T& O3Vec_T::Set(const TYPE2 *array, unsigned arraylen) {
+O3Vec_T& O3Vec_T::set_array(const TYPE2 array, unsigned arraylen) {
 	int i;
 	int j = O3Min(arraylen, NUMBER);
 	for (i=0;i<j;i++) v[i] = array[i];
 	for (i=j;i<NUMBER;i++) v[i] = 0;
 	return *this;
+}
+
+
+///Zero fills any elements not specified. You can specify more elements than are in a vector.
+O3Vec_TT template <typename TYPE2> 
+O3Vec_T& O3Vec_T::Set(const TYPE2 *array, unsigned arraylen) {
+	return set_array(array,arraylen);
 }
 
 ///Sets the receiver's elements to the values of \e vec's elements, filling in 0 anywhere where vec doesn't have a corresponding element
@@ -212,6 +218,12 @@ bool  O3Vec_T::operator!=(const O3Vec_T& vec) const {
 	int i; for (i=0;i<NUMBER;i++) if (v[i] == vec[i]) return false;
 	return true;
 }
+
+O3Vec_TT template <class T2> bool O3Vec_T::equals(const T2 vec) const {
+	int i; for (i=0;i<NUMBER;i++) if (v[i] != vec[i]) return false;
+	return true;
+}
+
 
 /*******************************************************************/ #pragma mark O3Vec Products /*******************************************************************/
 O3Vec_TT
@@ -318,6 +330,13 @@ O3Vec_T& O3Vec_T::operator*=(const TYPE scalar) {
 O3Vec_TT
 O3Vec_T& O3Vec_T::operator/=(const TYPE scalar) {
 	int i; for (i=0;i<NUMBER;i++) v[i] /= scalar; 
+	return *this;
+}
+
+/************************************/ #pragma mark C Array Operators /************************************/
+O3Vec_TT
+O3Vec_T& O3Vec_T::operator+=(const TYPE* carr) {
+	int i; for (i=0;i<NUMBER;i++) v[i] += carr[i]; 
 	return *this;
 }
 
