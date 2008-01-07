@@ -8,6 +8,12 @@
 #import "O3StructType.h"
 @class O3VecStruct;
 
+#define O3VecStructTypeDefines   /*to add a new type, add a DefType(name) here, then init it inside o3init*/                   \
+DefType(O3Vec3rType); DefType(O3Index4x64Type); DefType(O3Index4x32Type); DefType(O3Index4x16Type); DefType(O3Index4x8Type);   \
+DefType(O3Index3x64Type); DefType(O3Index3x32Type); DefType(O3Index3x16Type); DefType(O3Index3x8Type); DefType(O3Scale3dType); \
+DefType(O3Point3fType); DefType(O3Rot3dType); DefType(O3Vec4dType); DefType(O3Vec4fType); DefType(O3Vec4rType);                \
+DefType(O3Vec3dType); DefType(O3Vec3fType); DefType(O3RGBA8Type); DefType(O3RGB8Type);
+
 typedef enum {
 	O3VecStructRotation=1,
 	O3VecStructPoint=2,
@@ -36,7 +42,7 @@ typedef enum {
 	O3VecStructSpecificType mSpecificType;
 	short mElementCount; ///<The number of elements
 	double mMultiplier; ///<Amount to multiply each element by. Useful for normalized formats.
-	UIntP* mPermutations; ///<mPermutations[i] is the raw index of the element at normal index i. For instance, 2,1,0,3 would be the permutation array for a RGBA color
+	UIntP* mPermutations; ///<mPermutations[visible_index]=stored_index
 }
 //Init
 + (O3VecStructType*)vecStructTypeWithElementType:(O3VecStructElementType)type
@@ -76,42 +82,21 @@ typedef enum {
 - (O3VecStructSpecificType)specificType;
 - (short)elementCount;
 
+//Private
++ (void)o3init;
+
 @end
 
 O3EXTERN_C_BLOCK
-O3VecStructType* O3Vec3fType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Vec3dType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Vec3rType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Vec4fType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Vec4dType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Vec4rType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Rot3dType(); ///<Convenience function to return a commonly used type
-//O3VecStructType* O3Point3dType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Point3fType(); ///<Convenience function to return a commonly used type
-//O3VecStructType* O3Point4dType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Scale3dType(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index3x8Type(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index3x16Type(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index3x32Type(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index3x64Type(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index4x8Type(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index4x16Type(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index4x32Type(); ///<Convenience function to return a commonly used type
-O3VecStructType* O3Index4x64Type(); ///<Convenience function to return a commonly used type
+NSNumber* O3VecStructGetElement(O3VecStructType* self, UIntP i, const void* bytes);
+
+#define DefType(NAME) O3VecStructType* NAME ();
+O3VecStructTypeDefines
+#undef DefType
 
 UIntP* O3VecStructTypePermsAndMultiplier(O3VecStructType* self, double* multiplier); ///<Gets a vec struct type's permutation array and element multiplier
 void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, O3VecStructElementType* type, short* count, O3VecStructSpecificType* stype);
 UIntP O3VecStructSize(O3VecStructType* type);
 
-NSNumber* O3VecStructGetElement(O3VecStructType* self, UIntP i, const void* bytes);
-void O3WriteNumberTo(O3VecStructElementType eleType, UIntP i, void* bytes, NSNumber* num);
+void O3WriteNumberTo(O3VecStructElementType eleType, UIntP i, void* bytes, NSNumber* num, double rmul, UIntP* mPermutations);
 O3END_EXTERN_C
-
-#ifdef __cplusplus
-double O3DoubleValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx = 0);
-Int64 O3Int64ValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx = 0);
-UInt64 O3UInt64ValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx = 0);
-void O3SetValueOfType_at_toDouble_withIndex_(O3VecStructElementType type, void* bytes, double v, UIntP idx = 0);
-void O3SetValueOfType_at_toInt64_withIndex_(O3VecStructElementType type, void* bytes, Int64 v, UIntP idx = 0);
-void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type, void* bytes, UInt64 v, UIntP idx = 0);
-#endif

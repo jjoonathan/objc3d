@@ -30,24 +30,24 @@
 	return mSize;
 }
 
-- (NSDictionary*)dictWithBytes:(const void*)bytes {
+- (id)objectWithBytes:(const void*)bytes {
 	NSMutableDictionary* dict = [NSMutableDictionary dictionary];
 	UIntP j = [mComponentTypes count];
 	const UInt8* b = (const UInt8*)bytes;
 	UIntP i; for(i=0; i<j; i++) {
 		O3StructType* type = [mComponentTypes objectAtIndex:i];
-		[dict setObject:[type dictWithBytes:b] forKey:[type name]];
+		[dict setObject:[type objectWithBytes:b] forKey:[type name]];
 		b += [type structSize];
 	}
 	return dict;
 }
 
-- (void)writeDict:(NSDictionary*)dict toBytes:(void*)bytes {
+- (void)writeObject:(id)dict toBytes:(void*)bytes {
 	UIntP j = [mComponentTypes count];
 	UInt8* b = (UInt8*)bytes;
 	UIntP i; for(i=0; i<j; i++) {
 		O3StructType* type = [mComponentTypes objectAtIndex:i];
-		[type writeDict:[dict objectForKey:[type name]] toBytes:b];
+		[type writeObject:[dict objectForKey:[type name]] toBytes:b];
 		b += [type structSize];
 	}
 }

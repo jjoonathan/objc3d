@@ -52,29 +52,29 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return 0;
 }
 
-- (NSDictionary*)dictWithBytes:(const void*)bytes {
-	return [self dictWithData:[NSData dataWithBytesNoCopy:(void*)bytes length:[self structSize] freeWhenDone:NO]];
+- (id)objectWithBytes:(const void*)bytes {
+	return [self objectWithData:[NSData dataWithBytesNoCopy:(void*)bytes length:[self structSize] freeWhenDone:NO]];
 }
 
-- (NSDictionary*)dictWithData:(NSData*)data {
-	O3Assert([self methodForSelector:@selector(dictWithData:)]!=[O3StructType instanceMethodForSelector:@selector(dictWithData:)], @"%@ struct type must override one of dictWithBytes: or dictWithData:.", self);
+- (id)objectWithData:(NSData*)data {
+	O3Assert([self methodForSelector:@selector(objectWithData:)]!=[O3StructType instanceMethodForSelector:@selector(objectWithData:)], @"%@ struct type must override one of objectWithBytes: or objectWithData:.", self);
 	O3Assert([data length]==[self structSize], @"%@ was not the correct size for struct type %@", data, self);
-	NSDictionary* dict = [self dictWithBytes:[data bytes]];
+	NSDictionary* dict = [self objectWithBytes:[data bytes]];
 	[data relinquishBytes];
 	return dict;
 }
 
-- (void)writeDict:(NSDictionary*)dict toBytes:(void*)bytes {
-	NSData* dat = [self writeDictToData:dict];
+- (void)writeObject:(id)dict toBytes:(void*)bytes {
+	NSData* dat = [self writeObjectToData:dict];
 	const void* b = [dat bytes];
 	memcpy(bytes, b, [dat length]);
 }
 
-- (NSData*)writeDictToData:(NSDictionary*)dict {
-	O3Assert([self methodForSelector:@selector(writeDict:toBytes:)]!=[O3StructType instanceMethodForSelector:@selector(writeDict:toBytes:)], @"%@ struct type must override one of writeDictToData: or writeDict:toBytes:.", self);
+- (NSData*)writeObjectToData:(NSDictionary*)dict {
+	O3Assert([self methodForSelector:@selector(writeObject:toBytes:)]!=[O3StructType instanceMethodForSelector:@selector(writeObject:toBytes:)], @"%@ struct type must override one of writeObjectToData: or writeObject:toBytes:.", self);
 	UIntP s = [self structSize];
 	void* b = malloc(s);
-	[self writeDict:dict toBytes:b];
+	[self writeObject:dict toBytes:b];
 	return [NSData dataWithBytesNoCopy:b length:s freeWhenDone:YES];
 }
 
@@ -115,8 +115,8 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	UInt8* inbytes = (UInt8*)[instructs bytes];
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	UIntP i; for(i=0; i<count; i++) {
-		NSDictionary* d = [self dictWithBytes:inbytes+i*s];
-		[format writeDict:d toBytes:outbytes+i*outsize];
+		NSDictionary* d = [self objectWithBytes:inbytes+i*s];
+		[format writeObject:d toBytes:outbytes+i*outsize];
 	}
 	[pool release];
 	return [rdata autorelease];

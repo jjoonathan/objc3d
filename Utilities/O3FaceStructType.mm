@@ -56,19 +56,19 @@ O3VecStructType* gO3IndexedTriangle3iType = nil;
 	return 3;
 }
 
-- (void)writeDict:(NSDictionary*)dict toBytes:(void*)bytes {
-	O3WriteNumberTo(mElementType, 0, bytes, [dict objectForKey:@"x1"]);
-	O3WriteNumberTo(mElementType, 1, bytes, [dict objectForKey:@"x2"]);
-	O3WriteNumberTo(mElementType, 2, bytes, [dict objectForKey:@"x3"]);
-	O3WriteNumberTo(mElementType, 3, bytes, [dict objectForKey:@"x4"]);
-	O3WriteNumberTo(mElementType, 4, bytes, [dict objectForKey:@"x5"]);
-	O3WriteNumberTo(mElementType, 5, bytes, [dict objectForKey:@"x6"]);
-	O3WriteNumberTo(mElementType, 6, bytes, [dict objectForKey:@"x7"]);
-	O3WriteNumberTo(mElementType, 7, bytes, [dict objectForKey:@"x8"]);
-	O3WriteNumberTo(mElementType, 8, bytes, [dict objectForKey:@"x9"]);
+- (void)writeObject:(id)dict toBytes:(void*)bytes {
+	O3WriteNumberTo(mElementType, 0, bytes, [dict objectForKey:@"x1"], 1., NULL);
+	O3WriteNumberTo(mElementType, 1, bytes, [dict objectForKey:@"x2"], 1., NULL);
+	O3WriteNumberTo(mElementType, 2, bytes, [dict objectForKey:@"x3"], 1., NULL);
+	O3WriteNumberTo(mElementType, 3, bytes, [dict objectForKey:@"x4"], 1., NULL);
+	O3WriteNumberTo(mElementType, 4, bytes, [dict objectForKey:@"x5"], 1., NULL);
+	O3WriteNumberTo(mElementType, 5, bytes, [dict objectForKey:@"x6"], 1., NULL);
+	O3WriteNumberTo(mElementType, 6, bytes, [dict objectForKey:@"x7"], 1., NULL);
+	O3WriteNumberTo(mElementType, 7, bytes, [dict objectForKey:@"x8"], 1., NULL);
+	O3WriteNumberTo(mElementType, 8, bytes, [dict objectForKey:@"x9"], 1., NULL);
 }
 
-- (NSDictionary*)dictWithBytes:(const void*)bytes {
+- (id)objectWithBytes:(const void*)bytes {
 	return [NSDictionary dictionaryWithObjectsAndKeys:O3VecStructGetElement(self, 0, bytes), @"x1",
 	                                                 O3VecStructGetElement(self, 2, bytes), @"x2",
 	                                                 O3VecStructGetElement(self, 3, bytes), @"x3",

@@ -4,6 +4,7 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
+#import "O3VecStructType.h"
 NSOpenGLContext* gO3DefaultGLContext;
  
 void O3FailAssertt() {
@@ -31,6 +32,7 @@ O3EXTERN_C void O3Init() {
 		}
 		NSLog(@"ObjC3D could not be initialized because GLEW could not be initialized because %@", desc);
 	}
+	[O3VecStructType o3init];
 }
 
 O3EXTERN_C void O3GLBreak() {

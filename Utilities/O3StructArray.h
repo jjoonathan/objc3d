@@ -26,6 +26,7 @@
 //Access
 - (O3StructType*)structType; ///<The type of structure contained in the receiver
 - (BOOL)setStructType:(O3StructType*)structType; ///<Tries to convert the receiver's contents to structType. Returns YES on success and NO on failure.
+- (BOOL)setStructTypeName:(NSString*)newTypeName; ///<Convenience caller of setStructType:
 - (NSMutableData*)rawData; ///<Access the data that backs the receiver
 - (void)setRawData:(NSData*)newData; ///<Change the data that backs the receiver
 - (void)setRawDataNoCopy:(NSMutableData*)newData;

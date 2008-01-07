@@ -18,7 +18,7 @@ O3StructType* O3StructTypeForName(NSString* name);
 void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, register your singletons here (for encoding/decoding)
 
 ///An abstract class to represent types of structures, and define an interface for reading, writing, introspecting, and converting them.
-///To subclass, override -structSize, -dictionaryWithBytes: OR -dictWithData:, -writeDict:toBytes: OR writeDictToData:, and optionally portabalizeStructs:, deportabalizeStructs:, and translateStructs:toFormat:.
+///To subclass, override -structSize, -dictionaryWithBytes: OR -objectWithData:, -writeObject:toBytes: OR writeObjectToData:, and optionally portabalizeStructs:, deportabalizeStructs:, and translateStructs:toFormat:.
 @interface O3StructType : NSObject {
 	NSString* mName;
 }
@@ -28,10 +28,10 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, r
 
 //Conversion between raw data and introspectable dictionaries
 - (UIntP)structSize;
-- (NSDictionary*)dictWithBytes:(const void*)bytes;
-- (NSDictionary*)dictWithData:(NSData*)data;
-- (void)writeDict:(NSDictionary*)dict toBytes:(void*)bytes;
-- (NSData*)writeDictToData:(NSDictionary*)dict;
+- (id)objectWithBytes:(const void*)bytes;
+- (id)objectWithData:(NSData*)data;
+- (void)writeObject:(id)dict toBytes:(void*)bytes;
+- (NSData*)writeObjectToData:(NSDictionary*)dict;
 
 //Info
 - (NSString*)name;

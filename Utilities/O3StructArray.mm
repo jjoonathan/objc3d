@@ -238,7 +238,7 @@ void initP(O3StructArray* self) {
 		[NSException raise:NSRangeException format:@"Index %i out of array %@ bounds (%i)", idx, self, countP(self)];
 	}
 	[mData getBytes:mScratchBuffer range:rangeOfIdx(self, idx)];
-	NSDictionary* ret = [mStructType dictWithBytes:mScratchBuffer];
+	NSDictionary* ret = [mStructType objectWithBytes:mScratchBuffer];
 	[mAccessLock unlock];
 	return ret;
 }
@@ -247,7 +247,7 @@ void initP(O3StructArray* self) {
 - (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx {
 	[mAccessLock lock];
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
-	[mStructType writeDict:obj toBytes:mScratchBuffer];
+	[mStructType writeObject:obj toBytes:mScratchBuffer];
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:mScratchBuffer length:mStructSize];
 	[mAccessLock unlock];
 }
@@ -261,7 +261,7 @@ void initP(O3StructArray* self) {
 
 - (void)addObject:(NSDictionary*)obj {
 	[mAccessLock lock];
-	[mStructType writeDict:obj toBytes:mScratchBuffer];
+	[mStructType writeObject:obj toBytes:mScratchBuffer];
 	[mData appendBytes:mScratchBuffer length:mStructSize];
 	[mAccessLock unlock];	
 }
@@ -277,7 +277,7 @@ void initP(O3StructArray* self) {
 - (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj {
 	[mAccessLock lock];
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
-	[mStructType writeDict:obj toBytes:mScratchBuffer];
+	[mStructType writeObject:obj toBytes:mScratchBuffer];
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:mScratchBuffer length:mStructSize];
 	[mAccessLock unlock];	
 }

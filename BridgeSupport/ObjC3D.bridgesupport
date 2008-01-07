@@ -685,13 +685,13 @@
       <arg NEW='1' index='1' type_modifier='o'/>
       <retval type='{_O3RawData=^vI}'/>
     </method>
-    <method selector='dictWithBytes:'>
+    <method selector='objectWithBytes:'>
       <arg NEW='1' index='0' type_modifier='o'/>
     </method>
     <method selector='portabalizeStructsAt:count:stride:'>
       <arg NEW='1' index='0' type_modifier='o'/>
     </method>
-    <method selector='writeDict:toBytes:'>
+    <method selector='writeObject:toBytes:'>
       <arg NEW='1' index='1' type_modifier='o'/>
     </method>
   </class>
