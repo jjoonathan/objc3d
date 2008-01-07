@@ -17,6 +17,7 @@
 //Init
 - (O3StructArray*)initWithType:(O3StructType*)type;
 - (O3StructArray*)initWithType:(O3StructType*)type rawData:(NSData*)dat;
+- (O3StructArray*)initWithTypeNamed:(NSString*)name rawData:(NSData*)dat;
 - (O3StructArray*)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat;
 - (O3StructArray*)initWithType:(O3StructType*)type portableData:(NSData*)dat;
 - (O3StructArray*)initWithType:(O3StructType*)type capacity:(UIntP)countGuess;

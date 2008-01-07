@@ -165,6 +165,8 @@
 		FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5507240CDF5354003EE24B /* O3StructArray.mm */; };
 		FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC55072A0CE01E12003EE24B /* O3VecStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072E0CE17B7D003EE24B /* O3StructType.mm */; };
+		FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */; };
+		FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */; };
 		FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5B48770C205A4100879D56 /* O3BigObject.mm */; };
 		FC63DF5D0CF1C51800325C54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */; };
 		FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63DF770CF1C5E800325C54 /* RubyConsole_main.mm */; };
@@ -442,6 +444,8 @@
 		FC55072A0CE01E12003EE24B /* O3VecStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VecStructType.h; sourceTree = "<group>"; };
 		FC55072B0CE01E12003EE24B /* O3VecStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3VecStructType.mm; sourceTree = "<group>"; };
 		FC55072E0CE17B7D003EE24B /* O3StructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3StructType.mm; sourceTree = "<group>"; };
+		FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ScalarStructType.h; sourceTree = "<group>"; };
+		FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ScalarStructType.mm; sourceTree = "<group>"; };
 		FC5B48760C205A4100879D56 /* O3BigObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3BigObject.h; path = ../Utilities/O3BigObject.h; sourceTree = "<group>"; };
 		FC5B48770C205A4100879D56 /* O3BigObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3BigObject.mm; path = ../Utilities/O3BigObject.mm; sourceTree = "<group>"; };
 		FC5BBBB90BD58B7200894533 /* O3TestUtilities.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestUtilities.mm; sourceTree = "<group>"; };
@@ -1050,6 +1054,8 @@
 				FC55072E0CE17B7D003EE24B /* O3StructType.mm */,
 				FC55072A0CE01E12003EE24B /* O3VecStructType.h */,
 				FC55072B0CE01E12003EE24B /* O3VecStructType.mm */,
+				FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */,
+				FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */,
 				FC5507230CDF5354003EE24B /* O3StructArray.h */,
 				FC5507240CDF5354003EE24B /* O3StructArray.mm */,
 				FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */,
@@ -1374,6 +1380,7 @@
 				FC0BBD480D23FE6800E5B388 /* O3Timer.h in Headers */,
 				FC0BBD4C0D24122200E5B388 /* O3GLViewController.h in Headers */,
 				FC0BBD980D2563CF00E5B388 /* O3GLViewActionCollection.h in Headers */,
+				FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1687,6 +1694,7 @@
 				FCF2AB1D0D21953C003B8F67 /* O3TestTet.mm in Sources */,
 				FC0BBD410D233F0700E5B388 /* O3Renderable.mm in Sources */,
 				FC0BBD4D0D24122200E5B388 /* O3GLViewController.mm in Sources */,
+				FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

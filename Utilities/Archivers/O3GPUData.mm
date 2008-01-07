@@ -348,7 +348,7 @@ inline void willMutateP(O3GPUData* self) {
 }
 
 - (GLvoid*)glPtrForBindingElements {
-	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_BINDING_ARB, mBuffer->id);
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, mBuffer->id);
 	return NULL; //This works. It's not an error. Really.
 }
 

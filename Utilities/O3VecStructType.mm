@@ -351,29 +351,30 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 	UIntP strSize = [self structSize];
 	if (!s) s = strSize;
 	NSMutableData* dat = [NSMutableData dataWithLength:strSize*count];
-	UInt8* bytes = (UInt8*)at;
+	const UInt8* bytes = (const UInt8*)at;
+	UInt8* tbytes = (UInt8*)[dat mutableBytes];
 	UIntP i,j;
 	switch (self->mElementType) {
 		case O3VecStructFloatElement:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((float*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((float*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((float*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((float*)(bytes+i*s)+j)); return dat;
 		case O3VecStructDoubleElement:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((double*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((double*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((double*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((double*)(bytes+i*s)+j)); return dat;
 		case O3VecStructInt8Element:  
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int8*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((Int8*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int8*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((Int8*)(bytes+i*s)+j)); return dat;
 		case O3VecStructInt16Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int16*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((Int16*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int16*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((Int16*)(bytes+i*s)+j)); return dat;
 		case O3VecStructInt32Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int32*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((Int32*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int32*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((Int32*)(bytes+i*s)+j)); return dat;
 		case O3VecStructInt64Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int64*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((Int64*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int64*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((Int64*)(bytes+i*s)+j)); return dat;
 		case O3VecStructUInt8Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt8*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt8*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt8*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt8*)(bytes+i*s)+j)); return dat;
 		case O3VecStructUInt16Element:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt16*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt16*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt16*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt16*)(bytes+i*s)+j)); return dat;
 		case O3VecStructUInt32Element:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt32*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt32*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt32*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt32*)(bytes+i*s)+j)); return dat;
 		case O3VecStructUInt64Element:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt64*)(bytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt64*)(bytes+i*s)+j)); return dat;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt64*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((UInt64*)(bytes+i*s)+j)); return dat;
 	}
 	O3AssertFalse(@"Unknown type \"%c\" in vec struct %@", self->mElementType, self);	
 	return dat;
@@ -385,30 +386,31 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 	if (!s) s = [self structSize];
 	if (!target) target = malloc(s*count);
 	UInt8* bytes = (UInt8*)target;
+	const UInt8* fbytes = (const UInt8*)[indata bytes];
 	O3RawData ret = {target, s*count};
 	#ifdef O3NeedByteswapToLittle
 	UIntP i,j;
 	switch (self->mElementType) {
 		case O3VecStructFloatElement:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((float*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((float*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((float*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((float*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructDoubleElement:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((double*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((double*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((double*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((double*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructInt8Element:  
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int8*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int8*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int8*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int8*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructInt16Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int16*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int16*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int16*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int16*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructInt32Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int32*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int32*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int32*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int32*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructInt64Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int64*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int64*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((Int64*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((Int64*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructUInt8Element: 
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt8*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt8*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt8*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt8*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructUInt16Element:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt16*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt16*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt16*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt16*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructUInt32Element:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt32*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt32*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt32*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt32*)(fbytes+i*s)+j)); return ret;
 		case O3VecStructUInt64Element:
-			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt64*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt64*)(bytes+i*s)+j)); return ret;
+			for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) *((UInt64*)(bytes+i*s)+j) = O3ByteswapLittleToHost(*((UInt64*)(fbytes+i*s)+j)); return ret;
 	}
 	O3AssertFalse(@"Unknown type \"%c\" in vec struct %@", self->mElementType, self);
 	#endif

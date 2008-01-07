@@ -13,7 +13,7 @@
 @implementation O3StructArray
 
 inline UIntP countP(O3StructArray* self) {
-	O3Assert(self->mData && self->mStructSize, @"Count requested of invalid mutable struct array %X", self);
+	if (!self->mData || !self->mStructSize) return 0;
 	return [self->mData length] / self->mStructSize;
 }
 
@@ -54,6 +54,11 @@ void initP(O3StructArray* self) {
 	[self setStructType:type];
 	[self setRawData:dat];
 	return self;
+}
+
+- (O3StructArray*)initWithTypeNamed:(NSString*)name rawData:(NSData*)dat {
+	O3StructType* t = O3StructTypeForName(name);
+	return [self initWithType:t rawData:dat];
 }
 
 - (O3StructArray*)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat {

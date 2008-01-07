@@ -79,7 +79,7 @@
 
 /************************************/ #pragma mark GL /************************************/
 - (void)bind {
-	O3Asrt(mData==[mStructArray rawData]);
+	mData=[mStructArray rawData];
 	O3Asrt(mStructType==[mStructArray structType]);
 	switch (mType) {
 			case O3VertexLocationDataType:
@@ -147,7 +147,8 @@
 		case O3VertexLocationDataType:	
 			glDisableClientState(GL_VERTEX_ARRAY);
 			break;
-		case O3VertexLocationIndexDataType:	
+		case O3VertexLocationIndexDataType:
+			glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_BINDING_ARB, GL_ZERO);
 			break;
 		case O3NormalDataType:			
 			glDisableClientState(GL_NORMAL_ARRAY);
