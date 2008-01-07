@@ -440,6 +440,7 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 				O3SetValueOfType_at_toDouble_withIndex_(type, returnbuf, val*rmul, mElementCount*i + otherPermArray[j]);
 			}
 	}
+	[instructs relinquishBytes];
 	return ret;
 }
 

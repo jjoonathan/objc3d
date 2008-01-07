@@ -6,6 +6,7 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 #import "O3ScalarStructType.h"
+#import "O3GPUData.h"
 
 #define DefType(NAME,TYPE,SNAME) O3ScalarStructType* g ## NAME; O3ScalarStructType* NAME () {return g ## NAME;}
 O3ScalarStructTypeDefines
@@ -45,6 +46,8 @@ UIntP O3ScalarStructSize(O3ScalarStructType* type) {
 
 /************************************/ #pragma mark O3StructType /************************************/
 - (UIntP)structSize {return O3ScalarStructSize(self);}
+
+- (O3VecStructElementType)type {return mType;}
 
 - (id)objectWithBytes:(const void*)bytes {
 	#define MakeAndReturnNumber(NUM_METHOD,NUM_TYPE) return [NSNumber NUM_METHOD *(( NUM_TYPE *)bytes)];
@@ -135,7 +138,48 @@ UIntP O3ScalarStructSize(O3ScalarStructType* type) {
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)oformat {
+	if (![oformat isKindOfClass:[self class]]) return nil;
+	UIntP strSize = [self structSize];
+	if (!s) s = strSize;
+	UIntP count = [instructs length]/strSize;
+	const UInt8* bytes = (const UInt8*)[instructs bytes];
+	NSMutableData* mdat = [[[NSMutableData alloc] initWithLength:[oformat structSize]*count] autorelease];
+	UInt8* tbytes = (UInt8*)[mdat mutableBytes];
+	O3ScalarStructType* ot = (O3ScalarStructType*)oformat;
+	O3VecStructElementType otype = [ot type];
+	UIntP i;
+	#define SwapVal(Tf,Tt) for (i=0; i<count; i++) *((Tt*)tbytes+i)=(*(const Tf*)bytes+i); goto fin;
+	#define SwapFrom(Tf) switch (otype) {                      \
+		case O3VecStructFloatElement:  SwapVal(Tf, float);     \
+		case O3VecStructDoubleElement: SwapVal(Tf, double);    \
+		case O3VecStructInt8Element:   SwapVal(Tf, Int8);      \
+		case O3VecStructInt16Element:  SwapVal(Tf, Int16);     \
+		case O3VecStructInt32Element:  SwapVal(Tf, Int32);     \
+		case O3VecStructInt64Element:  SwapVal(Tf, Int64);     \
+		case O3VecStructUInt8Element:  SwapVal(Tf, UInt8);     \
+		case O3VecStructUInt16Element: SwapVal(Tf, UInt16);    \
+		case O3VecStructUInt32Element: SwapVal(Tf, UInt32);    \
+		case O3VecStructUInt64Element: SwapVal(Tf, UInt64);	   \
+	}
+	switch (mType) {
+		case O3VecStructFloatElement:  SwapFrom(float);
+		case O3VecStructDoubleElement: SwapFrom(double);
+		case O3VecStructInt8Element:   SwapFrom(Int8);
+		case O3VecStructInt16Element:  SwapFrom(Int16);
+		case O3VecStructInt32Element:  SwapFrom(Int32);
+		case O3VecStructInt64Element:  SwapFrom(Int64);
+		case O3VecStructUInt8Element:  SwapFrom(UInt8);
+		case O3VecStructUInt16Element: SwapFrom(UInt16);
+		case O3VecStructUInt32Element: SwapFrom(UInt32);
+		case O3VecStructUInt64Element: SwapFrom(UInt64);
+	}
+	#undef SwapVal
+	#undef SwapFrom
+	O3AssertFalse(@"Unknown GL type for type \"%c\" in vec struct %@", mType, self);
 	return nil;
+	fin:
+	[instructs relinquishBytes];
+	return mdat;
 }
 
 

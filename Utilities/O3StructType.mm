@@ -119,6 +119,7 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 		[format writeObject:d toBytes:outbytes+i*outsize];
 	}
 	[pool release];
+	[instructs relinquishBytes];
 	return [rdata autorelease];
 }
 
