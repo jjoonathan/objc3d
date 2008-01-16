@@ -8,7 +8,11 @@
 #import "O3ScalarStructType.h"
 #import "O3GPUData.h"
 
-#define DefType(NAME,TYPE,SNAME) O3ScalarStructType* g ## NAME; O3ScalarStructType* NAME () {return g ## NAME;}
+#define DefType(NAME,TYPE,SNAME,CTYPE) O3ScalarStructType* g ## NAME; O3ScalarStructType* NAME () {return g ## NAME;}
+O3ScalarStructTypeDefines
+#undef DefType
+
+#define DefType(NAME,TYPE,SNAME,CTYPE) int NAME ## Comparator (void* a, void* b, void* ctx) {CTYPE aa=*(CTYPE*)a; CTYPE bb=*(CTYPE*)b; if (aa<bb) return NSOrderedAscending; if (aa>bb) return NSOrderedDescending; return NSOrderedSame;}
 O3ScalarStructTypeDefines
 #undef DefType
 
@@ -33,7 +37,7 @@ UIntP O3ScalarStructSize(O3ScalarStructType* type) {
 }
 
 + (void)o3init {
-	#define DefType(NAME,TYPE,SNAME) g ## NAME = [O3ScalarStructType scalarTypeWithElementType: TYPE name: SNAME];
+	#define DefType(NAME,TYPE,SNAME,CTYPE) g ## NAME = [O3ScalarStructType scalarTypeWithElementType: TYPE name: SNAME];
 	O3ScalarStructTypeDefines
 	#undef DefType
 }
@@ -86,14 +90,14 @@ UIntP O3ScalarStructSize(O3ScalarStructType* type) {
 	O3AssertFalse(@"Unknown specific type");
 }
 
-- (NSMutableData*)portabalizeStructsAt:(const void*)at count:(UIntP)count stride:(UIntP)s {
+- (NSData*)portabalizeStructsAt:(const void*)at count:(UIntP)count stride:(UIntP)s {
 	UIntP strSize = [self structSize];
 	if (!s) s = strSize;
-	NSMutableData* dat = [NSMutableData dataWithLength:strSize*count];
-	const UInt8* bytes = (const UInt8*)at;
-	UInt8* tbytes = (UInt8*)[dat mutableBytes];
+	if (!O3NeedByteswapToLittle && s==strSize) return [NSData dataWithBytesNoCopy:(void*)at length:strSize*count freeWhenDone:NO];
+	const UInt8* fbytes = (const UInt8*)at;
+	UInt8* tbytes = (UInt8*)malloc(strSize*count);
 	UIntP i;
-	#define SwapVal(T) for (i=0; i<count; i++) *((T*)tbytes+i)=O3ByteswapHostToLittle(*(const T*)bytes+i); return dat;
+	#define SwapVal(T) for (i=0; i<count; i++) *((T*)tbytes+i)=O3ByteswapHostToLittle(*(const T*)fbytes+i); break;
 	switch (mType) {
 		case O3VecStructFloatElement:  SwapVal(float);
 		case O3VecStructDoubleElement: SwapVal(double);
@@ -105,21 +109,22 @@ UIntP O3ScalarStructSize(O3ScalarStructType* type) {
 		case O3VecStructUInt16Element: SwapVal(UInt16);
 		case O3VecStructUInt32Element: SwapVal(UInt32);
 		case O3VecStructUInt64Element: SwapVal(UInt64);
+		default: O3AssertFalse(@"Unknown type \"%c\" in scalar struct type %@", mType, self);
 	}
 	#undef SwapVal
-	O3AssertFalse(@"Unknown type \"%c\" in scalar struct type %@", mType, self);	
-	return nil;
+	return [NSMutableData dataWithBytesNoCopy:tbytes length:strSize*count freeWhenDone:YES];
 }
 
-- (O3RawData)deportabalizeStructs:(NSData*)indata to:(void*)target stride:(UIntP)s {
+- (NSData*)deportabalizeStructs:(NSData*)indata to:(void*)target stride:(UIntP)s {
+	if (!target && !O3NeedByteswapToLittle) return indata;
 	UIntP strSize = [self structSize];
 	if (!s) s = strSize;
 	UIntP count = [indata length]/strSize;
 	const UInt8* bytes = (const UInt8*)[indata bytes];
+	BOOL had_to_malloc_target = target? NO : YES;
 	UInt8* tbytes = target? (UInt8*)target : (UInt8*)malloc(s*count);
-	O3RawData ret = {tbytes,s*count};
 	UIntP i;
-	#define SwapVal(T) for (i=0; i<count; i++) *((T*)tbytes+i)=O3ByteswapLittleToHost(*(const T*)bytes+i); return ret;
+	#define SwapVal(T) for (i=0; i<count; i++) *((T*)tbytes+i)=O3ByteswapLittleToHost(*(const T*)bytes+i); break;
 	switch (mType) {
 		case O3VecStructFloatElement:  SwapVal(float);
 		case O3VecStructDoubleElement: SwapVal(double);
@@ -131,10 +136,10 @@ UIntP O3ScalarStructSize(O3ScalarStructType* type) {
 		case O3VecStructUInt16Element: SwapVal(UInt16);
 		case O3VecStructUInt32Element: SwapVal(UInt32);
 		case O3VecStructUInt64Element: SwapVal(UInt64);
+		default: O3AssertFalse(@"Unknown type \"%c\" in scalar struct type %@", mType, self);
 	}
 	#undef SwapVal
-	O3AssertFalse(@"Unknown type \"%c\" in scalar struct type %@", mType, self);	
-	return ret;
+	return had_to_malloc_target? [NSData dataWithBytesNoCopy:tbytes length:s*count freeWhenDone:YES] : nil;
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)oformat {
@@ -184,42 +189,37 @@ UIntP O3ScalarStructSize(O3ScalarStructType* type) {
 
 
 /************************************/ #pragma mark GL /************************************/
-- (GLenum)glFormatForType:(O3VertexDataType)type {
-	switch (mType) {
-		case O3VecStructFloatElement:  return GL_FLOAT;
-		case O3VecStructDoubleElement: return GL_DOUBLE;
-		case O3VecStructInt8Element:   return GL_BYTE;
-		case O3VecStructInt16Element:  return GL_SHORT;
-		case O3VecStructInt32Element:  return GL_INT;
-		//case O3VecStructInt64Element:  return 0;
-		case O3VecStructUInt8Element:  return GL_UNSIGNED_BYTE;
-		case O3VecStructUInt16Element: return GL_UNSIGNED_SHORT;
-		case O3VecStructUInt32Element: return GL_UNSIGNED_INT;
-		//case O3VecStructUInt64Element: return 0;
+- (void)getFormat:(out GLenum*)format components:(out GLsizeiptr*)components offset:(out GLint*)offset stride:(out GLint*)stride normed:(out GLboolean*)normed vertsPerStruct:(out int*)vps forType:(in O3VertexDataType)type {
+	if (format) {
+		switch (mType) {
+			case O3VecStructFloatElement:  *format = GL_FLOAT;
+		    case O3VecStructDoubleElement: *format = GL_DOUBLE;
+		    case O3VecStructInt8Element:   *format = GL_BYTE;
+		    case O3VecStructInt16Element:  *format = GL_SHORT;
+		    case O3VecStructInt32Element:  *format = GL_INT;
+			//case O3VecStructInt64Element:  return 0;
+			case O3VecStructUInt8Element:  *format = GL_UNSIGNED_BYTE;
+			case O3VecStructUInt16Element: *format = GL_UNSIGNED_SHORT;
+			case O3VecStructUInt32Element: *format = GL_UNSIGNED_INT;
+			//case O3VecStructUInt64Element: return 0;
+		}
+		O3Asrt(NO);
 	}
-	O3AssertFalse(@"Unknown GL type for type \"%c\" in vec struct %@", mType, self);
-	return 0;
+	if (components) *components = 1;
+	if (offset) *offset = 0;
+	if (stride) *stride = O3ScalarStructSize(self);
+	if (normed) *normed = GL_FALSE;
+	if (vps) *vps = 0; //Perhaps implement fractions
 }
 
-- (GLint)glComponentCountForType:(O3VertexDataType)type {
-	return 1;
+- (O3StructArrayComparator)defaultComparator {
+	switch (mType) {
+		#define DefType(NAME,TYPE,SNAME,CTYPE) case TYPE:  return NAME ## Comparator;
+		O3ScalarStructTypeDefines
+		#undef DefType
+	}
+	O3Asrt(NO);
+	return nil;
 }
-
-- (GLsizeiptr)glOffsetForType:(O3VertexDataType)type {
-	return 0;
-}
-
-- (GLsizeiptr)glStride {
-	return O3ScalarStructSize(self);
-}
-
-- (GLboolean)glNormalizedForType:(O3VertexDataType)type {
-	return GL_FALSE;
-}
-
-- (int)glVertsPerStruct {
-	return 1;
-}
-
 
 @end

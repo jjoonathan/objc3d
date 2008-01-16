@@ -93,12 +93,26 @@ inline void changed(O3Region* self) {
 
 
 /************************************/ #pragma mark Objects Accessors /************************************/
+#ifdef O3DEBUG
+#define O3CheckRenderable(obj) if (![(NSObject*)obj conformsToProtocol:@protocol(O3Renderable)]) {O3Assert(NO, @"Object %@ does not conform to O3Renderable protocol.", obj);	 return;}
+#else
+#define O3CheckRenderable(obj)
+#endif
 ///Adds aObject and sets its superspace to self
 ///@warning DO NOT add an O3Region. Use its setParentRegion method instead
 - (void)addObject:(O3SceneObj*)aObject {
+	O3CheckRenderable(aObject);
 	[mObjects addObject:aObject];
 	[aObject setParentRegion:self];
 	changed(self);
+}
+
+- (void)addObjects:(NSArray*)objs {
+	#ifdef O3DEBUG
+	NSEnumerator* mObjectsEnumerator = [mObjects objectEnumerator];
+	while (id o = [mObjectsEnumerator nextObject]) O3CheckRenderable(o);
+	#endif
+	[mObjects addObjectsFromArray:objs];
 }
 
 - (void)insertObject:(O3SceneObj*)aObject atIndex:(UIntP)i  {
@@ -147,7 +161,7 @@ inline void changed(O3Region* self) {
 }
 
 - (void)tickWithContext:(O3RenderContext*)context {
-	[mObjects makeObjectsPerformSelector:@selector(renderWithContext:) withObject:(id)context]; //Bad, but it should work. context isn't a real object.
+	[mObjects makeObjectsPerformSelector:@selector(tickWithContext:) withObject:(id)context]; //Bad, but it should work. context isn't a real object.
 }
 
 

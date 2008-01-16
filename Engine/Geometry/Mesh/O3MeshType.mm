@@ -16,7 +16,7 @@
 - (id)initWithDataSources:(NSArray*)dataSources  defaultMaterialName:(NSString*)materialName {
 	O3SuperInitOrDie();
 	[self setDefaultMaterialName:materialName];
-	mVertexDataSources = [[NSMutableArray alloc] initWithArray:dataSources];
+	mVertexDataSources = dataSources? [[NSMutableArray alloc] initWithArray:dataSources] : [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -73,6 +73,13 @@
 }
 
 - (void)tickWithContext:(O3RenderContext*)ctx {
+}
+
+- (void)uploadToGPU {
+	NSEnumerator* mVertexDataSourcesEnumerator = [mVertexDataSources objectEnumerator];
+	while (O3VertexDataSource* o = [mVertexDataSourcesEnumerator nextObject])
+		[o uploadToGPU];
+	
 }
 
 

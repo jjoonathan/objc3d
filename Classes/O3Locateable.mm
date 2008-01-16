@@ -18,6 +18,12 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	self->mSpaceNeedsUpdate = NO;
 }
 
+void O3LocateableBeginRender(O3Locateable* self, O3RenderContext* ctx) {
+	O3Space3* cspace = [ctx->camera space];
+	O3Mat4x4d mat = self->mSpace.MatrixToSpace(cspace);
+	glLoadMatrixd(mat.Data());
+}
+
 /************************************/ #pragma mark Init /************************************/
 - (id)initWithLocation:(O3Translation3)trans rotation:(O3Rotation3)rot scale:(O3Scale3)scale {
 	O3SuperInitOrDie();

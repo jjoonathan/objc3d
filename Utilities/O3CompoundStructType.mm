@@ -52,7 +52,7 @@
 	}
 }
 
-- (NSMutableData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s {
+- (NSData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSMutableData* dat = [NSMutableData data];
 	O3BufferedWriter bw(dat);
@@ -69,10 +69,11 @@
 	return dat;
 }
 
-- (O3RawData)deportabalizeStructs:(NSData*)indata to:(void*)target stride:(UIntP)s {
+- (NSData*)deportabalizeStructs:(NSData*)indata to:(void*)target stride:(UIntP)s {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	if (!s) s = [self structSize];
 	UIntP count = [indata length]/s;
+	BOOL had_to_malloc_target = target? NO : YES;
 	if (!target) target = malloc(s*count);
 	O3BufferedReader r(indata);
 	UInt8* to = (UInt8*)target;
@@ -83,8 +84,7 @@
 		to += [type structSize];
 	}
 	[pool release];
-	O3RawData rdat = {target, s*count};
-	return rdat;
+	return had_to_malloc_target? [NSData dataWithBytesNoCopy:target length:s*count freeWhenDone:YES] : nil;
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format {

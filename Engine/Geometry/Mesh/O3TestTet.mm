@@ -29,6 +29,7 @@ UInt8 O3TestLineIndicies[2*6] = {0,1,0,2,0,3,1,2,1,3,2,3};
 @implementation O3TestTet
 
 - (void)renderWithContext:(O3RenderContext*)ctx {
+	O3LocateableBeginRender(self,ctx);
 	static O3StructArray* colDat = nil;
 	if (!colDat) colDat = [[O3StructArray alloc] initWithTypeNamed:@"RGBA8" rawData:[NSData dataWithBytesNoCopy:O3TestTetColors length:sizeof(O3TestTetColors) freeWhenDone:NO]];
 	static O3StructArray* vrtDat = nil;
@@ -51,10 +52,6 @@ UInt8 O3TestLineIndicies[2*6] = {0,1,0,2,0,3,1,2,1,3,2,3};
 	[col bind];
 	[vrt bind];
 	[idx bind];
-	
-	O3Space3* cspace = [ctx->camera space];
-	O3Mat4x4d mat = [self matrixToSpace:cspace];
-	glLoadMatrixd(mat.Data());
 	
 	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_BYTE, (GLvoid*)[idx indicies]);
 	

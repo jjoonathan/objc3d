@@ -9,7 +9,6 @@
 #endif
 
 #include <GL/glew.h>
-#include <GL/GLFW.h>
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <Carbon/Carbon.h>

@@ -5,7 +5,9 @@
 //  Created by Jonathan deWerd on 11/5/07.
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
+#import "O3VertexDataSource.h"
 @class O3StructType;
+typedef int (*O3StructArrayComparator)(void*, void*, void *);
 
 @interface O3StructArray : NSMutableArray {
 	O3StructType* mStructType;
@@ -33,6 +35,16 @@
 - (void)setRawDataNoCopy:(NSMutableData*)newData;
 - (NSData*)portableData; ///<Converts the receiver to its portable representation and returns it
 - (void)setPortableData:(NSData*)pdat; ///<Sets the receiver's contents with a portable representation
+- (void)getRawData:(out NSData**)dat
+              type:(out O3StructType**)type
+            format:(out GLenum*)format
+        components:(out GLsizeiptr*)components
+            offset:(out GLint*)offset
+            stride:(out GLint*)stride
+            normed:(out GLboolean*)normed
+    vertsPerStruct:(out int*)vps
+           forType:(in O3VertexDataType)type;
+
 
 //C interface
 - (NSData*)structAtIndex:(UIntP)idx;
@@ -52,7 +64,8 @@
 - (void)removeLastObject;
 - (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj;
 
-//GPU
+//Convenience
+- (void)sort;
 - (void)uploadToGPU; //Converts data to O3GPUData, uploading it to the GPU (if necessary)
 @end
 

@@ -9,10 +9,25 @@
 @class O3VecStruct;
 
 #define O3VecStructTypeDefines   /*to add a new type, add a DefType(name) here, then init it inside o3init*/                   \
-DefType(O3Vec3rType); DefType(O3Index4x64Type); DefType(O3Index4x32Type); DefType(O3Index4x16Type); DefType(O3Index4x8Type);   \
-DefType(O3Index3x64Type); DefType(O3Index3x32Type); DefType(O3Index3x16Type); DefType(O3Index3x8Type); DefType(O3Scale3dType); \
-DefType(O3Point3fType); DefType(O3Rot3dType); DefType(O3Vec4dType); DefType(O3Vec4fType); DefType(O3Vec4rType);                \
-DefType(O3Vec3dType); DefType(O3Vec3fType); DefType(O3RGBA8Type); DefType(O3RGB8Type);
+DefType(O3Vec3rType,real,O3VecStructrealElement,3);\
+DefType(O3Index4x64Type,UInt64,O3VecStructUInt64Element,4);\
+DefType(O3Index4x32Type,UInt32,O3VecStructUInt32Element,4);\
+DefType(O3Index4x16Type,UInt16,O3VecStructUInt16Element,4);\
+DefType(O3Index4x8Type,UInt8,O3VecStructUInt8Element,4);\
+DefType(O3Index3x64Type,Int64,O3VecStructInt64Element,3);\
+DefType(O3Index3x32Type,Int32,O3VecStructInt32Element,3);\
+DefType(O3Index3x16Type,Int16,O3VecStructInt16Element,3);\
+DefType(O3Index3x8Type,Int8,O3VecStructInt8Element,3);\
+DefType(O3Scale3dType,double,O3VecStructDoubleElement,3);\
+DefType(O3Point3fType,float,O3VecStructFloatElement,3);\
+DefType(O3Rot3dType,double,O3VecStructDoubleElement,3);\
+DefType(O3Vec4dType,double,O3VecStructDoubleElement,3);\
+DefType(O3Vec4fType,float,O3VecStructFloatElement,4);\
+DefType(O3Vec4rType,real,O3VecStructRealElement,4);\
+DefType(O3Vec3dType,double,O3VecStructDoubleElement,3);\
+DefType(O3Vec3fType,float,O3VecStructFloatElement,3);\
+DefType(O3RGBA8Type,UInt8,O3VecStructUInt8Element,4);\
+DefType(O3RGB8Type,UInt8,O3VecStructUInt8Element,3);
 
 typedef enum {
 	O3VecStructRotation=1,
@@ -38,18 +53,20 @@ typedef enum {
 
 @interface O3VecStructType : O3StructType {
 	BOOL mFreePermsWhenDone:1;
-	O3VecStructElementType mElementType;
+	O3VecStructElementType mElementType; ///<@dep O3FaceStructType.mm
 	O3VecStructSpecificType mSpecificType;
 	short mElementCount; ///<The number of elements
 	double mMultiplier; ///<Amount to multiply each element by. Useful for normalized formats.
 	UIntP* mPermutations; ///<mPermutations[visible_index]=stored_index
+	O3StructArrayComparator mComp;
 }
 //Init
 + (O3VecStructType*)vecStructTypeWithElementType:(O3VecStructElementType)type
                                     specificType:(O3VecStructSpecificType)stype
                                            count:(int)count
-                                            name:(NSString*)name;
-- (O3VecStructType*)initWithElementType:(O3VecStructElementType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name;
+                                            name:(NSString*)name
+									  comparator:(O3StructArrayComparator)comp;
+- (O3VecStructType*)initWithElementType:(O3VecStructElementType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name comparator:(O3StructArrayComparator)comp;
 
 //Special info
 - (double)multiplier; ///<The amount by which each element is multiplied before being returned
@@ -90,7 +107,7 @@ typedef enum {
 O3EXTERN_C_BLOCK
 NSNumber* O3VecStructGetElement(O3VecStructType* self, UIntP i, const void* bytes);
 
-#define DefType(NAME) O3VecStructType* NAME ();
+#define DefType(NAME, TYPE, ETYPE, CT) O3VecStructType* NAME ();
 O3VecStructTypeDefines
 #undef DefType
 

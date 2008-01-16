@@ -70,8 +70,8 @@ template <typename TYPE> TYPE O3Byteswap(const TYPE& to_swap); ///<Swaps the byt
 #define O3ByteswapHostToBig(x)    O3Byteswap(x)
 #define O3ByteswapToHost(endianess, x) ((endianess==O3BigEndian)?O3Byteswap(x):(x))
 #define O3ByteswapHostTo(endianess, x) ((endianess==O3BigEndian)?O3Byteswap(x):(x))
-#define O3NeedByteswapToLittle YES
-#define O3NeedByteswapToBig NO
+#define O3NeedByteswapToLittle 1
+#define O3NeedByteswapToBig 0
 #else
 #define O3HOST_ENDIANESS O3BigEndian
 #define O3ByteswapLittleToHost(x) O3Byteswap(x)
@@ -80,8 +80,8 @@ template <typename TYPE> TYPE O3Byteswap(const TYPE& to_swap); ///<Swaps the byt
 #define O3ByteswapHostToBig(x)    (x)
 #define O3ByteswapToHost(endianess, x) ((endianess==O3LittleEndian)?O3Byteswap(x):(x))
 #define O3ByteswapHostTo(endianess, x) ((endianess==O3LittleEndian)?O3Byteswap(x):(x))
-#define O3NeedByteswapToLittle NO
-#define O3NeedByteswapToBig YES
+#define O3NeedByteswapToLittle 0
+#define O3NeedByteswapToBig 1
 #endif /*defined(__BIG_ENDIAN__)*/
 #endif /*defined(__cplusplus)*/
 

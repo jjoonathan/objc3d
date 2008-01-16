@@ -167,6 +167,11 @@
 		FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072E0CE17B7D003EE24B /* O3StructType.mm */; };
 		FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */; };
 		FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */; };
+		FC56F18C0D3324490083E421 /* liblib3ds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC56F18B0D3324490083E421 /* liblib3ds.a */; };
+		FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */; };
+		FC56F1BB0D3328010083E421 /* O33DSUnarchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1B90D3328010083E421 /* O33DSUnarchiver.mm */; };
+		FC56F2620D35D0E70083E421 /* O3MeshInstance.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56F2600D35D0E70083E421 /* O3MeshInstance.mm */; };
+		FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F2610D35D0E70083E421 /* O3MeshInstance.h */; };
 		FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5B48770C205A4100879D56 /* O3BigObject.mm */; };
 		FC63DF5D0CF1C51800325C54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */; };
 		FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63DF770CF1C5E800325C54 /* RubyConsole_main.mm */; };
@@ -248,13 +253,6 @@
 			remoteGlobalIDString = FC2C165D0C11C3270084A599;
 			remoteInfo = glew;
 		};
-		FC2C17490C11C9700084A599 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FC2C173F0C11C9700084A599 /* glfw.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FC2C16880C11C5910084A599;
-			remoteInfo = glfw;
-		};
 		FC2C1C820C125FC90084A599 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FC2C173C0C11C9700084A599 /* glew.xcodeproj */;
@@ -268,6 +266,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = log4cocoa;
+		};
+		FC56F1700D331EEC0083E421 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC046055464E500DB518D;
+			remoteInfo = lib3ds;
+		};
+		FC56F1720D331EFE0083E421 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
+			remoteInfo = lib3ds;
 		};
 		FC63DF7A0CF1C61600325C54 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -398,7 +410,6 @@
 		FC2B5F480BD2823D005324C8 /* O3TestAccelerate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestAccelerate.h; sourceTree = "<group>"; };
 		FC2B5F490BD2823E005324C8 /* O3TestAccelerate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestAccelerate.mm; sourceTree = "<group>"; };
 		FC2C173C0C11C9700084A599 /* glew.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = glew.xcodeproj; path = Other/glew.xcodeproj; sourceTree = "<group>"; };
-		FC2C173F0C11C9700084A599 /* glfw.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = glfw.xcodeproj; path = Other/glfw.xcodeproj; sourceTree = "<group>"; };
 		FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjC3D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC2C1BB80C123F7A0084A599 /* ObjC3D.framework-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ObjC3D.framework-Info.plist"; sourceTree = "<group>"; };
 		FC2C1BC30C1240020084A599 /* ObjC3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjC3D.h; sourceTree = "<group>"; };
@@ -446,6 +457,12 @@
 		FC55072E0CE17B7D003EE24B /* O3StructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3StructType.mm; sourceTree = "<group>"; };
 		FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ScalarStructType.h; sourceTree = "<group>"; };
 		FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ScalarStructType.mm; sourceTree = "<group>"; };
+		FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = lib3ds.xcodeproj; path = Other/lib3ds.xcodeproj; sourceTree = "<group>"; };
+		FC56F18B0D3324490083E421 /* liblib3ds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblib3ds.a; path = build/Support/liblib3ds.a; sourceTree = SOURCE_ROOT; };
+		FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O33DSUnarchiver.h; sourceTree = "<group>"; };
+		FC56F1B90D3328010083E421 /* O33DSUnarchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O33DSUnarchiver.mm; sourceTree = "<group>"; };
+		FC56F2600D35D0E70083E421 /* O3MeshInstance.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3MeshInstance.mm; path = Engine/Geometry/Mesh/O3MeshInstance.mm; sourceTree = SOURCE_ROOT; };
+		FC56F2610D35D0E70083E421 /* O3MeshInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3MeshInstance.h; path = Engine/Geometry/Mesh/O3MeshInstance.h; sourceTree = SOURCE_ROOT; };
 		FC5B48760C205A4100879D56 /* O3BigObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3BigObject.h; path = ../Utilities/O3BigObject.h; sourceTree = "<group>"; };
 		FC5B48770C205A4100879D56 /* O3BigObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3BigObject.mm; path = ../Utilities/O3BigObject.mm; sourceTree = "<group>"; };
 		FC5BBBB90BD58B7200894533 /* O3TestUtilities.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TestUtilities.mm; sourceTree = "<group>"; };
@@ -625,6 +642,7 @@
 				FC2C1D480C125FDB0084A599 /* Carbon.framework in Frameworks */,
 				FC63EF800CFA22F200325C54 /* Log4Cocoa.framework in Frameworks */,
 				FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */,
+				FC56F18C0D3324490083E421 /* liblib3ds.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,9 +712,9 @@
 		29B97314FDCFA39411CA2CEA /* ObjC3D */ = {
 			isa = PBXGroup;
 			children = (
+				FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */,
 				FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */,
 				FC2C173C0C11C9700084A599 /* glew.xcodeproj */,
-				FC2C173F0C11C9700084A599 /* glfw.xcodeproj */,
 				FC030FB40A953A89007E04C1 /* Todo.rtf */,
 				FC7783AA0C3997FF00A2E928 /* Readme.rtf */,
 				FC030FB10A953A6C007E04C1 /* ObjC3D */,
@@ -872,6 +890,8 @@
 				FC5BBD630BD6489500894533 /* O3KeyedUnarchiver.mm */,
 				FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */,
 				FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */,
+				FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */,
+				FC56F1B90D3328010083E421 /* O33DSUnarchiver.mm */,
 				FC63EE030CF897DB00325C54 /* O3GPUData.h */,
 				FC63EE040CF897DB00325C54 /* O3GPUData.mm */,
 			);
@@ -882,14 +902,6 @@
 			isa = PBXGroup;
 			children = (
 				FC2C17470C11C9700084A599 /* libglew.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FC2C17400C11C9700084A599 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FC2C174A0C11C9700084A599 /* libglfw.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -920,6 +932,8 @@
 			children = (
 				FC348AAE0B420B07000015FE /* O3MeshType.h */,
 				FC348B890B433F70000015FE /* O3MeshType.mm */,
+				FC56F2600D35D0E70083E421 /* O3MeshInstance.mm */,
+				FC56F2610D35D0E70083E421 /* O3MeshInstance.h */,
 				FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */,
 				FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */,
 				FCF2AA940D217C04003B8F67 /* O3TestTet.h */,
@@ -1066,6 +1080,14 @@
 			name = Structs;
 			sourceTree = "<group>";
 		};
+		FC56F16A0D331EEC0083E421 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC56F1710D331EEC0083E421 /* liblib3ds.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FC63EE3E0CF9DAB100325C54 /* tri_stripper */ = {
 			isa = PBXGroup;
 			children = (
@@ -1170,6 +1192,7 @@
 		FCB0166B0B4EAE8900FBFAC2 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				FC56F18B0D3324490083E421 /* liblib3ds.a */,
 				FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */,
 				FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */,
 			);
@@ -1381,6 +1404,8 @@
 				FC0BBD4C0D24122200E5B388 /* O3GLViewController.h in Headers */,
 				FC0BBD980D2563CF00E5B388 /* O3GLViewActionCollection.h in Headers */,
 				FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */,
+				FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */,
+				FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1405,6 +1430,7 @@
 			dependencies = (
 				FC2C1C830C125FC90084A599 /* PBXTargetDependency */,
 				FC2C204E0C12FFD40084A599 /* PBXTargetDependency */,
+				FC56F1730D331EFE0083E421 /* PBXTargetDependency */,
 			);
 			name = ObjC3D.framework;
 			productName = ObjC3D.framework;
@@ -1483,8 +1509,8 @@
 					ProjectRef = FC2C173C0C11C9700084A599 /* glew.xcodeproj */;
 				},
 				{
-					ProductGroup = FC2C17400C11C9700084A599 /* Products */;
-					ProjectRef = FC2C173F0C11C9700084A599 /* glfw.xcodeproj */;
+					ProductGroup = FC56F16A0D331EEC0083E421 /* Products */;
+					ProjectRef = FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */;
 				},
 				{
 					ProductGroup = FC2C20440C12FFA90084A599 /* Products */;
@@ -1511,11 +1537,11 @@
 			remoteRef = FC2C17460C11C9700084A599 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FC2C174A0C11C9700084A599 /* libglfw.a */ = {
+		FC56F1710D331EEC0083E421 /* liblib3ds.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libglfw.a;
-			remoteRef = FC2C17490C11C9700084A599 /* PBXContainerItemProxy */;
+			path = liblib3ds.a;
+			remoteRef = FC56F1700D331EEC0083E421 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FC7DD60E0C1C8CAB009D36A2 /* Log4Cocoa.framework */ = {
@@ -1695,6 +1721,8 @@
 				FC0BBD410D233F0700E5B388 /* O3Renderable.mm in Sources */,
 				FC0BBD4D0D24122200E5B388 /* O3GLViewController.mm in Sources */,
 				FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */,
+				FC56F1BB0D3328010083E421 /* O33DSUnarchiver.mm in Sources */,
+				FC56F2620D35D0E70083E421 /* O3MeshInstance.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1736,6 +1764,11 @@
 			isa = PBXTargetDependency;
 			name = log4cocoa;
 			targetProxy = FC2C204D0C12FFD40084A599 /* PBXContainerItemProxy */;
+		};
+		FC56F1730D331EFE0083E421 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = lib3ds;
+			targetProxy = FC56F1720D331EFE0083E421 /* PBXContainerItemProxy */;
 		};
 		FC63DF7B0CF1C61600325C54 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1869,9 +1902,14 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1897,9 +1935,14 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1928,9 +1971,14 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1957,9 +2005,14 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2029,7 +2082,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(BUILD_DIR)/$(CONFIGURATION)\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(PROJECT_DIR)/Other/products\"";

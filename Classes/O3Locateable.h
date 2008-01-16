@@ -56,3 +56,5 @@ using namespace ObjC3D::Math;
 @end
 
 typedef O3Locateable<O3Renderable> O3SceneObj;
+
+void O3LocateableBeginRender(O3Locateable* self, O3RenderContext* ctx); ///<Subclasses should always call this to move into the receiver's space before drawing

@@ -148,6 +148,10 @@ int sortBySearchPriority(id l, id r, void* objname) {
 	return NSOrderedSame;
 }
 
+- (id)valueForUndefinedKey:(NSString*)u {
+	return nil;
+}
+
 - (id)valueForKey:(NSString*)key {
 	id sval = [super valueForKey:key];
 	if (sval) return sval;

@@ -10,8 +10,9 @@
 
 @implementation O3VertexDataSource
 
-- (void)bind {
+- (UIntP)bind {
 	[NSException raise:@"O3AbstractClassException" format:@"Attempt to use un-overridden abstract method -(void)bind of O3VertexDataSource!"];
+	return 0;
 }
 
 - (void)unbind {
@@ -36,6 +37,9 @@
 - (GLvoid*)indicies {
 	[NSException raise:@"O3AbstractClassException" format:@"Attempt to use un-overridden abstract method - (GLvoid*)indicies of O3VertexDataSource!"];
 	return NULL; //Hopefully this will get caught later on, heh	
+}
+
+- (void)uploadToGPU {
 }
 
 @end

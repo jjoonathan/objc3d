@@ -9,6 +9,7 @@
 #import "O3StructArray.h"
 #import "O3StructType.h"
 #import "O3CompoundStructType.h"
+#import "O3VertexFormats.h"
 
 @implementation O3StructArray
 
@@ -203,8 +204,15 @@ void initP(O3StructArray* self) {
 		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.", mStructType, pdat);
 		return;
 	}
-	void* newbuf = [mStructType deportabalizeStructs:pdat];
-	O3Assign([NSMutableData dataWithBytesNoCopy:newbuf length:len freeWhenDone:YES], mData);
+	NSData* dat = [mStructType deportabalizeStructs:pdat];
+	const void* cbytes = [dat bytes];
+	UIntP dplen = [dat length];
+	void* b = malloc(100); free(b);
+	void* tbytes = malloc(dplen);
+	memcpy(tbytes,cbytes,dplen);
+	NSMutableData* newbuf = [[NSMutableData alloc] initWithBytesNoCopy:tbytes length:dplen freeWhenDone:YES];
+	O3Assign(newbuf, mData);
+	[newbuf release];
 }
 
 - (NSData*)structAtIndex:(UIntP)idx {
@@ -231,6 +239,26 @@ void initP(O3StructArray* self) {
 	return [mData mutableBytes];
 }
 
+- (void)getRawData:(out NSData**)dat
+              type:(out O3StructType**)type
+            format:(out GLenum*)format
+        components:(out GLsizeiptr*)components
+            offset:(out GLint*)offset
+            stride:(out GLint*)stride
+            normed:(out GLboolean*)normed
+    vertsPerStruct:(out int*)vps
+           forType:(in O3VertexDataType)ftype {
+	if (dat) *dat = mData;
+	if (type) *type = mStructType;
+	[mStructType getFormat:format
+                components:components
+                    offset:offset
+                    stride:stride
+                    normed:normed
+            vertsPerStruct:vps
+                   forType:ftype];
+}
+
 /************************************/ #pragma mark NSArray methods /************************************/
 - (UIntP)count {
 	return countP(self);
@@ -247,6 +275,84 @@ void initP(O3StructArray* self) {
 	[mAccessLock unlock];
 	return ret;
 }
+
+- (O3StructArray*)sortedArrayUsingFunction:(O3StructArrayComparator)comp context:(void*)c {
+	O3StructArray* r = [self mutableCopy];
+	typedef int(*O3CocoaCompT)(id,id,void*);
+	[r sortUsingFunction:(O3CocoaCompT)comp context:c];
+	return [r autorelease];
+}
+
+#define CHUNK_SIZE 16
+#define STRT_AT_IDX(byteptr,i) (byteptr+strsize*(i))
+#define COPY_IDX(srcb,src,dstb,dest) memcpy(STRT_AT_IDX(dstb,dest),STRT_AT_IDX(srcb,src),strsize)
+
+static UInt8* mergeSortH(UInt8* bytes,UInt8* scratch,UIntP strsize,void* ctx,O3StructArrayComparator comp, UIntP loc, UIntP len) {
+	if (len<=CHUNK_SIZE) {
+		UInt8* lc = (UInt8*)malloc(CHUNK_SIZE*strsize);
+		memcpy(lc,bytes,CHUNK_SIZE*strsize);
+		UIntP b, a = 0;                                                               
+		UIntP end = a+len;                                                              
+		for (; a<end; a++)                                                              
+			for (b=a+1; b<end; b++)                                                     
+				if (comp(STRT_AT_IDX(lc,a),STRT_AT_IDX(lc,b),ctx)==NSOrderedDescending) {
+					COPY_IDX(lc,a,scratch,0);
+					COPY_IDX(lc,b,lc,a);
+					COPY_IDX(scratch,0,lc,b);
+				}
+				                                                                    
+		//int i; for (i=0; i<len-1; i++) O3Asrt(comp(STRT_AT_IDX(lc,i),STRT_AT_IDX(lc,i+1),ctx)!=NSOrderedDescending);
+		return lc;
+	} else {
+		UIntP hlen = len>>1;
+		UIntP a=0, b=0;
+		UIntP aa=hlen;
+		UIntP bb=len-hlen;
+		UInt8* la = mergeSortH(bytes,scratch,strsize,ctx,comp, a, aa);
+		UInt8* lb = mergeSortH(bytes,scratch,strsize,ctx,comp, b, bb);
+		UInt8* lc = (UInt8*)malloc(len*strsize);
+		UIntP i; for(i=0; i<len; i++) {
+			int order = comp(STRT_AT_IDX(la,a),STRT_AT_IDX(lb,b),ctx);
+			BOOL left_is_less = (order==NSOrderedAscending);
+			if (a==aa) {
+				memcpy(STRT_AT_IDX(lc,i), STRT_AT_IDX(lb,b), strsize*(len-i));
+				break;
+			}
+			if (b==bb) {
+				memcpy(STRT_AT_IDX(lc,i), STRT_AT_IDX(la,a), strsize*(len-i));
+				break;
+			}
+			if (left_is_less) COPY_IDX(la,a++, lc,i);
+			else              COPY_IDX(lb,b++, lc,i);
+		}
+		//for (i=0; i<len-1; i++) O3Asrt(comp(STRT_AT_IDX(lc,i),STRT_AT_IDX(lc,i+1),ctx)!=NSOrderedDescending);
+		free(la);
+		free(lb);
+		return lc;
+	}
+}
+
+///Pass nil for the comparator to use the default
+- (void)sortUsingFunction:(O3StructArrayComparator)comp context:(void*)ctx {
+	if (!comp) comp = [mStructType defaultComparator];
+	O3AssertArg(comp, @"Must have comparator function, or struct type must be able to provide a default one.");
+	UInt8* bytes = (UInt8*)[mData mutableBytes];
+	UIntP strsize = mStructSize;
+	UIntP len = [mData length];
+	UIntP count = len / strsize;
+	UInt8* scratch = (UInt8*)malloc(strsize);
+	
+	UInt8* newbuf = mergeSortH(bytes,scratch,strsize,ctx,comp, 0, count);
+
+	[mData relinquishBytes];
+	free(scratch);
+	O3Assign([NSMutableData dataWithBytesNoCopy:newbuf length:len freeWhenDone:YES],mData);	
+}
+
+- (void)sort {
+	[self sortUsingFunction:nil context:nil];
+}
+
 
 /************************************/ #pragma mark NSMutableArray /************************************/
 - (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx {

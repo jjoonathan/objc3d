@@ -9,11 +9,13 @@
 @class O3Camera, O3GLView;
 
 typedef struct {
+	void* scratch[5]; ///<You can use this for internal communication in a "stack" of objects. Always clear to NULL. scratch[4] should only be used to point to another, larger structure so you don't run out of space.
 	Class objCCompatibility;
 	O3GLView* view;
 	O3Camera* camera;
 	O3Space3*   cameraSpace;
 	double elapsedTime; ///<The time elapsed since the last frame. Note that elapsedTime is in "seconds," but may be positive, 0, or negative (you may want to pause or rewind, so to speak.)
+	void* reserved[5];
 } O3RenderContext;
 
 //typedef void (*O3RenderWithContextFunc)(id self, SEL _cmd, O3RenderContext* context);

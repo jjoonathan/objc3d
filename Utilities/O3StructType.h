@@ -6,6 +6,7 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3VertexFormats.h"
+#import "O3StructArray.h"
 @class O3StructType;
 
 typedef struct {
@@ -37,17 +38,19 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, r
 - (NSString*)name;
 
 //(Hopefully accelerated) translation between formats
-- (NSMutableData*)portabalizeStructs:(NSData*)dat;    //Convenience method (do not override)
-- (NSMutableData*)deportabalizeStructs:(NSData*)dat;  //Convenience method (do not override)
-- (NSMutableData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s;
-- (O3RawData)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s;
+- (NSData*)portabalizeStructs:(NSData*)dat;    //Convenience method (do not override)
+- (NSData*)deportabalizeStructs:(NSData*)dat;  //Convenience method (do not override)
+- (NSData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s;
+- (NSData*)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s;
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format;
 
 //GL info (expected to remain constant over the lifetime of a type)
+- (void)getFormat:(out GLenum*)format components:(out GLsizeiptr*)components offset:(out GLint*)offset stride:(out GLint*)stride normed:(out GLboolean*)normed vertsPerStruct:(out int*)vps forType:(in O3VertexDataType)type; ///<Override this, and the corresponding methods below will just work
 - (GLenum)glFormatForType:(O3VertexDataType)type;
 - (GLint)glComponentCountForType:(O3VertexDataType)type;
 - (GLsizeiptr)glOffsetForType:(O3VertexDataType)type;
 - (GLsizeiptr)glStride;
 - (GLboolean)glNormalizedForType:(O3VertexDataType)type;
 - (int)glVertsPerStruct;
+- (O3StructArrayComparator)defaultComparator;
 @end

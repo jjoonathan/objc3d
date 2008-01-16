@@ -46,6 +46,7 @@ typedef enum O3VertexDataType {
 	O3TexCoord7DataType=107,
 	O3TexCoord8DataType=108,
 	O3TexCoord9DataType=109,
+	O3InvalidVertexDataType=255
 } O3VertexDataType;
 static const int O3VertexDataTypeCount = 9;
 

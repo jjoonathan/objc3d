@@ -95,6 +95,7 @@ static NSString* nameForEvent(NSEvent* event) {
 	NSString* charStr = [event charactersIgnoringModifiers];
 	O3Assert([charStr length]==1, @"Not programmed to handle more than 1 char per event!");
 	UInt32 theChar = [charStr characterAtIndex:0];
+	if (theChar>='A' && theChar<='Z') theChar-='a'-'A';
 	if (theChar<256) return charStr;
 	switch (theChar) {
 		case 0xF700: return @"NSUpArrowFunctionKey";

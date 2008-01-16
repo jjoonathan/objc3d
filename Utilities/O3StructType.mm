@@ -83,28 +83,26 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return nil;
 }
 
-- (NSMutableData*)portabalizeStructs:(NSData*)dat {
+- (NSData*)portabalizeStructs:(NSData*)dat {
 	UIntP slen = [self structSize];
-	NSMutableData* ret = [self portabalizeStructsAt:[dat bytes] count:[dat length]/slen stride:slen];
+	NSData* ret = [self portabalizeStructsAt:[dat bytes] count:[dat length]/slen stride:slen];
 	[dat relinquishBytes];
 	return ret;
 }
 
-- (NSMutableData*)deportabalizeStructs:(NSData*)dat {
-	O3RawData rdat = [self deportabalizeStructs:dat to:nil stride:0];
-	return [NSMutableData dataWithBytesNoCopy:rdat.bytes length:rdat.length freeWhenDone:YES];
+- (NSData*)deportabalizeStructs:(NSData*)dat {
+	return [self deportabalizeStructs:dat to:nil stride:0];
 }
 
-- (NSMutableData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s {
+- (NSData*)portabalizeStructsAt:(const void*)at count:(UIntP)ct stride:(UIntP)s {
 	[self doesNotRecognizeSelector:_cmd];
 	return nil;	
 }
 
 ///Deportabalizes the structs of the receiver's type in indata. If %s = 0 it is replaced with [self structSize] and if %bytes is nil a new buffer is allocated and returned. Returned value is unspecified if %bytes!=0, and can be ignored in such cases.
-- (O3RawData)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s {
+- (NSData*)deportabalizeStructs:(NSData*)indata to:(void*)bytes stride:(UIntP)s {
 	[self doesNotRecognizeSelector:_cmd];
-	O3RawData r = {nil, 0};
-	return r;
+	return nil;
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)format {
@@ -123,29 +121,43 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	return [rdata autorelease];
 }
 
+- (void)getFormat:(out GLenum*)format components:(out GLsizeiptr*)components offset:(out GLint*)offset stride:(out GLint*)stride normed:(out GLboolean*)normed vertsPerStruct:(out int*)vps forType:(in O3VertexDataType)type {
+	[self doesNotRecognizeSelector:_cmd];	
+}
+
 - (GLenum)glFormatForType:(O3VertexDataType)type {
-	[self doesNotRecognizeSelector:_cmd];
-	return GL_ZERO;
+	GLenum r; [self getFormat:&r components:nil offset:nil stride:nil normed:nil vertsPerStruct:nil forType:type];
+	return r;
 }
 
 - (GLint)glComponentCountForType:(O3VertexDataType)type {
-	return 0;
+	GLsizeiptr c; [self getFormat:nil components:&c offset:nil stride:nil normed:nil vertsPerStruct:nil forType:type];
+	return c;
 }
 
 - (GLsizeiptr)glOffsetForType:(O3VertexDataType)type {
-	return 0;
+	GLint o; [self getFormat:nil components:nil offset:&o stride:nil normed:nil vertsPerStruct:nil forType:type];
+	return o;
 }
 
 - (GLsizeiptr)glStride {
-	return 0;
+	GLint s; [self getFormat:nil components:nil offset:nil stride:&s normed:nil vertsPerStruct:nil forType:O3InvalidVertexDataType];
+	return s;
 }
 
 - (GLboolean)glNormalizedForType:(O3VertexDataType)type {
-	return GL_FALSE;
+	GLboolean n; [self getFormat:nil components:nil offset:nil stride:nil normed:&n vertsPerStruct:nil forType:type];
+	return n;
 }
 
 - (int)glVertsPerStruct {
-	return 1;
+	int v; [self getFormat:nil components:nil offset:nil stride:nil normed:nil vertsPerStruct:&v forType:O3InvalidVertexDataType];
+	return v;
+}
+
+- (O3StructArrayComparator)defaultComparator {
+	[self doesNotRecognizeSelector:_cmd];	
+	return NULL;
 }
 
 

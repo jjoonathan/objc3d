@@ -74,7 +74,7 @@ inline void initP(O3Scene* self) {
 
 ///A lame placeholder implementation
 - (O3Group*)rootGroup {
-	if (!mGroupsNeedUpdate) return mRootGroup;
+	if (!mGroupsNeedUpdate &&mRootGroup) return mRootGroup;
 	O3Assign(mRootRegion, mRootGroup);
 	return mRootGroup;
 }

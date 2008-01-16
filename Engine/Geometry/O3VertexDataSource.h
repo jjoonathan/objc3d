@@ -21,8 +21,9 @@
 - (O3VertexDataType)type;	///<Returns the type of vertex data represented by the receiver. The default implementation throws an exception.
 
 //Use
-- (void)bind;	///<Bind the receiver for rendering. The caller must call -(void)unbind when it is done rendering with the receiver.
+- (UIntP)bind;	///<Bind the receiver for rendering. The caller must call -(void)unbind when it is done rendering with the receiver. @returns the number of elements bound
 - (void)unbind;	///<Unbinds the receiver as a vertex data source for rendering.
+- (void)uploadToGPU;
 
 //Type assertion
 - (O3RawVertexDataSource*)rawVertexDataSource; ///<Raises an exception if the receiver isn't a raw vertex data source, otherwise it returns the receiver.

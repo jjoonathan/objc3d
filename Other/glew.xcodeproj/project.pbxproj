@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FC2C16410C11C1B40084A599 /* glew.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16400C11C1B40084A599 /* glew.c */; };
+		FC56F1970D33255F0083E421 /* glew.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2C164C0C11C2260084A599 /* glew.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1980D33255F0083E421 /* glxew.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2C164D0C11C2260084A599 /* glxew.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1990D33255F0083E421 /* wglew.h in Headers */ = {isa = PBXBuildFile; fileRef = FC2C164E0C11C2260084A599 /* wglew.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F19A0D33257B0083E421 /* glew.c in Sources */ = {isa = PBXBuildFile; fileRef = FC2C16400C11C1B40084A599 /* glew.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,12 +52,26 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		FC56F1A00D3325860083E421 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC56F1970D33255F0083E421 /* glew.h in Headers */,
+				FC56F1980D33255F0083E421 /* glxew.h in Headers */,
+				FC56F1990D33255F0083E421 /* wglew.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		FC2C13C90C11BC3E0084A599 /* glew */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC2C13CC0C11BC3F0084A599 /* Build configuration list for PBXNativeTarget "glew" */;
 			buildPhases = (
 				FC2C13C70C11BC3E0084A599 /* Sources */,
+				FC56F1A00D3325860083E421 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -88,7 +105,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC2C16410C11C1B40084A599 /* glew.c in Sources */,
+				FC56F19A0D33257B0083E421 /* glew.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +159,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/lib\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = glew;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers/GL;
 				ZERO_LINK = YES;
 			};
 			name = Debug;
@@ -159,7 +177,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.1;
 				PREBINDING = NO;
 				PRODUCT_NAME = glew;
-				PUBLIC_HEADERS_FOLDER_PATH = include/GL/;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers/GL;
 				ZERO_LINK = NO;
 			};
 			name = Release;

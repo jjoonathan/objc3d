@@ -79,6 +79,8 @@ template <> struct O3ByteswapImplementation<Int32>	{static inline Int32  byteswa
 template <> struct O3ByteswapImplementation<UInt32>	{static inline UInt32 byteswap(UInt32 to_swap) {return CFSwapInt32(to_swap);}};
 template <> struct O3ByteswapImplementation<Int16>	{static inline Int16  byteswap(Int16 to_swap) {return CFSwapInt16(to_swap);}};
 template <> struct O3ByteswapImplementation<UInt16>	{static inline UInt16 byteswap(UInt16 to_swap) {return CFSwapInt16(to_swap);}};
+template <> struct O3ByteswapImplementation<Int8>	{static inline Int8   byteswap(Int8 to_swap) {return to_swap;}};
+template <> struct O3ByteswapImplementation<UInt8>	{static inline UInt8  byteswap(Int8 to_swap) {return to_swap;}};
 template <> struct O3ByteswapImplementation<Int64>	{static inline Int64  byteswap(Int64 to_swap) {return CFSwapInt64(to_swap);}};
 template <> struct O3ByteswapImplementation<UInt64>	{static inline UInt64 byteswap(UInt64 to_swap) {return CFSwapInt64(to_swap);}};
 template <> struct O3ByteswapImplementation<float>	{

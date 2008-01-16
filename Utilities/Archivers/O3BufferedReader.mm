@@ -381,24 +381,30 @@ NSString* O3BufferedReader::ReadCCString(enum O3CCSTableType ttype) {
 void* O3BufferedReader::ReadBytes(UInt64 len, UInt64 extra_bytes) {
 	AssertOpen();
 	UInt64 to_read = len+extra_bytes;
-	void* to_return = malloc(to_read);
+	void* to_return;
 	if (BytesLeft(len)) {
+		to_return = malloc(to_read);
 		memcpy(to_return, mBlockBytes, len);
 		Advance(len);
 	} else {
 		if (!mHandle) [NSException raise:NSInconsistentArchiveException format:@"Attempt to read past end of archived data (archive is corrupt)"];
+		to_return = malloc(mBlockBytesRemaining);
 		memcpy(to_return, mBlockBytes, mBlockBytesRemaining);
 		O3Destroy(mBlockData);
-		void* new_pos = (UInt8*)to_return+mBlockBytesRemaining;
 		UInt64 new_toread = to_read-mBlockBytesRemaining;
+		UIntP old_remaining_data = mBlockBytesRemaining;
 		mBlockBytesRemaining=0;
 		NSData* newBytes = mHandle_readDataOfLength_(mHandle, @selector(readDataOfLength:), new_toread);
 		if (!mBlockData_bytes) {
 			mBlockData_bytes = (mBlockData_bytes_t)[mBlockData methodForSelector:@selector(bytes)];
 			mBlockData_length = (mBlockData_length_t)[mBlockData methodForSelector:@selector(length)];
 		}
-		O3Assert(mBlockData_length(newBytes, @selector(length))==new_toread , @"Attempt to read outside of file in O3BufferedReader::ReadBytes");
-		memcpy(new_pos, mBlockData_bytes(newBytes, @selector(bytes)), new_toread);
+		UIntP redlen = mBlockData_length(newBytes, @selector(length));
+		O3Assert(redlen==new_toread , @"Attempt to read outside of file in O3BufferedReader::ReadBytes");
+		void* redbytes = mBlockData_bytes(newBytes, @selector(bytes));
+		to_return = realloc(to_return, old_remaining_data+redlen);
+		void* new_pos = (UInt8*)to_return+old_remaining_data;
+		memcpy(new_pos, redbytes, new_toread);
 	}
 	return to_return;
 }

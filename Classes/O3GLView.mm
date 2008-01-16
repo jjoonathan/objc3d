@@ -327,6 +327,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 
 /************************************/ #pragma mark Drawing /************************************/
 - (void)drawRect:(NSRect)rect {
+	if (![self canDraw]) {O3LogWarn(@"Cannot draw %@", self); return;} //We don't want this to be an exception
 	if (mScene) {
 		O3RenderContext ctx;
 		ctx.objCCompatibility = [NSNull class];
@@ -708,6 +709,15 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 
 - (BOOL)acceptsFirstResponder {
 	return YES;
+}
+
+/************************************/ #pragma mark Convenience /************************************/
+- (void)addObject:(id<O3Renderable>)obj {
+	[[[self scene] rootRegion] addObject:obj];
+}
+
+- (void)addObjects:(NSArray*)objs {
+	[[[self scene] rootRegion] addObjects:objs];
 }
 
 

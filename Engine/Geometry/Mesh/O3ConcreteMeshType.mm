@@ -74,7 +74,7 @@ NSString* O3ConcreteMeshStrippedRenderMode = @"Triangle Strips";
 		}
 	}
 	O3StructArrayVDS* vds = [[O3StructArrayVDS alloc] initWithStructArray:newFaces vertexDataType:O3VertexLocationDataType];
-	O3Assign(newFaces, mFaces);
+	O3Assign(vds, mFaces);
 	[vds release];
 	[mFaceVerticies release];
 	[mFaceIndicies release];
@@ -111,8 +111,7 @@ NSString* O3ConcreteMeshStrippedRenderMode = @"Triangle Strips";
 	if (passes==0) passes=1;
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, GL_ZERO);
 	if (mFaces) { //Face by face
-		[mFaces bind];
-		UIntP count = [mFaces count]*3;
+		UIntP count =[mFaces bind];
 		for (i=0;i<passes;i++) {
 			[mDefaultMaterial setRenderPass:i];
 			glDrawArrays(GL_TRIANGLES, 0, count);
@@ -136,6 +135,14 @@ NSString* O3ConcreteMeshStrippedRenderMode = @"Triangle Strips";
 }
 
 - (void)tickWithContext:(O3RenderContext*)context {
+}
+
+/************************************/ #pragma mark Convenience /************************************/
+- (void)uploadToGPU {
+	[super uploadToGPU];
+	[mFaces uploadToGPU];
+	[mFaceVerticies uploadToGPU];
+	[mFaceIndicies uploadToGPU];
 }
 
 @end

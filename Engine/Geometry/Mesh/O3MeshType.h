@@ -28,4 +28,7 @@
 - (void)setDefaultMaterialName:(NSString*)newMaterialName;
 
 - (NSMutableArray*)vertexDataSources; ///<Modify this to modify vertex data sources
+
+/************************************/ #pragma mark Convenience /************************************/
+- (void)uploadToGPU;
 @end

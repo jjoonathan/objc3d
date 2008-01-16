@@ -132,8 +132,9 @@ inline unsigned O3RawVertexDataSource_ElementSize(O3RawVertexDataSource* self) {
 - (O3RawVertexData*)rawVertexData	{return mRawVertexData;}
 
 /************************************/ #pragma mark Use /************************************/
-- (void)bind {
-	if (mCurrentlyBound) return;
+- (UIntP)bind {
+	UIntP s = [mRawVertexData size] / mStride;
+	if (mCurrentlyBound) return s;
 	mCurrentlyBound = YES;
 	if (mVertexAttribute) {
 		[mRawVertexData bindAsSourceForVertexAttributeNumber:mVertexAttributeNumber
@@ -149,6 +150,7 @@ inline unsigned O3RawVertexDataSource_ElementSize(O3RawVertexDataSource* self) {
                                                offset:mOffset
                                                stride:mStride];
 	}
+	return s;
 }
 
 - (void)unbind {
