@@ -9,6 +9,7 @@
 #include "O3Global.h"
 
 @implementation O3TestQuadraticEquation
+O3DefaultO3InitializeImplementation
 
 - (void)testRootFinding {
 	O3QuadraticEquation<real> an_equation(-13.45, 13.37, 420.56);

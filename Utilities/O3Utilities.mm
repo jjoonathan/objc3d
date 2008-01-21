@@ -21,6 +21,10 @@ O3EXTERN_C void O3Break() {
 #endif
 
 O3EXTERN_C void O3Init() {
+	static int inited = 0;
+	if (inited) return;
+	inited++;
+	
 	gO3DefaultGLContext = [[NSOpenGLContext alloc] initWithFormat:[NSOpenGLView defaultPixelFormat] shareContext:nil];
 	[gO3DefaultGLContext makeCurrentContext];
 	GLenum glewState = glewInit();

@@ -19,6 +19,7 @@
 @end
 
 @implementation O3Region
+O3DefaultO3InitializeImplementation
 inline void changed(O3Region* self) {
 	if (self->mParentRegion) [self->mParentRegion subregionChanged:self];
 	else [self->mScene subregionChanged:self];

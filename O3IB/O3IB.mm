@@ -9,6 +9,7 @@
 #import "O3IB.h"
 
 @implementation O3IB
+O3DefaultO3InitializeImplementation
 - (NSArray *)libraryNibNames {
     return [NSArray arrayWithObject:@"O3IBLibrary"];
 }

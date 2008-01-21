@@ -17,6 +17,7 @@ typedef struct {
 //Struct naming
 O3StructType* O3StructTypeForName(NSString* name);
 void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, register your singletons here (for encoding/decoding)
+NSMutableDictionary* O3StructTypeDict();
 
 ///An abstract class to represent types of structures, and define an interface for reading, writing, introspecting, and converting them.
 ///To subclass, override -structSize, -dictionaryWithBytes: OR -objectWithData:, -writeObject:toBytes: OR writeObjectToData:, and optionally portabalizeStructs:, deportabalizeStructs:, and translateStructs:toFormat:.

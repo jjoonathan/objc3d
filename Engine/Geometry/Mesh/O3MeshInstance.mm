@@ -9,6 +9,7 @@
 #import "O3ResManager.h"
 
 @implementation O3MeshInstance
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Creation and Destruction /************************************/
 inline void initP(O3MeshInstance* self) {
 }

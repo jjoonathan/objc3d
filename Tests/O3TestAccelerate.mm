@@ -9,6 +9,7 @@
 
 
 @implementation O3TestAccelerate
+O3DefaultO3InitializeImplementation
 
 - (void)testNSStringAllocInitWithBytesEtc {
 	NSString* str = @"Nobody expects the spanish inquisition!";

@@ -34,6 +34,7 @@ void O3CGProgram_cgErrorCallback() {
 
 
 @implementation O3CGProgram
+O3DefaultO3InitializeImplementation
 inline void initializeP() {
 	static bool shading_initialized = NO; //Make sure we are run once
 	if (shading_initialized) return;

@@ -9,6 +9,7 @@
 #import "O3GLView.h"
 
 @implementation O3GLViewActionCollection
+O3DefaultO3InitializeImplementation
 
 + (void)startFlyingForward:(O3GLView*)view {   [[view viewState] setObject:O3TrueObject() forKey:@"flyingForward"];   }
 + (void)stopFlyingForward:(O3GLView*)view {    [[view viewState] removeObjectForKey:@"flyingForward"];   }

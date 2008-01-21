@@ -28,6 +28,7 @@ const char** gDefaultCGEffectCompilerArguments = NULL;
 BOOL gO3CGEffectsEnabled = YES;
 
 @implementation O3CGEffect
+O3DefaultO3InitializeImplementation
 void O3CGEffect_setEffectP(O3CGEffect* self, CGeffect newEffect) {
 	if (self->mEffect) cgDestroyEffect(self->mEffect);
 	self->mEffect = newEffect;

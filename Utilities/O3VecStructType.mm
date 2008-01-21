@@ -7,6 +7,7 @@
 //
 #import "O3FaceStructType.h"
 #import "O3VecStructType.h"
+#import "O3ScalarStructType.h"
 #import "O3GPUData.h"
 
 O3EXTERN_C_BLOCK
@@ -32,6 +33,7 @@ O3END_EXTERN_C_BLOCK
 
 
 @implementation O3VecStructType
+O3DefaultO3InitializeImplementation
 
 O3EXTERN_C_BLOCK
 UIntP* O3VecStructTypePermsAndMultiplier(O3VecStructType* self, double* multiplier) {
@@ -39,193 +41,44 @@ UIntP* O3VecStructTypePermsAndMultiplier(O3VecStructType* self, double* multipli
 	return self->mPermutations;
 }
 
-void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, O3VecStructElementType* type, short* count, O3VecStructSpecificType* stype) {
+void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, O3CType* type, short* count, O3VecStructSpecificType* stype) {
 	if (type) *type = self->mElementType;
 	if (count) *count = self->mElementCount;
 	if (stype) *stype = self->mSpecificType;
 }
 
 UIntP O3VecStructSize(O3VecStructType* type) {
-	switch (type->mElementType) {
-		case O3VecStructFloatElement:  return sizeof(float)*type->mElementCount;
-		case O3VecStructDoubleElement: return sizeof(double)*type->mElementCount;
-		case O3VecStructInt8Element:   return sizeof(Int8)*type->mElementCount;
-		case O3VecStructInt16Element:  return sizeof(Int16)*type->mElementCount;
-		case O3VecStructInt32Element:  return sizeof(Int32)*type->mElementCount;
-		case O3VecStructInt64Element:  return sizeof(Int64)*type->mElementCount;
-		case O3VecStructUInt8Element:  return sizeof(UInt8)*type->mElementCount;
-		case O3VecStructUInt16Element: return sizeof(UInt16)*type->mElementCount;
-		case O3VecStructUInt32Element: return sizeof(UInt32)*type->mElementCount;
-		case O3VecStructUInt64Element: return sizeof(UInt64)*type->mElementCount;
-	}
-	O3AssertFalse(@"Unknown type \"%c\" in vec struct %@", type->mElementType, type);
-	return 0;
-}
-
-NSNumber* O3VecStructGetElement(O3VecStructType* self, UIntP i, const void* bytes) {
-	if (self->mPermutations) i = self->mPermutations[i];
-	O3Asrt(i<self->mElementCount);
-	double mMultiplier = self->mMultiplier;
-	switch (self->mElementType) {
-		case O3VecStructFloatElement: return [NSNumber numberWithFloat:*((float*)bytes+i)*mMultiplier];
-		case O3VecStructDoubleElement: return [NSNumber numberWithDouble:*((double*)bytes+i)*mMultiplier];
-		case O3VecStructInt8Element:  return [NSNumber numberWithInt:  *((Int8*)bytes+i)*mMultiplier];
-		case O3VecStructInt16Element: return [NSNumber numberWithInt:*((Int16*)bytes+i)*mMultiplier];
-		case O3VecStructInt32Element: return [NSNumber numberWithInt:*((Int32*)bytes+i)*mMultiplier];
-		case O3VecStructInt64Element: return [NSNumber numberWithLongLong:*((Int64*)bytes+i)*mMultiplier];
-		case O3VecStructUInt8Element:  return [NSNumber numberWithUnsignedInt:*((UInt8*)bytes+i)*mMultiplier];
-		case O3VecStructUInt16Element: return [NSNumber numberWithUnsignedInt:*((UInt16*)bytes+i)*mMultiplier];
-		case O3VecStructUInt32Element: return [NSNumber numberWithUnsignedInt:*((UInt32*)bytes+i)*mMultiplier];
-		case O3VecStructUInt64Element: return [NSNumber numberWithUnsignedLongLong:*((UInt64*)bytes+i)*mMultiplier];
-	}
-	O3AssertFalse(@"Unknown type \"%c\" in vec struct %@", self->mElementType, self);
-	return (NSNumber*)@"???";
-}
-
-void O3WriteNumberTo(O3VecStructElementType eleType, UIntP i, void* bytes, NSNumber* num, double rmul, UIntP* mPermutations) {
-	if (mPermutations) i = mPermutations[i];
-	switch (eleType) {
-		case O3VecStructFloatElement: *((float*)bytes+i) = [num floatValue]*rmul; return;
-		case O3VecStructDoubleElement: *((double*)bytes+i) = [num doubleValue]*rmul; return;
-		case O3VecStructInt8Element:  *((Int8*)bytes+i) = [num intValue]*rmul; return;
-		case O3VecStructInt16Element: *((Int16*)bytes+i) = [num shortValue]*rmul; return;
-		case O3VecStructInt32Element: *((Int32*)bytes+i) = [num intValue]*rmul; return;
-		case O3VecStructInt64Element: *((Int64*)bytes+i) = [num longLongValue]*rmul; return;
-		case O3VecStructUInt8Element:  *((UInt8*)bytes+i) = [num unsignedIntValue]*rmul; return;
-		case O3VecStructUInt16Element: *((UInt16*)bytes+i) = [num unsignedIntValue]*rmul; return;
-		case O3VecStructUInt32Element: *((UInt32*)bytes+i) = [num unsignedIntValue]*rmul; return;
-		case O3VecStructUInt64Element: *((UInt64*)bytes+i) = [num unsignedLongLongValue]*rmul; return;
-	}
-	O3AssertFalse(@"Unknown type \"%c\"", eleType);
+	return O3CTypeSize(type->mElementType)*type->mElementCount;
 }
 O3END_EXTERN_C_BLOCK
-
-inline double O3DoubleValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx) {
-	switch (type) {
-		case O3VecStructFloatElement:  return *((float*)bytes+idx);
-		case O3VecStructDoubleElement: return *((double*)bytes+idx);
-		case O3VecStructInt8Element:   return *((Int8*)bytes+idx);
-		case O3VecStructInt16Element:  return *((Int16*)bytes+idx);
-		case O3VecStructInt32Element:  return *((Int32*)bytes+idx);
-		case O3VecStructInt64Element:  return *((Int64*)bytes+idx);
-		case O3VecStructUInt8Element:  return *((UInt8*)bytes+idx);
-		case O3VecStructUInt16Element: return *((UInt16*)bytes+idx);
-		case O3VecStructUInt32Element: return *((UInt32*)bytes+idx);
-		case O3VecStructUInt64Element: return *((UInt64*)bytes+idx);
-	}
-	O3AssertFalse(@"Unknown type %i", (int)type);
-	return 0;
-}
-
-inline Int64 O3Int64ValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx) {
-	switch (type) {
-		case O3VecStructFloatElement:  return *((float*)bytes+idx);
-		case O3VecStructDoubleElement: return *((double*)bytes+idx);
-		case O3VecStructInt8Element:   return *((Int8*)bytes+idx);
-		case O3VecStructInt16Element:  return *((Int16*)bytes+idx);
-		case O3VecStructInt32Element:  return *((Int32*)bytes+idx);
-		case O3VecStructInt64Element:  return *((Int64*)bytes+idx);
-		case O3VecStructUInt8Element:  return *((UInt8*)bytes+idx);
-		case O3VecStructUInt16Element: return *((UInt16*)bytes+idx);
-		case O3VecStructUInt32Element: return *((UInt32*)bytes+idx);
-		case O3VecStructUInt64Element: return *((UInt64*)bytes+idx);
-	}
-	O3AssertFalse(@"Unknown type %i", (int)type);
-	return 0;
-}
-
-inline UInt64 O3UInt64ValueOfType_at_withIndex_(O3VecStructElementType type, const void* bytes, UIntP idx) {
-	switch (type) {
-		case O3VecStructFloatElement:  return *((float*)bytes+idx);
-		case O3VecStructDoubleElement: return *((double*)bytes+idx);
-		case O3VecStructInt8Element:   return *((Int8*)bytes+idx);
-		case O3VecStructInt16Element:  return *((Int16*)bytes+idx);
-		case O3VecStructInt32Element:  return *((Int32*)bytes+idx);
-		case O3VecStructInt64Element:  return *((Int64*)bytes+idx);
-		case O3VecStructUInt8Element:  return *((UInt8*)bytes+idx);
-		case O3VecStructUInt16Element: return *((UInt16*)bytes+idx);
-		case O3VecStructUInt32Element: return *((UInt32*)bytes+idx);
-		case O3VecStructUInt64Element: return *((UInt64*)bytes+idx);
-	}
-	O3AssertFalse(@"Unknown type %i", (int)type);
-	return 0;
-}
-
-inline void O3SetValueOfType_at_toDouble_withIndex_(O3VecStructElementType type, void* bytes, double v, UIntP idx) {
-	switch (type) {
-		case O3VecStructFloatElement:  *((float*)bytes+idx)  = v; return;  
-		case O3VecStructDoubleElement: *((double*)bytes+idx) = v; return; 
-		case O3VecStructInt8Element:   *((Int8*)bytes+idx)   = v; return;   
-		case O3VecStructInt16Element:  *((Int16*)bytes+idx)  = v; return;  
-		case O3VecStructInt32Element:  *((Int32*)bytes+idx)  = v; return;  
-		case O3VecStructInt64Element:  *((Int64*)bytes+idx)  = v; return;  
-		case O3VecStructUInt8Element:  *((UInt8*)bytes+idx)  = v; return;  
-		case O3VecStructUInt16Element: *((UInt16*)bytes+idx) = v; return; 
-		case O3VecStructUInt32Element: *((UInt32*)bytes+idx) = v; return; 
-		case O3VecStructUInt64Element: *((UInt64*)bytes+idx) = v; return; 
-	}
-	O3AssertFalse("Unknown type \"%i\"", (int)type);
-}
-
-inline void O3SetValueOfType_at_toInt64_withIndex_(O3VecStructElementType type, void* bytes, Int64 v, UIntP idx) {
-	switch (type) {
-		case O3VecStructFloatElement:  *((float*)bytes+idx)  = v; return;  
-		case O3VecStructDoubleElement: *((double*)bytes+idx) = v; return; 
-		case O3VecStructInt8Element:   *((Int8*)bytes+idx)   = v; return;   
-		case O3VecStructInt16Element:  *((Int16*)bytes+idx)  = v; return;  
-		case O3VecStructInt32Element:  *((Int32*)bytes+idx)  = v; return;  
-		case O3VecStructInt64Element:  *((Int64*)bytes+idx)  = v; return;  
-		case O3VecStructUInt8Element:  *((UInt8*)bytes+idx)  = v; return;  
-		case O3VecStructUInt16Element: *((UInt16*)bytes+idx) = v; return; 
-		case O3VecStructUInt32Element: *((UInt32*)bytes+idx) = v; return; 
-		case O3VecStructUInt64Element: *((UInt64*)bytes+idx) = v; return; 
-	}
-	O3AssertFalse("Unknown type \"%i\"", (int)type);	
-}
-
-inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type, void* bytes, UInt64 v, UIntP idx) {
-	switch (type) {
-		case O3VecStructFloatElement:  *((float*)bytes+idx)  = v; return;  
-		case O3VecStructDoubleElement: *((double*)bytes+idx) = v; return; 
-		case O3VecStructInt8Element:   *((Int8*)bytes+idx)   = v; return;   
-		case O3VecStructInt16Element:  *((Int16*)bytes+idx)  = v; return;  
-		case O3VecStructInt32Element:  *((Int32*)bytes+idx)  = v; return;  
-		case O3VecStructInt64Element:  *((Int64*)bytes+idx)  = v; return;  
-		case O3VecStructUInt8Element:  *((UInt8*)bytes+idx)  = v; return;  
-		case O3VecStructUInt16Element: *((UInt16*)bytes+idx) = v; return; 
-		case O3VecStructUInt32Element: *((UInt32*)bytes+idx) = v; return; 
-		case O3VecStructUInt64Element: *((UInt64*)bytes+idx) = v; return; 
-	}
-	O3AssertFalse("Unknown type \"%i\"", (int)type);	
-}
 
 /************************************/ #pragma mark Class Methods /************************************/
 + (void)o3init {
 	O3CompileAssert(*@encode(real)=='f' || *@encode(real)=='d', @"O3VecStructType assumes that real is eather float or double");
-	O3VecStructElementType rtype = *@encode(real)=='f'? O3VecStructFloatElement : O3VecStructDoubleElement;
+	O3CType rtype = *@encode(real)=='f'? O3FloatCType : O3DoubleCType;
 	gO3Vec3rType = [[O3VecStructType alloc] initWithElementType:rtype                     specificType:O3VecStructVec count:3 name:@"vec3r" comparator:O3Vec3rTypeComparator];
-	gO3Vec3fType = [[O3VecStructType alloc] initWithElementType:O3VecStructFloatElement   specificType:O3VecStructVec count:3 name:@"vec3f" comparator:O3Vec3fTypeComparator];
-	gO3Vec3dType = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructVec count:3 name:@"vec3d" comparator:O3Vec3dTypeComparator];
+	gO3Vec3fType = [[O3VecStructType alloc] initWithElementType:O3FloatCType   specificType:O3VecStructVec count:3 name:@"vec3f" comparator:O3Vec3fTypeComparator];
+	gO3Vec3dType = [[O3VecStructType alloc] initWithElementType:O3DoubleCType  specificType:O3VecStructVec count:3 name:@"vec3d" comparator:O3Vec3dTypeComparator];
 	gO3Vec4rType = [[O3VecStructType alloc] initWithElementType:rtype                     specificType:O3VecStructVec count:4 name:@"vec4r" comparator:O3Vec4rTypeComparator];
-	gO3Vec4fType = [[O3VecStructType alloc] initWithElementType:O3VecStructFloatElement   specificType:O3VecStructVec count:4 name:@"vec4f" comparator:O3Vec4fTypeComparator];
-	gO3Vec4dType = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructVec count:4 name:@"vec4d" comparator:O3Vec4dTypeComparator];
-	gO3RGBA8Type = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt8Element  specificType:O3VecStructVec count:4 name:@"RGBA8" comparator:O3RGBA8TypeComparator];
+	gO3Vec4fType = [[O3VecStructType alloc] initWithElementType:O3FloatCType   specificType:O3VecStructVec count:4 name:@"vec4f" comparator:O3Vec4fTypeComparator];
+	gO3Vec4dType = [[O3VecStructType alloc] initWithElementType:O3DoubleCType  specificType:O3VecStructVec count:4 name:@"vec4d" comparator:O3Vec4dTypeComparator];
+	gO3RGBA8Type = [[O3VecStructType alloc] initWithElementType:O3UInt8CType  specificType:O3VecStructVec count:4 name:@"RGBA8" comparator:O3RGBA8TypeComparator];
 		[gO3RGBA8Type setMultiplier:1./255];
-	gO3RGB8Type    = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt8Element  specificType:O3VecStructVec count:3 name:@"RGB8" comparator:O3RGB8TypeComparator];
+	gO3RGB8Type    = [[O3VecStructType alloc] initWithElementType:O3UInt8CType  specificType:O3VecStructVec count:3 name:@"RGB8" comparator:O3RGB8TypeComparator];
 		[gO3RGB8Type setMultiplier:1./255];
-	gO3Rot3dType     = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructRotation count:3 name:@"rot3d" comparator:O3Rot3dTypeComparator];
-	//gO3Point3d   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructPoint count:3 name:@"point3d"];
-	gO3Point3fType   = [[O3VecStructType alloc] initWithElementType:O3VecStructFloatElement   specificType:O3VecStructPoint count:3 name:@"point3f" comparator:O3Point3fTypeComparator];
-	//gO3Point4d   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructPoint count:4 name:@"point4d"];
-	gO3Scale3dType   = [[O3VecStructType alloc] initWithElementType:O3VecStructDoubleElement  specificType:O3VecStructScale count:3 name:@"scale3d" comparator:O3Scale3dTypeComparator];
-	gO3Index3x8Type  = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt8Element   specificType:O3VecStructIndex count:3 name:@"idx3x8" comparator:O3Index3x8TypeComparator];
-	gO3Index3x16Type = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt16Element  specificType:O3VecStructIndex count:3 name:@"idx3x16" comparator:O3Index3x16TypeComparator];
-	gO3Index3x32Type = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt32Element  specificType:O3VecStructIndex count:3 name:@"idx3x32" comparator:O3Index3x32TypeComparator];
-	gO3Index3x64Type = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt64Element  specificType:O3VecStructIndex count:3 name:@"idx3x64" comparator:O3Index3x64TypeComparator];
-	gO3Index4x8Type  = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt8Element   specificType:O3VecStructIndex count:4 name:@"idx4x8" comparator:O3Index4x8TypeComparator];
-	gO3Index4x16Type = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt16Element  specificType:O3VecStructIndex count:4 name:@"idx4x16" comparator:O3Index4x16TypeComparator];
-	gO3Index4x32Type = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt32Element  specificType:O3VecStructIndex count:4 name:@"idx4x32" comparator:O3Index4x32TypeComparator];
-	gO3Index4x64Type = [[O3VecStructType alloc] initWithElementType:O3VecStructUInt64Element  specificType:O3VecStructIndex count:4 name:@"idx4x64" comparator:O3Index4x64TypeComparator];
+	gO3Rot3dType     = [[O3VecStructType alloc] initWithElementType:O3DoubleCType  specificType:O3VecStructRotation count:3 name:@"rot3d" comparator:O3Rot3dTypeComparator];
+	//gO3Point3d   = [[O3VecStructType alloc] initWithElementType:O3DoubleCType  specificType:O3VecStructPoint count:3 name:@"point3d"];
+	gO3Point3fType   = [[O3VecStructType alloc] initWithElementType:O3FloatCType   specificType:O3VecStructPoint count:3 name:@"point3f" comparator:O3Point3fTypeComparator];
+	//gO3Point4d   = [[O3VecStructType alloc] initWithElementType:O3DoubleCType  specificType:O3VecStructPoint count:4 name:@"point4d"];
+	gO3Scale3dType   = [[O3VecStructType alloc] initWithElementType:O3DoubleCType  specificType:O3VecStructScale count:3 name:@"scale3d" comparator:O3Scale3dTypeComparator];
+	gO3Index3x8Type  = [[O3VecStructType alloc] initWithElementType:O3UInt8CType   specificType:O3VecStructIndex count:3 name:@"idx3x8" comparator:O3Index3x8TypeComparator];
+	gO3Index3x16Type = [[O3VecStructType alloc] initWithElementType:O3UInt16CType  specificType:O3VecStructIndex count:3 name:@"idx3x16" comparator:O3Index3x16TypeComparator];
+	gO3Index3x32Type = [[O3VecStructType alloc] initWithElementType:O3UInt32CType  specificType:O3VecStructIndex count:3 name:@"idx3x32" comparator:O3Index3x32TypeComparator];
+	gO3Index3x64Type = [[O3VecStructType alloc] initWithElementType:O3UInt64CType  specificType:O3VecStructIndex count:3 name:@"idx3x64" comparator:O3Index3x64TypeComparator];
+	gO3Index4x8Type  = [[O3VecStructType alloc] initWithElementType:O3UInt8CType   specificType:O3VecStructIndex count:4 name:@"idx4x8" comparator:O3Index4x8TypeComparator];
+	gO3Index4x16Type = [[O3VecStructType alloc] initWithElementType:O3UInt16CType  specificType:O3VecStructIndex count:4 name:@"idx4x16" comparator:O3Index4x16TypeComparator];
+	gO3Index4x32Type = [[O3VecStructType alloc] initWithElementType:O3UInt32CType  specificType:O3VecStructIndex count:4 name:@"idx4x32" comparator:O3Index4x32TypeComparator];
+	gO3Index4x64Type = [[O3VecStructType alloc] initWithElementType:O3UInt64CType  specificType:O3VecStructIndex count:4 name:@"idx4x64" comparator:O3Index4x64TypeComparator];
 }
 
 + (O3VecStructType*)vec3fType {return O3Vec3fType();}
@@ -249,7 +102,7 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 + (O3VecStructType*)index4x64Type {return O3Index4x64Type();}
 
 ///@returns a new autoreleased vector 
-+ (O3VecStructType*)vecStructTypeWithElementType:(O3VecStructElementType)type
++ (O3VecStructType*)vecStructTypeWithElementType:(O3CType)type
                                     specificType:(O3VecStructSpecificType)stype
                                            count:(int)count
                                             name:(NSString*)name 
@@ -260,7 +113,7 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 }
 
 /************************************/ #pragma mark Init /************************************/
-- (O3VecStructType*)initWithElementType:(O3VecStructElementType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name comparator:(O3StructArrayComparator)comp {
+- (O3VecStructType*)initWithElementType:(O3CType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name comparator:(O3StructArrayComparator)comp {
 	[super initWithName:name];
 	mMultiplier = 1;
 	mElementType = type;
@@ -276,7 +129,7 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 }
 
 /************************************/ #pragma mark Custom Accessors /************************************/
-- (O3VecStructElementType)elementType {
+- (O3CType)elementType {
 	return mElementType;
 }
 
@@ -294,161 +147,81 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 - (id)objectWithBytes:(const void*)bytes {
 	NSMutableArray* to_return = [[[NSMutableArray alloc] initWithCapacity:mElementCount] autorelease];
 	int j = mElementCount;
+	UIntP ele_size = O3CTypeSize(mElementType);
 	if (mPermutations) {
-		#define MakeAndReturnArray(NUM_METHOD,NUM_TYPE) for (int i=0; i<j; i++) [to_return addObject:[NSNumber NUM_METHOD *(( NUM_TYPE *)bytes+mPermutations[i]) * mMultiplier]]; return to_return;
-		switch (mElementType) {
-			case O3VecStructFloatElement:  MakeAndReturnArray(numberWithFloat:, float);
-			case O3VecStructDoubleElement: MakeAndReturnArray(numberWithDouble:, double);
-			case O3VecStructInt8Element:   MakeAndReturnArray(numberWithInt:, Int8);
-			case O3VecStructInt16Element:  MakeAndReturnArray(numberWithInt:, Int16);
-			case O3VecStructInt32Element:  MakeAndReturnArray(numberWithInt:, Int32);
-			case O3VecStructInt64Element:  MakeAndReturnArray(numberWithLongLong:, Int64);
-			case O3VecStructUInt8Element:  MakeAndReturnArray(numberWithUnsignedInt:, UInt8);
-			case O3VecStructUInt16Element: MakeAndReturnArray(numberWithUnsignedInt:, UInt16);
-			case O3VecStructUInt32Element: MakeAndReturnArray(numberWithUnsignedInt:, UInt32);
-			case O3VecStructUInt64Element: MakeAndReturnArray(numberWithUnsignedLongLong:, UInt64);
+		for (int i=0; i<j; i++) {
+			void* val = (UInt8*)bytes + mPermutations[i]*ele_size;
+			[to_return addObject:O3CTypeNSValueWithMult(mElementType, val, mMultiplier)];
 		}
-		#undef MakeAndReturnArray
 	} else {
-		#define MakeAndReturnArray(NUM_METHOD,NUM_TYPE) for (int i=0; i<j; i++) [to_return addObject:[NSNumber NUM_METHOD *(( NUM_TYPE *)bytes+i) * mMultiplier]]; return to_return;
-		switch (mElementType) {
-			case O3VecStructFloatElement:  MakeAndReturnArray(numberWithFloat:, float);
-			case O3VecStructDoubleElement: MakeAndReturnArray(numberWithDouble:, double);
-			case O3VecStructInt8Element:   MakeAndReturnArray(numberWithInt:, Int8);
-			case O3VecStructInt16Element:  MakeAndReturnArray(numberWithInt:, Int16);
-			case O3VecStructInt32Element:  MakeAndReturnArray(numberWithInt:, Int32);
-			case O3VecStructInt64Element:  MakeAndReturnArray(numberWithLongLong:, Int64);
-			case O3VecStructUInt8Element:  MakeAndReturnArray(numberWithUnsignedInt:, UInt8);
-			case O3VecStructUInt16Element: MakeAndReturnArray(numberWithUnsignedInt:, UInt16);
-			case O3VecStructUInt32Element: MakeAndReturnArray(numberWithUnsignedInt:, UInt32);
-			case O3VecStructUInt64Element: MakeAndReturnArray(numberWithUnsignedLongLong:, UInt64);
-		}
-		#undef MakeAndReturnArray			
+		for (int i=0; i<j; i++) {
+			void* val = (UInt8*)bytes + i*ele_size;
+			[to_return addObject:O3CTypeNSValueWithMult(mElementType, val, mMultiplier)];
+		}		
 	}
-	O3AssertFalse(@"Unknown specific type");
-	return nil;
+	return to_return;
 }
 
 - (void)writeObject:(id)dict toBytes:(void*)bytes {
 	O3Assert([dict respondsToSelector:@selector(objectAtIndex:)], @"Invalid conversion (%@ is not a valid struct of type %@)", dict, [self className]);
 	int j = mElementCount;
 	double rmul = 1./mMultiplier;
+	UIntP ele_size = O3CTypeSize(mElementType);
 	if (mPermutations) {
-		#define DumpArrayToData(NUM_METHOD,NUM_TYPE) for (int i=0; i<j; i++) *(( NUM_TYPE *)bytes+mPermutations[i]) = [[(NSArray*)dict objectAtIndex:i] NUM_METHOD]*rmul; return;
-		switch (mElementType) {
-			case O3VecStructFloatElement:  DumpArrayToData(floatValue, float);
-			case O3VecStructDoubleElement: DumpArrayToData(doubleValue, double);
-			case O3VecStructInt8Element:   DumpArrayToData(intValue, Int8);
-			case O3VecStructInt16Element:  DumpArrayToData(shortValue, Int16);
-			case O3VecStructInt32Element:  DumpArrayToData(intValue, Int32);
-			case O3VecStructInt64Element:  DumpArrayToData(longLongValue, Int64);
-			case O3VecStructUInt8Element:  DumpArrayToData(unsignedIntValue, UInt8);
-			case O3VecStructUInt16Element: DumpArrayToData(unsignedIntValue, UInt16);
-			case O3VecStructUInt32Element: DumpArrayToData(unsignedIntValue, UInt32);
-			case O3VecStructUInt64Element: DumpArrayToData(unsignedLongLongValue, UInt64);
+		for (int i=0; i<j; i++) {
+			void* val = (UInt8*)bytes + mPermutations[i]*ele_size;
+			O3CTypeSetNSValueWithMult(mElementType, val, [(NSArray*)dict objectAtIndex:i], rmul);
 		}
-		#undef DumpArrayToData
 	} else {
-		#define DumpArrayToData(NUM_METHOD,NUM_TYPE) for (int i=0; i<j; i++) *(( NUM_TYPE *)bytes+i) = [[(NSArray*)dict objectAtIndex:i] NUM_METHOD]*rmul; return;
-		switch (mElementType) {
-			case O3VecStructFloatElement:  DumpArrayToData(floatValue, float);
-			case O3VecStructDoubleElement: DumpArrayToData(doubleValue, double);
-			case O3VecStructInt8Element:   DumpArrayToData(intValue, Int8);
-			case O3VecStructInt16Element:  DumpArrayToData(shortValue, Int16);
-			case O3VecStructInt32Element:  DumpArrayToData(intValue, Int32);
-			case O3VecStructInt64Element:  DumpArrayToData(longLongValue, Int64);
-			case O3VecStructUInt8Element:  DumpArrayToData(unsignedIntValue, UInt8);
-			case O3VecStructUInt16Element: DumpArrayToData(unsignedIntValue, UInt16);
-			case O3VecStructUInt32Element: DumpArrayToData(unsignedIntValue, UInt32);
-			case O3VecStructUInt64Element: DumpArrayToData(unsignedLongLongValue, UInt64);
-		}
-		#undef DumpArrayToData		
+		for (int i=0; i<j; i++) {
+			void* val = (UInt8*)bytes + i*ele_size;
+			O3CTypeSetNSValueWithMult(mElementType, val, [(NSArray*)dict objectAtIndex:i], rmul);
+		}		
 	}
-	O3AssertFalse(@"Unknown specific type");
 }
 
 - (NSData*)portabalizeStructsAt:(const void*)at count:(UIntP)count stride:(UIntP)s {
-	UIntP strSize = [self structSize];
-	if (!s) s = strSize;
-	const UInt8* bytes = (const UInt8*)at;
-	UInt8* tbytes = (UInt8*)malloc(strSize*count);
-	UIntP i,j;
-	#define Swap(type) for(i=0; i<count; i++) for(j=0; j<mElementCount; j++) *((type*)(tbytes+i*s)+j) = O3ByteswapHostToLittle(*((type*)(bytes+i*s)+j)); break;
-	switch (self->mElementType) {
-		case O3VecStructFloatElement: Swap(float);
-		case O3VecStructDoubleElement: Swap(double);
-		case O3VecStructInt8Element: Swap(Int8);
-		case O3VecStructInt16Element: Swap(Int16);
-		case O3VecStructInt32Element: Swap(Int32);
-		case O3VecStructInt64Element: Swap(Int64);
-		case O3VecStructUInt8Element: Swap(UInt8);
-		case O3VecStructUInt16Element: Swap(UInt16);
-		case O3VecStructUInt32Element: Swap(UInt32);
-		case O3VecStructUInt64Element: Swap(UInt64);
-		default: O3AssertFalse(@"Unknown type \"%c\" in vec struct %@", self->mElementType, self);	
-	}
-	#undef Swap
-	return [NSData dataWithBytesNoCopy:tbytes length:strSize*count freeWhenDone:YES];
+	O3RawData rd = O3CTypePortabalize(mElementType, at, s, 1, count*mElementCount);
+	return [NSData dataWithBytesNoCopy:rd.bytes length:rd.length freeWhenDone:YES];
 }
 
 - (NSData*)deportabalizeStructs:(NSData*)indata to:(void*)target stride:(UIntP)s {
 	if (!O3NeedByteswapToLittle && !target) return indata;
 	UIntP size = [indata length];
-	if (!s) s = [self structSize];
-	UIntP count = size / s;
-	BOOL had_to_malloc_target = target? NO : YES;
-	if (!target) target = malloc(s*count);
-	UInt8* tbytes = (UInt8*)target;
-	const UInt8* fbytes = (const UInt8*)[indata bytes];
-	UIntP i,j;
-	#define Swap(type) for(i=0; i<count; i++) for(j=0; j<mElementCount; j++) *((type*)(tbytes+i*s)+j) = O3ByteswapLittleToHost(*((type*)(fbytes+i*s)+j)); break;
-	switch (self->mElementType) {
-		case O3VecStructFloatElement: Swap(float);
-		case O3VecStructDoubleElement: Swap(double);
-		case O3VecStructInt8Element: Swap(Int8);
-		case O3VecStructInt16Element: Swap(Int16);
-		case O3VecStructInt32Element: Swap(Int32);
-		case O3VecStructInt64Element: Swap(Int64);
-		case O3VecStructUInt8Element: Swap(UInt8)
-		case O3VecStructUInt16Element: Swap(UInt16);
-		case O3VecStructUInt32Element: Swap(UInt32);
-		case O3VecStructUInt64Element: Swap(UInt64);
-		default: O3AssertFalse(@"Unknown type \"%c\" in vec struct %@", self->mElementType, self);	
-	}
-	#undef Swap
+	O3RawData rd = O3CTypeDeportabalize(mElementType, [indata bytes], target, s, size/O3CTypeSize(mElementType), mElementCount);
 	[indata relinquishBytes];
-	return had_to_malloc_target? [NSData dataWithBytesNoCopy:target length:s*count freeWhenDone:YES] : nil;
+	return rd.length? [NSData dataWithBytesNoCopy:target length:rd.length freeWhenDone:YES] : nil;
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)oformat {
-	O3VecStructType* format = (O3VecStructType*)oformat;
-	if (![format isKindOfClass:[self class]]||mElementCount!=[format elementCount]) return [super translateStructs:instructs stride:s toFormat:oformat];
-	if (mElementCount!=[format elementCount]) {
-		if (mElementCount==1) O3LogWarn(@"@todo Packing data in struct array conversion from %@ to %@ in %@",self,oformat,instructs);
-		else if ([format elementCount]==1) O3LogWarn(@"@todo Unpacking data in struct array conversion from %@ to %@ in %@",self,oformat,instructs);
-		else if (mElementCount>[format elementCount]) O3LogWarn(@"@todo Truncating data in struct array conversion from %@ to %@ in %@",self,oformat,instructs);
-		else if (mElementCount<[format elementCount]) O3LogWarn(@"@todo Zero-padding data in struct array conversion from %@ to %@ in %@",self,oformat,instructs);
+	BOOL other_is_vec = [oformat isKindOfClass:[O3VecStructType class]];
+	BOOL other_is_scalar = [oformat isKindOfClass:[O3ScalarStructType class]];
+	if (!(other_is_vec ^ other_is_scalar)) return [super translateStructs:instructs stride:s toFormat:oformat];
+	UIntP o_elementCount = other_is_scalar? 1 : [(O3VecStructType*)oformat elementCount];
+	UIntP* o_perms = other_is_vec? [(O3VecStructType*)oformat permutations] : nil;
+	UIntP o_stride = [oformat structSize];
+	O3CType o_eleType = other_is_scalar? [(O3ScalarStructType*)oformat type] : [(O3VecStructType*)oformat elementType];
+	UIntP o_eleStride = O3CTypeSize(o_eleType);
+	O3CType in_eleType = mElementType;
+	UIntP in_eleStride = O3CTypeSize(in_eleType);
+	UIntP in_stride = s ?: [self structSize];
+	UIntP in_count = [instructs length]/s;
+	//UIntP in_ele_count = in_count * mElementCount;
+	//UIntP o_count = in_ele_count / o_elementCount; O3Asrt(!(in_ele_count%o_elementCount));
+	
+	const UInt8* fbytes = (const UInt8*)[instructs bytes];
+	NSMutableData* ret = [NSMutableData dataWithLength:o_stride*in_count];
+	UInt8* tbytes = (UInt8*)[ret mutableBytes];
+	
+	UIntP i,j; for(i=0; i<in_count; i++) for (j=0; j<o_elementCount; j++) {
+		UIntP tidx = o_perms? o_perms[j] : j;
+		UInt8* tloc = tbytes + o_stride*i + tidx*o_eleStride;
+		if (j>=mElementCount) {O3CTypeSetDoubleValue(o_eleType, tloc, 0); continue;}
+		UIntP fidx = mPermutations? mPermutations[j] : j;
+		const UInt8* floc = fbytes + i*in_stride + fidx*in_eleStride;
+		O3CTypeTranslateFromTo(in_eleType, o_eleType, floc, tloc);
 	}
-	UIntP count = [instructs length]/s;
-	NSMutableData* ret = [NSMutableData dataWithLength:[oformat structSize]*count];
-	void* returnbuf = [ret mutableBytes];
-	const void* bytes = [instructs bytes];
-	O3VecStructElementType type = [format elementType];
-	double mymul = mMultiplier;
-	double rmul = 1./[(O3VecStructType*)oformat multiplier];
-	if (!mPermutations) {
-			UIntP i,j; for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) {
-				double val = O3DoubleValueOfType_at_withIndex_(mElementType, (UInt8*)bytes+i*s, j)*mymul;
-				O3SetValueOfType_at_toDouble_withIndex_(type, returnbuf, val*rmul, j);
-			}
-	} else {
-		UIntP* otherPermArray = [format permutations];
-			UIntP i,j; for(i=0; i<count; i++) for (j=0; j<mElementCount; j++) {
-				double val = O3DoubleValueOfType_at_withIndex_(mElementType, (UInt8*)bytes+i*s, mPermutations[j])*mymul;
-				O3SetValueOfType_at_toDouble_withIndex_(type, returnbuf, val*rmul, mElementCount*i + otherPermArray[j]);
-			}
-	}
-	[instructs relinquishBytes];
+	
 	return ret;
 }
 
@@ -475,16 +248,16 @@ inline void O3SetValueOfType_at_toUInt64_withIndex_(O3VecStructElementType type,
 - (void)getFormat:(out GLenum*)format components:(out GLsizeiptr*)components offset:(out GLint*)offset stride:(out GLint*)stride normed:(out GLboolean*)normed vertsPerStruct:(out int*)vps forType:(in O3VertexDataType)type {
 	if (format) {
 	   switch (mElementType) {
-	   	case O3VecStructFloatElement:  *format = GL_FLOAT; break;
-	   	case O3VecStructDoubleElement: *format = GL_DOUBLE; break;
-	   	case O3VecStructInt8Element:   *format = GL_BYTE; break;
-	   	case O3VecStructInt16Element:  *format = GL_SHORT; break;
-	   	case O3VecStructInt32Element:  *format = GL_INT; break;
-	   	//case O3VecStructInt64Element:  return 0;
-	   	case O3VecStructUInt8Element:  *format = GL_UNSIGNED_BYTE; break;
-	   	case O3VecStructUInt16Element: *format = GL_UNSIGNED_SHORT; break;
-		case O3VecStructUInt32Element: *format = GL_UNSIGNED_INT; break;
-	   	//case O3VecStructUInt64Element: return 0;
+	   	case O3FloatCType:  *format = GL_FLOAT; break;
+	   	case O3DoubleCType: *format = GL_DOUBLE; break;
+	   	case O3Int8CType:   *format = GL_BYTE; break;
+	   	case O3Int16CType:  *format = GL_SHORT; break;
+	   	case O3Int32CType:  *format = GL_INT; break;
+	   	//case O3Int64CType:  return 0;
+	   	case O3UInt8CType:  *format = GL_UNSIGNED_BYTE; break;
+	   	case O3UInt16CType: *format = GL_UNSIGNED_SHORT; break;
+		case O3UInt32CType: *format = GL_UNSIGNED_INT; break;
+	   	//case O3UInt64CType: return 0;
 		default: O3AssertFalse(@"Unknown GL type for type \"%c\" in vec struct %@", mElementType, self);
 	   }
 	   

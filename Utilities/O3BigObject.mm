@@ -8,6 +8,7 @@
 #import "O3BigObject.h"
 
 @implementation O3BigObject
+O3DefaultO3InitializeImplementation
 
 - (id)retain {
 	mRetainCount++;

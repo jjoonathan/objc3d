@@ -13,6 +13,7 @@
 NSNib* gObjectEditorNib = nil;
 
 @implementation O3ObjectEditor
+O3DefaultO3InitializeImplementation
 @dynamic object, document;
 @synthesize editors=mEditors;
 

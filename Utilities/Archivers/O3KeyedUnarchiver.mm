@@ -9,6 +9,7 @@
 #import "O3ResManager.h"
 
 @implementation O3KeyedUnarchiver
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Accessors /************************************/
 - (NSZone*)objectZone {return mObjectZone;}
 - (void)setObjectZone:(NSZone*)zone {mObjectZone = zone;}

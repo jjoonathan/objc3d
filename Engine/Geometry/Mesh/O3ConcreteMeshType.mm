@@ -16,6 +16,7 @@ NSString* O3ConcreteMeshIndexedRenderMode = @"Indexed Triangles";
 NSString* O3ConcreteMeshStrippedRenderMode = @"Triangle Strips";
 
 @implementation O3ConcreteMeshType
+O3DefaultO3InitializeImplementation
 
 /************************************/ #pragma mark Init /************************************/
 - (O3ConcreteMeshType*)initWithDataSources:(NSArray*)dataSources

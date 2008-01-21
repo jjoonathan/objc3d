@@ -9,6 +9,7 @@
 
 
 @implementation O3ResManagerInspector
+O3DefaultO3InitializeImplementation
 
 //Attribs
 - (NSString *)label {

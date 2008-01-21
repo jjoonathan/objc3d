@@ -6,6 +6,7 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3StructType.h"
+#import "O3CTypes.h"
 @class O3VecStruct;
 
 #define O3VecStructTypeDefines   /*to add a new type, add a DefType(name) here, then init it inside o3init*/                   \
@@ -38,22 +39,11 @@ typedef enum {
 	O3VecStructColor=6
 } O3VecStructSpecificType;
 
-typedef enum {
-	O3VecStructFloatElement=1,
-	O3VecStructDoubleElement=2,
-	O3VecStructInt8Element=3,
-	O3VecStructInt16Element=4,
-	O3VecStructInt32Element=5,
-	O3VecStructInt64Element=6,
-	O3VecStructUInt8Element=7,
-	O3VecStructUInt16Element=8,
-	O3VecStructUInt32Element=9,
-	O3VecStructUInt64Element=10
-} O3VecStructElementType;
+
 
 @interface O3VecStructType : O3StructType {
 	BOOL mFreePermsWhenDone:1;
-	O3VecStructElementType mElementType; ///<@dep O3FaceStructType.mm
+	O3CType mElementType; ///<@dep O3FaceStructType.mm
 	O3VecStructSpecificType mSpecificType;
 	short mElementCount; ///<The number of elements
 	double mMultiplier; ///<Amount to multiply each element by. Useful for normalized formats.
@@ -61,12 +51,12 @@ typedef enum {
 	O3StructArrayComparator mComp;
 }
 //Init
-+ (O3VecStructType*)vecStructTypeWithElementType:(O3VecStructElementType)type
++ (O3VecStructType*)vecStructTypeWithElementType:(O3CType)type
                                     specificType:(O3VecStructSpecificType)stype
                                            count:(int)count
                                             name:(NSString*)name
 									  comparator:(O3StructArrayComparator)comp;
-- (O3VecStructType*)initWithElementType:(O3VecStructElementType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name comparator:(O3StructArrayComparator)comp;
+- (O3VecStructType*)initWithElementType:(O3CType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name comparator:(O3StructArrayComparator)comp;
 
 //Special info
 - (double)multiplier; ///<The amount by which each element is multiplied before being returned
@@ -95,7 +85,7 @@ typedef enum {
 + (O3VecStructType*)index4x32Type;     //Convenience method to return a commonly used struct type (use function instead if possible)
 + (O3VecStructType*)index4x64Type;     //Convenience method to return a commonly used struct type (use function instead if possible)
 
-- (O3VecStructElementType)elementType;
+- (O3CType)elementType;
 - (O3VecStructSpecificType)specificType;
 - (short)elementCount;
 
@@ -112,8 +102,6 @@ O3VecStructTypeDefines
 #undef DefType
 
 UIntP* O3VecStructTypePermsAndMultiplier(O3VecStructType* self, double* multiplier); ///<Gets a vec struct type's permutation array and element multiplier
-void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, O3VecStructElementType* type, short* count, O3VecStructSpecificType* stype);
+void O3VecStructTypeGetType_count_specificType_(O3VecStructType* self, O3CType* type, short* count, O3VecStructSpecificType* stype);
 UIntP O3VecStructSize(O3VecStructType* type);
-
-void O3WriteNumberTo(O3VecStructElementType eleType, UIntP i, void* bytes, NSNumber* num, double rmul, UIntP* mPermutations);
 O3END_EXTERN_C

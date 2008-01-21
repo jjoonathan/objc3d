@@ -9,6 +9,7 @@
 #import "O3Camera.h"
 
 @implementation O3GeneratedVertexDataSource
+O3DefaultO3InitializeImplementation
 
 inline int O3TexCoordIndex(GLenum coord) {
 	switch (coord) {

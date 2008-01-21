@@ -11,6 +11,7 @@ using namespace std;
 using namespace ObjC3D::Math;
 
 @implementation O3Locateable
+O3DefaultO3InitializeImplementation
 
 inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 	if (!self->mSpaceNeedsUpdate) return;

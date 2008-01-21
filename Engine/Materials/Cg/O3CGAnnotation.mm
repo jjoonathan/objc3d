@@ -13,6 +13,7 @@ using namespace std;
 map<CGannotation, O3CGAnnotation*> gO3CGAnnotationMap;
 
 @implementation O3CGAnnotation
+O3DefaultO3InitializeImplementation
 inline O3CGAnnotation* O3CGAnnotation_init(O3CGAnnotation* self, CGannotation anno, BOOL freeWhenDone) {
 	if (!self) return nil;
 	self->mAnnotation = anno;

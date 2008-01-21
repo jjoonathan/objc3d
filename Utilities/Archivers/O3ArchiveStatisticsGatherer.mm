@@ -10,6 +10,7 @@
 #import "O3ArchiveFormat.h"
 
 @implementation O3ArchiveStatistic
+O3DefaultO3InitializeImplementation
 inline NSString* getKey(O3ArchiveStatistic* self) {return self->key;}
 inline void      setKey(O3ArchiveStatistic* self, NSString* k) {self->key = k;}
 inline UIntP getCount(O3ArchiveStatistic* self) {return self->numOccurances;}
@@ -33,6 +34,7 @@ inline IntP getWinnage(O3ArchiveStatistic* self) {
 @end
 
 @implementation O3ArchiveStatisticsGatherer
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Creation and Destruction /************************************/
 - (id)init {
 	O3SuperInitOrDie();

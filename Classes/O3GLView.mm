@@ -56,6 +56,7 @@ inline void updateContextIfNecessary(O3GLView* self) {
 
 /************************************/ #pragma mark Init&Destruction /************************************/
 + (void)initialize {
+	O3Init();
 	[self setKeys:[NSArray arrayWithObjects:@"colorBits", @"floatingPointColor", nil] triggerChangeNotificationsForDependentKey:@"colorString"];
 	[self setKeys:[NSArray arrayWithObject:@"depthBits"] triggerChangeNotificationsForDependentKey:@"depthString"];
 	[self setKeys:[NSArray arrayWithObject:@"stencilBits"] triggerChangeNotificationsForDependentKey:@"stencilString"];

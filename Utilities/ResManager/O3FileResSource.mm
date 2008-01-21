@@ -12,6 +12,7 @@
 int gO3KeyedUnarchiverLazyThreshhold = 1 * 1024 * 1024;
 
 @implementation O3FileResSource
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Private Accessors /************************************/
 static O3KeyedUnarchiver* mUnarchiverP(O3FileResSource* self) {
 	if (self->mUnarchiver && ![self needsUpdate]) return self->mUnarchiver;

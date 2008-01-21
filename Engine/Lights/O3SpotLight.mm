@@ -9,6 +9,7 @@
 
 
 @implementation O3SpotLight
+O3DefaultO3InitializeImplementation
 
 - (O3Light*)initWithLocation:(O3Point3)aLocation ambient:(NSColor*)ambientColor diffuse:(NSColor*)diffuseColor specular:(NSColor*)specularColor direction:(O3Vec3r)aDirection angle:(angle)spread blurriness:(float)theExponent {
 	[self initWithLocation:(O3Point3)aLocation 

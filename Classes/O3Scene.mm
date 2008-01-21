@@ -10,6 +10,7 @@
 #import "O3Camera.h"
 
 @implementation O3Scene
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Init & Dealloc /************************************/
 inline void initP(O3Scene* self) {
 	self->mSceneState = [[NSMutableDictionary alloc] init];

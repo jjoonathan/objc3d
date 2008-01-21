@@ -11,6 +11,7 @@
 #import "O3VertexDataSource.h"
 
 @implementation O3RawVertexDataSource
+O3DefaultO3InitializeImplementation
 
 inline unsigned O3RawVertexDataSource_ElementSize(O3RawVertexDataSource* self) {
 	unsigned component_size = O3SizeofGLType(self->mType);

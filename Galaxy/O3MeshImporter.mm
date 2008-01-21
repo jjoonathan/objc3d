@@ -9,6 +9,7 @@
 #import "DropableCollectionView.h"
 
 @implementation O3MeshImporter
+O3DefaultO3InitializeImplementation
 
 + (void)initialize {
 	[DropableCollectionView addImporter:self];

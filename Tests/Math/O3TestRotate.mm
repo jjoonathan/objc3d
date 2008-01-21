@@ -15,6 +15,7 @@ inline void PMat(const char* name, O3Vec3r& vec) {
 }
 
 @implementation O3TestRotation
+O3DefaultO3InitializeImplementation
 
 - (void)testEulerToQuatAndQuatToMatrix {
 	/*

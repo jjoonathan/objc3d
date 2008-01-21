@@ -10,6 +10,7 @@
 #import "O3FileResSource.h"
 
 @implementation O3DirectoryResSource
+O3DefaultO3InitializeImplementation
 
 - (O3DirectoryResSource*)initWithPath:(NSString*)path {
 	O3SuperInitOrDie(); //Don't mod without updating setStringValue

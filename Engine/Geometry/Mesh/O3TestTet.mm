@@ -27,6 +27,7 @@ UInt8 O3TestLineIndicies[2*6] = {0,1,0,2,0,3,1,2,1,3,2,3};
                             
 
 @implementation O3TestTet
+O3DefaultO3InitializeImplementation
 
 - (void)renderWithContext:(O3RenderContext*)ctx {
 	O3LocateableBeginRender(self,ctx);

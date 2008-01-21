@@ -10,6 +10,7 @@
 NSMutableArray* O3EditorClasses;
 
 @implementation O3Editor
+O3DefaultO3InitializeImplementation
 
 + (NSString*)nibName {
 	[self doesNotRecognizeSelector:_cmd];

@@ -11,6 +11,7 @@
 #import "O3Camera.h"
 
 @implementation O3GLViewController
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Init and Dealloc /************************************/
 inline void initP(O3GLViewController* self) {
 	self->mKeyDownActions = [[NSMutableDictionary alloc] init];

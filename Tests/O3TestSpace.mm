@@ -12,6 +12,7 @@
 using namespace std;
 
 @implementation O3TestSpace
+O3DefaultO3InitializeImplementation
 
 - (void)testNestedTranslations {
 	O3Space3 space, space2;

@@ -12,6 +12,7 @@
 using namespace ObjC3D::Math;
 
 @implementation O3Camera
+O3DefaultO3InitializeImplementation
 
 inline void O3Camera_init(O3Camera* self) {
 	self->mPostProjectionSpace = new O3Space3(self->mSpace);

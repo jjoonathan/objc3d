@@ -8,6 +8,7 @@
  *  @warn IMP caching is used, so the user must call flushIMPCache whenever a getter or setter method is swizzled.
  */
 @implementation O3KVCHelper
+O3DefaultO3InitializeImplementation
 
 - (id)initWithTarget:(NSObject*)obj valueForKeyMethod:(SEL)getMethod setValueForKeyMethod:(SEL)setMethod listKeysMethod:(SEL)listKeys {
 	O3SuperInitOrDie();

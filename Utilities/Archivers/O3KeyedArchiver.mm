@@ -14,6 +14,7 @@ NSString* O3UnkeyedMethodSendToKeyedArchiverException = @"O3UnkeyedMethodSendToK
 NSPropertyListFormat O3ArchiveFormat0 = (NSPropertyListFormat)'O';
 
 @implementation O3KeyedArchiver
+O3DefaultO3InitializeImplementation
 
 #define dieIfArchiving(retval) {if (mArchivingBegun) {O3LogWarn(@"Archiving has already begun on O3KeyedArchiver %@, yet %s was called.", self, NSStringFromSelector(_cmd)); return retval;}}
 

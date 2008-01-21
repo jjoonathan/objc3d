@@ -10,6 +10,7 @@
 #import "O3BufferedReader.h"
 
 @implementation O3CompoundStructType
+O3DefaultO3InitializeImplementation
 
 - (O3CompoundStructType*)initWithName:(NSString*)name types:(NSArray*)types {
 	if (![super initWithName:name]) return nil;

@@ -27,6 +27,7 @@ O3SupportLevel gVertexDataBufferSupport;
 @end
 
 @implementation O3RawVertexData
+O3DefaultO3InitializeImplementation
 
 inline void O3RawVertexData_InitVertexData() {
 	if (gVertexDataClassInitialized) return;

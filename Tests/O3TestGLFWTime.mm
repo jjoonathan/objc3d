@@ -9,6 +9,7 @@
 #include <GL/glfw.h>
 
 @implementation O3TestGLFWTime
+O3DefaultO3InitializeImplementation
 
 - (void)testTime {
 	int samples = 100;

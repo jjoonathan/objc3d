@@ -11,6 +11,7 @@
 typedef map<string, O3MaterialParameterPair> mParameters_t;
 
 @implementation O3Material
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Private /************************************/
 inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3HasParameters>* matType) {
 	O3Assign(matType, self->mMaterialType);

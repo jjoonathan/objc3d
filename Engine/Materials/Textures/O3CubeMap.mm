@@ -8,6 +8,7 @@
 #include "O3CubeMap.h"
 
 @implementation O3CubeMap
+O3DefaultO3InitializeImplementation
 #include "O3TextureConstantInterperetation.h"
 
 /************************************/ #pragma mark Information /************************************/

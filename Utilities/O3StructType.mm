@@ -20,8 +20,10 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name) {
 	[gO3StructTypesForNames setObject:type forKey:name];
 }
 
+NSMutableDictionary* O3StructTypeDict() {return gO3StructTypesForNames;}
 
-@implementation O3StructType : NSObject
+
+@implementation O3StructType
 
 /************************************/ #pragma mark Init /************************************/
 ///@param name nil is a valid value

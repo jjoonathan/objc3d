@@ -14,6 +14,7 @@ NSString* O3ResManagerKeyDidChangeNotification = @"O3ResManagerKeyDidChangeNotif
 O3ResManager* gO3ResManagerSharedInstance = nil;
 
 @implementation O3ResManager
+O3DefaultO3InitializeImplementation
 
 inline O3ResManager* O3ResManagerSharedInstanceP() {
 	if (!gO3ResManagerSharedInstance) {

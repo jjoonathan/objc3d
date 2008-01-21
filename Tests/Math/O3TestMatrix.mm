@@ -29,6 +29,7 @@ using namespace std;
 }
 
 @implementation O3TestMatrix
+O3DefaultO3InitializeImplementation
 
 - (void)testTranslationInversion {
 	O3Mat4x4r a = O3Translation3(1,2,3).GetMatrix();

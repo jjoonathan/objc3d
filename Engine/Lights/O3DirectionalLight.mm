@@ -9,6 +9,7 @@
 
 
 @implementation O3DirectionalLight
+O3DefaultO3InitializeImplementation
 
 /******************************************************************************************/
 #pragma mark Initializers

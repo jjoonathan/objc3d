@@ -16,6 +16,7 @@ static std::vector<UIntP>* gFreeLights; ///<Free light indexes. NOT thread safe
 #pragma mark Initializers
 /******************************************************************************************/
 + (void)initialize {
+	O3Init();
 	[self setKeys:[NSArray arrayWithObjects:@"effectiveRadius",nil] triggerChangeNotificationsForDependentKey:@"cutoff"];
 }
 

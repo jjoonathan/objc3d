@@ -67,6 +67,8 @@ void O3GLBufferObjRelease(O3GLBufferObj* o) {
 
 
 @implementation O3GPUData
+O3DefaultO3InitializeImplementation
+
 /************************************/ #pragma mark Inline Support /************************************/
 inline BOOL isMappedP(O3GPUData* self) {
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, self->mBuffer->id);

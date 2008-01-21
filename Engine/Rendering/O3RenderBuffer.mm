@@ -10,6 +10,7 @@
 extern O3SupportLevel  gFramebufferObjectSupport; //O3FramebufferObject.mm
 
 @implementation O3Renderbuffer
+O3DefaultO3InitializeImplementation
 
 inline id initP(O3Renderbuffer* self) {
 	if (gFramebufferObjectSupport==O3NotSupported) {

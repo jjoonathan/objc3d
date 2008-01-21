@@ -19,6 +19,7 @@ typedef map<string, O3CGAnnotation*> AnnotationMap;
 typedef map<string, O3CGPass*> PassMap;
 
 @implementation O3CGTechnique
+O3DefaultO3InitializeImplementation
 inline vector<CGpass>* mPassesP(O3CGTechnique* self) {
 	if (self->mPasses) return self->mPasses;
 	self->mPasses = new vector<CGpass>();

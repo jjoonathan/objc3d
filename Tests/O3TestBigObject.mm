@@ -9,6 +9,7 @@
 #import "O3BigObjSubclass.h"
 
 @implementation O3TestBigObject
+O3DefaultO3InitializeImplementation
 
 - (void)testRetainRelease {
 	O3BigObjSubclass* a = [[O3BigObjSubclass alloc] init];

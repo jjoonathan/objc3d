@@ -47,7 +47,8 @@ void O3Texture_unbind(O3Texture* tex, int tex_unit) {
 @end
 
 
-@implementation O3Texture    
+@implementation O3Texture
+O3DefaultO3InitializeImplementation    
 /*******************************************************************/ #pragma mark Initialization /*******************************************************************/
 /// This function basically performs class initialization (initializes statics, gl state and so on)
 inline void initializeTexturingP() {

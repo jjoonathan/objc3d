@@ -7,7 +7,8 @@
 //
 #import "O3Mesh+Galaxy.h"
 
-@implementation O3Mesh (Galaxy)
+@implementation O3Mesh
+O3DefaultO3InitializeImplementation (Galaxy)
 
 - (NSImage*)icon {
 	return [NSImage imageNamed:@"O3MeshIcon"];

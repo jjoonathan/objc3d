@@ -12,6 +12,7 @@
 #import "O3VertexFormats.h"
 
 @implementation O3StructArray
+O3DefaultO3InitializeImplementation
 
 inline UIntP countP(O3StructArray* self) {
 	if (!self->mData || !self->mStructSize) return 0;
@@ -167,7 +168,9 @@ void initP(O3StructArray* self) {
 
 - (BOOL)setStructTypeName:(NSString*)newTypeName {
 	if (!newTypeName) return NO;
-	return [self setStructType:O3StructTypeForName(newTypeName)];
+	O3StructType* t = O3StructTypeForName(newTypeName);
+	O3Assert(t,@"Couldn't find struct type named %@. Names: %@",newTypeName,[[O3StructTypeDict() allKeys] componentsJoinedByString:@", "]);
+	return [self setStructType:t];
 } 
 
 - (NSMutableData*)rawData {

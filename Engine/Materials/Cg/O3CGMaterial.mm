@@ -12,6 +12,7 @@
 typedef map<string, O3CGMaterialParameterPair> mParameters_t;
 
 @implementation O3CGMaterial
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Private /************************************/
 inline void unbindParamsP(O3CGMaterial* self) {
 	if (!self->mParamsToUnbind) return;

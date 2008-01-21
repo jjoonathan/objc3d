@@ -152,6 +152,8 @@
 		FC2C1D470C125FDB0084A599 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2D24830B16237A000C2073 /* OpenGL.framework */; };
 		FC2C1D480C125FDB0084A599 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3AABD70B372A710033122E /* Carbon.framework */; };
 		FC2C1DCC0C127A310084A599 /* O3Vector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FC922FA00AB30F74003878EA /* O3Vector.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = FC35144C0D3D91070000C27C /* O3CTypes.h */; };
+		FC35144F0D3D91080000C27C /* O3CTypes.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC35144D0D3D91070000C27C /* O3CTypes.mm */; };
 		FC3978A20C6F6BAA00F4AEA5 /* O3Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */; };
 		FC3A0EAB0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */; };
 		FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */ = {isa = PBXBuildFile; fileRef = FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */; };
@@ -210,6 +212,8 @@
 		FC66FFCF0D0CABCB00BDD15F /* O3CompoundStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC438B680D02676900DFA46F /* O3CompoundStructType.mm */; };
 		FC66FFD00D0CABCC00BDD15F /* O3CompoundStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC438B670D02676900DFA46F /* O3CompoundStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
+		FC7CA0FF0D4154EA00F6B849 /* test_struct_array.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA0FE0D4154EA00F6B849 /* test_struct_array.rb */; };
+		FC7CA19C0D41CC6300F6B849 /* tests.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA19B0D41CC6300F6B849 /* tests.rb */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
 		FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB959A80D2DCC650083B948 /* ApplicationServices.framework */; };
@@ -428,6 +432,8 @@
 		FC348BAE0B4355B7000015FE /* O3RawVertexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3RawVertexData.h; sourceTree = "<group>"; };
 		FC348BAF0B4355B7000015FE /* O3RawVertexData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3RawVertexData.mm; sourceTree = "<group>"; };
 		FC348BC60B435B82000015FE /* O3VertexFormats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexFormats.h; sourceTree = "<group>"; };
+		FC35144C0D3D91070000C27C /* O3CTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3CTypes.h; sourceTree = "<group>"; };
+		FC35144D0D3D91070000C27C /* O3CTypes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3CTypes.mm; sourceTree = "<group>"; };
 		FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Utilities.mm; sourceTree = "<group>"; };
 		FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ArchiveStatisticsGatherer.h; sourceTree = "<group>"; };
 		FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ArchiveStatisticsGatherer.mm; sourceTree = "<group>"; };
@@ -520,6 +526,8 @@
 		FC79C1D80B129C5500834C4D /* O3QuadraticEquation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3QuadraticEquation.h; sourceTree = "<group>"; };
 		FC79C1E00B129D2700834C4D /* O3QuadraticEquation.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; path = O3QuadraticEquation.hpp; sourceTree = "<group>"; };
 		FC79C1E80B12A15000834C4D /* O3TestQuadraticEquation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3TestQuadraticEquation.h; path = Math/O3TestQuadraticEquation.h; sourceTree = "<group>"; };
+		FC7CA0FE0D4154EA00F6B849 /* test_struct_array.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = test_struct_array.rb; sourceTree = "<group>"; };
+		FC7CA19B0D41CC6300F6B849 /* tests.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = tests.rb; sourceTree = "<group>"; };
 		FC7DD1E00C1B311A009D36A2 /* O3NonlinearWriter.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = O3NonlinearWriter.mm; sourceTree = "<group>"; };
 		FC7DD1E10C1B311B009D36A2 /* O3NonlinearWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3NonlinearWriter.h; sourceTree = "<group>"; };
 		FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ObjCEncoding.h; sourceTree = "<group>"; };
@@ -833,6 +841,8 @@
 				FC15656A0B39B570004514C3 /* Runables */,
 				FC79C09B0B0D737200834C4D /* Engine */,
 				FC79C1E50B12A11800834C4D /* Math */,
+				FC7CA0FE0D4154EA00F6B849 /* test_struct_array.rb */,
+				FC7CA19B0D41CC6300F6B849 /* tests.rb */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1185,6 +1195,8 @@
 				FCF4383D0C20E9DF00263F34 /* O3TestBigObject.mm */,
 				FCF4384F0C217FE500263F34 /* O3BigObjSubclass.h */,
 				FCF438500C217FE500263F34 /* O3BigObjSubclass.mm */,
+				FC35144C0D3D91070000C27C /* O3CTypes.h */,
+				FC35144D0D3D91070000C27C /* O3CTypes.mm */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1406,6 +1418,7 @@
 				FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */,
 				FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */,
 				FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */,
+				FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1445,6 +1458,7 @@
 				FC63DF0D0CF1C2A200325C54 /* Sources */,
 				FC63DF0E0CF1C2A200325C54 /* Frameworks */,
 				FC63E1540CF1C9E200325C54 /* CopyFiles */,
+				FC7CA19A0D41CC2400F6B849 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1562,6 +1576,8 @@
 				FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */,
 				FC63ED660CF6498700325C54 /* BridgeSupport in Resources */,
 				FC63F10C0CFA83F200325C54 /* window.rb in Resources */,
+				FC7CA0FF0D4154EA00F6B849 /* test_struct_array.rb in Resources */,
+				FC7CA19C0D41CC6300F6B849 /* tests.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1622,6 +1638,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "CGF=$PROJECT_DIR/Other/Cg.framework\nAALINK=$CGF/Versions/AA\nrm -f $AALINK\nln -s $CGF/Versions/Current $AALINK\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Cg.framework/Versions/AA/Cg\" $CGF/Versions/AA/Cg\n";
+		};
+		FC7CA19A0D41CC2400F6B849 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $PROJECT_DIR\nruby Tests/tests.rb";
 		};
 		FCE0A2770D1CBDD600A800F8 /* Copy in BridgeSupport */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1723,6 +1752,7 @@
 				FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */,
 				FC56F1BB0D3328010083E421 /* O33DSUnarchiver.mm in Sources */,
 				FC56F2620D35D0E70083E421 /* O3MeshInstance.mm in Sources */,
+				FC35144F0D3D91080000C27C /* O3CTypes.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

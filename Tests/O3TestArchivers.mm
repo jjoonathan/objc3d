@@ -18,6 +18,7 @@ using namespace ObjC3D;
 #define TCLog(str, args...) printf([[NSString stringWithFormat:str @"\n",##args] UTF8String])
 
 @implementation O3TestArchivers
+O3DefaultO3InitializeImplementation
 
 - (void)testUnsignedIntReadWrite {
 	TCLog(@"Test case '-[%@ %@]' beginning.", [self className], NSStringFromSelector(_cmd));

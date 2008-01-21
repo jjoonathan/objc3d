@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
 }
 
 /*@implementation O3FrameworkLoader
+O3DefaultO3InitializeImplementation
 + (void)load {
 	NSBundle* bundle = [NSBundle bundleForClass:[self class]];
 	NSString* pfpath = [bundle privateFrameworksPath];

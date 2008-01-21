@@ -67,6 +67,7 @@ typedef int (*O3StructArrayComparator)(void*, void*, void *);
 //Convenience
 - (void)sort;
 - (void)uploadToGPU; //Converts data to O3GPUData, uploading it to the GPU (if necessary)
+- (void)setTypeToIntWithMaximum:(UInt64)maxval signed:(BOOL)signed;
 @end
 
 typedef O3StructArray O3MutableStructArray;

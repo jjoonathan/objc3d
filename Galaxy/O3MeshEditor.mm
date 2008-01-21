@@ -8,6 +8,7 @@
 #import "O3MeshEditor.h"
 
 @implementation O3MeshEditor
+O3DefaultO3InitializeImplementation
 
 + (void)initialize {
 	[O3Editor addEditorClass:self];

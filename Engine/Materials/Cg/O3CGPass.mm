@@ -12,6 +12,7 @@
 //#define O3CGPASS_FILL_ANNO_CACHE_AT_ONCE
 
 @implementation O3CGPass
+O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Init /************************************/
 - (void)dealloc {
 	[self purgeCaches];

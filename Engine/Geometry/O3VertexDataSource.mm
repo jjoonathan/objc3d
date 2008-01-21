@@ -9,6 +9,7 @@
 
 
 @implementation O3VertexDataSource
+O3DefaultO3InitializeImplementation
 
 - (UIntP)bind {
 	[NSException raise:@"O3AbstractClassException" format:@"Attempt to use un-overridden abstract method -(void)bind of O3VertexDataSource!"];

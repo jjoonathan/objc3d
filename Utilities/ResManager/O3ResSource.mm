@@ -10,6 +10,7 @@
 enum O3ResManagerLaziness gResManagerLaziness = O3ResManagerModerateLazy;
 
 @implementation O3ResSource
+O3DefaultO3InitializeImplementation
 inline enum O3ResManagerLaziness mLazinessP(O3ResSource* self) {
 	return self->mLaziness==O3ResManagerNoOpinionLazy ? gResManagerLaziness : self->mLaziness;
 }

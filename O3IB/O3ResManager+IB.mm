@@ -1,7 +1,8 @@
 #import "O3ResManager+IB.h"
 #import "O3ResManagerInspector.h"
 
-@implementation O3ResManager (IB)
+@implementation O3ResManager
+O3DefaultO3InitializeImplementation (IB)
 
 - (NSImage*)ibDefaultImage {
 	NSImage* img = [NSImage imageNamed:@"O3ResManager"];

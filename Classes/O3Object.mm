@@ -9,6 +9,7 @@
 
 
 @implementation O3Object
+O3DefaultO3InitializeImplementation
 
 /*
 - (id)init {

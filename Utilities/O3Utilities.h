@@ -130,8 +130,9 @@ inline NSObject* NSObjectPlainObjectSingleton() {
 #define O3END_EXTERN_C_BLOCK
 #endif
 
-#ifdef O3DEBUG
 O3EXTERN_C void O3Break(); ///<Useful for non-trivial fast breakpoints
+O3EXTERN_C void O3GLBreak();
+#ifdef O3DEBUG
 //Debug these (O3Log*) by putting a break on @sel(callAppenders:).
 #include <Log4Cocoa/Log4Cocoa.h>
 #define O3LogDebug(format, args...) log4Debug(([NSString stringWithFormat:format, ##args]))
@@ -146,7 +147,6 @@ O3EXTERN_C void O3Break(); ///<Useful for non-trivial fast breakpoints
 #define O3CLogError(format, args...) ({id self = NSObjectPlainObjectSingleton(); O3LogError(format,##args);})
 #define O3CLogFatal(format, args...) ({id self = NSObjectPlainObjectSingleton(); O3LogFatal(format,##args);})
 #else
-#define O3Break()
 #define O3LogDebug(format, args...)
 #define O3LogInfo(format, args...) 
 #define O3LogWarn(format, args...) 
@@ -236,5 +236,4 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 #define O3DestroyCppMap(type, name) O3DestroyCppContainer(type, name, , ->second)
 #define O3DestroyCppVector(type, name) O3DestroyCppContainer(type, name, *, )
 
-O3EXTERN_C void O3GLBreak();
-
+#define O3DefaultO3InitializeImplementation +(void)initialize{O3Init();}

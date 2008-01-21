@@ -10,6 +10,7 @@
 static O3Archivers* SharedInstance;
 
 @implementation O3Archivers
+O3DefaultO3InitializeImplementation
 + (O3Archivers*)sharedInstance
 {
 	return SharedInstance ?: [[O3Archivers new] autorelease];

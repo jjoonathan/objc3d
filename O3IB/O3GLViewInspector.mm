@@ -9,6 +9,7 @@
 
 
 @implementation O3GLViewInspector
+O3DefaultO3InitializeImplementation
 
 //Attribs
 - (NSString *)label {
@@ -27,7 +28,8 @@
 
 
 
-@implementation O3GLView (IB)
+@implementation O3GLView
+O3DefaultO3InitializeImplementation (IB)
 
 - (void)ibPopulateKeyPaths:(NSMutableDictionary *)keyPaths {
     [super ibPopulateKeyPaths:keyPaths];

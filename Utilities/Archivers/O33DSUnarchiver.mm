@@ -14,6 +14,7 @@
 #import "O3StructArrayVDS.h"
 
 @implementation O33DSUnarchiver
+O3DefaultO3InitializeImplementation
 
 + (NSArray*)quickUnarchiveFile:(NSString*)f {
 	NSMutableArray* arr = [[NSMutableArray alloc] init];

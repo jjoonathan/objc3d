@@ -12,6 +12,7 @@
 #import "O3StructType.h"
 
 @implementation O3StructArrayVDS
+O3DefaultO3InitializeImplementation
 
 - initWithStructArray:(O3StructArray*)arr vertexDataType:(O3VertexDataType)t {
 	O3SuperInitOrDie();

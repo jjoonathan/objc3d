@@ -8,6 +8,7 @@
 #import "O3BigObjSubclass.h"
 
 @implementation O3BigObjSubclass
+O3DefaultO3InitializeImplementation
 
 - (void)dealloc {
 	[NSException raise:@"Dealloc Exception" format:@""];

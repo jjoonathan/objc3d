@@ -11,6 +11,7 @@
 O3SupportLevel  gFramebufferObjectSupport = O3NotSupported;
 
 @implementation O3FramebufferObject
+O3DefaultO3InitializeImplementation
 
 inline BOOL framebufferCompleteP(O3FramebufferObject* self) {
 #ifdef O3DEBUG

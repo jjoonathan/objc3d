@@ -5,6 +5,7 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3FaceStructType.h"
+#import "O3CTypes.h"
 #import "O3VecStructType.h"
 
 O3VecStructType* gO3Triangle3x3fType = nil;
@@ -25,8 +26,9 @@ DefType(O3Tri3x3fType, float, 9);
 #undef DefType
 
 @implementation O3TriFaceStructType
+O3DefaultO3InitializeImplementation
 + (void)load {
-	gO3Triangle3x3fType = [[O3TriFaceStructType alloc] initWithElementType:O3VecStructFloatElement
+	gO3Triangle3x3fType = [[O3TriFaceStructType alloc] initWithElementType:O3FloatCType
 															  specificType:O3VecStructIndex
 																	 count:9
 																	  name:@"tri3x3f"
@@ -34,21 +36,7 @@ DefType(O3Tri3x3fType, float, 9);
 }
 
 - (void)getFormat:(out GLenum*)format components:(out GLsizeiptr*)components offset:(out GLint*)offset stride:(out GLint*)stride normed:(out GLboolean*)normed vertsPerStruct:(out int*)vps forType:(in O3VertexDataType)type {
-	if (format) {
-		switch (mElementType) {
-			case O3VecStructFloatElement:  *format = GL_FLOAT; break;
-			//case O3VecStructDoubleElement: *format = GL_DOUBLE; break;
-			//case O3VecStructInt8Element:   *format = GL_BYTE; break;
-			//case O3VecStructInt16Element:  *format = GL_SHORT; break;
-			//case O3VecStructInt32Element:  *format = GL_INT; break;
-			//case O3VecStructInt64Element:  return 0;
-			case O3VecStructUInt8Element:  *format = GL_UNSIGNED_BYTE; break;
-			case O3VecStructUInt16Element: *format = GL_UNSIGNED_SHORT; break;
-			case O3VecStructUInt32Element: *format = GL_UNSIGNED_INT; break;
-			//case O3VecStructUInt64Element: return 0;
-			default: O3Asrt(NO);
-		}
-	}
+	if (format) *format = O3CTypeGLType(mElementType);
 	if (components) *components = 3;
 	if (offset) *offset = 0;
 	if (stride) *stride = O3VecStructSize(self)/3; //3 verts per face

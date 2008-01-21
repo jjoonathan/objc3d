@@ -11,6 +11,7 @@
 
 ///@todo Make KVC compliant
 @implementation O3MeshType
+O3DefaultO3InitializeImplementation
 
 /**********************************************/ #pragma mark Initialization /**********************************************/
 - (id)initWithDataSources:(NSArray*)dataSources  defaultMaterialName:(NSString*)materialName {

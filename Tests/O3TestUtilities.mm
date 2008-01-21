@@ -8,6 +8,7 @@
 #include "O3TestUtilities.h"
 
 @implementation O3TestUtilities
+O3DefaultO3InitializeImplementation
 
 - (void)testByteswap {
 	UInt32 swap_32 = 0x11223344;

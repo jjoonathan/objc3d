@@ -20,8 +20,8 @@ extern CGcontext gCGContext;
 @implementation O3CGParameter
 
 + (void)initialize {
+	O3Init();
 	[self exposeBinding:@"value"];
-	[super initialize];
 }
 
 - (id)init {
