@@ -25,8 +25,8 @@ O3Vec<TYPE, SIZE> operator*(const O3Mat<TYPE, SIZE, SIZE> m, const O3Vec<TYPE, S
 }
 
 /*******************************************************************/ #pragma mark Other O3Mat Functions /*******************************************************************/
-///An efficient specialization of O3swap for matricies
-template<> template <typename TYPE, int ROWS, int COLUMNS> struct O3swap_implementation<O3Mat<TYPE,ROWS,COLUMNS> > {
+///An efficient specialization of O3Swap for matricies
+template<> template <typename TYPE, int ROWS, int COLUMNS> struct O3Swap_implementation<O3Mat<TYPE,ROWS,COLUMNS> > {
 	static void swap(O3Mat<TYPE,ROWS,COLUMNS>& m1, O3Mat<TYPE,ROWS,COLUMNS>& m2) {
 		int i;
 		int j = ROWS*COLUMNS;

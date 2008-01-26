@@ -1,0 +1,376 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FC56F1370D331DCE0083E421 /* atmosphere.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F10D0D331DCE0083E421 /* atmosphere.c */; };
+		FC56F1380D331DCE0083E421 /* background.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F10F0D331DCE0083E421 /* background.c */; };
+		FC56F1390D331DCE0083E421 /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1110D331DCE0083E421 /* camera.c */; };
+		FC56F13A0D331DCE0083E421 /* chunk.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1130D331DCE0083E421 /* chunk.c */; };
+		FC56F13B0D331DCE0083E421 /* ease.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1170D331DCE0083E421 /* ease.c */; };
+		FC56F13C0D331DCE0083E421 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1190D331DCE0083E421 /* file.c */; };
+		FC56F13D0D331DCE0083E421 /* io.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F11B0D331DCE0083E421 /* io.c */; };
+		FC56F13E0D331DCE0083E421 /* light.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F11D0D331DCE0083E421 /* light.c */; };
+		FC56F13F0D331DCE0083E421 /* material.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1210D331DCE0083E421 /* material.c */; };
+		FC56F1400D331DCE0083E421 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1230D331DCE0083E421 /* matrix.c */; };
+		FC56F1410D331DCE0083E421 /* mesh.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1250D331DCE0083E421 /* mesh.c */; };
+		FC56F1420D331DCE0083E421 /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1270D331DCE0083E421 /* node.c */; };
+		FC56F1430D331DCE0083E421 /* quat.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1290D331DCE0083E421 /* quat.c */; };
+		FC56F1440D331DCE0083E421 /* shadow.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F12B0D331DCE0083E421 /* shadow.c */; };
+		FC56F1450D331DCE0083E421 /* tcb.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F12D0D331DCE0083E421 /* tcb.c */; };
+		FC56F1460D331DCE0083E421 /* tracks.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F12F0D331DCE0083E421 /* tracks.c */; };
+		FC56F1470D331DCE0083E421 /* vector.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1330D331DCE0083E421 /* vector.c */; };
+		FC56F1480D331DCE0083E421 /* viewport.c in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1350D331DCE0083E421 /* viewport.c */; };
+		FC56F14B0D331E060083E421 /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1310D331DCE0083E421 /* types.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F14C0D331E060083E421 /* chunktable.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1150D331DCE0083E421 /* chunktable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F14D0D331E060083E421 /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1260D331DCE0083E421 /* mesh.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F14E0D331E060083E421 /* tracks.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1300D331DCE0083E421 /* tracks.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F14F0D331E060083E421 /* quat.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F12A0D331DCE0083E421 /* quat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1500D331E060083E421 /* shadow.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F12C0D331DCE0083E421 /* shadow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1510D331E060083E421 /* viewport.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1360D331DCE0083E421 /* viewport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1520D331E060083E421 /* node.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1280D331DCE0083E421 /* node.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1530D331E060083E421 /* matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1240D331DCE0083E421 /* matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1540D331E060083E421 /* material.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1220D331DCE0083E421 /* material.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1550D331E060083E421 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F11E0D331DCE0083E421 /* light.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1560D331E060083E421 /* ease.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1180D331DCE0083E421 /* ease.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1570D331E060083E421 /* chunk.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1140D331DCE0083E421 /* chunk.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1580D331E060083E421 /* io.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F11C0D331DCE0083E421 /* io.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F1590D331E060083E421 /* background.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1100D331DCE0083E421 /* background.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F15A0D331E060083E421 /* file.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F11A0D331DCE0083E421 /* file.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F15B0D331E060083E421 /* camera.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1120D331DCE0083E421 /* camera.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F15C0D331E060083E421 /* vector.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1340D331DCE0083E421 /* vector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F15D0D331E060083E421 /* tcb.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F12E0D331DCE0083E421 /* tcb.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC56F15E0D331E060083E421 /* atmosphere.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F10E0D331DCE0083E421 /* atmosphere.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D2AAC046055464E500DB518D /* liblib3ds.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblib3ds.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC56F10D0D331DCE0083E421 /* atmosphere.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = atmosphere.c; sourceTree = "<group>"; };
+		FC56F10E0D331DCE0083E421 /* atmosphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atmosphere.h; sourceTree = "<group>"; };
+		FC56F10F0D331DCE0083E421 /* background.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = background.c; sourceTree = "<group>"; };
+		FC56F1100D331DCE0083E421 /* background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = background.h; sourceTree = "<group>"; };
+		FC56F1110D331DCE0083E421 /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camera.c; sourceTree = "<group>"; };
+		FC56F1120D331DCE0083E421 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
+		FC56F1130D331DCE0083E421 /* chunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chunk.c; sourceTree = "<group>"; };
+		FC56F1140D331DCE0083E421 /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunk.h; sourceTree = "<group>"; };
+		FC56F1150D331DCE0083E421 /* chunktable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chunktable.h; sourceTree = "<group>"; };
+		FC56F1170D331DCE0083E421 /* ease.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ease.c; sourceTree = "<group>"; };
+		FC56F1180D331DCE0083E421 /* ease.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ease.h; sourceTree = "<group>"; };
+		FC56F1190D331DCE0083E421 /* file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = file.c; sourceTree = "<group>"; };
+		FC56F11A0D331DCE0083E421 /* file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file.h; sourceTree = "<group>"; };
+		FC56F11B0D331DCE0083E421 /* io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = io.c; sourceTree = "<group>"; };
+		FC56F11C0D331DCE0083E421 /* io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io.h; sourceTree = "<group>"; };
+		FC56F11D0D331DCE0083E421 /* light.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = light.c; sourceTree = "<group>"; };
+		FC56F11E0D331DCE0083E421 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
+		FC56F1210D331DCE0083E421 /* material.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = material.c; sourceTree = "<group>"; };
+		FC56F1220D331DCE0083E421 /* material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = material.h; sourceTree = "<group>"; };
+		FC56F1230D331DCE0083E421 /* matrix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = matrix.c; sourceTree = "<group>"; };
+		FC56F1240D331DCE0083E421 /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrix.h; sourceTree = "<group>"; };
+		FC56F1250D331DCE0083E421 /* mesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mesh.c; sourceTree = "<group>"; };
+		FC56F1260D331DCE0083E421 /* mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
+		FC56F1270D331DCE0083E421 /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = node.c; sourceTree = "<group>"; };
+		FC56F1280D331DCE0083E421 /* node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = node.h; sourceTree = "<group>"; };
+		FC56F1290D331DCE0083E421 /* quat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = quat.c; sourceTree = "<group>"; };
+		FC56F12A0D331DCE0083E421 /* quat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quat.h; sourceTree = "<group>"; };
+		FC56F12B0D331DCE0083E421 /* shadow.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shadow.c; sourceTree = "<group>"; };
+		FC56F12C0D331DCE0083E421 /* shadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shadow.h; sourceTree = "<group>"; };
+		FC56F12D0D331DCE0083E421 /* tcb.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tcb.c; sourceTree = "<group>"; };
+		FC56F12E0D331DCE0083E421 /* tcb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tcb.h; sourceTree = "<group>"; };
+		FC56F12F0D331DCE0083E421 /* tracks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tracks.c; sourceTree = "<group>"; };
+		FC56F1300D331DCE0083E421 /* tracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tracks.h; sourceTree = "<group>"; };
+		FC56F1310D331DCE0083E421 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		FC56F1330D331DCE0083E421 /* vector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vector.c; sourceTree = "<group>"; };
+		FC56F1340D331DCE0083E421 /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = "<group>"; };
+		FC56F1350D331DCE0083E421 /* viewport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = viewport.c; sourceTree = "<group>"; };
+		FC56F1360D331DCE0083E421 /* viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = viewport.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D289987405E68DCB004EDB86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* lib3ds */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6A0FF2B0290797F04C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = lib3ds;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				FC56F10C0D331DCE0083E421 /* lib3ds */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC046055464E500DB518D /* liblib3ds.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6A0FF2B0290797F04C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+		FC56F10C0D331DCE0083E421 /* lib3ds */ = {
+			isa = PBXGroup;
+			children = (
+				FC56F10D0D331DCE0083E421 /* atmosphere.c */,
+				FC56F10E0D331DCE0083E421 /* atmosphere.h */,
+				FC56F10F0D331DCE0083E421 /* background.c */,
+				FC56F1100D331DCE0083E421 /* background.h */,
+				FC56F1110D331DCE0083E421 /* camera.c */,
+				FC56F1120D331DCE0083E421 /* camera.h */,
+				FC56F1130D331DCE0083E421 /* chunk.c */,
+				FC56F1140D331DCE0083E421 /* chunk.h */,
+				FC56F1150D331DCE0083E421 /* chunktable.h */,
+				FC56F1170D331DCE0083E421 /* ease.c */,
+				FC56F1180D331DCE0083E421 /* ease.h */,
+				FC56F1190D331DCE0083E421 /* file.c */,
+				FC56F11A0D331DCE0083E421 /* file.h */,
+				FC56F11B0D331DCE0083E421 /* io.c */,
+				FC56F11C0D331DCE0083E421 /* io.h */,
+				FC56F11D0D331DCE0083E421 /* light.c */,
+				FC56F11E0D331DCE0083E421 /* light.h */,
+				FC56F1210D331DCE0083E421 /* material.c */,
+				FC56F1220D331DCE0083E421 /* material.h */,
+				FC56F1230D331DCE0083E421 /* matrix.c */,
+				FC56F1240D331DCE0083E421 /* matrix.h */,
+				FC56F1250D331DCE0083E421 /* mesh.c */,
+				FC56F1260D331DCE0083E421 /* mesh.h */,
+				FC56F1270D331DCE0083E421 /* node.c */,
+				FC56F1280D331DCE0083E421 /* node.h */,
+				FC56F1290D331DCE0083E421 /* quat.c */,
+				FC56F12A0D331DCE0083E421 /* quat.h */,
+				FC56F12B0D331DCE0083E421 /* shadow.c */,
+				FC56F12C0D331DCE0083E421 /* shadow.h */,
+				FC56F12D0D331DCE0083E421 /* tcb.c */,
+				FC56F12E0D331DCE0083E421 /* tcb.h */,
+				FC56F12F0D331DCE0083E421 /* tracks.c */,
+				FC56F1300D331DCE0083E421 /* tracks.h */,
+				FC56F1310D331DCE0083E421 /* types.h */,
+				FC56F1330D331DCE0083E421 /* vector.c */,
+				FC56F1340D331DCE0083E421 /* vector.h */,
+				FC56F1350D331DCE0083E421 /* viewport.c */,
+				FC56F1360D331DCE0083E421 /* viewport.h */,
+			);
+			name = lib3ds;
+			path = "lib3ds/lib3ds-1.3.0/lib3ds";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		FC56F15F0D331E200083E421 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC56F14B0D331E060083E421 /* types.h in Headers */,
+				FC56F14C0D331E060083E421 /* chunktable.h in Headers */,
+				FC56F14D0D331E060083E421 /* mesh.h in Headers */,
+				FC56F14E0D331E060083E421 /* tracks.h in Headers */,
+				FC56F14F0D331E060083E421 /* quat.h in Headers */,
+				FC56F1500D331E060083E421 /* shadow.h in Headers */,
+				FC56F1510D331E060083E421 /* viewport.h in Headers */,
+				FC56F1520D331E060083E421 /* node.h in Headers */,
+				FC56F1530D331E060083E421 /* matrix.h in Headers */,
+				FC56F1540D331E060083E421 /* material.h in Headers */,
+				FC56F1550D331E060083E421 /* light.h in Headers */,
+				FC56F1560D331E060083E421 /* ease.h in Headers */,
+				FC56F1570D331E060083E421 /* chunk.h in Headers */,
+				FC56F1580D331E060083E421 /* io.h in Headers */,
+				FC56F1590D331E060083E421 /* background.h in Headers */,
+				FC56F15A0D331E060083E421 /* file.h in Headers */,
+				FC56F15B0D331E060083E421 /* camera.h in Headers */,
+				FC56F15C0D331E060083E421 /* vector.h in Headers */,
+				FC56F15D0D331E060083E421 /* tcb.h in Headers */,
+				FC56F15E0D331E060083E421 /* atmosphere.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC045055464E500DB518D /* lib3ds */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "lib3ds" */;
+			buildPhases = (
+				FC56F1080D331C4A0083E421 /* ShellScript */,
+				FC56F15F0D331E200083E421 /* Headers */,
+				D2AAC044055464E500DB518D /* Sources */,
+				D289987405E68DCB004EDB86 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = lib3ds;
+			productName = lib3ds;
+			productReference = D2AAC046055464E500DB518D /* liblib3ds.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "lib3ds" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* lib3ds */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC045055464E500DB518D /* lib3ds */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FC56F1080D331C4A0083E421 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "L3DS_SRC_DIR=$PROJECT_DIR/lib3ds/*/lib3ds\nsed -f $L3DS_SRC_DIR/chunktable.sed $L3DS_SRC_DIR/chunk.h > $L3DS_SRC_DIR/chunktable.h";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC044055464E500DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC56F1370D331DCE0083E421 /* atmosphere.c in Sources */,
+				FC56F1380D331DCE0083E421 /* background.c in Sources */,
+				FC56F1390D331DCE0083E421 /* camera.c in Sources */,
+				FC56F13A0D331DCE0083E421 /* chunk.c in Sources */,
+				FC56F13B0D331DCE0083E421 /* ease.c in Sources */,
+				FC56F13C0D331DCE0083E421 /* file.c in Sources */,
+				FC56F13D0D331DCE0083E421 /* io.c in Sources */,
+				FC56F13E0D331DCE0083E421 /* light.c in Sources */,
+				FC56F13F0D331DCE0083E421 /* material.c in Sources */,
+				FC56F1400D331DCE0083E421 /* matrix.c in Sources */,
+				FC56F1410D331DCE0083E421 /* mesh.c in Sources */,
+				FC56F1420D331DCE0083E421 /* node.c in Sources */,
+				FC56F1430D331DCE0083E421 /* quat.c in Sources */,
+				FC56F1440D331DCE0083E421 /* shadow.c in Sources */,
+				FC56F1450D331DCE0083E421 /* tcb.c in Sources */,
+				FC56F1460D331DCE0083E421 /* tracks.c in Sources */,
+				FC56F1470D331DCE0083E421 /* vector.c in Sources */,
+				FC56F1480D331DCE0083E421 /* viewport.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91EC08733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = lib3ds;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers/lib3ds;
+				SKIP_INSTALL = YES;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		1DEB91ED08733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = lib3ds;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers/lib3ds;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		1DEB91F008733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SYMROOT = "$(PROJECT_DIR)/../build/Support";
+			};
+			name = Debug;
+		};
+		1DEB91F108733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SYMROOT = "$(PROJECT_DIR)/../build/Support";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "lib3ds" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91EC08733DB70010E9CD /* Debug */,
+				1DEB91ED08733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "lib3ds" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91F008733DB70010E9CD /* Debug */,
+				1DEB91F108733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

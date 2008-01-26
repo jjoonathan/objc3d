@@ -6,15 +6,16 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3VertexDataSource.h"
+#import "O3CTypes.h"
 @class O3StructType;
-typedef int (*O3StructArrayComparator)(void*, void*, void *);
 
-@interface O3StructArray : NSMutableArray {
+@interface O3StructArray : NSMutableArray <NSCopying, NSMutableCopying, NSCoding> {
 	O3StructType* mStructType;
 	NSMutableData* mData;
 	UIntP mStructSize;
-	NSLock* mAccessLock;
+	NSRecursiveLock* mAccessLock;
 	void* mScratchBuffer;
+	BOOL mCheckSort:1; ///<Debug flag to double-check that sorting worked
 }
 //Init
 - (O3StructArray*)initWithType:(O3StructType*)type;
@@ -44,7 +45,8 @@ typedef int (*O3StructArrayComparator)(void*, void*, void *);
             normed:(out GLboolean*)normed
     vertsPerStruct:(out int*)vps
            forType:(in O3VertexDataType)type;
-
+- (id)lowestValue;
+- (id)highestValue;
 
 //C interface
 - (NSData*)structAtIndex:(UIntP)idx;
@@ -65,9 +67,14 @@ typedef int (*O3StructArrayComparator)(void*, void*, void *);
 - (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj;
 
 //Convenience
-- (void)sort;
+- (void)mergeSort; //Ruby bridge doesn't like -sort?
+- (UIntP*)sortedIndexesWithFunction:(O3StructArrayComparator)comp context:(void*)ctx;
 - (void)uploadToGPU; //Converts data to O3GPUData, uploading it to the GPU (if necessary)
-- (void)setTypeToIntWithMaximum:(UInt64)maxval signed:(BOOL)signed;
+- (O3CType)setTypeToIntWithMaximum:(UInt64)maxval isSigned:(BOOL)isSigned;
+
+//Operations
+- (O3CType)compressIntegerType; ///Sets to the smallest integer type that can hold all the receiver's values
+- (O3StructArray*)uniqueifyWithComparator:(O3StructArrayComparator)comp context:(void*)ctx; ///Uniqueifys each object in the receiver with the given comparator (or the default if nil), then returns a compacted index array that would give the original order of the receiver.
 @end
 
 typedef O3StructArray O3MutableStructArray;

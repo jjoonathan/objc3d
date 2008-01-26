@@ -18,7 +18,7 @@ O3Vec<TYPE, SIZE> operator*(const O3Mat<TYPE, SIZE, SIZE> m, const O3Vec<TYPE, S
 
 /* Can't redeclare structs
 template <typename TYPE, int ROWS, int COLUMNS> struct swap_implementation<O3Mat<TYPE,ROWS,COLUMNS> > {
-	static void O3swap(O3Mat<TYPE,ROWS,COLUMNS>& m1, O3Mat<TYPE,ROWS,COLUMNS>& m2);
+	static void O3Swap(O3Mat<TYPE,ROWS,COLUMNS>& m1, O3Mat<TYPE,ROWS,COLUMNS>& m2);
 };*/
 
 template <typename TYPE>	O3Mat<TYPE, 4, 4> operator+(const O3Mat<TYPE, 4, 4>& mat, const O3Translation3& trans);

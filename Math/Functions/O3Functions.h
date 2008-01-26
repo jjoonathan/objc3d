@@ -24,7 +24,7 @@ inline double	O3recip(double value);
 /************************************/ #pragma mark Swap /************************************/
 #ifdef __cplusplus
 template <typename T> 
-inline void O3swap(T& thing1, T& thing2);
+inline void O3Swap(T& thing1, T& thing2);
 #endif
 
 /************************************/ #pragma mark Conversion /************************************/

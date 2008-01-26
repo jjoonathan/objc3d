@@ -96,7 +96,7 @@ O3Transformation3& O3Transformation3::Set(const O3Mat4x4d& trans, const O3Mat4x4
 
 /*******************************************************************/ #pragma mark Methods /*******************************************************************/
 O3Transformation3& O3Transformation3::Invert() {
-	O3swap(MyTransform, MyInverseTransform);
+	O3Swap(MyTransform, MyInverseTransform);
 	return *this;
 }
  

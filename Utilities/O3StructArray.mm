@@ -10,6 +10,7 @@
 #import "O3StructType.h"
 #import "O3CompoundStructType.h"
 #import "O3VertexFormats.h"
+#import "O3ScalarStructType.h"
 
 @implementation O3StructArray
 O3DefaultO3InitializeImplementation
@@ -23,9 +24,17 @@ inline NSRange rangeOfIdx(O3StructArray* self, UIntP idx) {
 	return NSMakeRange(self->mStructSize*idx, self->mStructSize);
 }
 
+inline void O3StructArrayLock(O3StructArray* self) {
+	[self->mAccessLock lock];
+}
+
+inline void O3StructArrayUnlock(O3StructArray* self) {
+	[self->mAccessLock unlock];
+}
+
 /************************************/ #pragma mark Init /************************************/
 void initP(O3StructArray* self) {
-	self->mAccessLock = [[NSLock alloc] init];
+	self->mAccessLock = [[NSRecursiveLock alloc] init];
 	self->mData = [[NSMutableData alloc] init];
 }
 
@@ -106,12 +115,19 @@ void initP(O3StructArray* self) {
 	return self;
 }
 
-
 - (void)dealloc {
 	[mData release];
 	[mAccessLock release];
 	if (mScratchBuffer) free(mScratchBuffer);
 	O3SuperDealloc();
+}
+
+- (id)copyWithZone:(NSZone*)z {
+	return [[[self class] alloc] initWithType:mStructType rawData:mData];
+}
+
+- (id)mutableCopyWithZone:(NSZone*)z {
+	return [[[self class] alloc] initWithType:mStructType rawData:mData];
 }
 
 /************************************/ #pragma mark NSCoding /************************************/
@@ -146,14 +162,15 @@ void initP(O3StructArray* self) {
 }
 
 - (BOOL)setStructType:(O3StructType*)structType {
+	O3Asrt(structType!=nil);
 	if (structType==mStructType) return YES;
-	[mAccessLock lock];
+	O3StructArrayLock(self);
 	O3Assert(structType, @"Cannot change structure type from %@ to nil", mStructType);
 	UIntP newStructSize = [structType structSize];
 	if (mStructType&&mData) {
 		NSMutableData* newData = [mStructType translateStructs:mData stride:0 toFormat:structType];
 		if (!newData) {
-			[mAccessLock unlock];
+			O3StructArrayUnlock(self);
 			return NO;
 		}
 		O3Assign(newData, mData);
@@ -162,7 +179,7 @@ void initP(O3StructArray* self) {
 	mStructSize = newStructSize;
 	if (mScratchBuffer) free(mScratchBuffer);
 	mScratchBuffer = malloc(newStructSize);
-	[mAccessLock unlock];
+	O3StructArrayUnlock(self);
 	return YES;
 }
 
@@ -262,20 +279,42 @@ void initP(O3StructArray* self) {
                    forType:ftype];
 }
 
+- (id)lowestValue {
+	O3StructArrayLock(self);
+	const void* str = nil;
+	UIntP ct = [self count];
+	[mStructType getLowest:&str highest:nil ofStructsAt:[mData bytes] stride:0 count:ct];
+	id obj = str? [mStructType objectWithBytes:str] : nil;
+	[mData relinquishBytes];
+	O3StructArrayUnlock(self);
+	return obj;
+}
+
+- (id)highestValue {
+	O3StructArrayLock(self);
+	const void* str = nil;
+	UIntP ct = [self count];
+	[mStructType getLowest:nil highest:&str ofStructsAt:[mData bytes] stride:0 count:ct];
+	id obj = str? [mStructType objectWithBytes:str] : nil;
+	[mData relinquishBytes];
+	O3StructArrayUnlock(self);
+	return obj;	
+}
+
 /************************************/ #pragma mark NSArray methods /************************************/
 - (UIntP)count {
 	return countP(self);
 }
 
 - (NSDictionary*)objectAtIndex:(UIntP)idx {
-	[mAccessLock lock];
+	O3StructArrayLock(self);
 	if (idx>=countP(self)) {
-		[mAccessLock unlock];
+		O3StructArrayUnlock(self);
 		[NSException raise:NSRangeException format:@"Index %i out of array %@ bounds (%i)", idx, self, countP(self)];
 	}
 	[mData getBytes:mScratchBuffer range:rangeOfIdx(self, idx)];
 	NSDictionary* ret = [mStructType objectWithBytes:mScratchBuffer];
-	[mAccessLock unlock];
+	O3StructArrayUnlock(self);
 	return ret;
 }
 
@@ -287,113 +326,235 @@ void initP(O3StructArray* self) {
 }
 
 #define CHUNK_SIZE 16
-#define STRT_AT_IDX(byteptr,i) (byteptr+strsize*(i))
-#define COPY_IDX(srcb,src,dstb,dest) memcpy(STRT_AT_IDX(dstb,dest),STRT_AT_IDX(srcb,src),strsize)
+#define STRT_AT_IDX(i) (info->bytes+info->strsize*(i))
 
-static UInt8* mergeSortH(UInt8* bytes,UInt8* scratch,UIntP strsize,void* ctx,O3StructArrayComparator comp, UIntP loc, UIntP len) {
+typedef struct {
+	const UInt8* bytes;
+	UInt8* scratch;
+	UIntP strsize;
+	void* ctx;
+	O3StructArrayComparator comp;
+	BOOL check_sort;
+} merge_sort_info_t;
+
+static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
+	O3StructArrayComparator comp = info->comp;	
 	if (len<=CHUNK_SIZE) {
-		UInt8* lc = (UInt8*)malloc(CHUNK_SIZE*strsize);
-		memcpy(lc,bytes,CHUNK_SIZE*strsize);
-		UIntP b, a = 0;                                                               
-		UIntP end = a+len;                                                              
-		for (; a<end; a++)                                                              
-			for (b=a+1; b<end; b++)                                                     
-				if (comp(STRT_AT_IDX(lc,a),STRT_AT_IDX(lc,b),ctx)==NSOrderedDescending) {
-					COPY_IDX(lc,a,scratch,0);
-					COPY_IDX(lc,b,lc,a);
-					COPY_IDX(scratch,0,lc,b);
-				}
+		UIntP* idxs = (UIntP*)malloc(sizeof(UIntP)*len);
+		UIntP i; for (i=0; i<len; i++) idxs[i] = loc+i;
+		UIntP a=0,b=0;                                                      
+		for (a=0; a<len; a++)                                                              
+			for (b=a+1; b<len; b++) {
+				if (comp(STRT_AT_IDX(idxs[a]),STRT_AT_IDX(idxs[b]),info->ctx)==NSOrderedDescending)
+					O3Swap(idxs[a],idxs[b]);
+			}
 				                                                                    
-		//int i; for (i=0; i<len-1; i++) O3Asrt(comp(STRT_AT_IDX(lc,i),STRT_AT_IDX(lc,i+1),ctx)!=NSOrderedDescending);
-		return lc;
+		if (info->check_sort) for (i=0; i<len-1; i++) O3Asrt(comp(STRT_AT_IDX(idxs[i]),STRT_AT_IDX(idxs[i+1]),info->ctx)!=NSOrderedDescending);
+		return idxs;
 	} else {
 		UIntP hlen = len>>1;
-		UIntP a=0, b=0;
 		UIntP aa=hlen;
-		UIntP bb=len-hlen;
-		UInt8* la = mergeSortH(bytes,scratch,strsize,ctx,comp, a, aa);
-		UInt8* lb = mergeSortH(bytes,scratch,strsize,ctx,comp, b, bb);
-		UInt8* lc = (UInt8*)malloc(len*strsize);
+		UIntP bb=len-hlen; //loc aa bb
+		UIntP* la = mergeSortH(info, loc, aa);
+		UIntP* lb = mergeSortH(info, loc+hlen, bb);
+		UIntP* idxs = (UIntP*)malloc(len*sizeof(UIntP));
+		UIntP a=0, b=0;
 		UIntP i; for(i=0; i<len; i++) {
-			int order = comp(STRT_AT_IDX(la,a),STRT_AT_IDX(lb,b),ctx);
-			BOOL left_is_less = (order==NSOrderedAscending);
 			if (a==aa) {
-				memcpy(STRT_AT_IDX(lc,i), STRT_AT_IDX(lb,b), strsize*(len-i));
+				for (; i<len; i++) idxs[i] = lb[b++];
 				break;
 			}
 			if (b==bb) {
-				memcpy(STRT_AT_IDX(lc,i), STRT_AT_IDX(la,a), strsize*(len-i));
+				for (; i<len; i++) idxs[i] = la[a++];
 				break;
 			}
-			if (left_is_less) COPY_IDX(la,a++, lc,i);
-			else              COPY_IDX(lb,b++, lc,i);
+			int order = comp(STRT_AT_IDX(la[a]),STRT_AT_IDX(lb[b]),info->ctx);
+			BOOL left_is_less = (order==NSOrderedAscending);
+			idxs[i] = left_is_less? la[a++] : lb[b++];
 		}
-		//for (i=0; i<len-1; i++) O3Asrt(comp(STRT_AT_IDX(lc,i),STRT_AT_IDX(lc,i+1),ctx)!=NSOrderedDescending);
+		if (info->check_sort) for (i=0; i<len-1; i++) O3Asrt(comp(STRT_AT_IDX(idxs[i]),STRT_AT_IDX(idxs[i+1]),info->ctx)!=NSOrderedDescending);
 		free(la);
 		free(lb);
-		return lc;
+		return idxs;
 	}
+}
+
+- (UIntP*)sortedIndexesWithFunction:(O3StructArrayComparator)comp context:(void*)ctx {
+	O3StructArrayLock(self);
+	if (!comp) comp = [mStructType defaultComparator];
+	O3AssertArg(comp, @"Must have comparator function, or struct type must be able to provide a default one.");
+	merge_sort_info_t info;
+	info.bytes = (const UInt8*)[mData bytes];
+	info.strsize = mStructSize;
+	UIntP len = [mData length];
+	UIntP count = len / info.strsize;
+	info.scratch = (UInt8*)malloc(info.strsize);
+	info.comp = comp;
+	info.ctx = ctx;
+	info.check_sort = mCheckSort;
+	
+	UIntP* idxs = mergeSortH(&info, 0, count);
+	
+	[mData relinquishBytes];
+	O3StructArrayUnlock(self);
+	free(info.scratch);
+	return idxs;
 }
 
 ///Pass nil for the comparator to use the default
 - (void)sortUsingFunction:(O3StructArrayComparator)comp context:(void*)ctx {
-	if (!comp) comp = [mStructType defaultComparator];
-	O3AssertArg(comp, @"Must have comparator function, or struct type must be able to provide a default one.");
-	UInt8* bytes = (UInt8*)[mData mutableBytes];
-	UIntP strsize = mStructSize;
+	UIntP* idxs = [self sortedIndexesWithFunction:comp context:ctx];
+	O3StructArrayLock(self);
 	UIntP len = [mData length];
-	UIntP count = len / strsize;
-	UInt8* scratch = (UInt8*)malloc(strsize);
-	
-	UInt8* newbuf = mergeSortH(bytes,scratch,strsize,ctx,comp, 0, count);
+	UIntP count = len / mStructSize;
+	UInt8* newbuf = (UInt8*)malloc(mStructSize*count);
+	const UInt8* bytes = (const UInt8*)[mData bytes];
+	UIntP i; for (i=0; i<count; i++) {
+		const UInt8* src = bytes + mStructSize*idxs[i];
+		UInt8* dst = newbuf+i*mStructSize;
+		memcpy(dst, src, mStructSize);
+	}
 
 	[mData relinquishBytes];
-	free(scratch);
+	O3StructArrayUnlock(self);
+	free(idxs);
 	O3Assign([NSMutableData dataWithBytesNoCopy:newbuf length:len freeWhenDone:YES],mData);	
 }
 
-- (void)sort {
+- (void)mergeSort {
 	[self sortUsingFunction:nil context:nil];
 }
 
+- (O3CType)compressIntegerType {
+	Int64 l = [[self lowestValue] longLongValue];
+	Int64 h = [[self highestValue] longLongValue];
+	return [self setTypeToIntWithMaximum:h isSigned:l<0];
+}
+
+- (O3StructArray*)uniqueify {return [self uniqueifyWithComparator:nil context:nil];}
+- (O3StructArray*)uniqueifyWithComparator:(O3StructArrayComparator)comp context:(void*)ctx {
+	O3StructArrayLock(self);
+	comp = comp ?: [mStructType defaultComparator]; O3Asrt(comp);
+	UIntP* old_idxs = [self sortedIndexesWithFunction:comp context:ctx];
+	#define STR_AT_IDX(i) (old_data+old_idxs[i]*mStructSize)
+	const UInt8* old_data = (const UInt8*)[mData bytes];
+	UIntP old_len = [mData length];
+	UIntP old_count = old_len / mStructSize;
+	UIntP new_count = 1;
+	for (UIntP i=1; i<old_count; i++) {
+		const UInt8* s2 = STR_AT_IDX(i);
+		const UInt8* s1 = STR_AT_IDX(i-1);
+		int c = comp(s1, s2, ctx);
+		if (c!=NSOrderedSame) new_count++;
+	}
+	UInt8* new_buffer = (UInt8*)malloc(new_count*mStructSize);
+	UIntP* new_indexes = (UIntP*)malloc(sizeof(UIntP)*old_count);
+	UIntP idx = 0;
+	new_indexes[0] = idx;
+	memcpy(new_buffer+(idx++)*mStructSize, STR_AT_IDX(0), mStructSize);
+	for (UIntP i=1; i<old_count; i++) {
+		const UInt8* s2 = STR_AT_IDX(i);
+		const UInt8* s1 = STR_AT_IDX(i-1);
+		int c = comp(s1, s2, ctx); 
+		if (c!=NSOrderedSame) {
+			O3Asrt(idx<new_count);
+			memcpy(new_buffer+(idx++)*mStructSize, s2, mStructSize);
+		}
+		new_indexes[i] = idx-1; //idx is the next index to store a struct at
+	}
+	UIntP* old2new = (UIntP*)malloc(sizeof(UIntP)*old_count);	
+	for (UIntP i=0; i<old_count; i++) {
+		UIntP low=0;
+		UIntP high=new_count;
+		#define NSTR_AT_IDX(i) (new_buffer+i*mStructSize)
+		const UInt8* s1 = (old_data+i*mStructSize);
+		while (1) {
+			UIntP mid = low + ((high-low)>>1);
+			const UInt8* s2 = NSTR_AT_IDX(mid);
+			int c = comp(s2, s1, ctx); 
+			if (c==NSOrderedSame) {
+				old2new[i] = mid; break;
+			} else if (c==NSOrderedAscending)
+				low=mid+1;
+			else
+				high=mid;
+			if (low>high) O3AssertFalse(@"BSearch for old idx failed");
+		}
+	}
+	[mData relinquishBytes];
+	O3Assign([NSMutableData dataWithBytesNoCopy:new_buffer length:new_count*mStructSize freeWhenDone:YES], mData);
+	O3StructType* stype = nil;
+	int scsize = sizeof(UIntP); //Not great, but better than @encode, which could be ambiguous on LP64
+	switch (scsize) {
+		case 4: stype = O3UInt32Type(); break;
+		case 8: stype = O3UInt64Type(); break;
+		default:
+		O3Assert(false, @"Unknown struct size %i", scsize);
+		return nil;
+	}
+	NSMutableData* rdata = [NSMutableData dataWithBytesNoCopy:old2new length:old_count*sizeof(UIntP) freeWhenDone:YES];
+	O3StructArray* ret = [[O3StructArray alloc] initWithType:stype rawDataNoCopy:rdata];
+	free(old_idxs);
+	free(new_indexes);
+	O3StructArrayUnlock(self);
+	return [ret autorelease];
+}
+#undef STR_AT_IDX
+#undef NSTR_AT_IDX
 
 /************************************/ #pragma mark NSMutableArray /************************************/
 - (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx {
-	[mAccessLock lock];
+	O3StructArrayLock(self);
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
 	[mStructType writeObject:obj toBytes:mScratchBuffer];
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:mScratchBuffer length:mStructSize];
-	[mAccessLock unlock];
+	O3StructArrayUnlock(self);
 }
 
 - (void)removeObjectAtIndex:(UIntP)idx {
-	[mAccessLock lock];
+	O3StructArrayLock(self);
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:self length:0];
-	[mAccessLock unlock];	
+	O3StructArrayUnlock(self);	
 }
 
 - (void)addObject:(NSDictionary*)obj {
-	[mAccessLock lock];
+	O3StructArrayLock(self);
 	[mStructType writeObject:obj toBytes:mScratchBuffer];
 	[mData appendBytes:mScratchBuffer length:mStructSize];
-	[mAccessLock unlock];	
+	O3StructArrayUnlock(self);	
+}
+
+- (void)addObjects:(NSArray*)arr {
+	O3StructArrayLock(self);
+	NSEnumerator* arrEnumerator = [arr objectEnumerator];
+	while (id o = [arrEnumerator nextObject]) {
+		[mStructType writeObject:o toBytes:mScratchBuffer];
+		[mData appendBytes:mScratchBuffer length:mStructSize];	
+	}
+	O3StructArrayUnlock(self);	
 }
 
 - (void)removeLastObject {
-	[mAccessLock lock];
+	O3StructArrayLock(self);
 	UIntP oldlen = [mData length];
 	O3Assert(oldlen>mStructSize, @"Attempt to remove last object from empty array %@", self);
 	[mData setLength:oldlen-mStructSize];
-	[mAccessLock unlock];	
+	O3StructArrayUnlock(self);	
 }
 
 - (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj {
-	[mAccessLock lock];
+	O3StructArrayLock(self);
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
 	[mStructType writeObject:obj toBytes:mScratchBuffer];
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:mScratchBuffer length:mStructSize];
-	[mAccessLock unlock];	
+	O3StructArrayUnlock(self);	
+}
+
+- (O3CType)setTypeToIntWithMaximum:(UInt64)maxval isSigned:(BOOL)isSigned {
+	O3CType newType = O3CTypeWithMaxVal(maxval, isSigned);
+	[self setStructType:[O3ScalarStructType scalarTypeWithCType:newType]];
+	return newType;
 }
 
 

@@ -298,4 +298,18 @@ id O3CTypeNSValueWithMult(O3CType type, const void* bytes, double mult) {
 	return nil;
 }
 
+O3CType O3CTypeWithMaxVal(UInt64 maxval, BOOL isSigned) {
+	O3CType newType = O3InvalidCType;
+	UInt8 max8 = ~(UInt8)0;
+	UInt16 max16 = ~(UInt16)0;
+	UInt32 max32 = ~(UInt32)0;
+	UInt64 max64 = ~(UInt64)0;
+	if (maxval<=max8) newType = isSigned? O3Int8CType : O3UInt8CType;
+	else if (maxval<=max16) newType = isSigned? O3Int16CType : O3UInt16CType;
+	else if (maxval<=max32) newType = isSigned? O3Int32CType : O3UInt32CType;
+	else if (maxval<=max64) newType = isSigned? O3Int64CType : O3UInt64CType;
+	else {O3Asrt(false);}
+	return newType;
+}
+
 } //extern "C"

@@ -1,5 +1,6 @@
-OSX.require_framework 'ObjC3D'
-include OSX
+OSX.require_framework 'ObjC3D' unless @ObjC3D_loaded
+include OSX unless @ObjC3D_loaded
+@ObjC3D_loaded = 1
 
 def O3StructArray.facesFromRawFile(file)
 	ret = O3StructArray.alloc.initWithTypeNamed 'tri3x3f'
@@ -168,6 +169,17 @@ class O3Rotation3
     "<O3Rotation3>{roll:"+e[0].to_s+", pitch:"+e[1].to_s+", yaw:"+e[2].to_s+"}"
   end
 end
+
+##############Convenience index array converter
+class Array
+    def to_idxs
+      arr = O3StructArray.alloc.initWithTypeNamed('ui64')
+      arr.addObjects self
+      arr.compressIntegerType
+      arr
+  end
+end
+
 
 ##########Perform vec defs
 #vec_defs.call O3Translation3,3,"d"

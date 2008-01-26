@@ -16,7 +16,7 @@ O3EXTERN_C_BLOCK
 O3VecStructTypeDefines
 #undef DefType
 
-#define DefType(NAME, TYPE, ETYPE, CT) int NAME ## Comparator (void* a, void* b, void* ctx) {\
+#define DefType(NAME, TYPE, ETYPE, CT) int NAME ## Comparator (const void* a, const void* b, void* ctx) {\
 	TYPE* aa = (TYPE*)a;\
 	TYPE* bb = (TYPE*)b;\
 	UIntP i; for(i=0; i<CT; i++) {\
@@ -205,9 +205,12 @@ O3END_EXTERN_C_BLOCK
 	O3CType in_eleType = mElementType;
 	UIntP in_eleStride = O3CTypeSize(in_eleType);
 	UIntP in_stride = s ?: [self structSize];
-	UIntP in_count = [instructs length]/s;
-	//UIntP in_ele_count = in_count * mElementCount;
-	//UIntP o_count = in_ele_count / o_elementCount; O3Asrt(!(in_ele_count%o_elementCount));
+	UIntP in_count = [instructs length]/in_stride;
+	
+	if (other_is_scalar) {
+		in_count *= mElementCount;
+		in_stride = in_eleStride;
+	}
 	
 	const UInt8* fbytes = (const UInt8*)[instructs bytes];
 	NSMutableData* ret = [NSMutableData dataWithLength:o_stride*in_count];

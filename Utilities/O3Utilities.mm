@@ -21,6 +21,7 @@ O3EXTERN_C void O3Break() {
 #endif
 
 O3EXTERN_C void O3Init() {
+	NSAutoreleasePool* p = [[NSAutoreleasePool alloc] init];
 	static int inited = 0;
 	if (inited) return;
 	inited++;
@@ -39,6 +40,7 @@ O3EXTERN_C void O3Init() {
 	}
 	[O3VecStructType o3init];
 	[O3ScalarStructType o3init];
+	[p release];
 }
 
 O3EXTERN_C void O3GLBreak() {

@@ -26,6 +26,10 @@ NSMutableDictionary* O3StructTypeDict() {return gO3StructTypesForNames;}
 @implementation O3StructType
 
 /************************************/ #pragma mark Init /************************************/
++ (id)named:(NSString*)name {
+	return O3StructTypeForName(name);
+}
+
 ///@param name nil is a valid value
 - (O3StructType*)initWithName:(NSString*)name {
 	O3SuperInitOrDie();
@@ -160,6 +164,38 @@ NSMutableDictionary* O3StructTypeDict() {return gO3StructTypesForNames;}
 - (O3StructArrayComparator)defaultComparator {
 	[self doesNotRecognizeSelector:_cmd];	
 	return NULL;
+}
+
+- (void)getLowest:(out const void**)lowest highest:(out const void**)highest ofStructsAt:(const void*)where stride:(UIntP)s count:(UIntP)ct {
+	O3StructArrayComparator comp = [self defaultComparator];
+	O3Asrt(ct);
+	s = s ?: [self structSize];
+	const void* low = where;
+	const void* hi = where;
+	if (lowest||1) {
+		UIntP i; for(i=0; i<ct; i++) {
+			const void* o = (const UInt8*)where+i*s;
+			int c = comp(o, low, NULL);
+			if (c==NSOrderedAscending) {
+				low = o;
+			}
+		}
+		if (lowest) *lowest = low;
+	}
+	if (highest||1) {
+		UIntP i; for(i=0; i<ct; i++) {
+			const void* o = (const UInt8*)where+i*s;
+			int c = comp(o, hi, NULL);
+			if (c==NSOrderedDescending) {
+				hi = o;
+			}
+		}
+		if (highest) *highest = hi;
+	}
+}
+
+- (NSString*)description {
+	return [NSString stringWithFormat:@"<%@:0x%p %@>",[self className],self,[self name]];
 }
 
 

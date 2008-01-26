@@ -37,7 +37,7 @@
 		FC0BBD480D23FE6800E5B388 /* O3Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD460D23FE6800E5B388 /* O3Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC0BBD4C0D24122200E5B388 /* O3GLViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD4A0D24122200E5B388 /* O3GLViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC0BBD4D0D24122200E5B388 /* O3GLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC0BBD4B0D24122200E5B388 /* O3GLViewController.mm */; };
-		FC0BBD980D2563CF00E5B388 /* O3GLViewActionCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD960D2563CF00E5B388 /* O3GLViewActionCollection.h */; };
+		FC0BBD980D2563CF00E5B388 /* O3GLViewActionCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD960D2563CF00E5B388 /* O3GLViewActionCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC0BBDBB0D256B0900E5B388 /* O3GLViewActionCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC0BBD970D2563CF00E5B388 /* O3GLViewActionCollection.mm */; };
 		FC2C1BBE0C123FB00084A599 /* O3Accelerate.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB016F90B4F403000FBFAC2 /* O3Accelerate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C040C125EB20084A599 /* O3Camera.h in Headers */ = {isa = PBXBuildFile; fileRef = FC953F940B5EE920009551D2 /* O3Camera.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -152,7 +152,7 @@
 		FC2C1D470C125FDB0084A599 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2D24830B16237A000C2073 /* OpenGL.framework */; };
 		FC2C1D480C125FDB0084A599 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC3AABD70B372A710033122E /* Carbon.framework */; };
 		FC2C1DCC0C127A310084A599 /* O3Vector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FC922FA00AB30F74003878EA /* O3Vector.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = FC35144C0D3D91070000C27C /* O3CTypes.h */; };
+		FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = FC35144C0D3D91070000C27C /* O3CTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC35144F0D3D91080000C27C /* O3CTypes.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC35144D0D3D91070000C27C /* O3CTypes.mm */; };
 		FC3978A20C6F6BAA00F4AEA5 /* O3Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */; };
 		FC3A0EAB0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */; };
@@ -167,13 +167,13 @@
 		FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5507240CDF5354003EE24B /* O3StructArray.mm */; };
 		FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC55072A0CE01E12003EE24B /* O3VecStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072E0CE17B7D003EE24B /* O3StructType.mm */; };
-		FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */; };
+		FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */; };
 		FC56F18C0D3324490083E421 /* liblib3ds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC56F18B0D3324490083E421 /* liblib3ds.a */; };
-		FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */; };
+		FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC56F1BB0D3328010083E421 /* O33DSUnarchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1B90D3328010083E421 /* O33DSUnarchiver.mm */; };
 		FC56F2620D35D0E70083E421 /* O3MeshInstance.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56F2600D35D0E70083E421 /* O3MeshInstance.mm */; };
-		FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F2610D35D0E70083E421 /* O3MeshInstance.h */; };
+		FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F2610D35D0E70083E421 /* O3MeshInstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5B48770C205A4100879D56 /* O3BigObject.mm */; };
 		FC63DF5D0CF1C51800325C54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63DF5C0CF1C51800325C54 /* SenTestingKit.framework */; };
 		FC63DF780CF1C5E800325C54 /* RubyConsole_main.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63DF770CF1C5E800325C54 /* RubyConsole_main.mm */; };
@@ -190,12 +190,12 @@
 		FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE040CF897DB00325C54 /* O3GPUData.mm */; };
 		FC63EE3B0CF9DA8400325C54 /* O3ConcreteMeshType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE3C0CF9DA8400325C54 /* O3ConcreteMeshType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */; };
-		FC63EE450CF9DAB100325C54 /* cache_simulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */; };
-		FC63EE460CF9DAB100325C54 /* graph_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE400CF9DAB100325C54 /* graph_array.h */; };
-		FC63EE470CF9DAB100325C54 /* heap_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE410CF9DAB100325C54 /* heap_array.h */; };
-		FC63EE480CF9DAB100325C54 /* stdafx.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE420CF9DAB100325C54 /* stdafx.h */; };
+		FC63EE450CF9DAB100325C54 /* cache_simulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */; settings = {ATTRIBUTES = (); }; };
+		FC63EE460CF9DAB100325C54 /* graph_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE400CF9DAB100325C54 /* graph_array.h */; settings = {ATTRIBUTES = (); }; };
+		FC63EE470CF9DAB100325C54 /* heap_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE410CF9DAB100325C54 /* heap_array.h */; settings = {ATTRIBUTES = (); }; };
+		FC63EE480CF9DAB100325C54 /* stdafx.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE420CF9DAB100325C54 /* stdafx.h */; settings = {ATTRIBUTES = (); }; };
 		FC63EE490CF9DAB100325C54 /* tri_stripper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE430CF9DAB100325C54 /* tri_stripper.cpp */; };
-		FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE440CF9DAB100325C54 /* tri_stripper.h */; };
+		FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE440CF9DAB100325C54 /* tri_stripper.h */; settings = {ATTRIBUTES = (); }; };
 		FC63EE570CF9F3D800325C54 /* O3Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE560CF9F3D800325C54 /* O3Geometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */; };
 		FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1437,6 +1437,7 @@
 				FCE0A2770D1CBDD600A800F8 /* Copy in BridgeSupport */,
 				FC2C1BB50C123F790084A599 /* Frameworks */,
 				FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */,
+				FC22CCD40D451C1E002FDAC6 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1458,7 +1459,6 @@
 				FC63DF0D0CF1C2A200325C54 /* Sources */,
 				FC63DF0E0CF1C2A200325C54 /* Frameworks */,
 				FC63E1540CF1C9E200325C54 /* CopyFiles */,
-				FC7CA19A0D41CC2400F6B849 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1598,6 +1598,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		FC22CCD40D451C1E002FDAC6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $PROJECT_DIR\nruby Tests/tests.rb";
+		};
 		FC348D610B45DFF5000015FE /* Build Documentation */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1638,19 +1651,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "CGF=$PROJECT_DIR/Other/Cg.framework\nAALINK=$CGF/Versions/AA\nrm -f $AALINK\nln -s $CGF/Versions/Current $AALINK\n/usr/bin/install_name_tool -id \"@loader_path/Frameworks/Cg.framework/Versions/AA/Cg\" $CGF/Versions/AA/Cg\n";
-		};
-		FC7CA19A0D41CC2400F6B849 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd $PROJECT_DIR\nruby Tests/tests.rb";
 		};
 		FCE0A2770D1CBDD600A800F8 /* Copy in BridgeSupport */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -25,6 +25,7 @@ DefType(O3UInt64Type,O3UInt64CType,@"ui64",UInt64);
 	O3CType mType;
 }
 + (O3ScalarStructType*)scalarTypeWithElementType:(O3CType)type name:(NSString*)name;
++ (O3ScalarStructType*)scalarTypeWithCType:(O3CType)t;
 - (O3CType)type;
 //Private
 + (void)o3init;

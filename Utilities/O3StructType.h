@@ -6,13 +6,8 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3VertexFormats.h"
-#import "O3StructArray.h"
+#import "O3CTypes.h"
 @class O3StructType;
-
-typedef struct {
-	void* bytes;
-	UIntP length;
-} O3RawData;
 
 //Struct naming
 O3StructType* O3StructTypeForName(NSString* name);
@@ -36,6 +31,7 @@ NSMutableDictionary* O3StructTypeDict();
 - (NSData*)writeObjectToData:(NSDictionary*)dict;
 
 //Info
+- (void)getLowest:(out const void**)lowest highest:(out const void**)highest ofStructsAt:(const void*)where stride:(UIntP)s count:(UIntP)ct; //You do not need to override this
 - (NSString*)name;
 
 //(Hopefully accelerated) translation between formats

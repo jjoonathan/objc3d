@@ -40,6 +40,11 @@ typedef  intmax_t SIntM; //Mega-integer (biggest that can be used w/o a bignum l
 typedef  SIntP 	  IntP; 
 typedef  SIntM 	  IntM; 
 
+typedef struct {
+	void* bytes;
+	UIntP length;
+} O3RawData;
+
 /*******************************************************************/ #pragma mark String Utilities /*******************************************************************/
 #if (defined(_M_IX86) || defined(__i386__) || defined(__i386) || defined(i386)) && !defined(__ia32__)
 #define __ia32__

@@ -49,15 +49,15 @@ inline double	O3recip(double value) {
 
 /************************************/ #pragma mark Regular swap /************************************/
 #ifdef __cplusplus
-template <typename T> struct O3swap_implementation;
-template <typename T> void O3swap(T& thing1, T& thing2) {O3swap_implementation<T>::swap(thing1, thing2);}
-template <typename T> struct O3swap_implementation {
-	void swap(T& thing1, T& thing2) {
+template <typename T> struct O3Swap_implementation;
+template <typename T> struct O3Swap_implementation {
+	static void swap(T& thing1, T& thing2) {
 		T tmp = thing1;
 		thing1 = thing2;
 		thing2 = tmp;
 	}
 };
+template <typename T> void O3Swap(T& thing1, T& thing2) {O3Swap_implementation<T>::swap(thing1, thing2);}
 #endif
 
 /************************************/ #pragma mark Byteswapping /************************************/

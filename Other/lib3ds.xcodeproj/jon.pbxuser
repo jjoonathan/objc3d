@@ -1,0 +1,85 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeArchitecture = i386;
+		activeBuildConfigurationName = Release;
+		activeTarget = D2AAC045055464E500DB518D /* lib3ds */;
+		addToTargets = (
+			D2AAC045055464E500DB518D /* lib3ds */,
+		);
+		codeSenseManager = FC56F0A60D331B0E0083E421 /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_FiletypeID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					243,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					203,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 221455476;
+			PBXWorkspaceStateSaveDate = 221455476;
+		};
+		sourceControlManager = FC56F0A50D331B0E0083E421 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	D2AAC045055464E500DB518D /* lib3ds */ = {
+		activeExec = 0;
+	};
+	FC56F0A50D331B0E0083E421 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	FC56F0A60D331B0E0083E421 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	FC56F1150D331DCE0083E421 /* chunktable.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {909, 3878}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 2460}";
+			sepNavWindowFrame = "{{84, 78}, {968, 1032}}";
+		};
+	};
+}

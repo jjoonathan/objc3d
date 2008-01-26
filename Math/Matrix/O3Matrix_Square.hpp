@@ -216,7 +216,7 @@ O3Mat_sq_T& O3Mat_sq_T::SwapRows(int row1, int row2) {
 	O3Assert(row2<SIZE, @"Cannot get row %i of %i rowed matrix for swapping.", row2,SIZE);
 	if (row1==row2) return *this;
 	int i; for (i=0; i<SIZE; i++) 
-		O3swap(operator()(row1, i), operator()(row2, i));
+		O3Swap(operator()(row1, i), operator()(row2, i));
 	return *this;
 }
 
@@ -231,7 +231,7 @@ O3Mat_sq_T& O3Mat_sq_T::SwapColumns(int column1, int column2) {
 	O3Assert(column2<SIZE, @"Cannot get column %i of %i column matrix for swapping.", column2,SIZE);
 	if (column1==column2) return *this;
 	int i; for (i=0; i<SIZE; i++)
-		O3swap(operator()(i, column1), operator()(i, column2));
+		O3Swap(operator()(i, column1), operator()(i, column2));
 	return *this;
 }
 

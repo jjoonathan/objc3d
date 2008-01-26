@@ -12,10 +12,9 @@
 O3ScalarStructTypeDefines
 #undef DefType
 
-#define DefType(NAME,TYPE,SNAME,CTYPE) int NAME ## Comparator (void* a, void* b, void* ctx) {CTYPE aa=*(CTYPE*)a; CTYPE bb=*(CTYPE*)b; if (aa<bb) return NSOrderedAscending; if (aa>bb) return NSOrderedDescending; return NSOrderedSame;}
+#define DefType(NAME,TYPE,SNAME,CTYPE) int NAME ## Comparator (const void* a, const void* b, void* ctx) {CTYPE aa=*(CTYPE*)a; CTYPE bb=*(CTYPE*)b; if (aa<bb) return NSOrderedAscending; if (aa>bb) return NSOrderedDescending; return NSOrderedSame;}
 O3ScalarStructTypeDefines
 #undef DefType
-
 
 @implementation O3ScalarStructType
 O3DefaultO3InitializeImplementation
@@ -30,6 +29,15 @@ O3DefaultO3InitializeImplementation
 	O3ScalarStructType* ret = [[O3ScalarStructType alloc] initWithName:name];
 	ret->mType = type;
 	return ret;
+}
+
++ (O3ScalarStructType*)scalarTypeWithCType:(O3CType)t {
+	switch (t) {
+		#define DefType(NAME,TYPE,SNAME,CTYPE) case TYPE: return g ## NAME;
+		O3ScalarStructTypeDefines
+		#undef DefType
+	}
+	return nil;
 }
 
 /************************************/ #pragma mark O3StructType /************************************/

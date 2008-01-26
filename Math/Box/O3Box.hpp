@@ -147,7 +147,7 @@ O3Box_T O3Box_T::GetExpanded(const O3Box_sphere_T& sphere) {
 O3Box_TT
 void O3Box_T::FixCorners() {
 	int i; for (i=0;i<DIMENSIONS;i++) {
-		if(MyMin[i]>MyMax[i]) O3swap(MyMin[i], MyMax[i]);
+		if(MyMin[i]>MyMax[i]) O3Swap(MyMin[i], MyMax[i]);
 	}
 }
 #endif /*defined(__cplusplus)*/

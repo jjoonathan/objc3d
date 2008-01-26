@@ -1,5 +1,3 @@
-#import "O3StructType.h"
-
 #define O3CTypeDefines /*NAME, ID, CTYPE, OC_GET_SEL, OC_CLASS, OC_INIT_SEL*/\
 DefCType(O3FloatCType,	1,	float, floatValue, NSNumber, initWithFloat:)\
 DefCType(O3DoubleCType,	2,	double, doubleValue, NSNumber, initWithDouble:)\
@@ -12,14 +10,16 @@ DefCType(O3UInt16CType,	8,	UInt16, unsignedShortValue, NSNumber, initWithUnsigne
 DefCType(O3UInt32CType,	9,	UInt32, unsignedIntValue, NSNumber, initWithUnsignedInt:)\
 DefCType(O3UInt64CType,	10,	UInt64, unsignedLongLongValue, NSNumber, initWithUnsignedLongLong:)
 
-typedef enum {
+typedef enum _O3CType {
 	O3InvalidCType=0,
 	#define DefCType(NAME,ID,CTYPE,OC_GET_SEL,OC_CLASS,OC_INIT_SEL) NAME = ID,
 	O3CTypeDefines
 	#undef DefCType
+	O3CTypeEnumCap
 } O3CType;
+typedef int (*O3StructArrayComparator)(const void*, const void*, void *);
 
-extern "C" {
+O3EXTERN_C_BLOCK
 int O3CTypeSize(O3CType t);
 int O3CTypeAlignment(O3CType t);
 O3RawData O3CTypeTranslateFrom_at_stride_to_at_stride_count_(O3CType ftype, const void* fbytes, UIntP fstride, O3CType ttype, void* tbytes, UIntP tstride, UIntP count);
@@ -43,7 +43,8 @@ void O3CTypeSetNSValueWithMult(O3CType type, void* bytes, id v, double mult);
 O3CType O3CTypeFromName(const char* name);
 O3CType O3CTypeFromEnumName(const char* name);
 O3CType O3CTypeFromGLType(GLenum t);
-}
+O3CType O3CTypeWithMaxVal(UInt64 maxval, BOOL isSigned);
+O3END_EXTERN_C
 
 inline void O3CTypeTranslateFromTo(O3CType from_t, O3CType to_t, const void* from, void* to) {
 	#define SwapVal(Tf,Tt) *((Tt*)to)=*((Tf*)from); break;
@@ -74,3 +75,4 @@ inline void O3CTypeTranslateFromTo(O3CType from_t, O3CType to_t, const void* fro
 			O3AssertFalse(@"Unknown C type %i", from_t);
 	}
 }
+

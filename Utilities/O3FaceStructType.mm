@@ -13,7 +13,7 @@ O3VecStructType* gO3IndexedTriangle3cType = nil;
 O3VecStructType* gO3IndexedTriangle3sType = nil;
 O3VecStructType* gO3IndexedTriangle3iType = nil;
 
-#define DefType(NAME, TYPE, CT) int NAME ## Comparator (void* a, void* b, void* ctx) {\
+#define DefType(NAME, TYPE, CT) int NAME ## Comparator (const void* a, const void* b, void* ctx) {\
 	TYPE* aa = (TYPE*)a;\
 	TYPE* bb = (TYPE*)b;\
 	UIntP i; for(i=0; i<CT; i++) {\
