@@ -180,9 +180,8 @@ O3DefaultO3InitializeImplementation
 - (void)stripFacesAndUpload:(BOOL)uploadStripsToGPU {
 	if (mNumberStrips) O3LogWarn(@"Stripping an already stripped mesh is bad");
 	[self indexFacesAndUpload:NO];
-	O3StructArray* faces_v = [mFaceVerticies structArray];
 	O3StructArray* faces_i = [mFaceIndicies structArray];
-	O3Assert([faces_v count] < ~(UInt32)0, @"Stripification does not support 64 bit indicies");
+	O3Assert([[mFaceVerticies structArray] count] < ~(UInt32)0, @"Stripification does not support 64 bit indicies");
 	[faces_i setStructTypeName:@"ui32"];
 	UInt32* idxs = (UInt32*)[[faces_i rawData] bytes];
 	using namespace triangle_stripper;

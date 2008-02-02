@@ -19,28 +19,28 @@ inline BOOL framebufferCompleteP(O3FramebufferObject* self) {
 	if (status!=GL_FRAMEBUFFER_COMPLETE_EXT) {
 		switch (status) {
 			case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
-				O3LogError(@"Framebuffer \"%s\" is not supported for an implementation dependant reason.", NSString_cString([self description]));
+				O3LogError(@"Framebuffer \"%s\" is not supported for an implementation dependant reason.", NSStringUTF8String([self description]));
 				return NO;
 			case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-				O3LogError(@"Framebuffer \"%s\" returned an obsolete error (GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT).", NSString_cString([self description]));
+				O3LogError(@"Framebuffer \"%s\" returned an obsolete error (GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT).", NSStringUTF8String([self description]));
 				return NO;
 			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-				O3LogError(@"Framebuffer \"%s\" is invalid because it is missing a required attachment.", NSString_cString([self description]));
+				O3LogError(@"Framebuffer \"%s\" is invalid because it is missing a required attachment.", NSStringUTF8String([self description]));
 				return NO;
 			case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-				O3LogError(@"Framebuffer \"%s\" is invalid because it is of unacceptable dimensions.", NSString_cString([self description]));
+				O3LogError(@"Framebuffer \"%s\" is invalid because it is of unacceptable dimensions.", NSStringUTF8String([self description]));
 				return NO;
 			case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-				O3LogError(@"Framebuffer \"%s\" is invalid because it uses an unsupported format.", NSString_cString([self description]));
+				O3LogError(@"Framebuffer \"%s\" is invalid because it uses an unsupported format.", NSStringUTF8String([self description]));
 				return NO;
 			case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-				O3LogError(@"Framebuffer \"%s\" has an incomplete draw buffer.", NSString_cString([self description]));
+				O3LogError(@"Framebuffer \"%s\" has an incomplete draw buffer.", NSStringUTF8String([self description]));
 				return NO;
 			case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-				O3LogError(@"Framebuffer \"%s\" has an incomplete read buffer.", NSString_cString([self description]));
+				O3LogError(@"Framebuffer \"%s\" has an incomplete read buffer.", NSStringUTF8String([self description]));
 				return NO;
 			default:
-				O3LogError(@"Framebuffer \"%s\" has an unrecognized error (%d=0x%X).", NSString_cString([self description]), status, status);
+				O3LogError(@"Framebuffer \"%s\" has an unrecognized error (%d=0x%X).", NSStringUTF8String([self description]), status, status);
 				return NO;
 		}
 		return NO;
@@ -55,7 +55,7 @@ inline void bindP(O3FramebufferObject* self, BOOL forRendering) {
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, bufferID);
 	if (forRendering && bufferID && !framebufferCompleteP(self)) {
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-		O3LogError(@"FBO \"%s\" is incomplete, so it cannot be bound.", NSString_cString([self description]));
+		O3LogError(@"FBO \"%s\" is incomplete, so it cannot be bound.", NSStringUTF8String([self description]));
 	}
 }
 void O3FramebufferObject_bind(O3FramebufferObject* self, BOOL forRendering) {bindP(self, forRendering);}

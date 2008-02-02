@@ -15,11 +15,9 @@ void O3FailAssertt() {
 void O3FailAssert() {
 }
 
-#ifdef O3DEBUG
 O3EXTERN_C void O3Break() {
 	NSLog(@"Set a breakpoint on O3Break() for manual breaks. One was just hit.");
 }
-#endif
 
 O3EXTERN_C void O3Init() {
 	NSAutoreleasePool* p = [[NSAutoreleasePool alloc] init];

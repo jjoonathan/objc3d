@@ -118,20 +118,20 @@ inline NSString* NSStringWithUTF8StringNoCopy(const char* str, IntP len, BOOL fr
 }
 
 /************************************/ #pragma mark NSString Acceleration /************************************/
-inline const char* NSString_cString(NSString* self) {
+inline const char* NSStringUTF8String(NSString* self) {
 	//	const char* to_return = NULL;
 	//#ifdef __COREFOUNDATION__
 	//	to_return = CFStringGetCStringPtr((CFStringRef)self, NSUTF8StringEncoding);
 	//	if (!to_return) to_return = CFStringGetCharactersPtr((CFStringRef)self);
 	//#elif
-	//	//O3LogInfo(@"NSString_cString(NSString* self) should be compiled with Core Foundation available for maximum speed.");
+	//	//O3LogInfo(@"NSStringUTF8String(NSString* self) should be compiled with Core Foundation available for maximum speed.");
 	//#endif
 	//	if (!to_return) {
 	typedef const char* (*O3UTF8StringMethodPtr)(NSString*, SEL);
 	static O3UTF8StringMethodPtr O3NSStringGetUTF8String;
 	if (!O3NSStringGetUTF8String) O3NSStringGetUTF8String = (O3UTF8StringMethodPtr)[NSString instanceMethodForSelector:@selector(UTF8String)];
 	const char* to_return = O3NSStringGetUTF8String(self, @selector(UTF8String));
-	//		O3LogInfo(@"NSString_cString(NSString* self) had to use the fallback method of NSString -> cString conversion on *(char*)0x%X = \"%s\".", to_return, to_return);
+	//		O3LogInfo(@"NSStringUTF8String(NSString* self) had to use the fallback method of NSString -> cString conversion on *(char*)0x%X = \"%s\".", to_return, to_return);
 	//	}
 	return to_return;
 }

@@ -28,7 +28,7 @@ void O3SetCGAnnotationToValue(CGannotation anno, id value) {
 			cgSetFloatAnnotation(anno, [value floatValue]);
 			return;
 		case CG_STRING:
-			cgSetStringAnnotation(anno, NSString_cString([value stringValue]));
+			cgSetStringAnnotation(anno, NSStringUTF8String([value stringValue]));
 			return;
 		default:
 			O3CLogError(@"Unknown CG type (annotation \"%s\")", cgGetAnnotationName(anno));
@@ -254,9 +254,9 @@ void O3SetCGParameterToValue(CGparameter param, id newValue) {
 			NSEnumerator* keyEnum = [newValue keyEnumerator];
 			id key;
 			while (key = [keyEnum nextObject]) {
-				CGparameter sparam = cgGetNamedStructParameter(param, NSString_cString(key));
+				CGparameter sparam = cgGetNamedStructParameter(param, NSStringUTF8String(key));
 				if (!sparam) {
-					O3CLogWarn(@"Parameter \"%s\" not found in struct \"%s\". Ignoring.",NSString_cString(key), cgGetParameterName(param));
+					O3CLogWarn(@"Parameter \"%s\" not found in struct \"%s\". Ignoring.",NSStringUTF8String(key), cgGetParameterName(param));
 					continue;
 				}
 				O3Assert(cgIsParameter(sparam), @"");

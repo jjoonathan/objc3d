@@ -270,7 +270,6 @@
 							<array>
 								<string>08FB7794FE84155DC02AAC07</string>
 								<string>1C37FBAC04509CD000000102</string>
-								<string>FC56F1B00D3326FF0083E421</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
@@ -380,9 +379,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>FC56F1910D33249A0083E421</string>
+				<string>FC3937B70D54E928007CA922</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>FC56F1920D33249A0083E421</string>
+				<string>FC3937B80D54E928007CA922</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -516,7 +515,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>FC56F1650D331E7E0083E421</string>
 		<string>/Users/jon/Documents/Prog/objc3d/Other/lib3ds.xcodeproj</string>
 	</array>
 	<key>WindowString</key>

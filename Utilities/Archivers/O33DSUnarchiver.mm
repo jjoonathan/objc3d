@@ -30,7 +30,7 @@ O3DefaultO3InitializeImplementation
 		} @catch (id e) {
 			break;
 		}
-		float tok = r.ReadFloat();
+		float tok = r.ReadFloat(); tok;
 		O3Asrt(O3Equals(tok,1.339,.001));
 		float x = r.ReadFloat();
 		float y = r.ReadFloat();

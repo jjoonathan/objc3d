@@ -133,7 +133,7 @@ inline void unbindParamsP(O3CGMaterial* self) {
 ///@note if setValue:forParameter: is called in the middle of a rendering pass, results take effect immediately.  This behavior differs from that of O3Material.
 - (void)setValue:(NSObject*)value forParameter:(NSString*)param {
 	if (!mParameters) mParameters = new mParameters_t();
-	mParameters_t::iterator location = mParameters->find(NSString_cString(param));
+	mParameters_t::iterator location = mParameters->find(NSStringUTF8String(param));
 	if (location==mParameters->end()) {
 		if (!value) return;
 		O3CGParameter* targ = [mMaterialType parameterNamed:param];
@@ -141,7 +141,7 @@ inline void unbindParamsP(O3CGMaterial* self) {
 			O3LogWarn(@"Tried to set value for CG parameter %s that doesn't exist in material type %s", [param UTF8String], [[mMaterialType description] UTF8String]);
 			return;
 		}
-		O3CGMaterialParameterPair& val = (*mParameters)[NSString_cString(param)];
+		O3CGMaterialParameterPair& val = (*mParameters)[NSStringUTF8String(param)];
 		val.target = targ;
 		O3Assign([[O3CGParameter alloc] initWithType:[targ type]], val.value);
 	} else {
@@ -169,7 +169,7 @@ inline void unbindParamsP(O3CGMaterial* self) {
 
 - (NSObject*)valueForParameter:(NSString*)param {
 	if (!mParameters) return nil;
-	const char* cname = NSString_cString(param);
+	const char* cname = NSStringUTF8String(param);
 	mParameters_t::iterator loc = mParameters->find(cname);
 	if (loc==mParameters->end()) return nil;
 	return (O3CGParameter*)[loc->second.value value]; //Return the parameter's value, not the parameter (it is an internal trick)

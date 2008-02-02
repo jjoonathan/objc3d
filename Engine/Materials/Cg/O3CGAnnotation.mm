@@ -37,7 +37,7 @@ inline O3CGAnnotation* O3CGAnnotation_init(O3CGAnnotation* self, CGannotation an
 ///@warn Depricated
 - (id)initWithType:(CGtype)type name:(NSString*)name forCGObject:(void*)cgObject ofType:(CGannotationType)cgAnnoType {
 	O3SuperInitOrDie();
-	const char* cname = NSString_cString(name);
+	const char* cname = NSStringUTF8String(name);
 	CGannotation anno = nil;
 	switch (cgAnnoType) {
 		case CGParameterAnnotationType:

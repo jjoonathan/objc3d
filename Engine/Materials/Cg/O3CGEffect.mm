@@ -145,7 +145,8 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 
 - (id)initWithSource:(NSString*)source {
 	O3SuperInitOrDie();
-	const char* src = NSString_cString(source);
+	O3Assign(source, mSource);
+	const char* src = NSStringUTF8String(source);
 	CGeffect newEffect = cgCreateEffect(O3GlobalCGContext(), src, gDefaultCGEffectCompilerArguments);
 	O3CGEffect_autoDetectAutoSetParameters(self, newEffect);
 	O3CGEffect_setEffectP(self, newEffect);
@@ -165,6 +166,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	[mAnnotationKVCHelper release];
 	[mParameterKVCHelper release];
 	[mTechniqueKVCHelper release];
+	[mSource release];
 	[super dealloc];
 }
 
@@ -172,6 +174,27 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	O3DestroyCppMap(AnnotationMap, mAnnotations);
 	O3DestroyCppMap(TechniqueMap, mTechniques);
 	O3DestroyCppMap(ParameterMap, mParameters);
+}
+
+- (id)initWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding]) {
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+		[self release];
+		return nil;
+	}
+	NSString* src = [coder decodeObjectForKey:@"source"];
+	if (!src) {
+		O3LogWarn(@"O3CGEffect could not be created becaule there was no source key in archive");
+		[self release];
+		return nil;
+	}
+	return [self initWithSource:src];
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding])
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+	[coder encodeObject:mSource forKey:@"source"];
 }
 
 
@@ -196,7 +219,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 
 - (O3CGAnnotation*)annotationNamed:(NSString*)key {
 	AnnotationMap* annos = mAnnotationsP(self);
-	string name = NSString_cString(key);
+	string name = NSStringUTF8String(key);
 	AnnotationMap::iterator anno_loc = annos->find(name);
 	O3CGAnnotation* to_return = anno_loc->second;
 	if (anno_loc==annos->end()) {
@@ -229,7 +252,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 
 - (O3CGParameter*)parameterNamed:(NSString*)key {
 	ParameterMap* params = mParametersP(self);
-	string name = NSString_cString(key);
+	string name = NSStringUTF8String(key);
 	ParameterMap::iterator param_loc = params->find(name);
 	O3CGParameter* to_return = param_loc->second;
 	if (param_loc==params->end()) {
@@ -241,7 +264,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 }
 
 - (void)setParameterValue:(NSValue*)value forKey:(NSString*)key {
-	O3CGParameter* param = mParametersP(self)->find(NSString_cString(key))->second;
+	O3CGParameter* param = mParametersP(self)->find(NSStringUTF8String(key))->second;
 	if (!param) {
 		O3ToImplement();
 	}
@@ -270,7 +293,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 
 - (O3CGTechnique*)techniqueNamed:(NSString*)key {
 	TechniqueMap* tmap = mTechniquesP(self);
-	string name = NSString_cString(key);
+	string name = NSStringUTF8String(key);
 	TechniqueMap::iterator technique_loc = tmap->find(name);
 	O3CGTechnique* to_return = technique_loc->second;
 	if (technique_loc==tmap->end()) {

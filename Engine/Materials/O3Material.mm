@@ -123,10 +123,10 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 ///@note if setValue:forParameter: is called in the middle of a rendering pass, results take effect on the next pass. This behavior differs from that of O3CGMaterial.
 - (void)setValue:(NSObject*)value forParameter:(NSString*)param {
 	if (!mParameters) mParameters = new mParameters_t();
-	mParameters_t::iterator location = mParameters->find(NSString_cString(param));
+	mParameters_t::iterator location = mParameters->find(NSStringUTF8String(param));
 	if (location==mParameters->end()) {
 		if (!value) return;
-		O3MaterialParameterPair& val = (*mParameters)[NSString_cString(param)];
+		O3MaterialParameterPair& val = (*mParameters)[NSStringUTF8String(param)];
 		O3Assign(value, val.value);
 	} else {
 		O3MaterialParameterPair& val = location->second;
@@ -141,7 +141,7 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 
 - (NSObject*)valueForParameter:(NSString*)param {
 	if (!mParameters) return nil;
-	const char* cname = NSString_cString(param);
+	const char* cname = NSStringUTF8String(param);
 	mParameters_t::iterator loc = mParameters->find(cname);
 	if (loc==mParameters->end()) return nil;
 	return loc->second.value;

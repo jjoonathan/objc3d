@@ -25,7 +25,6 @@ extern CGcontext gCGContext; ///<Access with O3GlobalCGContext();
 
 @interface O3CGProgram : NSObject <O3HasParameters, O3HasCGParameters, O3MultipassDirector> {
 	CGprogram mProgram;		///<The CGprogram that is wrapped by the receiver
-	NSString* mEntryPoint;	///<The entry point into the program (this doesn't seem to be fetchable via the Cg runtime?)
 	O3KVCHelper* mParameterKVCHelper; ///<Allows KVC to be used properly on parameters
 	O3KVCHelper* mAnnotationKVCHelper; ///<Allows KVC to be used properly on annotations
 #ifdef __cplusplus
@@ -40,10 +39,11 @@ extern CGcontext gCGContext; ///<Access with O3GlobalCGContext();
 	#ifdef O3DEBUG
 	bool mRenderingBegun; ///<Catches attempts to set pases without first enabling rendering
 	#endif
+	NSString* mUnusedSource; ///<Holds on to the source for a compiled program
 }
 //Initialization
-- (id)initWithSource:(NSString*)source entryFunction:(NSString*)entryPoint type:(CGprofile)profile;
-- (id)initWithPrecompiledData:(NSData*)data entryFunction:(NSString*)entryPoint type:(CGprofile)profile;
+- (id)initWithSource:(NSString*)source entryFunction:(NSString*)entryPoint profile:(CGprofile)profile;
+- (id)initWithPrecompiledData:(NSData*)data entryFunction:(NSString*)entryPoint profile:(CGprofile)profile;
 
 //Annotations
 - (id)annotations;
@@ -55,6 +55,18 @@ extern CGcontext gCGContext; ///<Access with O3GlobalCGContext();
 - (NSArray*)parameterKeys;
 - (O3CGParameter*)parameterNamed:(NSString*)key;
 - (void)setParameterValue:(NSValue*)value forKey:(NSString*)key;
+
+//Profile
+- (CGprofile)profile;
+- (void)setProfile:(CGprofile)profile;
+- (NSString*)profileName;
+- (void)setProfileName:(NSString*)newName;
+
+//Source
+- (NSString*)entryFunction;
+- (NSString*)source;
+- (NSData*)compiledData;
+- (BOOL)needsCompiling;
 
 //Use
 - (int)renderPasses;	///<How many passes are required for the receiver's foremost technique

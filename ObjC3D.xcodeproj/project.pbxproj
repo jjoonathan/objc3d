@@ -205,7 +205,7 @@
 		FC63F12A0CFA8C7500325C54 /* o3lib.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63F1290CFA8C6F00325C54 /* o3lib.rb */; };
 		FC66FFCF0D0CABCB00BDD15F /* O3CompoundStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC438B680D02676900DFA46F /* O3CompoundStructType.mm */; };
 		FC66FFD00D0CABCC00BDD15F /* O3CompoundStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC438B670D02676900DFA46F /* O3CompoundStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC72DCDA0D53F2DF00D4C2E6 /* liblibstrip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC72DC810D52F0F100D4C2E6 /* liblibstrip.a */; };
+		FC72DCDA0D53F2DF00D4C2E6 /* libstrip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC72DC810D52F0F100D4C2E6 /* libstrip.a */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FC7CA0FF0D4154EA00F6B849 /* test_struct_array.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA0FE0D4154EA00F6B849 /* test_struct_array.rb */; };
 		FC7CA19C0D41CC6300F6B849 /* tests.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA19B0D41CC6300F6B849 /* tests.rb */; };
@@ -298,14 +298,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC046055464E500DB518D /* liblibstrip.a */;
+			remoteGlobalIDString = D2AAC046055464E500DB518D;
 			remoteInfo = libstrip;
 		};
 		FC72DC990D52F10F00D4C2E6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* libstrip */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = libstrip;
 		};
 		FC7DD60D0C1C8CAB009D36A2 /* PBXContainerItemProxy */ = {
@@ -647,7 +647,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC72DCDA0D53F2DF00D4C2E6 /* liblibstrip.a in Frameworks */,
+				FC72DCDA0D53F2DF00D4C2E6 /* libstrip.a in Frameworks */,
 				FC63E2FA0CF3174500325C54 /* Cg.framework in Frameworks */,
 				FC2C1D430C125FDB0084A599 /* libglew.a in Frameworks */,
 				FC2C1D460C125FDB0084A599 /* Cocoa.framework in Frameworks */,
@@ -1195,7 +1195,7 @@
 		FCA8BA540D5295BF004AE414 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FC72DC810D52F0F100D4C2E6 /* liblibstrip.a */,
+				FC72DC810D52F0F100D4C2E6 /* libstrip.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1557,10 +1557,10 @@
 			remoteRef = FC56F1700D331EEC0083E421 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FC72DC810D52F0F100D4C2E6 /* liblibstrip.a */ = {
+		FC72DC810D52F0F100D4C2E6 /* libstrip.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = liblibstrip.a;
+			path = libstrip.a;
 			remoteRef = FC72DC800D52F0F100D4C2E6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

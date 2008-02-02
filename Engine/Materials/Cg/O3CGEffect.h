@@ -29,6 +29,7 @@ using namespace std;
 	O3KVCHelper* mTechniqueKVCHelper; ///<Allows KVC to be used properly on techniques
 	O3KVCHelper* mParameterKVCHelper; ///<Allows KVC to be used properly on parameters
 	O3KVCHelper* mAnnotationKVCHelper; ///<Allows KVC to be used properly on annotations
+	NSString* mSource; ///<Saved for archiving purposes
 #ifdef __cplusplus
 	map<string, O3CGTechnique*>* mTechniques; ///<All the techniques in the receiver
 	map<string, O3CGParameter*>* mParameters; ///<All the receiver's parameters

@@ -110,6 +110,7 @@ inline void initP(O3CGProgram* self) {
 
 - (void)dealloc {
 	cgDestroyProgram(mProgram);
+	[mUnusedSource release];
 	[super dealloc];
 }
 
@@ -118,24 +119,66 @@ inline void initP(O3CGProgram* self) {
 	return nil;
 }
 
-- (id)initWithSource:(NSString*)source entryFunction:(NSString*)entryPoint type:(CGprofile)profile {
+- (id)initWithSource:(NSString*)source entryFunction:(NSString*)entryPoint profile:(CGprofile)profile {
 	O3SuperInitOrDie();
 	initP(self);
 	
-	mProgram = cgCreateProgram(gCGContext, CG_SOURCE, [source UTF8String], profile, NSString_cString(entryPoint), gCGDefaultCompilerArguments);
+	if (!cgGLIsProfileSupported(profile)) {
+		O3LogWarn(@"Unsupported profile %s", cgGetProfileString(profile));
+		[self release];
+		return nil;
+	}	
+	mProgram = cgCreateProgram(gCGContext, CG_SOURCE, [source UTF8String], profile, NSStringUTF8String(entryPoint), gCGDefaultCompilerArguments);
 	autoDetectAutoSetParametersP(self);
 	
 	return self;
 }
 
-- (id)initWithPrecompiledData:(NSData*)data entryFunction:(NSString*)entryPoint type:(CGprofile)profile {
+- (id)initWithPrecompiledData:(NSData*)data entryFunction:(NSString*)entryPoint profile:(CGprofile)profile {
 	O3SuperInitOrDie();
 	initP(self);
-	
+	if (!cgGLIsProfileSupported(profile)) {
+		O3LogWarn(@"Unsupported profile %s", cgGetProfileString(profile));
+		[self release];
+		return nil;
+	}
 	mProgram = cgCreateProgram(gCGContext, CG_OBJECT, (char*)[data bytes], profile, (char*)[data bytes], gCGDefaultCompilerArguments);
 	autoDetectAutoSetParametersP(self);
-	
 	return self;
+}
+
+- (id)initWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding]) {
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+		[self release];
+		return nil;
+	}
+	NSData* dat = [coder decodeObjectForKey:@"compiledData"];
+	NSString* src = [coder decodeObjectForKey:@"source"];
+	NSString* profileName = [coder decodeObjectForKey:@"profile"];
+	NSString* entryPoint = [coder decodeObjectForKey:@"entryPoint"];
+	if (!profileName || !entryPoint) goto die;
+	if (dat) {
+		O3Assign(src,mUnusedSource);
+		return [self initWithPrecompiledData:dat entryFunction:entryPoint profile:cgGetProfile(NSStringUTF8String(profileName))];
+	}
+	if (src) return [self initWithSource:src entryFunction:entryPoint profile:cgGetProfile(NSStringUTF8String(profileName))];
+	
+	die:
+	O3LogWarn(@"Could not init coder due to missing keys");
+	[self release];
+	return nil;
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding])
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+	[coder encodeObject:[self profileName] forKey:@"profile"];
+	[coder encodeObject:[self entryFunction] forKey:@"entryPoint"];
+	NSString* src = [self source] ?: mUnusedSource;
+	NSData* dat = [self compiledData];
+	if (src) [coder encodeObject:src forKey:@"source"];
+	if (dat) [coder encodeObject:dat forKey:@"compiledData"];
 }
 
 /************************************/ #pragma mark Accessors /************************************/
@@ -143,31 +186,44 @@ inline void initP(O3CGProgram* self) {
 	return [NSString stringWithUTF8String:cgGetProgramString(mProgram, CG_PROGRAM_ENTRY)];
 }
 
-- (CGprofile)type {
+- (CGprofile)profile {
 	O3AssertIvar(mProgram);
 	return cgGetProgramProfile(mProgram);
+}
+
+- (void)setProfile:(CGprofile)profile {
+	O3AssertIvar(mProgram);
+	if (!cgGLIsProfileSupported(profile))
+		O3LogWarn(@"Unsupported profile %s", cgGetProfileString(profile));
+	else
+		cgSetProgramProfile(mProgram, profile);
+}
+
+- (NSString*)profileName {
+	return [NSString stringWithUTF8String:cgGetProfileString([self profile])];
+}
+
+- (void)setProfileName:(NSString*)newName {
+	[self setProfile:cgGetProfile([newName UTF8String])];
 }
 
 - (NSString*)source {
 	O3AssertIvar(mProgram);
 	const char* source = cgGetProgramString(mProgram, CG_PROGRAM_SOURCE);
+	if (!source) return nil;
 	return [[[NSString alloc] initWithBytes:source length:strlen(source) encoding:NSASCIIStringEncoding] autorelease];
 }
 
 - (NSData*)compiledData {
 	O3AssertIvar(mProgram);
 	const char* object = cgGetProgramString(mProgram, CG_COMPILED_PROGRAM);
+	if (!object) return nil;
 	return [[[NSData alloc] initWithBytes:object length:strlen(object)] autorelease];
 }
 
 - (BOOL)needsCompiling {
 	O3AssertIvar(mProgram);
 	return !cgIsProgramCompiled(mProgram);
-}
-
-- (void)setType:(CGprofile)profile {
-	O3AssertIvar(mProgram);
-	cgSetProgramProfile(mProgram, profile);
 }
 
 
@@ -192,7 +248,7 @@ inline void initP(O3CGProgram* self) {
 
 - (O3CGAnnotation*)annotationNamed:(NSString*)key {
 	AnnotationMap* annos = mAnnotationsP(self);
-	string name = NSString_cString(key);
+	string name = NSStringUTF8String(key);
 	AnnotationMap::iterator anno_loc = annos->find(name);
 	O3CGAnnotation* to_return = anno_loc->second;
 	if (anno_loc==annos->end()) {
@@ -229,7 +285,7 @@ inline void initP(O3CGProgram* self) {
 
 - (O3CGParameter*)parameterNamed:(NSString*)key {
 	ParameterMap* params = mParametersP(self);
-	string name = NSString_cString(key);
+	string name = NSStringUTF8String(key);
 	ParameterMap::iterator param_loc = params->find(name);
 	O3CGParameter* to_return = param_loc->second;
 	if (param_loc==params->end()) {
@@ -241,7 +297,7 @@ inline void initP(O3CGProgram* self) {
 }
 
 - (void)setParameterValue:(NSValue*)value forKey:(NSString*)key {
-	O3CGParameter* param = mParametersP(self)->find(NSString_cString(key))->second;
+	O3CGParameter* param = mParametersP(self)->find(NSStringUTF8String(key))->second;
 	if (!param) {
 		O3ToImplement();
 	}

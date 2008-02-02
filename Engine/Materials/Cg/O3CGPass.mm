@@ -75,7 +75,7 @@ AnnotationMap*	mAnnotationsP(O3CGPass* self) {
 
 - (O3CGAnnotation*)annotationNamed:(NSString*)key {
 	AnnotationMap* annos = mAnnotationsP(self);
-	string name = NSString_cString(key);
+	string name = NSStringUTF8String(key);
 	AnnotationMap::iterator anno_loc = annos->find(name);
 	O3CGAnnotation* to_return = anno_loc->second;
 	if (anno_loc==annos->end()) {

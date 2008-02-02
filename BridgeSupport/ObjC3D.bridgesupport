@@ -56,7 +56,7 @@
 <enum name='CGProgramAnnotationType' value='4'/>
 <enum name='CGTechniqueAnnotationType' value='3'/>
 <enum name='O3BigEndian' value='1'/>
-<enum name='O3CTypeEnumCap' value='11'/>
+<enum name='O3CTypeEnumCap' value='12'/>
 <enum name='O3ColorDataType' value='2'/>
 <enum name='O3ColorIndexDataType' value='3'/>
 <enum name='O3DoubleCType' value='2'/>
@@ -105,6 +105,7 @@
 <enum name='O3UInt32CType' value='9'/>
 <enum name='O3UInt64CType' value='10'/>
 <enum name='O3UInt8CType' value='7'/>
+<enum name='O3UIntPCType' value='11'/>
 <enum name='O3VecStructColor' value='6'/>
 <enum name='O3VecStructIndex' value='4'/>
 <enum name='O3VecStructPoint' value='2'/>
@@ -159,6 +160,10 @@
 <arg type='i'/>
 <arg NEW='1' type='^v' type_modifier='o'/>
 <retval type='d'/>
+</function>
+<function name='O3CTypeEncoded'>
+<arg type='*'/>
+<retval type='i'/>
 </function>
 <function name='O3CTypeEncoding'>
 <arg type='i'/>
@@ -260,6 +265,11 @@
 <arg type='L'/>
 <retval type='{_O3RawData=^vI}'/>
 </function>
+<function name='O3CTypeWithMaxVal'>
+<arg type='Q'/>
+<arg type='B'/>
+<retval type='i'/>
+</function>
 <function name='O3CenterSizeInRect' inline='true'>
 <arg type='{_NSSize=ff}'/>
 <arg type='{_NSRect={_NSPoint=ff}{_NSSize=ff}}'/>
@@ -325,9 +335,18 @@
 <arg type='*'/>
 <arg type='L'/>
 </function>
+<function name='O3NSDataDup'>
+<arg type='@'/>
+<retval type='^v'/>
+</function>
 <function name='O3RawVertexData_indicies'>
 <arg type='@'/>
 <retval type='^v'/>
+</function>
+<function name='O3SACTypeCast'>
+<arg type='@'/>
+<arg type='*'/>
+<retval type='@'/>
 </function>
 <function name='O3SerializeDataOfType'>
 <arg NEW='1' type='^v' type_modifier='o'/>
@@ -495,6 +514,9 @@
 <method class_method='true' selector='compiledLazily'>
 <retval type='B'/>
 </method>
+<method selector='needsCompiling'>
+<retval type='B'/>
+</method>
 <method class_method='true' selector='setCompiledAutomatically:'>
 <arg type='B' index='0'/>
 </method>
@@ -531,6 +553,14 @@
 </method>
 <method selector='viewProjectionMatrix'>
 <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+</method>
+</class>
+<class name='O3ConcreteMeshType'>
+<method selector='indexFacesAndUpload:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='stripFacesAndUpload:'>
+<arg type='B' index='0'/>
 </method>
 </class>
 <class name='O3DirectoryResSource'>
@@ -757,6 +787,24 @@
 <method selector='setTypeToIntWithMaximum:isSigned:'>
 <arg type='B' index='1'/>
 </method>
+<method selector='sortedIndexesWithFunction:context:'>
+<arg NEW='1' function_pointer='true' type='^?' index='0' type_modifier='o'>
+<arg type='^v'/>
+<arg type='^v'/>
+<arg type='^v'/>
+<retval type='i'/>
+</arg>
+<arg NEW='1' index='1' type_modifier='o'/>
+</method>
+<method selector='uniqueifyWithComparator:context:'>
+<arg NEW='1' function_pointer='true' type='^?' index='0' type_modifier='o'>
+<arg type='^v'/>
+<arg type='^v'/>
+<arg type='^v'/>
+<retval type='i'/>
+</arg>
+<arg NEW='1' index='1' type_modifier='o'/>
+</method>
 <method selector='addStruct:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
@@ -770,6 +818,12 @@
 <arg NEW='1' index='7' type_modifier='o'/>
 </method>
 <method selector='getStruct:atIndex:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+</method>
+<method selector='initWithBytes:type:length:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+</method>
+<method selector='initWithBytes:typeName:length:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
 <method selector='setStruct:atIndex:'>
@@ -870,6 +924,11 @@
 <arg NEW='1' index='2' type_modifier='o'/>
 <arg NEW='1' index='3' type_modifier='o'/>
 <arg NEW='1' index='5' type_modifier='o'/>
+</method>
+<method selector='getLowest:highest:ofStructsAt:stride:count:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+<arg NEW='1' index='1' type_modifier='o'/>
+<arg NEW='1' index='2' type_modifier='o'/>
 </method>
 <method selector='objectWithBytes:'>
 <arg NEW='1' index='0' type_modifier='o'/>
