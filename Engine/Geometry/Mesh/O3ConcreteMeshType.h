@@ -21,6 +21,7 @@ extern NSString* O3ConcreteMeshStrippedRenderMode;
 	O3StructArrayVDS* mFaceIndicies;
 	
 	//Stripped
+	O3StructArrayVDS* mStripIndicies;
 	UIntP* mStripLocations;
 	GLsizei* mStripCounts;
 	GLsizei mNumberStrips;
@@ -35,4 +36,8 @@ extern NSString* O3ConcreteMeshStrippedRenderMode;
 - (void)setFaces:(O3StructArray*)newFaces;
 - (void)setFaceVerticies:(O3StructArray*)verts indicies:(O3StructArray*)indicies;
 - (NSString*)renderMode;
+
+//Operations
+- (void)indexFacesAndUpload:(BOOL)uploadNewFacesToGPU;
+- (void)stripFacesAndUpload:(BOOL)uploadStripsToGPU;
 @end

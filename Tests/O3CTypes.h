@@ -8,7 +8,8 @@ DefCType(O3Int64CType,	6,	Int64, longLongValue, NSNumber, initWithLongLong:)\
 DefCType(O3UInt8CType,	7,	UInt8, unsignedCharValue, NSNumber, initWithUnsignedChar:)\
 DefCType(O3UInt16CType,	8,	UInt16, unsignedShortValue, NSNumber, initWithUnsignedShort:)\
 DefCType(O3UInt32CType,	9,	UInt32, unsignedIntValue, NSNumber, initWithUnsignedInt:)\
-DefCType(O3UInt64CType,	10,	UInt64, unsignedLongLongValue, NSNumber, initWithUnsignedLongLong:)
+DefCType(O3UInt64CType,	10,	UInt64, unsignedLongLongValue, NSNumber, initWithUnsignedLongLong:)\
+DefCType(O3UIntPCType,	11,	UIntP, unsignedLongLongValue, NSNumber, initWithUnsignedLongLong:)
 
 typedef enum _O3CType {
 	O3InvalidCType=0,
@@ -41,6 +42,7 @@ void O3CTypeSetNSValue(O3CType type, void* bytes, id v);
 void O3CTypeSetNSValueWithMult(O3CType type, void* bytes, id v, double mult);
 
 O3CType O3CTypeFromName(const char* name);
+O3CType O3CTypeEncoded(const char* encoding);
 O3CType O3CTypeFromEnumName(const char* name);
 O3CType O3CTypeFromGLType(GLenum t);
 O3CType O3CTypeWithMaxVal(UInt64 maxval, BOOL isSigned);

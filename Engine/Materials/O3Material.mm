@@ -7,6 +7,7 @@
  */
 #import "O3Material.h"
 #import "O3KVCHelper.h"
+#import "O3ResManager.h"
 
 typedef map<string, O3MaterialParameterPair> mParameters_t;
 
@@ -30,10 +31,47 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 	return self;
 }
 
+- (id)initWithMaterialTypeNamed:(NSString*)name {
+	O3SuperInitOrDie();
+	[self setMaterialTypeName:name];
+	return self;
+}
+
+- (id)initWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding]) {
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+		[self release];
+		return nil;
+	}
+	O3SuperInitOrDie();
+	NSMutableDictionary* pdict = [coder decodeObjectForKey:@"pdict"];
+	NSEnumerator* pdictEnumerator = [pdict keyEnumerator];
+	while (NSString* o = [pdictEnumerator nextObject]) {
+		[self setValue:[pdict objectForKey:o] forKey:o];
+	}
+	[self setMaterialTypeName:[coder decodeObjectForKey:@"materialType"]];
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder {
+	if (![coder allowsKeyedCoding])
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+	NSArray* pnames = [self parameterNames];
+	NSEnumerator* pnamesEnumerator = [pnames objectEnumerator];
+	NSMutableDictionary* pdict = [[NSMutableDictionary alloc] init];
+	while (NSString* o = [pnamesEnumerator nextObject])
+		[pdict setObject:[self valueForParameter:o] forKey:o];
+	[coder encodeObject:pdict forKey:@"params"];
+	if (mMaterialTypeName) [coder encodeObject:mMaterialTypeName forKey:@"materialType"];
+	[pdict release];
+}
+
 - (void)dealloc {
 	O3Destroy(mParameterKVCHelper);
 	O3Destroy(mMaterialType);
 	O3DestroyCppContainer(mParameters_t, mParameters, , ->second.value);
+	O3Destroy(mMaterialTypeName);
+	[self unbind:@"materialType"];
 	O3SuperDealloc();
 }
 
@@ -45,6 +83,19 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 - (void)setMaterialType:(NSObject<O3MultipassDirector, O3HasParameters>*)materialType {
 	setMaterialTypeP(self, materialType);
 }
+
+- (NSString*)materialTypeName {
+	return mMaterialTypeName;
+}
+
+- (void)setMaterialTypeName:(NSString*)newName {
+	[self unbind:@"materialType"];
+	O3Assign(newName,mMaterialTypeName);
+	if (newName) {
+		[self bind:@"materialType" toObject:gO3ResManagerSharedInstance withKeyPath:newName options:nil];
+	}
+}
+
 
 
 /************************************/ #pragma mark mParameters /************************************/

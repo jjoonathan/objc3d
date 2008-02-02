@@ -7,6 +7,8 @@
 //
 #import "O3ScalarStructType.h"
 #import "O3GPUData.h"
+#import "O3CTypes.h"
+#import "O3StructArray.h"
 
 #define DefType(NAME,TYPE,SNAME,CTYPE) O3ScalarStructType* g ## NAME; O3ScalarStructType* NAME () {return g ## NAME;}
 O3ScalarStructTypeDefines
@@ -115,3 +117,13 @@ O3DefaultO3InitializeImplementation
 }
 
 @end
+
+
+O3StructArray* O3SACTypeCast(O3StructArray* arr, const char* tname) {
+	O3StructType* t = [O3ScalarStructType scalarTypeWithCType:O3CTypeEncoded(tname)];
+	if (![arr setStructType:t]) {
+		O3CLogWarn(@"Cast of struct array %@ to type %@ for C type %s failed.", arr, t, tname);
+		return nil;
+	}
+	return arr;
+}

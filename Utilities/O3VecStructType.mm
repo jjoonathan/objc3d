@@ -185,12 +185,13 @@ O3END_EXTERN_C_BLOCK
 	return [NSData dataWithBytesNoCopy:rd.bytes length:rd.length freeWhenDone:YES];
 }
 
+///@returns a new NSMutableData with the deportabalized structs if no %target is given
 - (NSData*)deportabalizeStructs:(NSData*)indata to:(void*)target stride:(UIntP)s {
 	if (!O3NeedByteswapToLittle && !target) return indata;
 	UIntP size = [indata length];
 	O3RawData rd = O3CTypeDeportabalize(mElementType, [indata bytes], target, s, size/O3CTypeSize(mElementType), mElementCount);
 	[indata relinquishBytes];
-	return rd.length? [NSData dataWithBytesNoCopy:target length:rd.length freeWhenDone:YES] : nil;
+	return target? nil : [NSMutableData dataWithBytesNoCopy:rd.bytes length:rd.length freeWhenDone:YES];
 }
 
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)oformat {

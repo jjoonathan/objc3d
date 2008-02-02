@@ -1,0 +1,272 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FC72DC530D52F09400D4C2E6 /* connectivity_graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC72DC500D52F09400D4C2E6 /* connectivity_graph.cpp */; };
+		FC72DC540D52F09400D4C2E6 /* policy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC72DC510D52F09400D4C2E6 /* policy.cpp */; };
+		FC72DC550D52F09400D4C2E6 /* tri_stripper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC72DC520D52F09400D4C2E6 /* tri_stripper.cpp */; };
+		FC72DC560D52F0A300D4C2E6 /* public_types.h in Copy Public Headers */ = {isa = PBXBuildFile; fileRef = FC72DC4D0D52F08F00D4C2E6 /* public_types.h */; };
+		FC72DC570D52F0A300D4C2E6 /* tri_stripper.h in Copy Public Headers */ = {isa = PBXBuildFile; fileRef = FC72DC4E0D52F08F00D4C2E6 /* tri_stripper.h */; };
+		FC72DC590D52F0C000D4C2E6 /* cache_simulator.h in Copy Private Headers */ = {isa = PBXBuildFile; fileRef = FC72DC470D52F08F00D4C2E6 /* cache_simulator.h */; };
+		FC72DC5A0D52F0C000D4C2E6 /* connectivity_graph.h in Copy Private Headers */ = {isa = PBXBuildFile; fileRef = FC72DC480D52F08F00D4C2E6 /* connectivity_graph.h */; };
+		FC72DC5B0D52F0C000D4C2E6 /* graph_array.h in Copy Private Headers */ = {isa = PBXBuildFile; fileRef = FC72DC490D52F08F00D4C2E6 /* graph_array.h */; };
+		FC72DC5C0D52F0C000D4C2E6 /* heap_array.h in Copy Private Headers */ = {isa = PBXBuildFile; fileRef = FC72DC4A0D52F08F00D4C2E6 /* heap_array.h */; };
+		FC72DC5D0D52F0C000D4C2E6 /* policy.h in Copy Private Headers */ = {isa = PBXBuildFile; fileRef = FC72DC4B0D52F08F00D4C2E6 /* policy.h */; };
+		FC72DC5E0D52F0C000D4C2E6 /* types.h in Copy Private Headers */ = {isa = PBXBuildFile; fileRef = FC72DC4C0D52F08F00D4C2E6 /* types.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FC72DC340D52F04500D4C2E6 /* Copy Public Headers */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(PROJECT_DIR)/../build/Support/Headers";
+			dstSubfolderSpec = 0;
+			files = (
+				FC72DC560D52F0A300D4C2E6 /* public_types.h in Copy Public Headers */,
+				FC72DC570D52F0A300D4C2E6 /* tri_stripper.h in Copy Public Headers */,
+			);
+			name = "Copy Public Headers";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC72DC610D52F0C900D4C2E6 /* Copy Private Headers */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(PROJECT_DIR)/../build/Support/Headers/detail";
+			dstSubfolderSpec = 0;
+			files = (
+				FC72DC590D52F0C000D4C2E6 /* cache_simulator.h in Copy Private Headers */,
+				FC72DC5A0D52F0C000D4C2E6 /* connectivity_graph.h in Copy Private Headers */,
+				FC72DC5B0D52F0C000D4C2E6 /* graph_array.h in Copy Private Headers */,
+				FC72DC5C0D52F0C000D4C2E6 /* heap_array.h in Copy Private Headers */,
+				FC72DC5D0D52F0C000D4C2E6 /* policy.h in Copy Private Headers */,
+				FC72DC5E0D52F0C000D4C2E6 /* types.h in Copy Private Headers */,
+			);
+			name = "Copy Private Headers";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D2AAC046055464E500DB518D /* libstrip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libstrip.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC72DC470D52F08F00D4C2E6 /* cache_simulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cache_simulator.h; sourceTree = "<group>"; };
+		FC72DC480D52F08F00D4C2E6 /* connectivity_graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = connectivity_graph.h; sourceTree = "<group>"; };
+		FC72DC490D52F08F00D4C2E6 /* graph_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph_array.h; sourceTree = "<group>"; };
+		FC72DC4A0D52F08F00D4C2E6 /* heap_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = heap_array.h; sourceTree = "<group>"; };
+		FC72DC4B0D52F08F00D4C2E6 /* policy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = policy.h; sourceTree = "<group>"; };
+		FC72DC4C0D52F08F00D4C2E6 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		FC72DC4D0D52F08F00D4C2E6 /* public_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = public_types.h; sourceTree = "<group>"; };
+		FC72DC4E0D52F08F00D4C2E6 /* tri_stripper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tri_stripper.h; sourceTree = "<group>"; };
+		FC72DC500D52F09400D4C2E6 /* connectivity_graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = connectivity_graph.cpp; sourceTree = "<group>"; };
+		FC72DC510D52F09400D4C2E6 /* policy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = policy.cpp; sourceTree = "<group>"; };
+		FC72DC520D52F09400D4C2E6 /* tri_stripper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tri_stripper.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D289987405E68DCB004EDB86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* libstrip */ = {
+			isa = PBXGroup;
+			children = (
+				FC72DC4F0D52F09400D4C2E6 /* src */,
+				FC72DC450D52F08F00D4C2E6 /* include */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = libstrip;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC046055464E500DB518D /* libstrip.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FC72DC450D52F08F00D4C2E6 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				FC72DC460D52F08F00D4C2E6 /* detail */,
+				FC72DC4D0D52F08F00D4C2E6 /* public_types.h */,
+				FC72DC4E0D52F08F00D4C2E6 /* tri_stripper.h */,
+			);
+			name = include;
+			path = tristripper/include;
+			sourceTree = "<group>";
+		};
+		FC72DC460D52F08F00D4C2E6 /* detail */ = {
+			isa = PBXGroup;
+			children = (
+				FC72DC470D52F08F00D4C2E6 /* cache_simulator.h */,
+				FC72DC480D52F08F00D4C2E6 /* connectivity_graph.h */,
+				FC72DC490D52F08F00D4C2E6 /* graph_array.h */,
+				FC72DC4A0D52F08F00D4C2E6 /* heap_array.h */,
+				FC72DC4B0D52F08F00D4C2E6 /* policy.h */,
+				FC72DC4C0D52F08F00D4C2E6 /* types.h */,
+			);
+			path = detail;
+			sourceTree = "<group>";
+		};
+		FC72DC4F0D52F09400D4C2E6 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				FC72DC500D52F09400D4C2E6 /* connectivity_graph.cpp */,
+				FC72DC510D52F09400D4C2E6 /* policy.cpp */,
+				FC72DC520D52F09400D4C2E6 /* tri_stripper.cpp */,
+			);
+			name = src;
+			path = tristripper/src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC045055464E500DB518D /* libstrip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "libstrip" */;
+			buildPhases = (
+				D2AAC044055464E500DB518D /* Sources */,
+				D289987405E68DCB004EDB86 /* Frameworks */,
+				FC72DC340D52F04500D4C2E6 /* Copy Public Headers */,
+				FC72DC610D52F0C900D4C2E6 /* Copy Private Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libstrip;
+			productName = libstrip;
+			productReference = D2AAC046055464E500DB518D /* libstrip.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "libstrip" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* libstrip */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC045055464E500DB518D /* libstrip */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC044055464E500DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC72DC530D52F09400D4C2E6 /* connectivity_graph.cpp in Sources */,
+				FC72DC540D52F09400D4C2E6 /* policy.cpp in Sources */,
+				FC72DC550D52F09400D4C2E6 /* tri_stripper.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91EC08733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/../build/Support";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				PRODUCT_NAME = strip;
+				SYMROOT = "";
+				TRISTRIPDIR = $PROJECT_DIR/tristripper;
+				USER_HEADER_SEARCH_PATHS = $TRISTRIPDIR/include;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		1DEB91ED08733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/../build/Support";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = /usr/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				PRODUCT_NAME = strip;
+				SYMROOT = "";
+				TRISTRIPDIR = $PROJECT_DIR/tristripper;
+				USER_HEADER_SEARCH_PATHS = $TRISTRIPDIR/include;
+			};
+			name = Release;
+		};
+		1DEB91F008733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+			};
+			name = Debug;
+		};
+		1DEB91F108733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "libstrip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91EC08733DB70010E9CD /* Debug */,
+				1DEB91ED08733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "libstrip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91F008733DB70010E9CD /* Debug */,
+				1DEB91F108733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

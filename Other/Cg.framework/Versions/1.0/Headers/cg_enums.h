@@ -1,7 +1,7 @@
 
 /*
  *
- * Copyright (c) 2002, NVIDIA Corporation.
+ * Copyright (c) 2002-2007, NVIDIA Corporation.
  * 
  *  
  * 
@@ -15,7 +15,7 @@
  * 
  * In consideration of your agreement to abide by the following terms, and 
  * subject to these terms, NVIDIA grants you a personal, non-exclusive license,
- * under NVIDIA’s copyrights in this original NVIDIA software (the "NVIDIA 
+ * under NVIDIA's copyrights in this original NVIDIA software (the "NVIDIA 
  * Software"), to use, reproduce, modify and redistribute the NVIDIA 
  * Software, with or without modifications, in source and/or binary forms; 
  * provided that if you redistribute the NVIDIA Software, you must retain the 
@@ -91,6 +91,22 @@ CG_ENUM_MACRO(CG_LITERAL, 4118)
 CG_ENUM_MACRO(CG_VERSION, 4119)
 CG_ENUM_MACRO(CG_ROW_MAJOR, 4120)
 CG_ENUM_MACRO(CG_COLUMN_MAJOR, 4121)
+CG_ENUM_MACRO(CG_FRAGMENT, 4122)
+CG_ENUM_MACRO(CG_VERTEX, 4123)
+CG_ENUM_MACRO(CG_POINT, 4124)
+CG_ENUM_MACRO(CG_LINE, 4125)
+CG_ENUM_MACRO(CG_LINE_ADJ, 4126)
+CG_ENUM_MACRO(CG_TRIANGLE, 4127)
+CG_ENUM_MACRO(CG_TRIANGLE_ADJ, 4128)
+CG_ENUM_MACRO(CG_POINT_OUT, 4129)
+CG_ENUM_MACRO(CG_LINE_OUT, 4130)
+CG_ENUM_MACRO(CG_TRIANGLE_OUT, 4131)
+CG_ENUM_MACRO(CG_IMMEDIATE_PARAMETER_SETTING, 4132)
+CG_ENUM_MACRO(CG_DEFERRED_PARAMETER_SETTING, 4133)
+CG_ENUM_MACRO(CG_NO_LOCKS_POLICY, 4134)
+CG_ENUM_MACRO(CG_THREAD_SAFE_POLICY, 4135)
+CG_ENUM_MACRO(CG_FORCE_UPPER_CASE_POLICY, 4136)
+CG_ENUM_MACRO(CG_UNCHANGED_CASE_POLICY, 4137)
 #undef CG_ENUM_MACRO
 
 

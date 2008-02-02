@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2002, NVIDIA Corporation.
+ * Copyright (c) 2002-2007, NVIDIA Corporation.
  * 
  *  
  * 
@@ -14,7 +14,7 @@
  * 
  * In consideration of your agreement to abide by the following terms, and 
  * subject to these terms, NVIDIA grants you a personal, non-exclusive license,
- * under NVIDIA’s copyrights in this original NVIDIA software (the "NVIDIA 
+ * under NVIDIA's copyrights in this original NVIDIA software (the "NVIDIA 
  * Software"), to use, reproduce, modify and redistribute the NVIDIA 
  * Software, with or without modifications, in source and/or binary forms; 
  * provided that if you redistribute the NVIDIA Software, you must retain the 
@@ -78,6 +78,7 @@ CG_PROFILE_MACRO(DX9Vertex20,vs_2_0,VS_2_0,"vs_2_0",6154,1)
 CG_PROFILE_MACRO(DX9Vertex2x,vs_2_x,VS_2_X,"vs_2_x",6155,1)
 CG_PROFILE_MACRO(DX9Vertex2sw,vs_2_sw,VS_2_SW,"vs_2_sw",6156,1)
 CG_PROFILE_MACRO(DX9Vertex30,vs_3_0,VS_3_0,"vs_3_0",6157,1)
+CG_PROFILE_MACRO(DX9VertexHLSL,hlslv, HLSLV,"hlslv",6158,1)
 
 CG_PROFILE_MACRO(DX9Pixel11,ps_1_1,PS_1_1,"ps_1_1",6159,0)
 CG_PROFILE_MACRO(DX9Pixel12,ps_1_2,PS_1_2,"ps_1_2",6160,0)
@@ -86,6 +87,7 @@ CG_PROFILE_MACRO(DX9Pixel20,ps_2_0,PS_2_0,"ps_2_0",6162,0)
 CG_PROFILE_MACRO(DX9Pixel2x,ps_2_x,PS_2_X,"ps_2_x",6163,0)
 CG_PROFILE_MACRO(DX9Pixel2sw,ps_2_sw,PS_2_SW,"ps_2_sw",6164,0)
 CG_PROFILE_MACRO(DX9Pixel30,ps_3_0,PS_3_0,"ps_3_0",6165,0)
+CG_PROFILE_MACRO(DX9PixelHLSL,hlslf,HLSLF,"hlslf",6166,0)
 
 CG_PROFILE_MACRO(Generic,           generic, GENERIC, "generic", 7002,0)
 

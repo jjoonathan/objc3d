@@ -60,6 +60,22 @@ void initP(O3StructArray* self) {
 	return self;
 }
 
+- (O3StructArray*)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l {
+	O3SuperInitOrDie(); initP(self);
+	O3StructType* t = O3StructTypeForName(name);
+	if (!t) return nil;
+	[self setStructType:t];
+	[self setRawDataNoCopy:[NSMutableData dataWithBytesNoCopy:bytes length:l freeWhenDone:YES]];
+	return self;
+}
+
+- (O3StructArray*)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l {
+	O3SuperInitOrDie(); initP(self);
+	[self setStructType:t];
+	[self setRawDataNoCopy:[NSMutableData dataWithBytesNoCopy:bytes length:l freeWhenDone:YES]];
+	return self;
+}
+
 - (O3StructArray*)initWithType:(O3StructType*)type rawData:(NSData*)dat {
 	O3SuperInitOrDie(); initP(self);
 	[self setStructType:type];
@@ -162,7 +178,7 @@ void initP(O3StructArray* self) {
 }
 
 - (BOOL)setStructType:(O3StructType*)structType {
-	O3Asrt(structType!=nil);
+	if (!structType) return NO;
 	if (structType==mStructType) return YES;
 	O3StructArrayLock(self);
 	O3Assert(structType, @"Cannot change structure type from %@ to nil", mStructType);
@@ -225,14 +241,8 @@ void initP(O3StructArray* self) {
 		return;
 	}
 	NSData* dat = [mStructType deportabalizeStructs:pdat];
-	const void* cbytes = [dat bytes];
-	UIntP dplen = [dat length];
-	void* b = malloc(100); free(b);
-	void* tbytes = malloc(dplen);
-	memcpy(tbytes,cbytes,dplen);
-	NSMutableData* newbuf = [[NSMutableData alloc] initWithBytesNoCopy:tbytes length:dplen freeWhenDone:YES];
-	O3Assign(newbuf, mData);
-	[newbuf release];
+	O3Assign([dat mutableCopy], mData);
+	[dat release];
 }
 
 - (NSData*)structAtIndex:(UIntP)idx {

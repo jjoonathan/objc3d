@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.5">
+<plist version="2.0">
 <dict>
 	<key>CFBundleGetInfoString</key>
-	<string>NVIDIA Cg version 1.5</string>
+	<string>NVIDIA Cg version 2.0</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.nvidia.cg</string>
 	<key>CFBundleName</key>
 	<string>NVIDIA Cg</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.5.0b8</string>
+	<string>2.0.0010</string>
 	<key>IFMajorVersion</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>IFMinorVersion</key>
-	<integer>5</integer>
+	<integer>0</integer>
 	<key>IFPkgFlagAllowBackRev</key>
 	<false/>
 	<key>IFPkgFlagAuthorizationAction</key>

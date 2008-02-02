@@ -113,8 +113,9 @@ O3RawData O3CTypeDeportabalize(O3CType type, const void* fbytes, void* tbytes, U
 			UIntP to_offset = i*tstride + j*type_size;\
 			CTYPE val = O3ByteswapLittleToHost(*((const CTYPE*)((const UInt8*)fbytes+from_offset)));\
 			*((CTYPE*)((UInt8*)tbytes+to_offset)) = val;\
+			} \
 			break;\
-			}
+
 		O3CTypeDefines
 		#undef DefCType
 		default:

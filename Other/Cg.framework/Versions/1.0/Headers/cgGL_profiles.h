@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2002, NVIDIA Corporation.
+ * Copyright (c) 2002-2007, NVIDIA Corporation.
  * 
  *  
  * 
@@ -14,7 +14,7 @@
  * 
  * In consideration of your agreement to abide by the following terms, and 
  * subject to these terms, NVIDIA grants you a personal, non-exclusive license,
- * under NVIDIA’s copyrights in this original NVIDIA software (the "NVIDIA 
+ * under NVIDIA's copyrights in this original NVIDIA software (the "NVIDIA 
  * Software"), to use, reproduce, modify and redistribute the NVIDIA 
  * Software, with or without modifications, in source and/or binary forms; 
  * provided that if you redistribute the NVIDIA Software, you must retain the 
@@ -61,6 +61,9 @@ CG_PROFILE_MACRO(Vertex40,vp40,VP40,"vp40",7001,1)
 CG_PROFILE_MACRO(GLSLVertex,glslv,GLSLV,"glslv",7007,1)
 CG_PROFILE_MACRO(GLSLFragment,glslf,GLSLF,"glslf",7008,0)
 CG_PROFILE_MACRO(GLSLCombined, glslc, GLSLC, "glslc", 7009, 0)
+CG_PROFILE_MACRO(GPUFragment,gpu_fp,GPU_FP,"gp4fp",7010,0)
+CG_PROFILE_MACRO(GPUVertex,gpu_vp,GPU_VP,"gp4vp",7011,1)
+CG_PROFILE_MACRO(GPUGeometry,gpu_gp,GPU_GP,"gp4gp",7012,0)
 
 #ifndef CG_IN_PROFILES_INCLUDE
 # undef CG_PROFILE_MACRO

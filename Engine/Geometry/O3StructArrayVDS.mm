@@ -92,7 +92,7 @@ O3DefaultO3InitializeImplementation
 }
 
 /************************************/ #pragma mark GL /************************************/
-///Binds and returns count
+///Binds and returns number of triangles that can be rendered
 - (UIntP)bind {
 	NSData* dat;
 	O3StructType* type;
@@ -172,6 +172,7 @@ O3DefaultO3InitializeImplementation
 				[NSException raise:O3VertexDataTypeUnrecognizedException
 	                        format:@"[O3StructArrayVDS bindAsSourceForVertexDataType...] does not recognize %i as a valid vertex [dat glPtrForBindingArray] type. Note that for vertex attributes, you should use the bindAsSourceForVertexAttribute methods."];
 		}
+		O3Asrt(vps);
 		return [mStructArray count]*vps;
 }
 

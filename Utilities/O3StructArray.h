@@ -25,6 +25,8 @@
 - (O3StructArray*)initWithType:(O3StructType*)type portableData:(NSData*)dat;
 - (O3StructArray*)initWithType:(O3StructType*)type capacity:(UIntP)countGuess;
 - (O3StructArray*)initWithTypeNamed:(NSString*)name;
+- (O3StructArray*)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l;
+- (O3StructArray*)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l;
 - (O3StructArray*)initByCompoundingArrays:(O3StructArray*)arr,...;
 
 //Access
@@ -74,6 +76,7 @@
 
 //Operations
 - (O3CType)compressIntegerType; ///Sets to the smallest integer type that can hold all the receiver's values
+- (O3StructArray*)uniqueify;
 - (O3StructArray*)uniqueifyWithComparator:(O3StructArrayComparator)comp context:(void*)ctx; ///Uniqueifys each object in the receiver with the given comparator (or the default if nil), then returns a compacted index array that would give the original order of the receiver.
 @end
 

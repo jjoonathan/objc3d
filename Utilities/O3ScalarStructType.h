@@ -9,6 +9,8 @@
 #import "O3CTypes.h"
 #import "O3VecStructType.h"
 
+#define O3ScalarStructTypeOf(t) [O3ScalarStructType scalarTypeWithCType:O3CTypeEncoded(@encode(t))]
+
 #define O3ScalarStructTypeDefines /*to add a new type, add a DefType(name) here*/                   \
 DefType(O3FloatType,O3FloatCType,@"f",float); \
 DefType(O3DoubleType,O3DoubleCType,@"d",double);\
@@ -19,7 +21,8 @@ DefType(O3Int64Type,O3Int64CType,@"i64",Int64);\
 DefType(O3UInt8Type,O3UInt8CType,@"ui8",UInt8);\
 DefType(O3UInt16Type,O3UInt16CType,@"ui16",UInt16);\
 DefType(O3UInt32Type,O3UInt32CType,@"ui32",UInt32);\
-DefType(O3UInt64Type,O3UInt64CType,@"ui64",UInt64);
+DefType(O3UInt64Type,O3UInt64CType,@"ui64",UInt64);\
+DefType(O3UIntPType,O3UIntPCType,@"uiP",UIntP);
 
 @interface O3ScalarStructType : O3StructType {
 	O3CType mType;
@@ -31,6 +34,11 @@ DefType(O3UInt64Type,O3UInt64CType,@"ui64",UInt64);
 + (void)o3init;
 @end
 
+#ifdef __cplusplus
+#define O3SACCast(ARR, CTYPE) O3SACTypeCast(ARR, @encode(CTYPE))
+#endif
+@class O3StructArray;
+O3StructArray* O3SACTypeCast(O3StructArray* arr, const char* tname);
 
 #define DefType(NAME,TYPE,SNAME,CTYPE) O3ScalarStructType* NAME ();
 O3ScalarStructTypeDefines

@@ -6,6 +6,7 @@
  */
 #import "O3VecStructType.h"
 #import "O3ScalarStructType.h"
+#import "O3GPUData.h"
 NSOpenGLContext* gO3DefaultGLContext;
  
 void O3FailAssertt() {
@@ -45,4 +46,13 @@ O3EXTERN_C void O3Init() {
 
 O3EXTERN_C void O3GLBreak() {
 	glMap1f(GL_ZERO, 0., 0., 0, 0, NULL);
+}
+
+O3EXTERN_C void* O3NSDataDup(NSData* dat) {
+	if (!dat) return nil;
+	UIntP len = [dat length];
+	void* r = malloc(len);
+	memcpy(r, [dat bytes], len);
+	[dat relinquishBytes];
+	return r;
 }

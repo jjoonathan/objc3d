@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2002, NVIDIA Corporation.
+ * Copyright (c) 2002-2007, NVIDIA Corporation.
  * 
  *  
  * 
@@ -14,7 +14,7 @@
  * 
  * In consideration of your agreement to abide by the following terms, and 
  * subject to these terms, NVIDIA grants you a personal, non-exclusive license,
- * under NVIDIA’s copyrights in this original NVIDIA software (the "NVIDIA 
+ * under NVIDIA's copyrights in this original NVIDIA software (the "NVIDIA 
  * Software"), to use, reproduce, modify and redistribute the NVIDIA 
  * Software, with or without modifications, in source and/or binary forms; 
  * provided that if you redistribute the NVIDIA Software, you must retain the 
@@ -182,5 +182,10 @@ CG_DATATYPE_MACRO(Bool4x4,bool4x4,CG_BOOL4x4,CG_BOOL,4,4,CG_PARAMETERCLASS_MATRI
 CG_DATATYPE_MACRO(String,string,CG_STRING,CG_STRING,0,1,CG_PARAMETERCLASS_OBJECT)
 CG_DATATYPE_MACRO(Program,program,CG_PROGRAM_TYPE,CG_PROGRAM_TYPE,0,0,CG_PARAMETERCLASS_OBJECT)
 CG_DATATYPE_MACRO(Texture,texture,CG_TEXTURE,CG_TEXTURE,0,0,CG_PARAMETERCLASS_OBJECT)
-
+CG_DATATYPE_MACRO(Sampler1DARRAY,sampler1DARRAY,CG_SAMPLER1DARRAY,CG_SAMPLER1DARRAY,0,0,CG_PARAMETERCLASS_SAMPLER)
+CG_DATATYPE_MACRO(Sampler2DARRAY,sampler2DARRAY,CG_SAMPLER2DARRAY,CG_SAMPLER2DARRAY,0,0,CG_PARAMETERCLASS_SAMPLER)
+CG_DATATYPE_MACRO(SamplerCUBEARRAY,samplerCUBEARRAY,CG_SAMPLERCUBEARRAY,CG_SAMPLERCUBEARRAY,0,0,CG_PARAMETERCLASS_SAMPLER)
+CG_DATATYPE_MACRO(VertexShader, vertexshader, CG_VERTEXSHADER_TYPE, CG_VERTEXSHADER_TYPE, 0, 0, CG_PARAMETERCLASS_OBJECT)
+CG_DATATYPE_MACRO(PixelShader, pixelshader, CG_PIXELSHADER_TYPE, CG_PIXELSHADER_TYPE, 0, 0, CG_PARAMETERCLASS_OBJECT)
+CG_DATATYPE_MACRO(Sampler, sampler, CG_SAMPLER, CG_SAMPLER, 0, 0, CG_PARAMETERCLASS_SAMPLER)
 #undef CG_DATATYPE_MACRO

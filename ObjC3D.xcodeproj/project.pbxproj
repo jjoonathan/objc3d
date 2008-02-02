@@ -190,12 +190,6 @@
 		FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE040CF897DB00325C54 /* O3GPUData.mm */; };
 		FC63EE3B0CF9DA8400325C54 /* O3ConcreteMeshType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE3C0CF9DA8400325C54 /* O3ConcreteMeshType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */; };
-		FC63EE450CF9DAB100325C54 /* cache_simulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */; settings = {ATTRIBUTES = (); }; };
-		FC63EE460CF9DAB100325C54 /* graph_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE400CF9DAB100325C54 /* graph_array.h */; settings = {ATTRIBUTES = (); }; };
-		FC63EE470CF9DAB100325C54 /* heap_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE410CF9DAB100325C54 /* heap_array.h */; settings = {ATTRIBUTES = (); }; };
-		FC63EE480CF9DAB100325C54 /* stdafx.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE420CF9DAB100325C54 /* stdafx.h */; settings = {ATTRIBUTES = (); }; };
-		FC63EE490CF9DAB100325C54 /* tri_stripper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE430CF9DAB100325C54 /* tri_stripper.cpp */; };
-		FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE440CF9DAB100325C54 /* tri_stripper.h */; settings = {ATTRIBUTES = (); }; };
 		FC63EE570CF9F3D800325C54 /* O3Geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE560CF9F3D800325C54 /* O3Geometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */; };
 		FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -211,6 +205,7 @@
 		FC63F12A0CFA8C7500325C54 /* o3lib.rb in CopyFiles */ = {isa = PBXBuildFile; fileRef = FC63F1290CFA8C6F00325C54 /* o3lib.rb */; };
 		FC66FFCF0D0CABCB00BDD15F /* O3CompoundStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC438B680D02676900DFA46F /* O3CompoundStructType.mm */; };
 		FC66FFD00D0CABCC00BDD15F /* O3CompoundStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC438B670D02676900DFA46F /* O3CompoundStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FC72DCDA0D53F2DF00D4C2E6 /* liblibstrip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC72DC810D52F0F100D4C2E6 /* liblibstrip.a */; };
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FC7CA0FF0D4154EA00F6B849 /* test_struct_array.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA0FE0D4154EA00F6B849 /* test_struct_array.rb */; };
 		FC7CA19C0D41CC6300F6B849 /* tests.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA19B0D41CC6300F6B849 /* tests.rb */; };
@@ -298,6 +293,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = FC2C1BB60C123F790084A599;
 			remoteInfo = ObjC3D.framework;
+		};
+		FC72DC800D52F0F100D4C2E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC046055464E500DB518D /* liblibstrip.a */;
+			remoteInfo = libstrip;
+		};
+		FC72DC990D52F10F00D4C2E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC045055464E500DB518D /* libstrip */;
+			remoteInfo = libstrip;
 		};
 		FC7DD60D0C1C8CAB009D36A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -496,12 +505,6 @@
 		FC63EE040CF897DB00325C54 /* O3GPUData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3GPUData.mm; sourceTree = "<group>"; };
 		FC63EE390CF9DA8400325C54 /* O3ConcreteMeshType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ConcreteMeshType.h; sourceTree = "<group>"; };
 		FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ConcreteMeshType.mm; sourceTree = "<group>"; };
-		FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cache_simulator.h; path = Other/tri_stripper/cache_simulator.h; sourceTree = SOURCE_ROOT; };
-		FC63EE400CF9DAB100325C54 /* graph_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = graph_array.h; path = Other/tri_stripper/graph_array.h; sourceTree = SOURCE_ROOT; };
-		FC63EE410CF9DAB100325C54 /* heap_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = heap_array.h; path = Other/tri_stripper/heap_array.h; sourceTree = SOURCE_ROOT; };
-		FC63EE420CF9DAB100325C54 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = Other/tri_stripper/stdafx.h; sourceTree = SOURCE_ROOT; };
-		FC63EE430CF9DAB100325C54 /* tri_stripper.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = tri_stripper.cpp; path = Other/tri_stripper/tri_stripper.cpp; sourceTree = SOURCE_ROOT; };
-		FC63EE440CF9DAB100325C54 /* tri_stripper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tri_stripper.h; path = Other/tri_stripper/tri_stripper.h; sourceTree = SOURCE_ROOT; };
 		FC63EE560CF9F3D800325C54 /* O3Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Geometry.h; sourceTree = "<group>"; };
 		FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Geometry.mm; sourceTree = "<group>"; };
 		FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3FaceStructType.h; sourceTree = "<group>"; };
@@ -547,6 +550,7 @@
 		FC9680750BFD50A400D7508F /* O3ArchiveFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ArchiveFormat.h; sourceTree = "<group>"; };
 		FCA01CCA0B223F250087DA08 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		FCA35A2F0AA2812D0055819F /* O3Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Vector.h; sourceTree = "<group>"; };
+		FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libstrip.xcodeproj; path = Other/libstrip.xcodeproj; sourceTree = "<group>"; };
 		FCAA6AFE0ABDB78000D2BC75 /* O3Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Global.h; sourceTree = "<group>"; };
 		FCAA6B0C0ABDECE400D2BC75 /* O3Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Math.h; sourceTree = "<group>"; };
 		FCAAB2790AAA03B5001E5A30 /* O3Functions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3Functions.h; sourceTree = "<group>"; };
@@ -643,6 +647,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC72DCDA0D53F2DF00D4C2E6 /* liblibstrip.a in Frameworks */,
 				FC63E2FA0CF3174500325C54 /* Cg.framework in Frameworks */,
 				FC2C1D430C125FDB0084A599 /* libglew.a in Frameworks */,
 				FC2C1D460C125FDB0084A599 /* Cocoa.framework in Frameworks */,
@@ -720,6 +725,7 @@
 		29B97314FDCFA39411CA2CEA /* ObjC3D */ = {
 			isa = PBXGroup;
 			children = (
+				FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */,
 				FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */,
 				FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */,
 				FC2C173C0C11C9700084A599 /* glew.xcodeproj */,
@@ -948,7 +954,6 @@
 				FC63EE3A0CF9DA8400325C54 /* O3ConcreteMeshType.mm */,
 				FCF2AA940D217C04003B8F67 /* O3TestTet.h */,
 				FCF2AA950D217C04003B8F67 /* O3TestTet.mm */,
-				FC63EE3E0CF9DAB100325C54 /* tri_stripper */,
 			);
 			path = Mesh;
 			sourceTree = "<group>";
@@ -1098,20 +1103,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FC63EE3E0CF9DAB100325C54 /* tri_stripper */ = {
-			isa = PBXGroup;
-			children = (
-				FC63EE3F0CF9DAB100325C54 /* cache_simulator.h */,
-				FC63EE400CF9DAB100325C54 /* graph_array.h */,
-				FC63EE410CF9DAB100325C54 /* heap_array.h */,
-				FC63EE420CF9DAB100325C54 /* stdafx.h */,
-				FC63EE430CF9DAB100325C54 /* tri_stripper.cpp */,
-				FC63EE440CF9DAB100325C54 /* tri_stripper.h */,
-			);
-			name = tri_stripper;
-			path = Other/tri_stripper;
-			sourceTree = SOURCE_ROOT;
-		};
 		FC6690A80B63F60800C87AF9 /* Raw Vertex Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1199,6 +1190,14 @@
 				FC35144D0D3D91070000C27C /* O3CTypes.mm */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		FCA8BA540D5295BF004AE414 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC72DC810D52F0F100D4C2E6 /* liblibstrip.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FCB0166B0B4EAE8900FBFAC2 /* Other */ = {
@@ -1404,11 +1403,6 @@
 				FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */,
 				FC4EF1870CEA90B700B14EBF /* O3StructType.h in Headers */,
 				FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */,
-				FC63EE450CF9DAB100325C54 /* cache_simulator.h in Headers */,
-				FC63EE460CF9DAB100325C54 /* graph_array.h in Headers */,
-				FC63EE470CF9DAB100325C54 /* heap_array.h in Headers */,
-				FC63EE480CF9DAB100325C54 /* stdafx.h in Headers */,
-				FC63EE4A0CF9DAB100325C54 /* tri_stripper.h in Headers */,
 				FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */,
 				FC63EFCE0CFA287600325C54 /* O3StructArrayVDS.h in Headers */,
 				FC66FFD00D0CABCC00BDD15F /* O3CompoundStructType.h in Headers */,
@@ -1445,6 +1439,7 @@
 				FC2C1C830C125FC90084A599 /* PBXTargetDependency */,
 				FC2C204E0C12FFD40084A599 /* PBXTargetDependency */,
 				FC56F1730D331EFE0083E421 /* PBXTargetDependency */,
+				FC72DC9A0D52F10F00D4C2E6 /* PBXTargetDependency */,
 			);
 			name = ObjC3D.framework;
 			productName = ObjC3D.framework;
@@ -1527,6 +1522,10 @@
 					ProjectRef = FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */;
 				},
 				{
+					ProductGroup = FCA8BA540D5295BF004AE414 /* Products */;
+					ProjectRef = FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */;
+				},
+				{
 					ProductGroup = FC2C20440C12FFA90084A599 /* Products */;
 					ProjectRef = FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */;
 				},
@@ -1556,6 +1555,13 @@
 			fileType = archive.ar;
 			path = liblib3ds.a;
 			remoteRef = FC56F1700D331EEC0083E421 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FC72DC810D52F0F100D4C2E6 /* liblibstrip.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblibstrip.a;
+			remoteRef = FC72DC800D52F0F100D4C2E6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FC7DD60E0C1C8CAB009D36A2 /* Log4Cocoa.framework */ = {
@@ -1741,7 +1747,6 @@
 				FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */,
 				FC63EE060CF897DB00325C54 /* O3GPUData.mm in Sources */,
 				FC63EE3C0CF9DA8400325C54 /* O3ConcreteMeshType.mm in Sources */,
-				FC63EE490CF9DAB100325C54 /* tri_stripper.cpp in Sources */,
 				FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */,
 				FC63EE890CF9F95F00325C54 /* O3FaceStructType.mm in Sources */,
 				FC63EFCF0CFA287600325C54 /* O3StructArrayVDS.mm in Sources */,
@@ -1809,6 +1814,11 @@
 			isa = PBXTargetDependency;
 			target = FC2C1BB60C123F790084A599 /* ObjC3D.framework */;
 			targetProxy = FC63E4210CF3C52400325C54 /* PBXContainerItemProxy */;
+		};
+		FC72DC9A0D52F10F00D4C2E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libstrip;
+			targetProxy = FC72DC990D52F10F00D4C2E6 /* PBXContainerItemProxy */;
 		};
 		FCEA98FD0C9E1D3C00D93A70 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1938,8 +1948,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1971,8 +1983,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2007,8 +2021,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2041,8 +2057,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (c) 2002-2004, NVIDIA Corporation.
+ * Copyright (c) 2002-2007, NVIDIA Corporation.
  * 
  *  
  * 
@@ -14,7 +14,7 @@
  * 
  * In consideration of your agreement to abide by the following terms, and 
  * subject to these terms, NVIDIA grants you a personal, non-exclusive license,
- * under NVIDIA’s copyrights in this original NVIDIA software (the "NVIDIA 
+ * under NVIDIA's copyrights in this original NVIDIA software (the "NVIDIA 
  * Software"), to use, reproduce, modify and redistribute the NVIDIA 
  * Software, with or without modifications, in source and/or binary forms; 
  * provided that if you redistribute the NVIDIA Software, you must retain the 
@@ -255,6 +255,7 @@ CG_ERROR_MACRO(45,
                CG_INVALID_TECHNIQUE_HANDLE_ERROR,
                "Invalid technique handle.")
 
+// Do not use this!  Use CG_INVALID_PARAM_HANDLE_ERROR instead.
 CG_ERROR_MACRO(46,
                CG_INVALID_PARAMETER_HANDLE_ERROR,
                "Invalid parameter handle.")
@@ -294,6 +295,26 @@ CG_ERROR_MACRO(54,
 CG_ERROR_MACRO(55,
                CG_DUPLICATE_NAME_ERROR,
                "This name is already in use.")
+
+CG_ERROR_MACRO(56,
+               CG_INVALID_OBJ_HANDLE_ERROR,
+               "Invalid object handle.")
+
+CG_ERROR_MACRO(57,
+               CG_INVALID_BUFFER_HANDLE_ERROR,
+               "Invalid buffer handle.")
+
+CG_ERROR_MACRO(58,
+               CG_BUFFER_INDEX_OUT_OF_RANGE_ERROR,
+               "Buffer index is out of bounds.")
+
+CG_ERROR_MACRO(59,
+               CG_BUFFER_ALREADY_MAPPED_ERROR,
+               "The buffer is already mapped.")
+
+CG_ERROR_MACRO(60,
+               CG_BUFFER_UPDATE_NOT_ALLOWED_ERROR,
+               "The buffer cannot be updated.")
 
 #undef CG_ERROR_MACRO
 

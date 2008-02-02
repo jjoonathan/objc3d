@@ -242,3 +242,5 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 #define O3DestroyCppVector(type, name) O3DestroyCppContainer(type, name, *, )
 
 #define O3DefaultO3InitializeImplementation +(void)initialize{O3Init();}
+
+O3EXTERN_C void* O3NSDataDup(NSData* dat);

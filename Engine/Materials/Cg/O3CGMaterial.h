@@ -32,6 +32,7 @@ struct O3CGMaterialParameterPair {
  * @bug Possible bug: doesn't retain target parameters
  */
 @interface O3CGMaterial : NSObject {
+	NSString* mMaterialTypeName;
 	NSObject<O3MultipassDirector, O3HasCGParameters>* mMaterialType;	///<The type of material (the shader that implements this type of material)
 	O3KVCHelper* mParameterKVCHelper;
 #ifdef __cplusplus
@@ -44,8 +45,11 @@ struct O3CGMaterialParameterPair {
 }
 //Creation
 - (id)initWithMaterialType:(NSObject<O3MultipassDirector, O3HasCGParameters>*)materialType;
+- (id)initWithMaterialTypeNamed:(NSString*)typeName;
 
 //Material type
+- (NSString*)materialTypeName;
+- (void)setMaterialTypeName:(NSString*)newName;
 - (NSObject<O3MultipassDirector, O3HasCGParameters>*)materialType;
 - (void)setMaterialType:(NSObject<O3MultipassDirector, O3HasCGParameters>*)materialType;
 
