@@ -7,12 +7,19 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
+@class O32DStructArray, O3StructType, O3StructArray;
+O32DStructArray* O32DStructArrayWithBytesTypeRowsCols(void* bytes, O3StructType* t, const char* octype, UIntP r, UIntP c, BOOL rm);
+double* O3StructArrayValuesAsDoubles(O3StructArray* self, UIntP* ct);
+void O32DStructArrayGetR_C_RowMajor_(O32DStructArray* self, UIntP* r, UIntP* c, BOOL* rm);
 
 #define O3Mat_TT	template <typename TYPE, int ROWS, int COLUMNS>
 #define O3Mat_T	O3Mat<TYPE, ROWS, COLUMNS>
 #define O3Mat_TTT2 template<typename TYPE2>
 #define O3Mat_TT2	O3Mat_TT O3Mat_TTT2
 #define O3Mat_T2	O3Mat<TYPE2, ROWS, COLUMNS>
+
+#define O3MatIndexForLocation(numRows, numCols, row, col) (numRows*col + row)
+#define O3MatIsRowMajor (O3MatIndexForLocation(3,3,0,2)==2)
 
 /*
  The O3Mat class represents a column-major (translation elements are indexes 12, 13, and 14 = [0][3], [1][3], and [2][3]) matrix. 
@@ -26,12 +33,12 @@ O3Mat_TT class O3Mat {
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
 	O3Mat_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);};		///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_TTT2 O3Mat(const O3Mat_T2& other_matrix) {Set(other_matrix);};				///<Construct a matrix with the contents of other_matrix
-	O3Mat(NSValue* v) {SetValue(v);}
+	O3Mat(O32DStructArray* v) {SetValue(v);}
 	
   public: //Setters
 	O3Mat_TTT2 O3Mat_T& Set(const TYPE2* array, bool row_major=false, unsigned arows=ROWS, unsigned acols=COLUMNS);	///<Fills the receiver with the elements in array, specifying weather array is row or column major (or not).
 	O3Mat_TTT2 O3Mat_T& Set(const O3Mat_T2& other_matrix);		///<Fills the receiver with the contents of other_matrix.
-	O3Mat_T& SetValue(NSValue* val);
+	O3Mat_T& SetValue(O32DStructArray* val);
 	
   public: //RowAccessor helper class
 	class RowAccessor { ///<RowAccessor is a helper class which allows matricies to be accessed like mat[i][j]
@@ -85,7 +92,7 @@ O3Mat_TT class O3Mat {
   public: //Type conversion
 	operator const TYPE* () const {return v;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
 	operator TYPE* () {return v;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
-	NSValue* Value() const {return [NSValue valueWithBytes:this objCType:@encode(O3Mat_T)];}
+	O32DStructArray* Value() const {return O32DStructArrayWithBytesTypeRowsCols(O3MemDup(this,sizeof(O3Mat_T)), @encode(TYPE), ROWS, COLUMNS, O3MatIsRowMajor);}
 	
   public: //Interface
 	std::string Description() const; ///<Returns a string describing the receiver

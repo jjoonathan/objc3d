@@ -42,6 +42,20 @@ O3DefaultO3InitializeImplementation
 	return nil;
 }
 
+double O3DoubleAtIndex_of_ofType_(UIntP idx, const void* bytes, O3StructType* t) {
+	#ifdef O3DEBUG
+	static Class sst_class = nil; if (!sst_class) sst_class = [O3ScalarStructType class];
+	O3Asrt(*(Class*)bytes == sst_class);
+	#endif
+	
+	#define DefType(NAME,TYPE,SNAME,CTYPE) if (t==g ## NAME) return *((CTYPE*)bytes+idx);
+	O3ScalarStructTypeDefines
+	#undef DefType
+	
+	O3Asrt(NO);
+	return 0;
+}
+
 /************************************/ #pragma mark O3StructType /************************************/
 - (UIntP)structSize {return O3CTypeSize(mType);}
 

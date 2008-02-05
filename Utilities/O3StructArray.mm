@@ -38,7 +38,7 @@ void initP(O3StructArray* self) {
 	self->mData = [[NSMutableData alloc] init];
 }
 
-- (O3StructArray*)initWithType:(O3StructType*)type {
+- (id)initWithType:(O3StructType*)type {
 	O3SuperInitOrDie(); initP(self);
 	if (!type) {
 		[self release];
@@ -48,19 +48,36 @@ void initP(O3StructArray* self) {
 	return self;
 }
 
-- (O3StructArray*)initWithTypeNamed:(NSString*)name {
+- (id)initWithTypeNamed:(NSString*)name {
 	O3StructType* t = O3StructTypeForName(name);
 	return [self initWithType:t];
 }
 
-- (O3StructArray*)initWithType:(O3StructType*)type capacity:(UIntP)countGuess {
+- (id)initWithArray:(NSArray*)values {
+	O3Asrt([values count]);
+	NSValue* v = [values objectAtIndex:0];
+	O3Assert([v respondsToSelector:@selector(objCType)], @"The first object in the array must respond to objCType");
+	const char* octype = [v objCType];
+	return [self initWithType:[O3ScalarStructType scalarTypeWithCType:O3CTypeEncoded(octype)]];
+}
+
+- (id)initWithType:(O3StructType*)type array:(NSArray*)values {
+	if (![self initWithType:type capacity:[values count]]) return nil;
+	NSEnumerator* valuesEnumerator = [values objectEnumerator];
+	while (id o = [valuesEnumerator nextObject]) {
+		[self addObject:o];
+	}
+	return self;
+}
+
+- (id)initWithType:(O3StructType*)type capacity:(UIntP)countGuess {
 	O3SuperInitOrDie(); initP(self);
 	[self setStructType:type];
 	mData = [[NSMutableData alloc] initWithCapacity:mStructSize*countGuess];
 	return self;
 }
 
-- (O3StructArray*)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l {
+- (id)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l {
 	O3SuperInitOrDie(); initP(self);
 	O3StructType* t = O3StructTypeForName(name);
 	if (!t) return nil;
@@ -69,40 +86,56 @@ void initP(O3StructArray* self) {
 	return self;
 }
 
-- (O3StructArray*)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l {
+- (id)initWithCopiedBytes:(const void*)bytes typeName:(NSString*)name length:(UIntP)l {
+	O3SuperInitOrDie(); initP(self);
+	O3StructType* t = O3StructTypeForName(name);
+	if (!t) return nil;
+	[self setStructType:t];
+	[self setRawDataNoCopy:[NSMutableData dataWithBytes:bytes length:l]];
+	return self;
+}
+
+- (id)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l {
 	O3SuperInitOrDie(); initP(self);
 	[self setStructType:t];
 	[self setRawDataNoCopy:[NSMutableData dataWithBytesNoCopy:bytes length:l freeWhenDone:YES]];
 	return self;
 }
 
-- (O3StructArray*)initWithType:(O3StructType*)type rawData:(NSData*)dat {
+- (id)initWithCopiedBytes:(const void*)bytes type:(O3StructType*)t length:(UIntP)l {
+	O3SuperInitOrDie(); initP(self);
+	[self setStructType:t];
+	[self setRawDataNoCopy:[NSMutableData dataWithBytes:bytes length:l]];
+	return self;
+}
+
+- (id)initWithType:(O3StructType*)type rawData:(NSData*)dat {
 	O3SuperInitOrDie(); initP(self);
 	[self setStructType:type];
 	[self setRawData:dat];
 	return self;
 }
 
-- (O3StructArray*)initWithTypeNamed:(NSString*)name rawData:(NSData*)dat {
+- (id)initWithTypeNamed:(NSString*)name rawData:(NSData*)dat {
 	O3StructType* t = O3StructTypeForName(name);
 	return [self initWithType:t rawData:dat];
 }
 
-- (O3StructArray*)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat {
+- (id)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat {
 	O3SuperInitOrDie(); initP(self);
 	[self setStructType:type];
 	[self setRawDataNoCopy:dat];
 	return self;
 }
 
-- (O3StructArray*)initWithType:(O3StructType*)type portableData:(NSData*)dat {
+- (id)initWithType:(O3StructType*)type portableData:(NSData*)dat {
 	O3SuperInitOrDie(); initP(self);
 	[self setStructType:type];
 	[self setPortableData:dat];
 	return self;
 }
 
-- (O3StructArray*)initByCompoundingArrays:(O3StructArray*)arr,... {
+- (id)initByCompoundingArrays:(O3StructArray*)arr,... {
 	va_list arrs;
 	O3StructArray* a;
 	NSMutableArray* types = [[NSMutableArray alloc] init];
@@ -221,9 +254,13 @@ void initP(O3StructArray* self) {
 }
 
 - (void)setRawDataNoCopy:(NSMutableData*)newData {
-	if ([newData length]%mStructSize) {
-		[self release];
-		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.", mStructType, newData);
+	UIntP len = [newData length];
+	if (mLockCount  &&  len != [mData length]) {
+		O3LogWarn(@"Ignoring setRawDataNoCopy:%@ because of count mismatched on count-locked array",newData);
+		return;
+	}
+	if (len%mStructSize) {
+		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length. Ignoring.", mStructType, newData);
 		return;
 	}
 	O3Assign(newData, mData);
@@ -235,9 +272,12 @@ void initP(O3StructArray* self) {
 
 - (void)setPortableData:(NSData*)pdat {
 	UIntP len = [pdat length];
+	if (mLockCount  &&  len != [mData length]) {
+		O3LogWarn(@"Ignoring setPortableData:%@ because of count mismatched on count-locked array",pdat);
+		return;
+	}
 	if (len%mStructSize) {
-		[self release];
-		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.", mStructType, pdat);
+		O3LogWarn(@"The data a %@ was going to be initialized with (%@) was not a multiple of that struct type's length.  Ignoring.", mStructType, pdat);
 		return;
 	}
 	NSData* dat = [mStructType deportabalizeStructs:pdat];
@@ -261,12 +301,24 @@ void initP(O3StructArray* self) {
 }
 
 - (void)addStruct:(const void*)bytes {
+	if (mLockCount) {
+		O3LogWarn(@"Ignoring addStruct because of count mismatched on count-locked array");
+		return;
+	}
 	[mData appendBytes:bytes length:mStructSize];
 }
 
 - (void*)cPtr {
 	if ([mData isGPUData]) return nil;
 	return [mData mutableBytes];
+}
+
+- (BOOL)countLocked {
+	return mLockCount;
+}
+
+- (void)setCountLocked:(BOOL)cl {
+	mLockCount = cl;
 }
 
 - (void)getRawData:(out NSData**)dat
@@ -443,6 +495,10 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 
 - (O3StructArray*)uniqueify {return [self uniqueifyWithComparator:nil context:nil];}
 - (O3StructArray*)uniqueifyWithComparator:(O3StructArrayComparator)comp context:(void*)ctx {
+	if (mLockCount) {
+		O3LogWarn(@"Ignoring uniqueify and returning nil because of count mismatched on count-locked array");
+		return nil;
+	}
 	O3StructArrayLock(self);
 	comp = comp ?: [mStructType defaultComparator]; O3Asrt(comp);
 	UIntP* old_idxs = [self sortedIndexesWithFunction:comp context:ctx];
@@ -514,6 +570,10 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 
 /************************************/ #pragma mark NSMutableArray /************************************/
 - (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx {
+	if (mLockCount) {
+		O3LogWarn(@"Ignoring insertObject:atIndex: because of count mismatched on count-locked array");
+		return;
+	}
 	O3StructArrayLock(self);
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
 	[mStructType writeObject:obj toBytes:mScratchBuffer];
@@ -522,6 +582,10 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 }
 
 - (void)removeObjectAtIndex:(UIntP)idx {
+	if (mLockCount) {
+		O3LogWarn(@"Ignoring removeObject:atIndex: because of count mismatched on count-locked array");
+		return;
+	}
 	O3StructArrayLock(self);
 	O3Assert(idx<=countP(self), @"Index %i for insertion out of array %@ bounds (%i)", idx, self, countP(self));
 	[mData replaceBytesInRange:rangeOfIdx(self, idx) withBytes:self length:0];
@@ -529,6 +593,10 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 }
 
 - (void)addObject:(NSDictionary*)obj {
+	if (mLockCount) {
+		O3LogWarn(@"Ignoring addObject: because of count mismatched on count-locked array");
+		return;
+	}
 	O3StructArrayLock(self);
 	[mStructType writeObject:obj toBytes:mScratchBuffer];
 	[mData appendBytes:mScratchBuffer length:mStructSize];
@@ -536,6 +604,10 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 }
 
 - (void)addObjects:(NSArray*)arr {
+	if (mLockCount) {
+		O3LogWarn(@"Ignoring %@ because of count mismatched on count-locked array", NSStringFromSelector(_cmd));
+		return;
+	}
 	O3StructArrayLock(self);
 	NSEnumerator* arrEnumerator = [arr objectEnumerator];
 	while (id o = [arrEnumerator nextObject]) {
@@ -546,6 +618,10 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 }
 
 - (void)removeLastObject {
+	if (mLockCount) {
+		O3LogWarn(@"Ignoring %@ because of count mismatched on count-locked array", NSStringFromSelector(_cmd));
+		return;
+	}
 	O3StructArrayLock(self);
 	UIntP oldlen = [mData length];
 	O3Assert(oldlen>mStructSize, @"Attempt to remove last object from empty array %@", self);
@@ -567,5 +643,29 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 	return newType;
 }
 
+- (double*)valuesAsDoublesCount:(out UIntP*)ct {
+	if (![mStructType isKindOfClass:[O3ScalarStructType class]]) {
+		if (ct) *ct = 0;
+		return nil;
+	}
+	O3StructArrayLock(self);
+	
+	O3CType from_t = [(O3ScalarStructType*)mStructType type];
+	UIntP from_stride = [mStructType structSize];
+	O3CType to_t = O3DoubleCType;
+	UIntP count = countP(self);
+	double* ret = (double*)malloc(sizeof(double)*count);
+	const UInt8* b = (const UInt8*)[mData bytes];
+	UIntP i; for(i=0; i<count; i++) O3CTypeTranslateFromTo(from_t, to_t, b+from_stride*i, ret+i);
+	
+	[mData relinquishBytes];
+	O3StructArrayUnlock(self);	
+	if (ct) *ct = count;
+	return ret;
+}
 
 @end
+
+double* O3StructArrayValuesAsDoubles(O3StructArray* self, UIntP* ct) {
+	return [self valuesAsDoublesCount:ct];
+}

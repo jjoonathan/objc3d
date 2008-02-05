@@ -11,8 +11,7 @@
 #include <map>
 #include <string>
 #endif
-@class O3Value;
-@class O3Texture;
+@class vre;
 @class O3KVCHelper;
 @class O3CGAnnotation;
 
@@ -41,7 +40,7 @@
 //Inspectors
 - (NSString*)name;
 - (CGparameter)rawParameter;
-- (O3Value*)value; ///<Returns an ObjC-ized value of the receiver
+- (id)value; ///<Returns an ObjC-ized value of the receiver
 - (int)intValue;
 - (float)floatValue;
 - (double)doubleValue;
@@ -68,7 +67,7 @@
 - (void)setDoubleMatrixValue:(const double*)val rows:(unsigned)rows columns:(unsigned)cols;
 - (void)setDoubleMatrixValue:(const double*)val rows:(unsigned)rows columns:(unsigned)cols rowMajor:(BOOL)rowMajor;
 
-- (void)setValue:(NSObject*)newValue; ///<Sets the value of the receiver to newValue without changing the receiver's type
+- (void)setValue:(id)newValue; ///<Sets the value of the receiver to newValue without changing the receiver's type
 
 //Annotations
 - (id)annotations;

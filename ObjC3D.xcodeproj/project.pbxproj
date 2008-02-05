@@ -154,6 +154,10 @@
 		FC2C1DCC0C127A310084A599 /* O3Vector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FC922FA00AB30F74003878EA /* O3Vector.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = FC35144C0D3D91070000C27C /* O3CTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC35144F0D3D91080000C27C /* O3CTypes.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC35144D0D3D91070000C27C /* O3CTypes.mm */; };
+		FC3937FB0D54F2B3007CA922 /* O32DStructArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FC3937F90D54F2B3007CA922 /* O32DStructArray.h */; };
+		FC3937FC0D54F2B3007CA922 /* O32DStructArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC3937FA0D54F2B3007CA922 /* O32DStructArray.mm */; };
+		FC39387E0D5574F2007CA922 /* O3MatStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC39387C0D5574F2007CA922 /* O3MatStructType.h */; };
+		FC39387F0D5574F2007CA922 /* O3MatStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC39387D0D5574F2007CA922 /* O3MatStructType.mm */; };
 		FC3978A20C6F6BAA00F4AEA5 /* O3Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */; };
 		FC3A0EAB0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */; };
 		FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */ = {isa = PBXBuildFile; fileRef = FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */; };
@@ -443,6 +447,10 @@
 		FC348BC60B435B82000015FE /* O3VertexFormats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VertexFormats.h; sourceTree = "<group>"; };
 		FC35144C0D3D91070000C27C /* O3CTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3CTypes.h; sourceTree = "<group>"; };
 		FC35144D0D3D91070000C27C /* O3CTypes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3CTypes.mm; sourceTree = "<group>"; };
+		FC3937F90D54F2B3007CA922 /* O32DStructArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O32DStructArray.h; sourceTree = "<group>"; };
+		FC3937FA0D54F2B3007CA922 /* O32DStructArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O32DStructArray.mm; sourceTree = "<group>"; };
+		FC39387C0D5574F2007CA922 /* O3MatStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3MatStructType.h; sourceTree = "<group>"; };
+		FC39387D0D5574F2007CA922 /* O3MatStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3MatStructType.mm; sourceTree = "<group>"; };
 		FC3978A10C6F6BAA00F4AEA5 /* O3Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Utilities.mm; sourceTree = "<group>"; };
 		FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ArchiveStatisticsGatherer.h; sourceTree = "<group>"; };
 		FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3ArchiveStatisticsGatherer.mm; sourceTree = "<group>"; };
@@ -1083,10 +1091,14 @@
 				FC55072E0CE17B7D003EE24B /* O3StructType.mm */,
 				FC55072A0CE01E12003EE24B /* O3VecStructType.h */,
 				FC55072B0CE01E12003EE24B /* O3VecStructType.mm */,
+				FC39387C0D5574F2007CA922 /* O3MatStructType.h */,
+				FC39387D0D5574F2007CA922 /* O3MatStructType.mm */,
 				FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */,
 				FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */,
 				FC5507230CDF5354003EE24B /* O3StructArray.h */,
 				FC5507240CDF5354003EE24B /* O3StructArray.mm */,
+				FC3937F90D54F2B3007CA922 /* O32DStructArray.h */,
+				FC3937FA0D54F2B3007CA922 /* O32DStructArray.mm */,
 				FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */,
 				FC63EE870CF9F95F00325C54 /* O3FaceStructType.mm */,
 				FC438B670D02676900DFA46F /* O3CompoundStructType.h */,
@@ -1413,6 +1425,8 @@
 				FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */,
 				FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */,
 				FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */,
+				FC3937FB0D54F2B3007CA922 /* O32DStructArray.h in Headers */,
+				FC39387E0D5574F2007CA922 /* O3MatStructType.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1758,6 +1772,8 @@
 				FC56F1BB0D3328010083E421 /* O33DSUnarchiver.mm in Sources */,
 				FC56F2620D35D0E70083E421 /* O3MeshInstance.mm in Sources */,
 				FC35144F0D3D91080000C27C /* O3CTypes.mm in Sources */,
+				FC3937FC0D54F2B3007CA922 /* O32DStructArray.mm in Sources */,
+				FC39387F0D5574F2007CA922 /* O3MatStructType.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

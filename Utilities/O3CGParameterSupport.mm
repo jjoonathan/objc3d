@@ -9,6 +9,9 @@
 #import "NSValueO3CGShaderAdditions.h"
 #import "O3Texture.h"
 #import "O3EncodingInterpretation.h"
+#import "O32DStructArray.h"
+#import "O3ScalarStructType.h"
+#import "O3GPUData.h"
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>
 
@@ -42,29 +45,30 @@ id O3GetCGAnnotationValue(CGannotation anno) {
 	CGparameterclass anno_class = cgGetTypeClass(anno_type);	
 	switch (anno_class) {
 		case CG_PARAMETERCLASS_SCALAR:
-		case CG_PARAMETERCLASS_VECTOR: //Probably not in an annotation, but oh well
-		case CG_PARAMETERCLASS_MATRIX: { //^x2
+		case CG_PARAMETERCLASS_VECTOR:
+		case CG_PARAMETERCLASS_MATRIX: {
+			if (anno_class==CG_PARAMETERCLASS_MATRIX) O3CLogWarn(@"Matrix annotations are a bit sketchy: it is unknown if they are row major, column major, of if they even exist at all.");
 			CGtype element_type = cgGetTypeBase(anno_type);
 			switch (element_type) {
 				case CG_FLOAT:
 				case CG_HALF: {
-					int count;
-					const float* values = cgGetFloatAnnotationValues(anno, &count);
-					NSValue* to_return;
+					int count; const float* values = cgGetFloatAnnotationValues(anno, &count);
 					int rows, cols; cgGetTypeSizes(anno_type, &rows, &cols);
-					if (rows==1 && cols==1) to_return = [NSNumber numberWithFloat:values[0]];
-					else to_return = [NSValue valueWithBytes:values cgType:anno_type];
-					return to_return;
+					UIntP len = sizeof(float)*rows*cols;
+					if (rows==1 && cols==1) return [NSNumber numberWithFloat:*(float*)values];
+					else return [[[[O32DStructArray alloc] initWithBytes:O3MemDup(values, len) type:O3FloatType() length:len] rows:rows cols:cols rowMajor:YES] autorelease];
+					O3Asrt(NO); return nil;
 				}
 				case CG_INT:
 				case CG_BOOL: {
-					int count;
-					const int* values = cgGetIntAnnotationValues(anno, &count);
-					NSValue* to_return;
-					int rows, cols; cgGetTypeSizes(anno_type, &rows, &cols);
-					if (rows==1 && cols==1) to_return = [NSNumber numberWithInt:values[0]];
-					else to_return = [NSValue valueWithBytes:values cgType:anno_type];
-					return to_return;
+					int count; const int* values = cgGetIntAnnotationValues(anno, &count);
+					int rows, cols; BOOL is_mat = cgGetTypeSizes(anno_type, &rows, &cols);
+					UIntP len = sizeof(float)*rows*cols;
+					O3Asrt(sizeof(int)!=8 /*If so, it is wrong to assume that those are Int32s! (two lines below)*/);
+					if (rows==1 && cols==1) return [NSNumber numberWithInt:*(int*)values];
+					if (cols==1) return [[[O3StructArray alloc] initWithCopiedBytes:values type:O3Int32Type() length:len] autorelease];
+					if (is_mat) return [[[[O32DStructArray alloc] initWithBytes:O3MemDup(values, len) type:O3Int32Type() length:len] rows:rows cols:cols rowMajor:YES] autorelease];
+					O3Asrt(NO); return nil;
 				}
 				default:
 					O3Assert(false , @"O3GetCGAnnotationValue/CG_PARAMETERCLASS_(SCALAR|VECTOR|MATRIX) base type wasn't recognized");
@@ -76,19 +80,14 @@ id O3GetCGAnnotationValue(CGannotation anno) {
 			switch (element_type) {
 				case CG_FLOAT:
 				case CG_HALF: {
-					int count;
-					const float* values = cgGetFloatAnnotationValues(anno, &count);
-					NSMutableArray* to_return = [NSMutableArray array];
-					int i; for (i=0;i<count;i++) [to_return addObject:[NSNumber numberWithFloat:values[i]]];
-					return to_return;
+					int count; const float* values = cgGetFloatAnnotationValues(anno, &count);
+					return [[[O3StructArray alloc] initWithCopiedBytes:values type:O3FloatType() length:sizeof(float)*count] autorelease];
 				}
 				case CG_INT:
 				case CG_BOOL: {
-					int count;
-					const int* values = cgGetIntAnnotationValues(anno, &count);
-					NSMutableArray* to_return = [NSMutableArray array];
-					int i; for (i=0;i<count;i++) [to_return addObject:[NSNumber numberWithInt:values[i]]];
-					return to_return;
+					O3Asrt(sizeof(int)!=8 /*If so, it is wrong to assume that those are Int32s! (two lines below)*/);
+					int count; const int* values = cgGetIntAnnotationValues(anno, &count);
+					return [[[O3StructArray alloc] initWithCopiedBytes:values type:O3Int32Type() length:sizeof(int)*count] autorelease];
 				}
 				default:
 					O3Assert(false , @"O3GetCGAnnotationValue/CG_PARAMETERCLASS_ARRAY base type wasn't recognized");
@@ -114,29 +113,40 @@ id O3GetCGParameterValue(CGparameter param) {
 		case CG_PARAMETERCLASS_SCALAR:
 		case CG_PARAMETERCLASS_VECTOR:
 		case CG_PARAMETERCLASS_MATRIX: {
-			int rows, cols; cgGetTypeSizes(param_type, &rows, &cols);
+			int rows, cols; BOOL is_mat = cgGetTypeSizes(param_type, &rows, &cols);
 			CGtype element_type = cgGetTypeBase(param_type);
 			int param_component_count = rows*cols;
+			O3Asrt(sizeof(int)!=8 /*If so, it is wrong to assume that those are Int32s! (several lines below)*/);
 			switch (element_type) {
 				case CG_FLOAT:
 				case CG_HALF: {
-					float* values = new float[param_component_count];
-					cgGetParameterValuefc(param, param_component_count, values);
-					NSValue* to_return;
-					if (rows==1 && cols==1) to_return = [NSNumber numberWithFloat:values[0]];
-					else to_return = [NSValue valueWithBytes:values cgType:param_type];
-					delete[] values; //Can we do this?
-					return to_return;
+					UIntP len = (param_component_count*sizeof(float));
+					float* values = (float*)malloc(len);
+					cgGetParameterValuefr(param, param_component_count, values);
+					if (rows==1 && cols==1) {
+						id ret = [NSNumber numberWithFloat:*(float*)values];
+						free(values);
+						return ret;
+					} else if (cols==1) {
+						return [[[O3StructArray alloc] initWithBytes:values type:O3FloatType() length:len] autorelease];
+					} else if (is_mat) {
+						return [[[[O32DStructArray alloc] initWithBytes:values type:O3FloatType() length:len] rows:rows cols:cols rowMajor:YES] autorelease];
+					}
 				}
 				case CG_INT:
 				case CG_BOOL: {
-					int* values = new int[param_component_count];
-					cgGetParameterValueic(param, param_component_count, values);
-					NSValue* to_return;
-					if (rows==1 && cols==1) to_return = [NSNumber numberWithInt:values[0]];
-					else to_return = [NSValue valueWithBytes:values cgType:param_type];
-					delete[] values; //Can we do this?
-					return to_return;
+					UIntP len = (param_component_count*sizeof(int));
+					int* values = (int*)malloc(len);
+					cgGetParameterValueir(param, param_component_count, values);
+					if (rows==1 && cols==1) {
+						id ret = [NSNumber numberWithInt:*(int*)values];
+						free(values);
+						return ret;
+					} else if (cols==1) {
+						return [[[O3StructArray alloc] initWithBytes:values type:O3Int32Type() length:len] autorelease];
+					} else if (is_mat) {
+						return [[[[O32DStructArray alloc] initWithBytes:values type:O3Int32Type() length:len] rows:rows cols:cols rowMajor:YES] autorelease];
+					}
 				}
 				default:
 					O3Assert(false , @"O3CGShader/valueForKey/CG_PARAMETERCLASS_(SCALAR|VECTOR|MATRIX) base type wasn't recognized");
@@ -147,35 +157,36 @@ id O3GetCGParameterValue(CGparameter param) {
 			CGtype member_type = cgGetArrayType(param);	//The type of the members of the array (FLOAT4x4, etc)
 			CGtype element_type = cgGetTypeBase(member_type); //The atomic type in the array (INT, FLOAT, etc)
 			int members = cgGetArrayTotalSize(param);
-			int rows, cols; cgGetTypeSizes(member_type, &rows, &cols);
+			int rows, cols; BOOL is_mat = cgGetTypeSizes(member_type, &rows, &cols);
 			int atoms_per_element = rows*cols;
 			int total_atoms = atoms_per_element*members;
+			O3Asrt(sizeof(int)!=8 /*If so, it is wrong to assume that those are Int32s! (several lines below)*/);
 			switch (element_type) {
 				case CG_FLOAT:
 				case CG_HALF: {
-					float* values = new float[total_atoms];
-					float* values_itr = values;
-					cgGetParameterValuefc(param, total_atoms, values);
-					NSMutableArray* to_return = [NSMutableArray array];
-					int i; for (i=0;i<members;i++) {
-						[to_return addObject:[NSValue valueWithBytes:values_itr cgType:param_type]];
-						values_itr += atoms_per_element;
+					UIntP len = total_atoms*sizeof(float);
+					float* values = (float*)malloc(len);
+					cgGetParameterValuefr(param, total_atoms, values);
+					if (rows==1 && cols==1) {
+						return [[[O3StructArray alloc] initWithBytes:values type:O3FloatType() length:len] autorelease];
+					} else if (cols==1) {
+						return [[[O3StructArray alloc] initWithBytes:values type:O3FloatType() length:len] autorelease];
+					} else if (is_mat) {
+						return [[[[O32DStructArray alloc] initWithBytes:values type:O3FloatType() length:len] rows:rows cols:cols rowMajor:YES] autorelease];
 					}
-					delete[] values; //Can we do this?
-					return to_return;
 				}
 				case CG_INT:
 				case CG_BOOL: {
-					int* values = new int[total_atoms];
-					int* values_itr = values;
-					cgGetParameterValueic(param, total_atoms, values);
-					NSMutableArray* to_return = [NSMutableArray array];
-					int i; for (i=0;i<members;i++) {
-						[to_return addObject:[NSValue valueWithBytes:values_itr cgType:param_type]];
-						values_itr += atoms_per_element;
+					UIntP len = total_atoms*sizeof(int);
+					int* values = (int*)malloc(len);
+					cgGetParameterValueir(param, total_atoms, values);
+					if (rows==1 && cols==1) {
+						return [[[O3StructArray alloc] initWithBytes:values type:O3Int32Type() length:len] autorelease];
+					} else if (cols==1) {
+						return [[[O3StructArray alloc] initWithBytes:values type:O3Int32Type() length:len] autorelease];
+					} else if (is_mat) {
+						return [[[[O32DStructArray alloc] initWithBytes:values type:O3Int32Type() length:len] rows:rows cols:cols rowMajor:YES] autorelease];
 					}
-					delete[] values; //Can we do this?
-					return to_return;
 				}
 				default:
 					O3Assert(false , @"O3CGShader/valueForKey/CG_PARAMETERCLASS_ARRAY base type wasn't recognized");
@@ -219,41 +230,52 @@ void O3SetCGParameterToValue(CGparameter param, id newValue) {
 			if (param_type==CG_FLOAT) cgSetParameter1f(param, [newValue floatValue]);
 			//if (param_type==CG_DOUBLE) cgSetParameter1f(param, [key floatValue]);
 			if (param_type==CG_INT) cgSetParameter1i(param, [newValue intValue]);
-			if (param_type==CG_BOOL) cgSetParameter1i(param, [newValue intValue]);
+			if (param_type==CG_BOOL) cgSetParameter1i(param, [newValue boolValue]);
 			return;
 		}
 		case CG_PARAMETERCLASS_VECTOR:
 		case CG_PARAMETERCLASS_MATRIX: {
-			const char* type_encoding = [newValue objCType];
-			char atom_type; //First char that is 'f', 'i', or 'd' (no l because Cg doesn't really support it)
-			const char* type_encoding_search = type_encoding;
-			while (atom_type=(*(type_encoding_search++)))
-				if (atom_type=='f' || atom_type=='i' || atom_type=='d') break;
-			if (!atom_type) {
-				O3CLogWarn(@"O3CGShader setValue:forKey: unrecognized atom type (not int, double, or float)!");
-				return;
+			BOOL release_newValue = NO;
+			if (![newValue isKindOfClass:[O3StructArray class]]) {
+				O3Asrt([newValue respondsToSelector:@selector(objectAtIndex:)]);
+				O3Asrt([newValue respondsToSelector:@selector(count:)]);
+				newValue = [[O3StructArray alloc] initWithArray:newValue];
+				release_newValue = YES;
 			}
-			unsigned atom_count = O3CountObjCEncodedElementsOfType(atom_type, type_encoding);
-			void* bytes = malloc(O3UnalignedSizeofObjCEncodedType(type_encoding));
-			[newValue getValue:bytes];
+			O3ScalarStructType* struct_t = (O3ScalarStructType*)[(O3StructArray*)newValue structType];
+			O3Assert([struct_t isKindOfClass:[O3ScalarStructType class]],@"%@ is not a scalar type!", struct_t);
+			O3CType atom_type = [struct_t type];
+			UIntP atom_count = [(O3StructArray*)newValue count];
+			NSData* rd = [(O3StructArray*)newValue rawData];
+			const void* bytes = [rd bytes];
+			O3Asrt(sizeof(int)==4);
 			switch (atom_type) {
-				case 'f':
+				case O3FloatCType:
 					cgSetParameterValuefc(param, atom_count, (const float*)bytes);
 					break;
-				case 'd':
+				case O3DoubleCType:
 					cgSetParameterValuedc(param, atom_count, (const double*)bytes);
 					break;
-				case 'i':
+				case O3Int32CType:
+				case O3Int8CType:
+				case O3Int16CType:
+				case O3Int64CType:
+				case O3UInt32CType:
+				case O3UInt8CType:
+				case O3UInt16CType:
+				case O3UInt64CType:
 					cgSetParameterValueic(param, atom_count, (const int*)bytes);
 					break;
+				default:
+					O3Asrt(NO);
 			}	
-			free(bytes);
+			[rd relinquishBytes];
+			if (release_newValue) [newValue release];
 			return;
 		}
 		case CG_PARAMETERCLASS_STRUCT: {
 			NSEnumerator* keyEnum = [newValue keyEnumerator];
-			id key;
-			while (key = [keyEnum nextObject]) {
+			while (id key = [keyEnum nextObject]) {
 				CGparameter sparam = cgGetNamedStructParameter(param, NSStringUTF8String(key));
 				if (!sparam) {
 					O3CLogWarn(@"Parameter \"%s\" not found in struct \"%s\". Ignoring.",NSStringUTF8String(key), cgGetParameterName(param));

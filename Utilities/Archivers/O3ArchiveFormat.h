@@ -18,7 +18,7 @@ enum O3PkgType { //See below for the full definitions of these types
 	O3PkgTypeValue=7,		//Stores both vectors and matricies.
 	O3PkgTypeDictionary=8, 	//Stored as a dictionary. By default it is unarchived as a dictionary but because of the coder callbacks VFS is also a possibility
 	O3PkgTypeArray=9,		//An array of objects in it's simplest form. Just a bunch of TypedObjs. See above.	
-	O3PkgTypeValueArray=0xA,	//A bunch of efficiently stored @encoded types from an O3ValueArray.
+	O3PkgTypeValueArray=0xA,	//A bunch of efficiently stored @encoded types from an vArray.
 	O3PkgTypeStringArray=0xB,//A bunch of CCStrings. 
 	O3PkgTypeRawData=0xC,	//Basically an NSData.
 	//O3PkgTypeSoftAlias=0xD,	//A StringArray where the strings are implicitly separated by "/". Note that this is perfectly legal: (CCString)"usr/lib" (CCString)"gcc" would result in "usr/lib/gcc". It is the VFS path to the resource the alias will point to. The alias is a proxy to the real object or a pointer to the real object depending on implementation, but the target is not loaded twice like a HardAlias.

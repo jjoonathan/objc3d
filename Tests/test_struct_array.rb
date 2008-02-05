@@ -116,4 +116,8 @@ class TestStructArray < Test::Unit::TestCase
     corridxs=Array.new(50) {|i| bruby.index(a[i])}
     assert(b==corridxs, "Uniqueification didn\'t get correct indexes: \n#{b.join(", ")}!=\n#{corridxs.to_a.join(", ")}")
   end
+  
+  def test_mat_struct_type
+    assert(O3MatStructType.selfTest)
+  end
 end

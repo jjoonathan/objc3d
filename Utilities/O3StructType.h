@@ -15,7 +15,7 @@ void O3StructTypeSetForName(O3StructType* type, NSString* name); ///<On +load, r
 NSMutableDictionary* O3StructTypeDict();
 
 ///An abstract class to represent types of structures, and define an interface for reading, writing, introspecting, and converting them.
-///To subclass, override -structSize, -dictionaryWithBytes: OR -objectWithData:, -writeObject:toBytes: OR writeObjectToData:, and optionally portabalizeStructs:, deportabalizeStructs:, and translateStructs:toFormat:.
+///To subclass, override -structSize, -objectWithBytes: OR -objectWithData:, -writeObject:toBytes: OR writeObjectToData:, and optionally portabalizeStructs:, deportabalizeStructs:, and translateStructs:toFormat:.
 @interface O3StructType : NSObject {
 	NSString* mName;
 }
@@ -28,7 +28,7 @@ NSMutableDictionary* O3StructTypeDict();
 - (id)objectWithBytes:(const void*)bytes;
 - (id)objectWithData:(NSData*)data;
 - (void)writeObject:(id)dict toBytes:(void*)bytes;
-- (NSData*)writeObjectToData:(NSDictionary*)dict;
+- (NSData*)writeObjectToData:(id)dict;
 
 //Info
 - (void)getLowest:(out const void**)lowest highest:(out const void**)highest ofStructsAt:(const void*)where stride:(UIntP)s count:(UIntP)ct; //You do not need to override this

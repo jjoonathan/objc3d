@@ -76,7 +76,7 @@ NSMutableDictionary* O3StructTypeDict() {return gO3StructTypesForNames;}
 	memcpy(bytes, b, [dat length]);
 }
 
-- (NSData*)writeObjectToData:(NSDictionary*)dict {
+- (NSData*)writeObjectToData:(id)dict {
 	O3Assert([self methodForSelector:@selector(writeObject:toBytes:)]!=[O3StructType instanceMethodForSelector:@selector(writeObject:toBytes:)], @"%@ struct type must override one of writeObjectToData: or writeObject:toBytes:.", self);
 	UIntP s = [self structSize];
 	void* b = malloc(s);

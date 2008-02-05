@@ -30,6 +30,7 @@ O3VecStructTypeDefines
 
 O3END_EXTERN_C_BLOCK
 
+NSMutableDictionary* gO3VecStructTypeTidTable;
 
 
 @implementation O3VecStructType
@@ -79,6 +80,7 @@ O3END_EXTERN_C_BLOCK
 	gO3Index4x16Type = [[O3VecStructType alloc] initWithElementType:O3UInt16CType  specificType:O3VecStructIndex count:4 name:@"idx4x16" comparator:O3Index4x16TypeComparator];
 	gO3Index4x32Type = [[O3VecStructType alloc] initWithElementType:O3UInt32CType  specificType:O3VecStructIndex count:4 name:@"idx4x32" comparator:O3Index4x32TypeComparator];
 	gO3Index4x64Type = [[O3VecStructType alloc] initWithElementType:O3UInt64CType  specificType:O3VecStructIndex count:4 name:@"idx4x64" comparator:O3Index4x64TypeComparator];
+	gO3VecStructTypeTidTable = [[NSMutableDictionary alloc] init];
 }
 
 + (O3VecStructType*)vec3fType {return O3Vec3fType();}
@@ -102,14 +104,20 @@ O3END_EXTERN_C_BLOCK
 + (O3VecStructType*)index4x64Type {return O3Index4x64Type();}
 
 ///@returns a new autoreleased vector 
+///@note the returned type is essentially leaked, but it is meant to stick around forever anyways so this should not be much of a problem
 + (O3VecStructType*)vecStructTypeWithElementType:(O3CType)type
                                     specificType:(O3VecStructSpecificType)stype
-                                           count:(int)count
+                                           count:(UInt16)count
                                             name:(NSString*)name 
                                       comparator:(O3StructArrayComparator)comp {
+	UInt32 tid = ((UInt32)count)<<16 | (UInt16)type;
+	NSNumber* tidNum = [NSNumber numberWithUnsignedInt:tid];
 	O3StructType* existingType = name? O3StructTypeForName(name) : nil;
+	existingType = existingType ?: [gO3VecStructTypeTidTable objectForKey:tidNum];
 	if (existingType) return (O3VecStructType*)existingType;
-	return [[[self alloc] initWithElementType:type specificType:stype count:count name:name comparator:comp] autorelease];
+	O3VecStructType* ret = [[[self alloc] initWithElementType:type specificType:stype count:count name:name comparator:comp] autorelease];
+	[gO3VecStructTypeTidTable setObject:ret forKey:tidNum];
+	return ret;
 }
 
 /************************************/ #pragma mark Init /************************************/

@@ -10,7 +10,7 @@
 @class O3VecStruct;
 
 #define O3VecStructTypeDefines   /*to add a new type, add a DefType(name) here, then init it inside o3init*/                   \
-DefType(O3Vec3rType,real,O3VecStructrealElement,3);\
+DefType(O3Vec3rType,real,O3VecStructRealElement,3);\
 DefType(O3Index4x64Type,UInt64,O3VecStructUInt64Element,4);\
 DefType(O3Index4x32Type,UInt32,O3VecStructUInt32Element,4);\
 DefType(O3Index4x16Type,UInt16,O3VecStructUInt16Element,4);\
@@ -53,7 +53,7 @@ typedef enum {
 //Init
 + (O3VecStructType*)vecStructTypeWithElementType:(O3CType)type
                                     specificType:(O3VecStructSpecificType)stype
-                                           count:(int)count
+                                           count:(UInt16)count
                                             name:(NSString*)name
 									  comparator:(O3StructArrayComparator)comp;
 - (O3VecStructType*)initWithElementType:(O3CType)type specificType:(O3VecStructSpecificType)stype count:(int)count name:(NSString*)name comparator:(O3StructArrayComparator)comp;

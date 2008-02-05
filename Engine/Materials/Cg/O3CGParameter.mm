@@ -124,7 +124,7 @@ extern CGcontext gCGContext;
 	
 }
 
-- (void)setValue:(NSObject*)newValue {
+- (void)setValue:(id)newValue {
 	O3SetCGParameterToValue(mParam, newValue);
 }
 
@@ -152,7 +152,7 @@ extern CGcontext gCGContext;
 	return cgGetParameterType(mParam);
 }
 
-- (O3Value*)value {
+- (id)value {
 	return O3GetCGParameterValue(mParam);
 }
 

@@ -143,7 +143,7 @@ inline void unbindParamsP(O3CGMaterial* self) {
 		}
 		O3CGMaterialParameterPair& val = (*mParameters)[NSStringUTF8String(param)];
 		val.target = targ;
-		O3Assign([[O3CGParameter alloc] initWithType:[targ type]], val.value);
+		O3Assign([(O3CGParameter*)[O3CGParameter alloc] initWithType:[targ type]], val.value);
 	} else {
 		O3CGMaterialParameterPair& val = location->second;
 		if (!value) {

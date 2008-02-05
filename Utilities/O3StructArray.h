@@ -16,18 +16,23 @@
 	NSRecursiveLock* mAccessLock;
 	void* mScratchBuffer;
 	BOOL mCheckSort:1; ///<Debug flag to double-check that sorting worked
+	BOOL mLockCount:1; ///<Prevents adding, removing objects
 }
-//Init
-- (O3StructArray*)initWithType:(O3StructType*)type;
-- (O3StructArray*)initWithType:(O3StructType*)type rawData:(NSData*)dat;
-- (O3StructArray*)initWithTypeNamed:(NSString*)name rawData:(NSData*)dat;
-- (O3StructArray*)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat;
-- (O3StructArray*)initWithType:(O3StructType*)type portableData:(NSData*)dat;
-- (O3StructArray*)initWithType:(O3StructType*)type capacity:(UIntP)countGuess;
-- (O3StructArray*)initWithTypeNamed:(NSString*)name;
-- (O3StructArray*)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l;
-- (O3StructArray*)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l;
-- (O3StructArray*)initByCompoundingArrays:(O3StructArray*)arr,...;
+//Init (yes, a ridiculous amount of constructors, but they sure are handy...)
+- (id)initWithType:(O3StructType*)type;
+- (id)initWithArray:(NSArray*)values;
+- (id)initWithType:(O3StructType*)type array:(NSArray*)values;
+- (id)initWithType:(O3StructType*)type rawData:(NSData*)dat;
+- (id)initWithTypeNamed:(NSString*)name rawData:(NSData*)dat;
+- (id)initWithType:(O3StructType*)type rawDataNoCopy:(NSMutableData*)dat;
+- (id)initWithType:(O3StructType*)type portableData:(NSData*)dat;
+- (id)initWithType:(O3StructType*)type capacity:(UIntP)countGuess;
+- (id)initWithTypeNamed:(NSString*)name;
+- (id)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l;
+- (id)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l;
+- (id)initWithCopiedBytes:(const void*)bytes typeName:(NSString*)name length:(UIntP)l;
+- (id)initWithCopiedBytes:(const void*)bytes type:(O3StructType*)t length:(UIntP)l;
+- (id)initByCompoundingArrays:(O3StructArray*)arr,...;
 
 //Access
 - (O3StructType*)structType; ///<The type of structure contained in the receiver
@@ -68,11 +73,16 @@
 - (void)removeLastObject;
 - (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj;
 
+//Locking extension
+- (BOOL)countLocked; ///<Weather or not the receiver allows its length to change
+- (void)setCountLocked:(BOOL)cl;
+
 //Convenience
 - (void)mergeSort; //Ruby bridge doesn't like -sort?
 - (UIntP*)sortedIndexesWithFunction:(O3StructArrayComparator)comp context:(void*)ctx;
 - (void)uploadToGPU; //Converts data to O3GPUData, uploading it to the GPU (if necessary)
 - (O3CType)setTypeToIntWithMaximum:(UInt64)maxval isSigned:(BOOL)isSigned;
+- (double*)valuesAsDoublesCount:(out UIntP*)ct; ///<Convenience, returns a buffer of doubles and a count. The buffer must be free()d and the buffer may be nil if the struct type isn't O3ScalarStructType.
 
 //Operations
 - (O3CType)compressIntegerType; ///Sets to the smallest integer type that can hold all the receiver's values
@@ -81,3 +91,5 @@
 @end
 
 typedef O3StructArray O3MutableStructArray;
+
+//double* O3StructArrayValuesAsDoubles(O3StructArray* self, UIntP* ct); //Used in O3Matrix.h

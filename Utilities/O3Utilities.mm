@@ -6,6 +6,7 @@
  */
 #import "O3VecStructType.h"
 #import "O3ScalarStructType.h"
+#import "O3MatStructType.h"
 #import "O3GPUData.h"
 NSOpenGLContext* gO3DefaultGLContext;
  
@@ -39,6 +40,7 @@ O3EXTERN_C void O3Init() {
 	}
 	[O3VecStructType o3init];
 	[O3ScalarStructType o3init];
+	[O3MatStructType o3init];
 	[p release];
 }
 
@@ -53,4 +55,10 @@ O3EXTERN_C void* O3NSDataDup(NSData* dat) {
 	memcpy(r, [dat bytes], len);
 	[dat relinquishBytes];
 	return r;
+}
+
+O3EXTERN_C void* O3MemDup(const void* mem, UIntP len) {
+	void* ret = malloc(len);
+	memcpy(ret, mem, len);
+	return ret;
 }

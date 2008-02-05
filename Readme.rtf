@@ -56,7 +56,7 @@ inline void initP(FooClass* self) \{ self->mSomeIvar  = 123\}\
 \
 	O3DynamicVector and O3Dynamic matrix encapsulate runtime info about matrices and vectors. C++ turns O3Mat4x4d into a static type: if I wanted to allow matrices of all sizes to be passed to a function (say, logging), I would need to explicitly know the type information of what was passed as well as the raw data. O3Dynamic* fill this role. Conversion is automatic, so you shouldn't have to mess with these much.\
 \
-	O3Value is an encapsulator for matricies and vectors just like NSValue encapsulates NSRects and such. You can do stuff like O3Mat4x4r([O3Value valueWithMatrix:some3x3d]); casting as outlined above should work as expected.\
+	v is an encapsulator for matricies and vectors just like NSValue encapsulates NSRects and such. You can do stuff like O3Mat4x4r([v valueWithMatrix:some3x3d]); casting as outlined above should work as expected.\
 \
 
 \f0\b Error handling and KVC\

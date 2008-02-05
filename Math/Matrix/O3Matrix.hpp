@@ -49,46 +49,12 @@ O3Mat_T& O3Mat_T::Set(const O3Mat_T2& other_matrix) {
 	return *this;
 }
 
-O3Mat_TT O3Mat_T& O3Mat_T::SetValue(NSValue* val) {
-	if (!val) return Set(0);
-	const char* type = [val objCType];
-	const char* origtype = type;
-	while (*type && *type!='[') type++;
-	O3Assert(*type, @"Could not find an opening bracket indicating a vector type in %@", val);
-	if (!type) return Set(0);
-	type++;
-	int len = atoi(type);
-	if (len!=ROWS*COLUMNS) {
-		O3Assert(len==ROWS*COLUMNS, @"Matrix lengths must match exactly. Cannot typecast while archiving.");
-		Zero();
-		return *this;
-	}
-	while (isdigit(*type)) type++;
-	char octype = *type; type++;
-	O3Assert(*type==']', @"Missing end brace in objCType of val %@. Must be a type like ...[%%i%%c]...", val);
-	unsigned int bsize; NSGetSizeAndAlignment(origtype, &bsize, nil);
-	void* buf = malloc(len*bsize);
-	[val getValue:buf];
-	#define USE_ENC_TYPE(t, enct) case enct: for (UIntP i=0; i<len; i++) operator()(i) = ((t*)buf)[i];	break;
-	switch (octype) {
-		USE_ENC_TYPE(float, 'f');
-		USE_ENC_TYPE(double, 'd');
-		USE_ENC_TYPE(char, 'c');
-		USE_ENC_TYPE(unsigned char, 'C');
-		USE_ENC_TYPE(short, 's');
-		USE_ENC_TYPE(unsigned short, 'S');
-		USE_ENC_TYPE(int, 'i');
-		USE_ENC_TYPE(unsigned int, 'I');
-		USE_ENC_TYPE(long, 'l');
-		USE_ENC_TYPE(unsigned long, 'L');
-		USE_ENC_TYPE(long long, 'q');
-		USE_ENC_TYPE(unsigned long long, 'Q');
-		default:
-		O3Assert(false,@"Undefined type for O3Vec_T::Set(NSValue* val) (octype=%c)",octype);
-		Set(0);
-	}
-	#undef USE_ENC_TYPE
-	free(buf);
+O3Mat_TT O3Mat_T& O3Mat_T::SetValue(O32DStructArray* val) {
+	UIntP ct;
+	double* obs = O3StructArrayValuesAsDoubles((O3StructArray*)val, &ct);
+	UIntP r,c; BOOL rm; O32DStructArrayGetR_C_RowMajor_(val, &r, &c, &rm);
+	Set(obs, rm, r, c);
+	free(obs);
 	return *this;
 }
 
@@ -104,16 +70,14 @@ const typename O3Mat_T::RowAccessor O3Mat_T::operator[](int row) const {
 	return RowAccessor(const_cast<O3Mat*>(this), row);
 }
 
-///@note If you change these, you should change the accessor in DynamicMatrix as well
 O3Mat_TT
 TYPE& O3Mat_T::operator()(int row, int column) {
-	return v[ROWS * column + row];
+	return v[O3MatIndexForLocation(ROWS,COLS,row,column)];
 }
 
-///@note If you change these, you should change the accessor in DynamicMatrix as well
 O3Mat_TT
 const TYPE& O3Mat_T::operator()(int row, int column) const {
-	return v[ROWS * column + row];
+	return v[O3MatIndexForLocation(ROWS,COLS,row,column)];
 }
 
 O3Mat_TT
