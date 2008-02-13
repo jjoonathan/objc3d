@@ -96,7 +96,7 @@ double O3DoubleAtIndex_of_ofType_(UIntP idx, const void* bytes, O3StructType* t)
 	UIntP outelements = other_is_scalar? 1 : [(O3VecStructType*)oformat elementCount];
 	UIntP outstride = [oformat structSize];
 	UIntP out_ele_stride = outstride / outelements;
-	if (other_is_vec) O3Asrt(outelements && !(incount%outelements));
+	if (other_is_vec) O3Assert(outelements && !(incount%outelements), @"Dimensionality mismatch. When converting from a scalar to a vector array, objects are grouped into vectors. There are not enough to form an integer number of vectors.");
 	
 	const UInt8* inbytes = (const UInt8*)[instructs bytes];
 	NSMutableData* mdat = [[[NSMutableData alloc] initWithLength:outstride*incount] autorelease];

@@ -23,6 +23,7 @@ DefType(O3Scale3dType,double,O3VecStructDoubleElement,3);\
 DefType(O3Point3fType,float,O3VecStructFloatElement,3);\
 DefType(O3Rot3dType,double,O3VecStructDoubleElement,3);\
 DefType(O3Vec4dType,double,O3VecStructDoubleElement,3);\
+DefType(O3Vec3ui8Type,UInt8,O3VecStructUInt8Element,3);\
 DefType(O3Vec4fType,float,O3VecStructFloatElement,4);\
 DefType(O3Vec4rType,real,O3VecStructRealElement,4);\
 DefType(O3Vec3dType,double,O3VecStructDoubleElement,3);\

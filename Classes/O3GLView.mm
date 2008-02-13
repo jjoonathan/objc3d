@@ -111,7 +111,6 @@ inline void initP(O3GLView* self) {
 	[super encodeWithCoder:coder];
 	[coder encodeObject:mSceneName forKey:@"sceneName"];
 	[coder encodeObject:mCamera forKey:@"camera"];
-	[coder encodeObject:mBackgroundColor forKey:@"background"];
 	
 	static NSDictionary* msMap = nil;
 	if (!msMap) msMap = [[NSDictionary alloc] initWithObjectsAndKeys:@"MSAA", @"Multisampling", @"SSAA", @"Supersampling", @"AAA", @"Alpha Sampling", nil];
@@ -150,7 +149,6 @@ inline void initP(O3GLView* self) {
 	initP(self);
 	[self setSceneName:[coder decodeObjectForKey:@"sceneName"]];
 	[self setCamera:[coder decodeObjectForKey:@"camera"]];
-	[self setBackgroundColor:[coder decodeObjectForKey:@"background"]];
 	
 	NSString* msStr = [coder decodeObjectForKey:@"AA"];
 	if ([msStr isEqualToString:@"AAA"])
@@ -313,11 +311,11 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 }
 
 - (NSColor*)backgroundColor {
-	return mBackgroundColor;
+	return [mScene backgroundColor];
 }
 
 - (void)setBackgroundColor:(NSColor*)color {
-	O3Assign(color, mBackgroundColor);
+	[mScene setBackgroundColor:color];
 }
 
 - (O3GLViewController*)controller {
@@ -335,30 +333,8 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 		ctx.view = self;
 		ctx.camera = [self camera];
 		ctx.cameraSpace = [ctx.camera space];
-		if (mNotFirstFrame) {
-			ctx.elapsedTime = 0;
-			mNotFirstFrame = YES;
-			O3StartTimer(mFrameTimer);
-		} else {
-			ctx.elapsedTime = O3ElapsedTime(mFrameTimer);
-			O3StartTimer(mFrameTimer);
-		}
-		[mCamera setProjectionMatrix];
-		[[self context] makeCurrentContext];
-
-		[mCamera tickWithContext:&ctx];
-		[mScene tickWithContext:&ctx];
-
-		float r=0.; float g=0.; float b=0.; float a=1.;
-		[mBackgroundColor getRed:&r green:&g blue:&b alpha:&a];
-		glClearColor(r,g,b,a);
-		glEnable(GL_DEPTH_TEST);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		
+		ctx.glContext = [self context];		
 		[mScene renderWithContext:&ctx];
-		
-		[mContext flushBuffer];
-		[self setNeedsDisplay:YES];
 	} else {
 		[self lockFocus];
 		[self drawBlackScreenOfDeath:@"No Scene"];

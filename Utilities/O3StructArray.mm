@@ -569,7 +569,7 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 #undef NSTR_AT_IDX
 
 /************************************/ #pragma mark NSMutableArray /************************************/
-- (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx {
+- (void)insertObject:(id)obj atIndex:(UIntP)idx {
 	if (mLockCount) {
 		O3LogWarn(@"Ignoring insertObject:atIndex: because of count mismatched on count-locked array");
 		return;
@@ -592,7 +592,7 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 	O3StructArrayUnlock(self);	
 }
 
-- (void)addObject:(NSDictionary*)obj {
+- (void)addObject:(id)obj {
 	if (mLockCount) {
 		O3LogWarn(@"Ignoring addObject: because of count mismatched on count-locked array");
 		return;
@@ -662,6 +662,30 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 	O3StructArrayUnlock(self);	
 	if (ct) *ct = count;
 	return ret;
+}
+
+- (void*)bytesOfType:(O3StructType*)t {
+	NSData* dat = [mStructType translateStructs:mData stride:0 toFormat:t];
+	void* b = O3NSDataDup(dat);
+	return b;
+}
+
+@end
+
+@implementation NSArray (O3StructArrayExtensions)
+- (BOOL)isRowMajor {
+	return YES;
+}
+
+- (void*)bytesOfType:(O3StructType*)t {
+	UIntP ct = [self count];
+	O3StructArray* arr = [[O3StructArray alloc] initWithType:t capacity:ct];
+	for (UIntP i=0; i<ct; i++) {
+		[arr addObject:[self objectAtIndex:i]];
+	}
+	void* b = O3NSDataDup([arr rawData]);
+	[arr release];
+	return b;
 }
 
 @end

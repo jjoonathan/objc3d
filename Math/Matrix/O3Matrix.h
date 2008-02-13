@@ -8,7 +8,7 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 @class O32DStructArray, O3StructType, O3StructArray;
-O32DStructArray* O32DStructArrayWithBytesTypeRowsCols(void* bytes, O3StructType* t, const char* octype, UIntP r, UIntP c, BOOL rm);
+O32DStructArray* O32DStructArrayWithBytesTypeRowsCols(void* bytes, const char* octype, UIntP r, UIntP c, BOOL rm);
 double* O3StructArrayValuesAsDoubles(O3StructArray* self, UIntP* ct);
 void O32DStructArrayGetR_C_RowMajor_(O32DStructArray* self, UIntP* r, UIntP* c, BOOL* rm);
 

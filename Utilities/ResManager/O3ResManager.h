@@ -19,6 +19,8 @@ extern O3ResManager* gO3ResManagerSharedInstance;
 	O3ResManager* mParentManager;
 	BOOL mEncodedAsShared; ///<YES if this should be encoded/decoded as the shared instance (used for archiving)
 }
++ (void)o3init;
+
 //Construction
 - (O3ResManager*)init;
 + (O3ResManager*)sharedManager;

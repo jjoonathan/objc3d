@@ -56,7 +56,7 @@ O3DefaultO3InitializeImplementation
 	O32DStructArray* arr = (O32DStructArray*)obj;
 	O3Asrt(bytes);
 	NSData* objd = [arr rawData];
-	UIntP count = mRows*mCols;
+	UIntP count = mRows*mCols; count;
 	O3Asrt([arr count]==count);
 	UInt8* frombytes = (UInt8*)[objd bytes];
 	O3Asrt(frombytes);

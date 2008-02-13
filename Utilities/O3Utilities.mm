@@ -7,6 +7,7 @@
 #import "O3VecStructType.h"
 #import "O3ScalarStructType.h"
 #import "O3MatStructType.h"
+#import "O3ResManager.h"
 #import "O3GPUData.h"
 NSOpenGLContext* gO3DefaultGLContext;
  
@@ -41,6 +42,7 @@ O3EXTERN_C void O3Init() {
 	[O3VecStructType o3init];
 	[O3ScalarStructType o3init];
 	[O3MatStructType o3init];
+	[O3ResManager o3init];
 	[p release];
 }
 

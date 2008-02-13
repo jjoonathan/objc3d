@@ -67,9 +67,9 @@
 - (NSDictionary*)objectAtIndex:(UIntP)idx; ///Returns a copy of the objet ad idx, not the object itself (for performance reasons, especially when dealing with O3GPUData)
 
 //NSMutableArray
-- (void)insertObject:(NSDictionary*)obj atIndex:(UIntP)idx;
+- (void)insertObject:(id)obj atIndex:(UIntP)idx;
 - (void)removeObjectAtIndex:(UIntP)idx;
-- (void)addObject:(NSDictionary*)obj;
+- (void)addObject:(id)obj;
 - (void)removeLastObject;
 - (void)replaceObjectAtIndex:(UIntP)idx withObject:(NSDictionary*)obj;
 
@@ -91,5 +91,10 @@
 @end
 
 typedef O3StructArray O3MutableStructArray;
+
+@interface NSArray (O3StructArrayExtensions)
+- (BOOL)isRowMajor; //Returns YES
+- (void*)bytesOfType:(O3StructType*)t;
+@end
 
 //double* O3StructArrayValuesAsDoubles(O3StructArray* self, UIntP* ct); //Used in O3Matrix.h

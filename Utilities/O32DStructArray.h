@@ -22,5 +22,5 @@
 - (BOOL)isRowMajor; ///<True if subsequent linear indicies go across rows first, then down columns. NOTE: this changes if you call mTranspose, rather than the underlying data changing. It just appears to change from the POV of the accessor.
 @end
 
-//O32DStructArray* O32DStructArrayWithBytesTypeRowsCols(void* bytes, O3StructType* t, const char* octype, UIntP r, UIntP c, BOOL rm); //Used by O3Matrix.h
+//O32DStructArray* O32DStructArrayWithBytesTypeRowsCols(void* bytes, const char* octype, UIntP r, UIntP c, BOOL rm); //Used by O3Matrix.h
 //void O32DStructArrayGetR_C_RowMajor_(O32DStructArray* self, UIntP* r, UIntP* c, BOOL* rm); //Used by O3Matrix.h

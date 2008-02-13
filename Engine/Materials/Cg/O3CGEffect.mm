@@ -145,13 +145,8 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 
 - (id)initWithSource:(NSString*)source {
 	O3SuperInitOrDie();
-	O3Assign(source, mSource);
-	const char* src = NSStringUTF8String(source);
-	CGeffect newEffect = cgCreateEffect(O3GlobalCGContext(), src, gDefaultCGEffectCompilerArguments);
-	O3CGEffect_autoDetectAutoSetParameters(self, newEffect);
-	O3CGEffect_setEffectP(self, newEffect);
-	if (!mEffect) {
-		O3LogWarn(@"Cg effect creation failed with error \"%s\"", cgGetLastListing(O3GlobalCGContext()));
+	[self setSource:source];
+	if (!cgIsEffect(mEffect)) {
 		[self release];
 		return nil;
 	}
@@ -195,6 +190,22 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	if (![coder allowsKeyedCoding])
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
 	[coder encodeObject:mSource forKey:@"source"];
+}
+
+- (NSString*)source {
+	return mSource;
+}
+
+- (void)setSource:(NSString*)source {
+	const char* src = NSStringUTF8String(source);
+	CGeffect newEffect = cgCreateEffect(O3GlobalCGContext(), src, gDefaultCGEffectCompilerArguments);
+	if (!cgIsEffect(newEffect)) {
+		O3LogWarn(@"Cg effect (re-)creation failed with error \"%s\"", cgGetLastListing(O3GlobalCGContext()));
+		return;
+	}
+	O3Assign(source, mSource);
+	O3CGEffect_autoDetectAutoSetParameters(self, newEffect);
+	O3CGEffect_setEffectP(self, newEffect);	
 }
 
 

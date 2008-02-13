@@ -63,6 +63,8 @@ O3END_EXTERN_C_BLOCK
 	gO3Vec4rType = [[O3VecStructType alloc] initWithElementType:rtype                     specificType:O3VecStructVec count:4 name:@"vec4r" comparator:O3Vec4rTypeComparator];
 	gO3Vec4fType = [[O3VecStructType alloc] initWithElementType:O3FloatCType   specificType:O3VecStructVec count:4 name:@"vec4f" comparator:O3Vec4fTypeComparator];
 	gO3Vec4dType = [[O3VecStructType alloc] initWithElementType:O3DoubleCType  specificType:O3VecStructVec count:4 name:@"vec4d" comparator:O3Vec4dTypeComparator];
+	gO3Vec3ui8Type = [[O3VecStructType alloc] initWithElementType:O3UInt8CType  specificType:O3VecStructVec count:3 name:@"vec3ui8" comparator:O3Vec3ui8TypeComparator];
+		[gO3Vec3ui8Type setMultiplier:1./255];
 	gO3RGBA8Type = [[O3VecStructType alloc] initWithElementType:O3UInt8CType  specificType:O3VecStructVec count:4 name:@"RGBA8" comparator:O3RGBA8TypeComparator];
 		[gO3RGBA8Type setMultiplier:1./255];
 	gO3RGB8Type    = [[O3VecStructType alloc] initWithElementType:O3UInt8CType  specificType:O3VecStructVec count:3 name:@"RGB8" comparator:O3RGB8TypeComparator];

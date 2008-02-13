@@ -171,6 +171,7 @@
 		FC4EF18B0CEA90BA00B14EBF /* O3StructArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5507240CDF5354003EE24B /* O3StructArray.mm */; };
 		FC4EF18C0CEA90BB00B14EBF /* O3VecStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC55072A0CE01E12003EE24B /* O3VecStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4EF18D0CEA90BB00B14EBF /* O3StructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC55072E0CE17B7D003EE24B /* O3StructType.mm */; };
+		FC53AC340D615B4300A55062 /* o3stdlib in Resources */ = {isa = PBXBuildFile; fileRef = FC53AC320D615B4300A55062 /* o3stdlib */; };
 		FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */; };
 		FC56F18C0D3324490083E421 /* liblib3ds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC56F18B0D3324490083E421 /* liblib3ds.a */; };
@@ -472,6 +473,7 @@
 		FC4EF36E0B39F411006F3284 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test.png; sourceTree = "<group>"; };
 		FC5265380B7549BC00BAA016 /* O3VectorFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3VectorFunctions.h; sourceTree = "<group>"; };
 		FC5267030B757E3900BAA016 /* O3TestSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TestSpace.h; sourceTree = "<group>"; };
+		FC53AC320D615B4300A55062 /* o3stdlib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = o3stdlib; sourceTree = "<group>"; };
 		FC5507230CDF5354003EE24B /* O3StructArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3StructArray.h; sourceTree = "<group>"; };
 		FC5507240CDF5354003EE24B /* O3StructArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3StructArray.mm; sourceTree = "<group>"; };
 		FC5507260CDF539D003EE24B /* O3StructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3StructType.h; sourceTree = "<group>"; };
@@ -756,6 +758,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FC53AC320D615B4300A55062 /* o3stdlib */,
 				FC63ED630CF6498700325C54 /* BridgeSupport */,
 				FC63E1460CF1C8FA00325C54 /* console.rb */,
 				FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */,
@@ -1598,6 +1601,7 @@
 				FC63F10C0CFA83F200325C54 /* window.rb in Resources */,
 				FC7CA0FF0D4154EA00F6B849 /* test_struct_array.rb in Resources */,
 				FC7CA19C0D41CC6300F6B849 /* tests.rb in Resources */,
+				FC53AC340D615B4300A55062 /* o3stdlib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1629,7 +1633,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $PROJECT_DIR\nruby Tests/tests.rb";
+			shellScript = "cd $PROJECT_DIR\n#ruby Tests/tests.rb";
 		};
 		FC348D610B45DFF5000015FE /* Build Documentation */ = {
 			isa = PBXShellScriptBuildPhase;

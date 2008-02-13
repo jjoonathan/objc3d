@@ -111,7 +111,8 @@ void O32DStructArrayGetR_C_RowMajor_(O32DStructArray* self, UIntP* r, UIntP* c, 
 
 @end
 
-O32DStructArray* O32DStructArrayWithBytesTypeRowsCols(void* bytes, O3StructType* t, const char* octype, UIntP r, UIntP c, BOOL rm) {
+O32DStructArray* O32DStructArrayWithBytesTypeRowsCols(void* bytes, const char* octype, UIntP r, UIntP c, BOOL rm) {
 	O3CType ct = O3CTypeEncoded(octype);
-	return [[[[O32DStructArray alloc] initWithBytes:bytes type:[O3ScalarStructType scalarTypeWithCType:ct] length:r*c*O3CTypeSize(ct)] rows:r cols:c rowMajor:rm] autorelease];
+	O3StructType* t = [O3ScalarStructType scalarTypeWithCType:O3CTypeEncoded(octype)];
+	return [[[[O32DStructArray alloc] initWithBytes:bytes type:t length:r*c*O3CTypeSize(ct)] rows:r cols:c rowMajor:rm] autorelease];
 }

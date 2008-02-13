@@ -48,6 +48,10 @@ using namespace std;
 //Initialization
 - (id)initWithSource:(NSString*)source;
 
+//Source editing (not efficient, but handy for KVC)
+- (NSString*)source;
+- (void)setSource:(NSString*)source; //Clears out params, techniques, etc.
+
 //Annotations
 - (id)annotations;
 - (NSArray*)annotationKeys;

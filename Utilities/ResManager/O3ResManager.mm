@@ -17,11 +17,16 @@ O3ResManager* gO3ResManagerSharedInstance = nil;
 O3DefaultO3InitializeImplementation
 
 inline O3ResManager* O3ResManagerSharedInstanceP() {
-	if (!gO3ResManagerSharedInstance) {
-		gO3ResManagerSharedInstance=[[O3ResManager alloc] init];
-		[gO3ResManagerSharedInstance setEncodedAsShared:YES];
-	}
 	return gO3ResManagerSharedInstance;
+}
+
++ (void)o3init {
+	gO3ResManagerSharedInstance=[[O3ResManager alloc] init];
+	[gO3ResManagerSharedInstance setEncodedAsShared:YES];
+	NSString* resDir = [[[NSBundle bundleForClass:[self class]] resourcePath] stringByAppendingPathComponent:@"o3stdlib"];
+	O3DirectoryResSource* stdlib = [[O3DirectoryResSource alloc] initWithPath:resDir];
+	[gO3ResManagerSharedInstance addResourceSource:stdlib];
+	[stdlib release];
 }
 
 /************************************/ #pragma mark Construction /************************************/

@@ -15,6 +15,7 @@ typedef struct {
 	O3Camera* camera;
 	O3Space3*   cameraSpace;
 	double elapsedTime; ///<The time elapsed since the last frame. Note that elapsedTime is in "seconds," but may be positive, 0, or negative (you may want to pause or rewind, so to speak.)
+	NSOpenGLContext* glContext;
 	void* reserved[5];
 } O3RenderContext;
 

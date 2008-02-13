@@ -10,7 +10,6 @@
 
 @interface O3GLView : NSView {
 	NSOpenGLContext* mContext;
-	NSColor* mBackgroundColor;
 	O3ResManager* mResManager;
 	NSString* mSceneName;
 	O3Scene* mScene;
@@ -35,9 +34,7 @@
 	BOOL mOwnsMouse:1; ///<YES if the receiver has made the mouse invisible and centered it
 	BOOL mIgnoreNextRot:1; //If the mouse appears to "jump," so does the view, so the jumps need to be ignored
 	
-	BOOL mNotFirstFrame:1;
 	NSTimer* mUpdateTimer;
-	O3Timer mFrameTimer; ///<Measures the actual time between frames
 	NSMutableDictionary* mViewState; ///<A scratch dictionary
 }
 //Init
@@ -63,7 +60,7 @@
 - (O3Camera*)camera;
 - (void)setCamera:(O3Camera*)newCamera;
 - (NSOpenGLContext*)context;
-- (NSColor*)backgroundColor;
+- (NSColor*)backgroundColor; ///<For convenience only, actually just calls through to the scene
 - (void)setBackgroundColor:(NSColor*)color;
 - (O3Scene*)setDefaultScene;
 - (double)updateInterval; ///<-1 if automatic updates are disabled

@@ -109,8 +109,10 @@ NSArray* prioritySortedFilesP(O3DirectoryResSource* self, NSString* key) {
 		NSMutableDictionary* newSources = [[NSMutableDictionary alloc] init];
 		NSArray* subpaths = [[NSFileManager defaultManager] subpathsAtPath:path];
 		NSEnumerator* subpathsEnumerator = [subpaths objectEnumerator];
-		while (NSString* p = [path stringByAppendingPathComponent:[subpathsEnumerator nextObject]]) {
-			O3FileResSource* frs = [mFileSources objectForKey:p] ?: [[O3FileResSource alloc] initWithPath:p];
+		NSString* p = nil;
+		while (p = [subpathsEnumerator nextObject]) {
+			p = [path stringByAppendingPathComponent:p];
+			O3FileResSource* frs = [mFileSources objectForKey:p] ?: [[O3FileResSource alloc] initWithPath:p parentResSource:self];
 			[newSources setObject:frs forKey:p];
 			[frs release];
 		}
