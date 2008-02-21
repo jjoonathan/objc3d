@@ -6,6 +6,7 @@
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
 #import "O3ResSource.h"
+#import "O3ResManager.h"
 
 enum O3ResManagerLaziness gResManagerLaziness = O3ResManagerModerateLazy;
 
@@ -83,7 +84,7 @@ inline enum O3ResManagerLaziness mLazinessP(O3ResSource* self) {
 		case O3ResManagerModerateLazy: {
 			if ([self isBig]) {
 				[self loadAllObjectsInto:manager];
-				return [manager valueForKey:key];			
+				return [manager valueForKeyWithoutLoading:key];			
 			} else {
 				id obj = [self loadObjectNamed:key];
 				if (obj) [manager setValue:obj forKey:key];

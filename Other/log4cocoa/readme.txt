@@ -40,7 +40,7 @@ Solution 2 - Rewriting:
 
 Obviously the second way can be coded in numeruous ways, but I just wanted to point out the two approaches.  Also, both versions of the Debug & Info macros expand into methods that are wrapped by an "isEnabled" if statement, like so:
 
-if([[self logger] isInfoEnabled]) [[self logger] lineNumber: __LINE__ 
+if([[self l4Logger] isInfoEnabled]) [[self l4Logger] lineNumber: __LINE__ 
                                                    fileName: __FILE__ 
                                                  methodName: __PRETTY_FUNCTION__ 
                                                        info: message 
@@ -50,20 +50,20 @@ All of the other levels expand out to their counterparts, but are not enclosed b
 
 NOTE: none of these macro's do not include a final semi-colon, so make sure to use one when invoking them.
 
-The 2 core logging convenience methods are implemented as categories on NSObject (if you want to log off of an NSProxy, you'll need to implement these there too ... maybe we'll provide these convenience methods there, but we haven't yet).
+The 2 core logging convenience methods are implemented as categories on NSObject (if you want to log off of an NSProxy, you'll need to implement these there too ... maybe we'll provide these convenience methods there, but we haven't yet).  Since these are catagories on NSObject we've added the 'l4' prefix to be more paranoid and avoid the remote possiblity of a name collision with someone elses category.
 
     @interface NSObject (L4CocoaMethods)
 
-    + (L4Logger *) logger;
-    - (L4Logger *) logger;
+    + (L4Logger *) l4Logger;
+    - (L4Logger *) l4Logger;
 
     @end
 
-Therefore, [self logger] returns a L4Logger instance based on the calling class object.  To log a message, without using the above macros, the usage is: 
+Therefore, [self l4Logger] returns a L4Logger instance based on the calling class object.  To log a message, without using the above macros, the usage is: 
 
-    [[self logger] l4fatal: @"Crap something fatal happened.  You're screwed.  Game Over."];
+    [[self l4Logger] l4fatal: @"Crap something fatal happened.  You're screwed.  Game Over."];
 
-    [[self logger] l4debug: @"Debug info goes here.  La de da.  All the King's horses & all the kings men couldn't put Humpty Dumpty back together again."];
+    [[self l4Logger] l4debug: @"Debug info goes here.  La de da.  All the King's horses & all the kings men couldn't put Humpty Dumpty back together again."];
 
 Frankly, I don't know why you wouldn't want to use these macros, but the non-macro versions are still there in case that's what you want or for some reason you can't use the macro versions.
 

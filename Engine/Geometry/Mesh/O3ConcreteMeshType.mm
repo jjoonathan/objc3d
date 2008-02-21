@@ -37,11 +37,9 @@ O3DefaultO3InitializeImplementation
 		return nil;
 	}
 	if (![super initWithCoder:coder]) return nil;
-	O3StructArray* faces = [coder decodeObjectForKey:@"faces"];
-	O3StructArray* face_verts = [coder decodeObjectForKey:@"verts"];
-	O3StructArray* face_inds = [coder decodeObjectForKey:@"indicies"];
-	if (faces) [self setFaces:faces];
-	if (face_verts&&face_inds) [self setFaceVerticies:[coder decodeObjectForKey:@"verts"] indicies:[coder decodeObjectForKey:@"indicies"]];
+	O3Assign([coder decodeObjectForKey:@"faces"], mFaces);
+	O3Assign([coder decodeObjectForKey:@"verts"], mFaceVerticies);
+	O3Assign([coder decodeObjectForKey:@"indicies"], mStripIndicies);
 	if (mNumberStrips = [coder decodeInt64ForKey:@"numberStrips"]) {
 		mStripLocations = (UIntP*)O3NSDataDup([O3SACCast([coder decodeObjectForKey:@"stripLocations"],UIntP) rawData]);
 		mStripCounts = (GLsizei*)O3NSDataDup([O3SACCast([coder decodeObjectForKey:@"stripCounts"],GLsizei) rawData]);
@@ -50,20 +48,19 @@ O3DefaultO3InitializeImplementation
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
-	if (![coder allowsKeyedCoding]) {
-		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
-		[coder encodeObject:mFaces forKey:@"faces"];
-		[coder encodeObject:[mFaceVerticies structArray] forKey:@"verts"];
-		[coder encodeObject:[mFaceIndicies structArray] forKey:@"indicies"];
-		[coder encodeObject:[mStripIndicies structArray] forKey:@"stripIndicies"];
-		if (mNumberStrips) {
-			O3Asrt(mStripLocations && mStripIndicies);
-			[coder encodeInt64:mNumberStrips forKey:@"numberStrips"];
-			id locs = [[O3StructArray alloc] initWithBytes:mStripLocations typeName:@"uiP" length:sizeof(UIntP)*mNumberStrips];
-			id cts = [[O3StructArray alloc] initWithBytes:mStripCounts type:O3ScalarStructTypeOf(GLsizei) length:sizeof(GLsizei)*mNumberStrips];
-			[coder encodeObject:locs forKey:@"stripLocations"];
-			[coder encodeObject:cts forKey:@"stripCounts"];
-		}
+	if (![coder allowsKeyedCoding])
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver %@", self, coder];
+	[coder encodeObject:mFaces forKey:@"faces"];
+	[coder encodeObject:mFaceVerticies forKey:@"verts"];
+	[coder encodeObject:mFaceIndicies forKey:@"indicies"];
+	[coder encodeObject:mStripIndicies forKey:@"stripIndicies"];
+	if (mNumberStrips) {
+		O3Asrt(mStripLocations && mStripIndicies);
+		[coder encodeInt64:mNumberStrips forKey:@"numberStrips"];
+		id locs = [[O3StructArray alloc] initWithBytes:mStripLocations typeName:@"uiP" length:sizeof(UIntP)*mNumberStrips];
+		id cts = [[O3StructArray alloc] initWithBytes:mStripCounts type:O3ScalarStructTypeOf(GLsizei) length:sizeof(GLsizei)*mNumberStrips];
+		[coder encodeObject:locs forKey:@"stripLocations"];
+		[coder encodeObject:cts forKey:@"stripCounts"];
 	}
 	[super encodeWithCoder:coder];
 }
@@ -82,6 +79,7 @@ O3DefaultO3InitializeImplementation
 	return [mFaces structArray];
 }
 
+///@warning May convert %newFaces to O3Triangle3x3f type
 - (void)setFaces:(O3StructArray*)newFaces {
 	if ([newFaces structType]!=O3Triangle3x3fType()) {
 		if (![newFaces setStructType:O3Triangle3x3fType()]) {
@@ -122,14 +120,14 @@ O3DefaultO3InitializeImplementation
 	UIntP passes = [mDefaultMaterial renderPasses];
 	if (passes==0) passes=1;
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, GL_ZERO);
-	if (mFaces && !mFaceIndicies) { //Face by face
+	if (mFaces) { //Face by face
 		UIntP count = [mFaces bind];
 		for (i=0;i<passes;i++) {
 			[mDefaultMaterial setRenderPass:i];
 			glDrawArrays(GL_TRIANGLES, 0, count);
 		}
 	}
-	if (mFaces && mFaceIndicies) { //Indexed
+	if (mFaceVerticies && mFaceIndicies) { //Indexed
 		[mFaceVerticies bind];
 		UIntP count = [mFaceIndicies bind];
 		for (i=0;i<passes;i++) {
@@ -137,13 +135,13 @@ O3DefaultO3InitializeImplementation
 			glDrawElements(GL_TRIANGLES, count, [mFaceIndicies format], [mFaceVerticies indicies]);
 		}
 	}
-	if (mFaces && mFaceIndicies && mNumberStrips) { //Stripped
+	if (mFaceVerticies && mStripIndicies && mNumberStrips) { //Stripped
 		O3Asrt(mStripCounts && mStripLocations);
 		[mFaceVerticies bind];
-		[mFaceIndicies bind];
+		[mStripIndicies bind];
 		for (i=0;i<passes;i++) {
 			[mDefaultMaterial setRenderPass:i];
-			glMultiDrawElements(GL_TRIANGLE_STRIP, mStripCounts, [mFaceIndicies format], (const GLvoid**)mStripLocations, mNumberStrips);
+			glMultiDrawElements(GL_TRIANGLE_STRIP, mStripCounts, [mStripIndicies format], (const GLvoid**)mStripLocations, mNumberStrips);
 		}
 	}
 }

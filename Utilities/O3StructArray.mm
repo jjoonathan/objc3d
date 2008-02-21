@@ -186,8 +186,13 @@ void initP(O3StructArray* self) {
 		[self release];
 		return nil;
 	}
-	return [self initWithType:O3StructTypeForName([coder decodeObjectForKey:@"type"])
-	                                                           portableData:[coder decodeObjectForKey:@"data"]];
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	NSString* typeName = [coder decodeObjectForKey:@"type"];
+	O3StructType* t = O3StructTypeForName(typeName);
+	NSData* pd = [coder decodeObjectForKey:@"data"];
+	id s = [self initWithType:t portableData:pd];
+	[pool release];
+	return s;
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
@@ -195,6 +200,14 @@ void initP(O3StructArray* self) {
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
 	[coder encodeObject:[self portableData] forKey:@"data"];
 	[coder encodeObject:[mStructType name] forKey:@"type"];
+}
+
+- (Class)classForCoder {
+	return [self class];
+}
+
+- (BOOL)isSpeciallyHandledByO3Archiver {
+	return NO;
 }
 
 /************************************/ #pragma mark GPU /************************************/
@@ -282,7 +295,6 @@ void initP(O3StructArray* self) {
 	}
 	NSData* dat = [mStructType deportabalizeStructs:pdat];
 	O3Assign([dat mutableCopy], mData);
-	[dat release];
 }
 
 - (NSData*)structAtIndex:(UIntP)idx {
@@ -306,6 +318,16 @@ void initP(O3StructArray* self) {
 		return;
 	}
 	[mData appendBytes:bytes length:mStructSize];
+}
+
+- (void)setStructData:(NSData*)dat atIndex:(UIntP)idx {
+	O3AssertArg([dat length]==mStructSize, @"Passed data %@ not of correct size %i", dat, mStructSize)
+	[mData replaceBytesInRange:rangeOfIdx(self,idx) withBytes:[dat bytes]];
+}
+
+- (void)addStructData:(NSData*)dat {
+	O3AssertArg(!([dat length]%mStructSize), @"Passed data %@ not a multiple of size %i", dat, mStructSize)
+	[mData appendData:dat];
 }
 
 - (void*)cPtr {

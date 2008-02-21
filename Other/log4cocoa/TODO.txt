@@ -1,10 +1,10 @@
-Demo App
-
 more appenders 
 
 more layouts
 
 more configuration
+
+better Demo App
 
 test & improve performance
 
@@ -20,4 +20,9 @@ c wrapper
 
 ---------------------------------------------------------------
 
-clean up internal logging of error messages.
+LONG TERM GOALS (post version 1.0)
+
+clean up internal logging of error messages to use a logger (right now using speciality class).
+
+Analyze architecture and make it more Cocoa like (AppKit, Foundation, etc.) --- perhaps add delegates, etc.
+

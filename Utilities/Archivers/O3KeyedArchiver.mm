@@ -71,7 +71,7 @@ inline void initP(O3KeyedArchiver* self) {
 
 + (void)archiveRootObject:(id)obj toFile:(NSString*)file {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
-	int f = open([file UTF8String], O_RDONLY, 0444);
+	int f = open([file UTF8String], O_WRONLY+O_TRUNC+O_CREAT, 0666);
 	O3KeyedArchiver* a = [[O3KeyedArchiver alloc] initForWritingWithFileDescriptor:f];
 	[a encodeObject:obj forKey:@""];
 	[a finishEncoding];
@@ -118,7 +118,7 @@ void finishCompressionInitP(O3KeyedArchiver* self) {
 }
 
 ///Doesn't actually finish encoding, just flushes it to the data. Note that this is probably inefficient (data copy). Use the class methods if you can.
-///Worst hack I've ever done.
+///Worst hack ever!
 - (void)finishEncoding {
 	O3AssertIvar(mWriter && (mDat || mFD));
 	[mDelegate archiverWillFinish:(NSKeyedArchiver*)self];

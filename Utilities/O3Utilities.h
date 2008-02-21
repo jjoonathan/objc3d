@@ -139,7 +139,12 @@ O3EXTERN_C void O3Break(); ///<Useful for non-trivial fast breakpoints
 O3EXTERN_C void O3GLBreak();
 #ifdef O3DEBUG
 //Debug these (O3Log*) by putting a break on @sel(callAppenders:).
-#include <Log4Cocoa/Log4Cocoa.h>
+#ifdef O3BUILDING_FRAMEWORK
+extern "C" {
+	#include <Log4Cocoa/Log4Cocoa.h>
+}
+#endif
+
 #define O3LogDebug(format, args...) log4Debug(([NSString stringWithFormat:format, ##args]))
 #define O3LogInfo(format, args...) log4Info(([NSString stringWithFormat:format, ##args]))
 ///Debug these (O3Log*) by putting a break on @sel(callAppenders:).
@@ -224,6 +229,9 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 	}																			\
 	O3AssignSource;                                                             \
 })
+
+#define O3DTok() O3LogDebug(@"O3DTok")
+#define O3CDTok() O3CLogDebug(@"O3DTok")
 
 #define O3AssignCopy(source, dest) O3Assign(O3Copy(source), (dest))
 #define O3AssignMutableCopy(source, dest) O3Assign([(source) mutableCopy], (dest))

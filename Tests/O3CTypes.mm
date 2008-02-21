@@ -75,12 +75,12 @@ O3RawData O3CTypePortabalize(O3CType type, const void* fbytes, UIntP fstride, UI
 	UIntP i,j;
 	switch (type) {
 		#define DefCType(NAME,ID,CTYPE,OC_GET_SEL,OC_CLASS,OC_INIT_SEL) case NAME: for (i=0; i<chunk_count; i++) for (j=0; j<felements; j++) {\
-			UIntP to_offset = (i+j)*type_size;\
-			UIntP from_offset = i*fstride + j*type_size;\
-			CTYPE val = O3ByteswapHostToLittle(*((const CTYPE*)((const UInt8*)fbytes+from_offset)));\
-			*((CTYPE*)((UInt8*)tbytes+to_offset)) = val;\
-			break;\
-			}
+				UIntP to_offset = (i*felements+j)*type_size;\
+				UIntP from_offset = i*fstride + j*type_size;\
+				CTYPE val = O3ByteswapHostToLittle(*((const CTYPE*)((const UInt8*)fbytes+from_offset)));\
+				*((CTYPE*)((UInt8*)tbytes+to_offset)) = val;\
+			}\
+			break;
 		O3CTypeDefines
 		#undef DefCType
 		default:
@@ -109,7 +109,7 @@ O3RawData O3CTypeDeportabalize(O3CType type, const void* fbytes, void* tbytes, U
 	UIntP i,j;
 	switch (type) {
 		#define DefCType(NAME,ID,CTYPE,OC_GET_SEL,OC_CLASS,OC_INIT_SEL) case NAME: for (i=0; i<chunk_count; i++) for (j=0; j<elements; j++) {\
-			UIntP from_offset = (i+j)*type_size;\
+			UIntP from_offset = (i*elements+j)*type_size;\
 			UIntP to_offset = i*tstride + j*type_size;\
 			CTYPE val = O3ByteswapLittleToHost(*((const CTYPE*)((const UInt8*)fbytes+from_offset)));\
 			*((CTYPE*)((UInt8*)tbytes+to_offset)) = val;\

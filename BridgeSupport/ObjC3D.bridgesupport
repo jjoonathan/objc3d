@@ -21,7 +21,7 @@
 <struct name='O3Mat4x4r' type='{O3Mat&lt;real,4,4&gt;=&quot;v&quot;[16f]}'/>
 <struct name='O3Quaternion' type='{_O3Quaternion=&quot;v&quot;[4d]}'/>
 <struct name='O3RawData' type='{_O3RawData=&quot;bytes&quot;^v&quot;length&quot;I}'/>
-<struct name='O3RenderContext' type='{_O3RenderContext=&quot;scratch&quot;[5^v]&quot;objCCompatibility&quot;#&quot;view&quot;@&quot;O3GLView&quot;&quot;camera&quot;@&quot;O3Camera&quot;&quot;cameraSpace&quot;^{_O3Space3}&quot;elapsedTime&quot;d&quot;reserved&quot;[5^v]}'/>
+<struct name='O3RenderContext' type='{_O3RenderContext=&quot;scratch&quot;[5^v]&quot;objCCompatibility&quot;#&quot;view&quot;@&quot;O3GLView&quot;&quot;camera&quot;@&quot;O3Camera&quot;&quot;cameraSpace&quot;^{_O3Space3}&quot;elapsedTime&quot;d&quot;glContext&quot;@&quot;NSOpenGLContext&quot;&quot;reserved&quot;[5^v]}'/>
 <struct name='O3Rotation3' type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}'/>
 <struct name='O3Space3' type='{_O3Space3=&quot;mSuperspace&quot;^{_O3Space3}&quot;mFromSuperspace&quot;{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}&quot;mFromRootspace&quot;{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}&quot;mPseudohash&quot;I&quot;mSuperPseudohash&quot;I}'/>
 <struct name='O3Transformation3' type='{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}'/>
@@ -327,7 +327,12 @@
 </function>
 <function name='O3LocateableBeginRender'>
 <arg type='@'/>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d[5^v]}' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' type_modifier='o'/>
+</function>
+<function name='O3MemDup'>
+<arg NEW='1' type='^v' type_modifier='o'/>
+<arg type='L'/>
+<retval type='^v'/>
 </function>
 <function name='O3MoveDataOfType'>
 <arg NEW='1' type='^v' type_modifier='o'/>
@@ -405,6 +410,11 @@
 <arg NEW='1' type='^d' type_modifier='o'/>
 <retval type='^I'/>
 </function>
+<class name='NSArray'>
+<method selector='isRowMajor'>
+<retval type='B'/>
+</method>
+</class>
 <class name='NSCoder'>
 <method selector='isStatisticGatherer'>
 <retval type='B'/>
@@ -420,10 +430,10 @@
 <retval type='B'/>
 </method>
 <method selector='renderWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='tickWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='addObject:'>
 <arg NEW='1' index='0' type_modifier='o'/>
@@ -546,7 +556,7 @@
 <arg type='{O3Vec&lt;double,2&gt;=[2d]}' index='0'/>
 </method>
 <method selector='tickWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='viewMatrix'>
 <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
@@ -735,10 +745,10 @@
 </class>
 <class name='O3Region'>
 <method selector='renderWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='tickWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='addObject:'>
 <arg NEW='1' index='0' type_modifier='o'/>
@@ -773,11 +783,17 @@
 </class>
 <class name='O3Scene'>
 <method selector='renderWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
 </method>
 </class>
 <class name='O3StructArray'>
+<method selector='countLocked'>
+<retval type='B'/>
+</method>
 <method variadic='true' selector='initByCompoundingArrays:'/>
+<method selector='setCountLocked:'>
+<arg type='B' index='0'/>
+</method>
 <method selector='setStructType:'>
 <retval type='B'/>
 </method>
@@ -826,7 +842,16 @@
 <method selector='initWithBytes:typeName:length:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
+<method selector='initWithCopiedBytes:type:length:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+</method>
+<method selector='initWithCopiedBytes:typeName:length:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+</method>
 <method selector='setStruct:atIndex:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+</method>
+<method selector='valuesAsDoublesCount:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
 </class>

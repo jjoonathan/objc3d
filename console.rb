@@ -283,7 +283,7 @@ module IRB
       irb.signal_handle
     end
 	trap("SIGTERM") do
-      exit
+      NSApplication.sharedApplication.terminate(self)
     end
     old_stdout, old_stderr = $stdout, $stderr
     $stdout = $stderr = console

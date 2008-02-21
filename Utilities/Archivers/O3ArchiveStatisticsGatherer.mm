@@ -11,6 +11,7 @@
 
 @implementation O3ArchiveStatistic
 O3DefaultO3InitializeImplementation
++ (id)alloc {id s = [super alloc]; if (!s) O3Asrt(false /*Allocation failed!*/); return s;}
 inline NSString* getKey(O3ArchiveStatistic* self) {return self->key;}
 inline void      setKey(O3ArchiveStatistic* self, NSString* k) {self->key = k;}
 inline UIntP getCount(O3ArchiveStatistic* self) {return self->numOccurances;}
@@ -180,6 +181,8 @@ inline NSString* classNameForClassCP(Class c) {
 		NSString* archiverClassOverride = classNameForClassCP(theClass);
 		className = archiverClassOverride?:[theClass className];		
 	}
-	incrementClassCounter(className);
+	if (theClass) incrementClassCounter(className); //May be NULL because obj may be null
 }
+
+- (BOOL)allowsKeyedCoding {return YES;}
 @end

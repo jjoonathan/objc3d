@@ -60,6 +60,8 @@
 - (void)getStruct:(void*)bytes atIndex:(UIntP)idx;
 - (void)setStruct:(const void*)bytes atIndex:(UIntP)idx;
 - (void)addStruct:(const void*)bytes;
+- (void)setStructData:(NSData*)dat atIndex:(UIntP)idx;
+- (void)addStructData:(NSData*)dat;
 - (void*)cPtr; ///<Returns a C pointer that can be used as a regular C array (after casting). Returns nil for GPU data (call rawData -bytes and -relinquishBytes manually)
 
 //NSArray

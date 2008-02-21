@@ -29,9 +29,10 @@ O3DefaultO3InitializeImplementation
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
 		[self release];
 		return nil;
-	}	
-	return [self initWithStructArray:[coder decodeObjectForKey:@"vertValues"]
-	                  vertexDataType:(O3VertexDataType)[coder decodeInt32ForKey:@"type"]];
+	}
+	O3StructArray* vals = [coder decodeObjectForKey:@"vertValues"];
+	O3VertexDataType vdt = (O3VertexDataType)[coder decodeInt32ForKey:@"type"];
+	return [self initWithStructArray:vals vertexDataType:vdt];
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
@@ -172,7 +173,6 @@ O3DefaultO3InitializeImplementation
 				[NSException raise:O3VertexDataTypeUnrecognizedException
 	                        format:@"[O3StructArrayVDS bindAsSourceForVertexDataType...] does not recognize %i as a valid vertex [dat glPtrForBindingArray] type. Note that for vertex attributes, you should use the bindAsSourceForVertexAttribute methods."];
 		}
-		O3Asrt(vps);
 		return [mStructArray count]*vps;
 }
 

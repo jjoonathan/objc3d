@@ -13,9 +13,10 @@
 O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Init & Dealloc /************************************/
 inline void initP(O3Scene* self) {
-	self->mRenderSteps = [[NSMutableArray alloc] initWithObjects:@"tick:", @"clear:", @"drawObjects:", @"flush", nil];
+	self->mRenderSteps = [[NSMutableArray alloc] initWithObjects:@"tick:", @"clear:", @"drawObjects:", @"flush:", nil];
 	self->mRenderLock = [[NSLock alloc] init];
 	self->mSceneState = [[NSMutableDictionary alloc] init];
+	[self setBackgroundColor:[NSColor blackColor]];
 }
 
 - (O3Scene*)init {
@@ -76,7 +77,8 @@ inline void initP(O3Scene* self) {
 }
 
 - (void)setBackgroundColor:(NSColor*)color {
-	O3Assign(color, mBackgroundColor);
+	color = [color colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+	O3Assign([NSColor colorWithCalibratedRed:[color redComponent] green:[color greenComponent] blue:[color blueComponent] alpha:[color alphaComponent]], mBackgroundColor);
 }
 
 

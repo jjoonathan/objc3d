@@ -315,6 +315,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 }
 
 - (void)setBackgroundColor:(NSColor*)color {
+	O3Assert(mScene, @"Cannot set background color without a scene!");
 	[mScene setBackgroundColor:color];
 }
 

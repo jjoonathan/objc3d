@@ -20,6 +20,10 @@ inline O3ResManager* O3ResManagerSharedInstanceP() {
 	return gO3ResManagerSharedInstance;
 }
 
+O3ResManager* O3RMGM() {
+	return gO3ResManagerSharedInstance;
+}
+
 + (void)o3init {
 	gO3ResManagerSharedInstance=[[O3ResManager alloc] init];
 	[gO3ResManagerSharedInstance setEncodedAsShared:YES];
@@ -68,6 +72,10 @@ inline O3ResManager* O3ResManagerSharedInstanceP() {
 }
 
 + (O3ResManager*)sharedManager {
+	return O3ResManagerSharedInstanceP();
+}
+
++ (O3ResManager*)gm {
 	return O3ResManagerSharedInstanceP();
 }
 
@@ -165,6 +173,15 @@ int sortBySearchPriority(id l, id r, void* objname) {
 	if (!val) val = [mParentManager valueForKey:key];
 	if (!val) val = [self loadResourceNamed:key];
 	return val;
+}
+
+- (void)addObjects:(NSDictionary*)objs {
+	NSEnumerator* keyEnumerator = [objs keyEnumerator];
+	NSEnumerator* objEnumerator = [objs objectEnumerator];
+	while (id k = [keyEnumerator nextObject]) {
+		id o = [objEnumerator nextObject];
+		[self setValue:o forKey:k];
+	}
 }
 
 - (id)valueForKeyWithoutLoading:(NSString*)key {

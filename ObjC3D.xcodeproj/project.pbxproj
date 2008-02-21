@@ -163,6 +163,8 @@
 		FC3A0EAC0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm in Resources */ = {isa = PBXBuildFile; fileRef = FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */; };
 		FC4055420CAC86B5005908DF /* O3FileResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4055400CAC86B5005908DF /* O3FileResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4055430CAC86B5005908DF /* O3FileResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4055410CAC86B5005908DF /* O3FileResSource.mm */; };
+		FC41CD830D6B37B4008E882C /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
+		FC41CD840D6B37BE008E882C /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
 		FC4605C10CA602E9006F0122 /* O3ResSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4605BF0CA602E9006F0122 /* O3ResSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC4605C20CA602E9006F0122 /* O3ResSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC4605C00CA602E9006F0122 /* O3ResSource.mm */; };
 		FC4EF1840CEA90B500B14EBF /* O3StructArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5507230CDF5354003EE24B /* O3StructArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -199,8 +201,6 @@
 		FC63EE590CF9F3EE00325C54 /* O3Geometry.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE580CF9F3EE00325C54 /* O3Geometry.mm */; };
 		FC63EE880CF9F95F00325C54 /* O3FaceStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EE860CF9F95F00325C54 /* O3FaceStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC63EE890CF9F95F00325C54 /* O3FaceStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC63EE870CF9F95F00325C54 /* O3FaceStructType.mm */; };
-		FC63EF800CFA22F200325C54 /* Log4Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
-		FC63EF810CFA22FB00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
 		FC63EFA30CFA255C00325C54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FC63EFAA0CFA259B00325C54 /* Log4Cocoa.framework in Embed ObjC3D */ = {isa = PBXBuildFile; fileRef = FC63EF7F0CFA22F200325C54 /* Log4Cocoa.framework */; };
 		FC63EFCE0CFA287600325C54 /* O3StructArrayVDS.h in Headers */ = {isa = PBXBuildFile; fileRef = FC63EFCC0CFA287600325C54 /* O3StructArrayVDS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -264,12 +264,26 @@
 			remoteGlobalIDString = FC2C13C90C11BC3E0084A599;
 			remoteInfo = glew;
 		};
-		FC2C204D0C12FFD40084A599 /* PBXContainerItemProxy */ = {
+		FC41CD3F0D6B3633008E882C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */;
+			containerPortal = FC41CD360D6B3633008E882C /* Log4Cocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = Log4Cocoa;
+		};
+		FC41CD410D6B3633008E882C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC41CD360D6B3633008E882C /* Log4Cocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FCFE06E80D0F9C850042188B;
+			remoteInfo = Tests;
+		};
+		FC41CD510D6B36B5008E882C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC41CD360D6B3633008E882C /* Log4Cocoa.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = log4cocoa;
+			remoteInfo = Log4Cocoa;
 		};
 		FC56F1700D331EEC0083E421 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -313,13 +327,6 @@
 			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = libstrip;
 		};
-		FC7DD60D0C1C8CAB009D36A2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FC7DD5D30C1C8C7C009D36A2;
-			remoteInfo = Log4Cocoa;
-		};
 		FCEA98FC0C9E1D3C00D93A70 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -352,7 +359,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FC63EF810CFA22FB00325C54 /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */,
+				FC41CD840D6B37BE008E882C /* Log4Cocoa.framework in Embed Log4Cocoa and Cg frameworks */,
 				FC63E3060CF317A800325C54 /* Cg.framework in Embed Log4Cocoa and Cg frameworks */,
 			);
 			name = "Embed Log4Cocoa and Cg frameworks";
@@ -431,7 +438,6 @@
 		FC2C1BB70C123F7A0084A599 /* ObjC3D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjC3D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC2C1BB80C123F7A0084A599 /* ObjC3D.framework-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "ObjC3D.framework-Info.plist"; sourceTree = "<group>"; };
 		FC2C1BC30C1240020084A599 /* ObjC3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjC3D.h; sourceTree = "<group>"; };
-		FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = log4cocoa.xcodeproj; path = Other/log4cocoa.xcodeproj; sourceTree = "<group>"; };
 		FC2D228A0B13D556000C2073 /* O3Light.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O3Light.h; sourceTree = "<group>"; };
 		FC2D228B0B14C2CD000C2073 /* O3Light.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Light.mm; sourceTree = "<group>"; };
 		FC2D24830B16237A000C2073 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
@@ -460,6 +466,7 @@
 		FC3E61A80C9E313B00E2F0F8 /* deportabalize.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = deportabalize.sh; sourceTree = "<group>"; };
 		FC4055400CAC86B5005908DF /* O3FileResSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3FileResSource.h; sourceTree = "<group>"; };
 		FC4055410CAC86B5005908DF /* O3FileResSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3FileResSource.mm; sourceTree = "<group>"; };
+		FC41CD360D6B3633008E882C /* Log4Cocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Log4Cocoa.xcodeproj; path = Other/log4cocoa/Log4Cocoa.xcodeproj; sourceTree = "<group>"; };
 		FC438B670D02676900DFA46F /* O3CompoundStructType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3CompoundStructType.h; sourceTree = "<group>"; };
 		FC438B680D02676900DFA46F /* O3CompoundStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3CompoundStructType.mm; sourceTree = "<group>"; };
 		FC4605BF0CA602E9006F0122 /* O3ResSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3ResSource.h; sourceTree = "<group>"; };
@@ -657,13 +664,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC41CD830D6B37B4008E882C /* Log4Cocoa.framework in Frameworks */,
 				FC72DCDA0D53F2DF00D4C2E6 /* libstrip.a in Frameworks */,
 				FC63E2FA0CF3174500325C54 /* Cg.framework in Frameworks */,
 				FC2C1D430C125FDB0084A599 /* libglew.a in Frameworks */,
 				FC2C1D460C125FDB0084A599 /* Cocoa.framework in Frameworks */,
 				FC2C1D470C125FDB0084A599 /* OpenGL.framework in Frameworks */,
 				FC2C1D480C125FDB0084A599 /* Carbon.framework in Frameworks */,
-				FC63EF800CFA22F200325C54 /* Log4Cocoa.framework in Frameworks */,
 				FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */,
 				FC56F18C0D3324490083E421 /* liblib3ds.a in Frameworks */,
 			);
@@ -735,9 +742,9 @@
 		29B97314FDCFA39411CA2CEA /* ObjC3D */ = {
 			isa = PBXGroup;
 			children = (
+				FC41CD360D6B3633008E882C /* Log4Cocoa.xcodeproj */,
 				FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */,
 				FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */,
-				FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */,
 				FC2C173C0C11C9700084A599 /* glew.xcodeproj */,
 				FC030FB40A953A89007E04C1 /* Todo.rtf */,
 				FC7783AA0C3997FF00A2E928 /* Readme.rtf */,
@@ -933,14 +940,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FC2C20440C12FFA90084A599 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FC7DD60E0C1C8CAB009D36A2 /* Log4Cocoa.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FC348AAB0B420B06000015FE /* Geometry */ = {
 			isa = PBXGroup;
 			children = (
@@ -991,6 +990,15 @@
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 			);
 			name = Apple;
+			sourceTree = "<group>";
+		};
+		FC41CD370D6B3633008E882C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC41CD400D6B3633008E882C /* Log4Cocoa.framework */,
+				FC41CD420D6B3633008E882C /* Tests.octest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FC4AD8160AE9B89600812085 /* Functions */ = {
@@ -1454,9 +1462,9 @@
 			);
 			dependencies = (
 				FC2C1C830C125FC90084A599 /* PBXTargetDependency */,
-				FC2C204E0C12FFD40084A599 /* PBXTargetDependency */,
 				FC56F1730D331EFE0083E421 /* PBXTargetDependency */,
 				FC72DC9A0D52F10F00D4C2E6 /* PBXTargetDependency */,
+				FC41CD520D6B36B5008E882C /* PBXTargetDependency */,
 			);
 			name = ObjC3D.framework;
 			productName = ObjC3D.framework;
@@ -1543,8 +1551,8 @@
 					ProjectRef = FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */;
 				},
 				{
-					ProductGroup = FC2C20440C12FFA90084A599 /* Products */;
-					ProjectRef = FC2C20430C12FFA90084A599 /* log4cocoa.xcodeproj */;
+					ProductGroup = FC41CD370D6B3633008E882C /* Products */;
+					ProjectRef = FC41CD360D6B3633008E882C /* Log4Cocoa.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1567,6 +1575,20 @@
 			remoteRef = FC2C17460C11C9700084A599 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FC41CD400D6B3633008E882C /* Log4Cocoa.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Log4Cocoa.framework;
+			remoteRef = FC41CD3F0D6B3633008E882C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FC41CD420D6B3633008E882C /* Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.octest;
+			remoteRef = FC41CD410D6B3633008E882C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FC56F1710D331EEC0083E421 /* liblib3ds.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1579,13 +1601,6 @@
 			fileType = archive.ar;
 			path = libstrip.a;
 			remoteRef = FC72DC800D52F0F100D4C2E6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FC7DD60E0C1C8CAB009D36A2 /* Log4Cocoa.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Log4Cocoa.framework;
-			remoteRef = FC7DD60D0C1C8CAB009D36A2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1815,10 +1830,10 @@
 			name = glew;
 			targetProxy = FC2C1C820C125FC90084A599 /* PBXContainerItemProxy */;
 		};
-		FC2C204E0C12FFD40084A599 /* PBXTargetDependency */ = {
+		FC41CD520D6B36B5008E882C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = log4cocoa;
-			targetProxy = FC2C204D0C12FFD40084A599 /* PBXContainerItemProxy */;
+			name = Log4Cocoa;
+			targetProxy = FC41CD510D6B36B5008E882C /* PBXContainerItemProxy */;
 		};
 		FC56F1730D331EFE0083E421 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1950,9 +1965,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1962,6 +1978,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					O3BUILDING_FRAMEWORK,
+					O3DEBUG,
+				);
 				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
@@ -1972,6 +1992,10 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				OTHER_CFLAGS = (
+					"-ftime-report",
+					"-fmem-report",
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1988,15 +2012,17 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = O3BUILDING_FRAMEWORK;
 				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
@@ -2007,6 +2033,10 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				OTHER_CFLAGS = (
+					"-ftime-report",
+					"-fmem-report",
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2025,9 +2055,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -2035,6 +2066,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = O3BUILDING_FRAMEWORK;
 				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
@@ -2045,6 +2077,10 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				OTHER_CFLAGS = (
+					"-ftime-report",
+					"-fmem-report",
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2061,9 +2097,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_VERSION = A;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -2071,6 +2108,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ObjC3D_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = O3BUILDING_FRAMEWORK;
 				HEADER_SEARCH_PATHS = "$(SYMROOT)/Support/Headers";
 				INFOPLIST_FILE = "ObjC3D.framework-Info.plist";
 				INSTALL_PATH = "@loader_path/../Frameworks";
@@ -2081,6 +2119,10 @@
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build/Support\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build/Support\"";
+				OTHER_CFLAGS = (
+					"-ftime-report",
+					"-fmem-report",
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2167,6 +2209,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -2187,6 +2234,11 @@
 		FC63DF140CF1C2A200325C54 /* Debug_Optimized */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2205,6 +2257,11 @@
 		FC63DF150CF1C2A200325C54 /* Release_OneArch */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2225,6 +2282,11 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

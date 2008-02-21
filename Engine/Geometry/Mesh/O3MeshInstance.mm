@@ -67,7 +67,7 @@ inline void initP(O3MeshInstance* self) {
 - (void)setMaterialName:(NSString*)newName {
 	if (mMaterialName) [self unbind:@"material"];
 	O3Assign(newName,mMaterialName);
-	if (mMaterialName) [self bind:@"material" toObject:gO3ResManagerSharedInstance withKeyPath:newName options:nil];
+	if (mMaterialName) [self bind:@"material" toObject:O3RMGM() withKeyPath:newName options:nil];
 }
 
 - (NSString*)meshTypeName {
@@ -75,9 +75,9 @@ inline void initP(O3MeshInstance* self) {
 }
 
 - (void)setMeshTypeName:(NSString*)newName {
-	if (mMaterialName)[self unbind:@"meshType"];
+	if (mMeshName) [self unbind:@"meshType"];
 	O3Assign(newName,mMeshName);
-	if (mMaterialName) [self bind:@"meshType" toObject:gO3ResManagerSharedInstance withKeyPath:newName options:nil];
+	if (newName) [self bind:@"meshType" toObject:O3RMGM() withKeyPath:newName options:nil];
 }
 
 - (O3MeshType*)meshType {
@@ -86,7 +86,7 @@ inline void initP(O3MeshInstance* self) {
 
 - (void)setMeshType:(O3MeshType*)mesh {
 	O3Assign(mesh,mMeshType);
-	if ([gO3ResManagerSharedInstance valueForKey:mMeshName]!=mMeshType) O3Destroy(mMeshName);
+	if ([O3RMGM() valueForKey:mMeshName]!=mMeshType) O3Destroy(mMeshName);
 }
 
 /************************************/ #pragma mark Rendering /************************************/

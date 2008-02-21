@@ -1,4 +1,8 @@
 #include "O3NonlinearWriter.h"
+#import <sys/uio.h>
+#ifndef UIO_MAXIOV
+#define UIO_MAXIOV 1024
+#endif
 
 /************************************/ #pragma mark Memory Management /************************************/
 ///Use an allocation scheme optimized for small and oddly sized blocks
@@ -242,5 +246,11 @@ void O3NonlinearWriter::WriteToFileDescriptor(int descriptor) {
 	towrite = (iovec*)malloc(sizeof(struct iovec)*mBuffers.size());
 	UIntP i; for (i=0; i<mChunksToWrite.size(); i++) towrite[i] = mChunksToWrite[i];
 #endif
-	writev(descriptor, towrite, mChunksToWrite.size());
+	UIntP iovtw = mChunksToWrite.size();
+	while (iovtw) {
+		UIntP iov_on_this_pass = O3Min(iovtw, UIO_MAXIOV);
+		int stat = writev(descriptor, towrite, iov_on_this_pass);
+		O3Assert(stat!=-1, @"O3NonlinearWriter writing failed, errno=%i",errno);
+		iovtw -= iov_on_this_pass;
+	}
 }

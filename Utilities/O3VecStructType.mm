@@ -191,7 +191,7 @@ O3END_EXTERN_C_BLOCK
 }
 
 - (NSData*)portabalizeStructsAt:(const void*)at count:(UIntP)count stride:(UIntP)s {
-	O3RawData rd = O3CTypePortabalize(mElementType, at, s, 1, count*mElementCount);
+	O3RawData rd = O3CTypePortabalize(mElementType, at, s, mElementCount, count*mElementCount);
 	return [NSData dataWithBytesNoCopy:rd.bytes length:rd.length freeWhenDone:YES];
 }
 
@@ -207,7 +207,8 @@ O3END_EXTERN_C_BLOCK
 - (NSMutableData*)translateStructs:(NSData*)instructs stride:(UIntP)s toFormat:(O3StructType*)oformat {
 	BOOL other_is_vec = [oformat isKindOfClass:[O3VecStructType class]];
 	BOOL other_is_scalar = [oformat isKindOfClass:[O3ScalarStructType class]];
-	if (!(other_is_vec ^ other_is_scalar)) return [super translateStructs:instructs stride:s toFormat:oformat];
+	BOOL other_is_face = [oformat isKindOfClass:[O3TriFaceStructType class]];
+	if (!(other_is_vec || other_is_scalar || other_is_face)) return [super translateStructs:instructs stride:s toFormat:oformat];
 	UIntP o_elementCount = other_is_scalar? 1 : [(O3VecStructType*)oformat elementCount];
 	UIntP* o_perms = other_is_vec? [(O3VecStructType*)oformat permutations] : nil;
 	UIntP o_stride = [oformat structSize];
@@ -221,6 +222,15 @@ O3END_EXTERN_C_BLOCK
 	if (other_is_scalar) {
 		in_count *= mElementCount;
 		in_stride = in_eleStride;
+	}
+	
+	if (other_is_face) {
+		if (o_elementCount%mElementCount) {
+			O3LogWarn(@"Bad translation: counts don't match up");
+			return nil;
+		}
+		o_elementCount = mElementCount;
+		o_stride = o_eleStride*o_elementCount;
 	}
 	
 	const UInt8* fbytes = (const UInt8*)[instructs bytes];

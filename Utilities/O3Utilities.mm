@@ -28,7 +28,13 @@ O3EXTERN_C void O3Init() {
 	inited++;
 	
 	gO3DefaultGLContext = [[NSOpenGLContext alloc] initWithFormat:[NSOpenGLView defaultPixelFormat] shareContext:nil];
-	[gO3DefaultGLContext makeCurrentContext];
+	if ([[[NSBundle mainBundle] bundleIdentifier] isEqual:@"org.blenderfoundation.blender"]) {
+		NSLog(@"**** ObjC3D Dirty Hack Alert ****");
+		NSLog(@"**** All ObjC3D OpenGL calls won't work. ****");
+		NSLog(@"**** Fix this by teaching objc3d to handle multiple contexts. ****");
+	} else {
+		[gO3DefaultGLContext makeCurrentContext];		
+	}
 	GLenum glewState = glewInit();
 	if (glewState != GLEW_OK) {
 		NSString* desc = @"an unknown error occured.";
@@ -43,6 +49,9 @@ O3EXTERN_C void O3Init() {
 	[O3ScalarStructType o3init];
 	[O3MatStructType o3init];
 	[O3ResManager o3init];
+	
+	[[L4Logger rootLogger] addAppender:[L4ConsoleAppender standardErrWithLayout:[L4Layout simpleLayout]]];
+	[[L4Logger rootLogger] setLevel:[L4Level info]];
 	[p release];
 }
 

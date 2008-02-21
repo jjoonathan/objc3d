@@ -11,6 +11,7 @@
 extern NSString* O3ResManagerKeyWillChangeNotification;
 extern NSString* O3ResManagerKeyDidChangeNotification;
 extern O3ResManager* gO3ResManagerSharedInstance;
+O3ResManager* O3RMGM(); //Shortcut for the global res manager
 
 @interface O3ResManager : NSObject {
 	NSMutableArray* mResourceSources;
@@ -24,12 +25,14 @@ extern O3ResManager* gO3ResManagerSharedInstance;
 //Construction
 - (O3ResManager*)init;
 + (O3ResManager*)sharedManager;
++ (O3ResManager*)gm; //GlobalManager: shortcut for sharedManager
 
 //KVC
 - (NSArray*)allKeys;
 - (void)setValue:(id)obj forKey:(NSString*)key;
 - (id)valueForKey:(NSString*)key;
 - (id)valueForKeyWithoutLoading:(NSString*)key;
+- (void)addObjects:(NSDictionary*)objs;
 
 //Loading
 - (id)loadResourceNamed:(NSString*)resName; ///Searches for, loads, and returns resName (nil if not found). This *does* add the resource to the receiver.
