@@ -120,4 +120,19 @@ class TestStructArray < Test::Unit::TestCase
   def test_mat_struct_type
     assert(O3MatStructType.selfTest)
   end
+  
+  def test_vector_portabalization
+    ct=rand(10)
+	tnum=rand(20)
+	type=rand(12)
+	stype=rand(7)
+	a=O3StructArray.alloc.initWithType(O3VecStructType.vecStructTypeWithElementType_specificType_count_name_comparator(type, stype, ct, 'test_vector_portabalization_type', nil)
+	tnum.times {|t|
+	  a.addObject(Array.new(ct) {|x|rand()*0xF000})
+	}
+	rdat=a.rawData
+	pdat=a.portableData
+	a.setPortableData(pdat)
+	assert(rdat==a.rawData, "Vector portabalization died.")
+  end
 end
