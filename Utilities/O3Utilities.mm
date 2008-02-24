@@ -9,6 +9,7 @@
 #import "O3MatStructType.h"
 #import "O3ResManager.h"
 #import "O3GPUData.h"
+#import "O3CGEffect.h"
 NSOpenGLContext* gO3DefaultGLContext;
  
 void O3FailAssertt() {
@@ -49,6 +50,7 @@ O3EXTERN_C void O3Init() {
 	[O3ScalarStructType o3init];
 	[O3MatStructType o3init];
 	[O3ResManager o3init];
+	[O3CGEffect o3init];
 	
 	[[L4Logger rootLogger] addAppender:[L4ConsoleAppender standardErrWithLayout:[L4Layout simpleLayout]]];
 	[[L4Logger rootLogger] setLevel:[L4Level info]];

@@ -19,6 +19,7 @@ using namespace ObjC3D::Math;
 	double mFOVY;
 	float mFlySpeed; ///<Units/sec
 	float mRotRate;  ///<Rad/tick
+	float mBarrelRate;  ///<Rad/sec
 }
 //Init
 - (O3Camera*)initWithCoder:(NSCoder*)coder;
@@ -29,6 +30,8 @@ using namespace ObjC3D::Math;
 - (void)setFlySpeed:(float)fs;
 - (float)rotRate;  ///<Rad/tick
 - (void)setRotRate:(float)rr;
+- (float)barrelRate;  ///<Rad/sec
+- (void)setBarrelRate:(float)rr;
 - (double)aspectRatio;	///<Returns the aspect ratio (width/height) of the receiver.
 - (double)nearPlaneDistance; ///<Returns how far away the near plane is
 - (double)farPlaneDistance;  ///<Returns how far away the far plane is

@@ -20,6 +20,7 @@ using namespace std;
 @class O3KVCHelper;
 @class O3CGParameter;
 @class O3CGAnnotation;
+@class O3CGMaterial;
 
 @interface O3CGEffect : NSObject <O3HasParameters, O3HasCGParameters, O3MultipassDirector> {
 	CGeffect mEffect;	///<The effect wrapped by the receiver
@@ -46,6 +47,7 @@ using namespace std;
 	BOOL mRenderingBegun; ///<Used for debug purposes (YES if we are in the middle of a beginRendering / endRendering block)
 }
 //Initialization
++ (void)o3init;
 - (id)initWithSource:(NSString*)source;
 
 //Source editing (not efficient, but handy for KVC)
@@ -80,6 +82,11 @@ using namespace std;
 //Class
 + (BOOL)effectsEnabled; ///<Returns weather or not effects are enabled. If effects are disabled, calling setRenderPass: returns without actually setting the pass (but every other method works as expected)
 + (NSError*)setEffectsEnabled:(BOOL)enabled; ///<Sets weather or not effects are enabled. If effects are disabled, calling setRenderPass: returns without actually setting the pass (but every other method works as expected)
+
+//Globals
++ (O3CGParameter*)globalNamed:(NSString*)gpname;
++ (void)setGlobalValue:(id)val forKey:(NSString*)k;
++ (O3CGParameter*)createGlobalOfType:(CGtype)t forKey:(NSString*)k;
 @end
 
 @interface O3CGEffect (TechniquePrivateCallbacks)

@@ -93,84 +93,96 @@ static BOOL lookupAndSend(O3GLViewController* self, NSDictionary* dict, id targe
 }
 
 static NSString* nameForEvent(NSEvent* event) {
-	NSString* charStr = [event charactersIgnoringModifiers];
-	O3Assert([charStr length]==1, @"Not programmed to handle more than 1 char per event!");
-	UInt32 theChar = [charStr characterAtIndex:0];
-	if (theChar>='A' && theChar<='Z') theChar-='a'-'A';
-	if (theChar<256) return charStr;
-	switch (theChar) {
-		case 0xF700: return @"NSUpArrowFunctionKey";
-		case 0xF701: return @"NSDownArrowFunctionKey";
-		case 0xF702: return @"NSLeftArrowFunctionKey";
-		case 0xF703: return @"NSRightArrowFunctionKey";
-		case 0xF704: return @"NSF1FunctionKey";
-		case 0xF705: return @"NSF2FunctionKey";
-		case 0xF706: return @"NSF3FunctionKey";
-		case 0xF707: return @"NSF4FunctionKey";
-		case 0xF708: return @"NSF5FunctionKey";
-		case 0xF709: return @"NSF6FunctionKey";
-		case 0xF70A: return @"NSF7FunctionKey";
-		case 0xF70B: return @"NSF8FunctionKey";
-		case 0xF70C: return @"NSF9FunctionKey";
-		case 0xF70D: return @"NSF10FunctionKey";
-		case 0xF70E: return @"NSF11FunctionKey";
-		case 0xF70F: return @"NSF12FunctionKey";
-		case 0xF710: return @"NSF13FunctionKey";
-		case 0xF711: return @"NSF14FunctionKey";
-		case 0xF712: return @"NSF15FunctionKey";
-		case 0xF713: return @"NSF16FunctionKey";
-		case 0xF714: return @"NSF17FunctionKey";
-		case 0xF715: return @"NSF18FunctionKey";
-		case 0xF716: return @"NSF19FunctionKey";
-		case 0xF717: return @"NSF20FunctionKey";
-		case 0xF718: return @"NSF21FunctionKey";
-		case 0xF719: return @"NSF22FunctionKey";
-		case 0xF71A: return @"NSF23FunctionKey";
-		case 0xF71B: return @"NSF24FunctionKey";
-		case 0xF71C: return @"NSF25FunctionKey";
-		case 0xF71D: return @"NSF26FunctionKey";
-		case 0xF71E: return @"NSF27FunctionKey";
-		case 0xF71F: return @"NSF28FunctionKey";
-		case 0xF720: return @"NSF29FunctionKey";
-		case 0xF721: return @"NSF30FunctionKey";
-		case 0xF722: return @"NSF31FunctionKey";
-		case 0xF723: return @"NSF32FunctionKey";
-		case 0xF724: return @"NSF33FunctionKey";
-		case 0xF725: return @"NSF34FunctionKey";
-		case 0xF726: return @"NSF35FunctionKey";
-		case 0xF727: return @"NSInsertFunctionKey";
-		case 0xF728: return @"NSDeleteFunctionKey";
-		case 0xF729: return @"NSHomeFunctionKey";
-		case 0xF72A: return @"NSBeginFunctionKey";
-		case 0xF72B: return @"NSEndFunctionKey";
-		case 0xF72C: return @"NSPageUpFunctionKey";
-		case 0xF72D: return @"NSPageDownFunctionKey";
-		case 0xF72E: return @"NSPrintScreenFunctionKey";
-		case 0xF72F: return @"NSScrollLockFunctionKey";
-		case 0xF730: return @"NSPauseFunctionKey";
-		case 0xF731: return @"NSSysReqFunctionKey";
-		case 0xF732: return @"NSBreakFunctionKey";
-		case 0xF733: return @"NSResetFunctionKey";
-		case 0xF734: return @"NSStopFunctionKey";
-		case 0xF735: return @"NSMenuFunctionKey";
-		case 0xF736: return @"NSUserFunctionKey";
-		case 0xF737: return @"NSSystemFunctionKey";
-		case 0xF738: return @"NSPrintFunctionKey";
-		case 0xF739: return @"NSClearLineFunctionKey";
-		case 0xF73A: return @"NSClearDisplayFunctionKey";
-		case 0xF73B: return @"NSInsertLineFunctionKey";
-		case 0xF73C: return @"NSDeleteLineFunctionKey";
-		case 0xF73D: return @"NSInsertCharFunctionKey";
-		case 0xF73E: return @"NSDeleteCharFunctionKey";
-		case 0xF73F: return @"NSPrevFunctionKey";
-		case 0xF740: return @"NSNextFunctionKey";
-		case 0xF741: return @"NSSelectFunctionKey";
-		case 0xF742: return @"NSExecuteFunctionKey";
-		case 0xF743: return @"NSUndoFunctionKey";
-		case 0xF744: return @"NSRedoFunctionKey";
-		case 0xF745: return @"NSFindFunctionKey";
-		case 0xF746: return @"NSHelpFunctionKey";
-		case 0xF747: return @"NSModeSwitchFunctionKey";
+	unsigned keyCode = [event keyCode];
+	switch (keyCode) {
+		case 12: return @"q";
+		case 13: return @"w";
+		case 14: return @"e";
+		case 15: return @"r";
+		case 17: return @"t";
+		case 16: return @"y";
+		case 32: return @"u";
+		case 34: return @"i";
+		case 31: return @"o";
+		case 35: return @"p";
+		case 33: return @"[";
+		case 30: return @"]";
+		case 42: return @"\\";
+		case 0 : return @"a";
+		case 1 : return @"s";
+		case 2 : return @"d";
+		case 3 : return @"f";
+		case 5 : return @"g";
+		case 4 : return @"h";
+		case 38: return @"j";
+		case 40: return @"k";
+		case 37: return @"l";
+		case 41: return @";";
+		case 39: return @"'";
+		case 6 : return @"z";
+		case 7 : return @"x";
+		case 8 : return @"c";
+		case 9 : return @"v";
+		case 11: return @"b";
+		case 45: return @"n";
+		case 46: return @"m";
+		case 43: return @",";
+		case 47: return @".";
+		case 44: return @"/";
+		case 0x31: return @"Space";
+		case 0x24: return @"Return";
+		case 0x30: return @"Tab";
+		case 0x33: return @"Backspace";
+		case 0x35: return @"Escape";
+		case 0x7A: return @"F1";
+		case 0x78: return @"F2";
+		case 0x63: return @"F3";
+		case 0x76: return @"F4";
+		case 0x60: return @"F5";
+		case 0x61: return @"F6";
+		case 0x62: return @"F7";
+		case 0x64: return @"F8";
+		case 0x65: return @"F9";
+		case 0x6D: return @"F10";
+		case 0x67: return @"F11";
+		case 0x6F: return @"F12";
+		case 0x69: return @"F13";
+		case 0x6B: return @"F14";
+		case 0x71: return @"F15";
+		case 0x7B: return @"Left Arrow";
+		case 0x7D: return @"Down Arrow";
+		case 0x7C: return @"Right Arrow";
+		case 0x7E: return @"Up Arrow";
+		case 0x72: return @"Help";
+		case 0x75: return @"Delete";
+		case 0x73: return @"Home";
+		case 0x77: return @"End";
+		case 0x74: return @"Page Up";
+		case 0x79: return @"Page Down";
+		case 0x52: return @"Keypad 0";
+		case 0x41: return @"Keypad .";
+		case 0x4C: return @"Keypad Enter";
+		case 0x53: return @"Keypad 1";
+		case 0x54: return @"Keypad 2";
+		case 0x55: return @"Keypad 3";
+		case 0x56: return @"Keypad 4";
+		case 0x57: return @"Keypad 5";
+		case 0x58: return @"Keypad 6";
+		case 0x45: return @"Keypad +";
+		case 0x59: return @"Keypad 7";
+		case 0x5B: return @"Keypad 8";
+		case 0x5C: return @"Keypad 9";
+		case 0x4E: return @"Keypad -";
+		case 0x47: return @"Keypad Clear";
+		case 0x51: return @"Keypad =";
+		case 0x4B: return @"Keypad /";
+		case 0x43: return @"Keypad *";
+		case 0x0A: return @"Tilde";
+		case 0x36: return @"Control";
+		case 0x3A: return @"Option";
+		case 0x37: return @"Command";
+		case 0x38: return @"Shift";
+		case 0x39: return @"Caps Lock";
 	}
 	return @"UnknownKey";
 }
@@ -178,18 +190,22 @@ static NSString* nameForEvent(NSEvent* event) {
 - (void)setDefaultActions {
 	[mKeyDownActions setObject:@"startFlyingLeft:" forKey:@"a"];
 	[mKeyUpActions setObject:@"stopFlyingLeft:" forKey:@"a"];
-	[mKeyDownActions setObject:@"startFlyingRight:" forKey:@"e"];
-	[mKeyUpActions setObject:@"stopFlyingRight:" forKey:@"e"];
-	[mKeyDownActions setObject:@"startFlyingForward:" forKey:@","];
-	[mKeyUpActions setObject:@"stopFlyingForward:" forKey:@","];
-	[mKeyDownActions setObject:@"startFlyingBackward:" forKey:@"o"];
-	[mKeyUpActions setObject:@"stopFlyingBackward:" forKey:@"o"];
-	[mKeyDownActions setObject:@"startFlyingUp:" forKey:@"p"];
-	[mKeyUpActions setObject:@"stopFlyingUp:" forKey:@"p"];
-	[mKeyDownActions setObject:@"startFlyingDown:" forKey:@"u"];
-	[mKeyUpActions setObject:@"stopFlyingDown:" forKey:@"u"];
-	[mKeyDownActions setObject:@"startFlyingFast:" forKey:@"NSShiftKey"];
-	[mKeyUpActions setObject:@"stopFlyingFast:" forKey:@"NSShiftKey"];
+	[mKeyDownActions setObject:@"startFlyingRight:" forKey:@"d"];
+	[mKeyUpActions setObject:@"stopFlyingRight:" forKey:@"d"];
+	[mKeyDownActions setObject:@"startFlyingForward:" forKey:@"w"];
+	[mKeyUpActions setObject:@"stopFlyingForward:" forKey:@"w"];
+	[mKeyDownActions setObject:@"startFlyingBackward:" forKey:@"s"];
+	[mKeyUpActions setObject:@"stopFlyingBackward:" forKey:@"s"];
+	[mKeyDownActions setObject:@"startFlyingUp:" forKey:@"r"];
+	[mKeyUpActions setObject:@"stopFlyingUp:" forKey:@"r"];
+	[mKeyDownActions setObject:@"startFlyingDown:" forKey:@"f"];
+	[mKeyUpActions setObject:@"stopFlyingDown:" forKey:@"f"];
+	[mKeyDownActions setObject:@"startFlyingFast:" forKey:@"Shift"];
+	[mKeyUpActions setObject:@"stopFlyingFast:" forKey:@"Shift"];
+	[mKeyDownActions setObject:@"startBarrelingLeft:" forKey:@"q"];
+	[mKeyUpActions setObject:@"stopBarrelingLeft:" forKey:@"q"];
+	[mKeyDownActions setObject:@"startBarrelingRight:" forKey:@"e"];
+	[mKeyUpActions setObject:@"stopBarrelingRight:" forKey:@"e"];
 }
 
 //Mouse motion action
@@ -201,12 +217,14 @@ static NSString* nameForEvent(NSEvent* event) {
 
 ///Forwards the action up the responder chain if no action is defined, but otherwise calls the selector it found on %target. The sender argument is the view, not the controller.
 - (void)keyDown:(NSEvent*)event {
+	O3LogDebug(@"Key down: %@", event);
 	if ([event isARepeat]) return;
 	if (!luas(mKeyDownActions, nameForEvent(event))); // [super keyDown:event];
 }
 
 ///Forwards the action up the responder chain if no action is defined, but otherwise calls the selector it found on %target. The sender argument is the view, not the controller.
 - (void)keyUp:(NSEvent*)event {
+	O3LogDebug(@"Key up: %@", event);
 	if ([event isARepeat]) return;
 	if (!luas(mKeyUpActions, nameForEvent(event))); // [super keyDown:event];
 }
@@ -219,14 +237,14 @@ static NSString* nameForEvent(NSEvent* event) {
 	UInt32 diFlags = [theEvent modifierFlags]&NSDeviceIndependentModifierFlagsMask;
 	UInt32 flagDelta = diFlags^mFlags;
 	#define CHECK_FLAG(f, name) if (flagDelta&f) luas(diFlags&f? mKeyDownActions : mKeyUpActions, name);
-	CHECK_FLAG(NSAlphaShiftKeyMask, @"NSAlphaShiftKey");
-	CHECK_FLAG(NSShiftKeyMask, @"NSShiftKey");
-	CHECK_FLAG(NSControlKeyMask, @"NSControlKey");
-	CHECK_FLAG(NSAlternateKeyMask, @"NSAlternateKey");
-	CHECK_FLAG(NSCommandKeyMask, @"NSCommandKey");
+	CHECK_FLAG(NSAlphaShiftKeyMask, @"Caps Lock");
+	CHECK_FLAG(NSShiftKeyMask, @"Shift");
+	CHECK_FLAG(NSControlKeyMask, @"Control");
+	CHECK_FLAG(NSAlternateKeyMask, @"Option");
+	CHECK_FLAG(NSCommandKeyMask, @"Command");
 	//CHECK_FLAG(NSNumericPadKeyMask, @"NSNumericPadKey");
-	CHECK_FLAG(NSHelpKeyMask, @"NSHelpKey");
-	CHECK_FLAG(NSFunctionKeyMask, @"NSFunctionKey");	
+	CHECK_FLAG(NSHelpKeyMask, @"Help");
+	CHECK_FLAG(NSFunctionKeyMask, @"Function");	
 	#undef CHECK_FLAG
 	mFlags = diFlags;
 }

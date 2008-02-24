@@ -1,0 +1,7 @@
+OpenGL state is a tricky thing to manage, and since different parts of ObjC3D were made at different times they all handle state a bit differently. There are essentially two models for handling state: "leave it as you found it" and "set it as you like it" (which we will call nonlazy and lazy, respectively.) They both have tradeoffs, and different decisions were made in different cases. Defaults are noted for nonlazy state. Nonlazy state winds up being pushed/popped a lot while lazy state winds up with many needless re-specification of common parameters.
+
+Vertex arrays: lazy (you need to specify whatever you want to use with gl*Pointer())
+Vertex array enabled/disabled: nonlazy, should all be left disabled
+Buffer object binding: lazy (you must bind to zero if that is what you want)
+
+In general, each object should take care of its own business as long as you pair every -bind with an -unbind.

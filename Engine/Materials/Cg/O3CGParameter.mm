@@ -44,10 +44,17 @@ extern CGcontext gCGContext;
 	return self;
 }
 
-- (id)initParameterArrayWithType:(CGtype)type dimensions:(int*)dimensions count:(unsigned)count {
+- (id)initWithType:(CGtype)type count:(int)array_size {
 	O3SuperInitOrDie();
-	mParam = cgCreateParameterMultiDimArray(gCGContext, type, count, dimensions);
-	mFreeParamWhenDone = YES;	
+	mParam = cgCreateParameterArray(gCGContext, type, array_size);
+	mFreeParamWhenDone = YES;
+	return self;
+}
+
+- (id)initWithType:(CGtype)type dimensions:(int*)array_size dimensionCount:(unsigned)dim_count {
+	O3SuperInitOrDie();
+	mParam = cgCreateParameterMultiDimArray(gCGContext, type, dim_count, array_size);
+	mFreeParamWhenDone = YES;
 	return self;
 }
 

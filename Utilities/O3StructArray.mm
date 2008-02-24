@@ -252,6 +252,10 @@ void initP(O3StructArray* self) {
 	return [self setStructType:t];
 } 
 
+- (NSString*)structTypeName {
+	return [[self structType] name];
+}
+
 - (NSMutableData*)rawData {
 	return mData;
 }
@@ -509,7 +513,12 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 	[self sortUsingFunction:nil context:nil];
 }
 
+///Simply returns the current type if the count is 0
 - (O3CType)compressIntegerType {
+	if (![self count]) {
+		if (![mStructType isKindOfClass:[O3ScalarStructType class]]) return O3InvalidCType;
+		return [(O3ScalarStructType*)mStructType type];
+	}
 	Int64 l = [[self lowestValue] longLongValue];
 	Int64 h = [[self highestValue] longLongValue];
 	return [self setTypeToIntWithMaximum:h isSigned:l<0];

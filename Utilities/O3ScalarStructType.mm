@@ -117,7 +117,7 @@ double O3DoubleAtIndex_of_ofType_(UIntP idx, const void* bytes, O3StructType* t)
 	if (offset) *offset = 0;
 	if (stride) *stride = O3CTypeSize(mType);
 	if (normed) *normed = GL_FALSE;
-	if (vps) *vps = 0; //Perhaps implement fractions
+	if (vps) *vps = 1; //Perhaps implement fractions
 }
 
 - (O3StructArrayComparator)defaultComparator {

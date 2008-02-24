@@ -33,6 +33,8 @@
 	BOOL mContextNeedsUpdate:1;
 	BOOL mOwnsMouse:1; ///<YES if the receiver has made the mouse invisible and centered it
 	BOOL mIgnoreNextRot:1; //If the mouse appears to "jump," so does the view, so the jumps need to be ignored
+	BOOL mRenderingDisabled:1;
+	BOOL mLogFPS:1; //More of a debug thing for the scripting layer (not public)
 	
 	NSTimer* mUpdateTimer;
 	NSMutableDictionary* mViewState; ///<A scratch dictionary
@@ -70,6 +72,8 @@
 //Rendering
 - (void)update;
 - (void)drawBlackScreenOfDeath:(NSString*)message;
+- (BOOL)paused;
+- (void)setPaused:(BOOL)paused;
 
 //Pixel format attributes
 - (NSOpenGLContext*)generateContext; ///<Generates a context based on the parameters stored in the receiver and transfers textures, etc. This is called if no context exists when one is needed.

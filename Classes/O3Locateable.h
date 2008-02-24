@@ -43,6 +43,9 @@ using namespace ObjC3D::Math;
 
 - (O3Rotation3)rotation;
 - (void)setRotation:(O3Rotation3)newRot;
+- (O3Vec3d)eulerRotation;
+- (void)setEulerRotation:(O3Vec3d)erot;
+- (void)setRotation:(O3Rotation3)newRot;
 - (O3Vec3d)translation; ///<The location of the receiver in its superspace
 - (void)setTranslation:(O3Vec3d)newTrans;
 - (O3Vec3d)scale;

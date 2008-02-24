@@ -9,6 +9,7 @@
 #import "O3KVCHelper.h"
 #import "O3CGParameter.h"
 #import "O3ResManager.h"
+#import "O3Material.h"
 
 typedef map<string, O3CGMaterialParameterPair> mParameters_t;
 
@@ -46,7 +47,12 @@ inline void unbindParamsP(O3CGMaterial* self) {
 	return self;
 }
 
+- (Class)classForCoder {
+	return [O3Material class];
+}
+
 - (id)initWithCoder:(NSCoder*)coder {
+	O3LogWarn(@"This should never be called: all subclasses of O3Material are archived as O3Material instances and handled by O3Material");
 	if (![coder allowsKeyedCoding]) {
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
 		[self release];

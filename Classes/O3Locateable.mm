@@ -99,6 +99,17 @@ void O3LocateableBeginRender(O3Locateable* self, O3RenderContext* ctx) {
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
+- (O3Vec3d)eulerRotation {
+	double r,p,y;
+	mRotation.GetEulerAngles(&r, &p, &y);
+	return O3Vec3d(r,p,y);
+}
+
+- (void)setEulerRotation:(O3Vec3d)erot {
+	[self setRotation:O3Rotation3(erot[0], erot[1], erot[2])];
+}
+
+
 ///Returns the receiver's space (object space)
 - (O3Space3*)space {		
 	O3Locateable_UpdateSpaceIfNecessary(self);

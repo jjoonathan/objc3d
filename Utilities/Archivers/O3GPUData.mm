@@ -361,10 +361,12 @@ inline void willMutateP(O3GPUData* self) {
 - (BOOL)isGPUData {return NO;}
 - (O3GPUData*)gpuCopy {return [[O3GPUData alloc] initWithData:self];}
 - (GLvoid*)glPtrForBindingArray {
+	glBindBufferARB(GL_ARRAY_BUFFER, GL_ZERO);
 	return (GLvoid*)[self bytes];
 }
 
 - (GLvoid*)glPtrForBindingElements {
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, GL_ZERO);
 	return (GLvoid*)[self bytes];
 }
 @end

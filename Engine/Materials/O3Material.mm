@@ -8,6 +8,7 @@
 #import "O3Material.h"
 #import "O3KVCHelper.h"
 #import "O3ResManager.h"
+#import "O3CGMaterial.h"
 
 typedef map<string, O3MaterialParameterPair> mParameters_t;
 
@@ -39,17 +40,23 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 
 - (id)initWithCoder:(NSCoder*)coder {
 	if (![coder allowsKeyedCoding]) {
-		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be decoded with a non-keyed archiver", self];
 		[self release];
 		return nil;
 	}
-	O3SuperInitOrDie();
+	NSString* matTypeName = [coder decodeObjectForKey:@"materialType"];
+	if ([[O3RMGM() valueForKey:matTypeName] isKindOfClass:[O3CGMaterial class]]) {
+		[self release];
+		self = [[O3CGMaterial alloc] initWithMaterialTypeNamed:matTypeName];
+	} else {
+		O3SuperInitOrDie();
+		[self setMaterialTypeName:matTypeName];		
+	}
 	NSMutableDictionary* pdict = [coder decodeObjectForKey:@"pdict"];
 	NSEnumerator* pdictEnumerator = [pdict keyEnumerator];
 	while (NSString* o = [pdictEnumerator nextObject]) {
 		[self setValue:[pdict objectForKey:o] forKey:o];
 	}
-	[self setMaterialTypeName:[coder decodeObjectForKey:@"materialType"]];
 	return self;
 }
 

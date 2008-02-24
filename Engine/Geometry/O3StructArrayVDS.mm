@@ -227,3 +227,10 @@ O3DefaultO3InitializeImplementation
 }
 
 @end
+
+
+@implementation O3StructArray (O3StructArrayVDSAdditions)
+- (O3StructArrayVDS*)vdsOfType:(O3VertexDataType)type {
+	return [[[O3StructArrayVDS alloc] initWithStructArray:self vertexDataType:type] autorelease];
+}
+@end

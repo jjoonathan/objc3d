@@ -71,7 +71,7 @@ public:
 
 	tri_stripper(const index* TriIndices, size_t count);
 
-	void Strip(primitive_vector * out_tris, primitive_vector * out_strips);
+	void Strip(primitive_vector * out_pPrimitivesVector);
 
 	/* Stripifier Algorithm Settings */
 	

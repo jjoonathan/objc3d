@@ -7,7 +7,7 @@
 //
 #import "O3VertexDataSource.h"
 #import "O3VertexFormats.h"
-@class O3StructArray;
+#import "O3StructArray.h"
 @class O3StructType;
 
 @interface O3StructArrayVDS : O3VertexDataSource <NSCoding> {
@@ -26,4 +26,8 @@
 - (O3StructArray*)structArray;
 - (GLuint)componentCount;
 - (UIntP)count; //The number of elements (not necesarily the number of elements to render. For instance, in an array of faces this would return the number of faces not the number of verts)
+@end
+
+@interface O3StructArray (O3StructArrayVDSAdditions)
+- (O3StructArrayVDS*)vdsOfType:(O3VertexDataType)type;
 @end

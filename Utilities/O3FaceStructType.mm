@@ -32,7 +32,7 @@ O3DefaultO3InitializeImplementation
 															  specificType:O3VecStructIndex
 																	 count:9
 																	  name:@"tri3x3f"
-																	  comparator:O3Tri3x3fTypeComparator];
+														    	comparator:O3Tri3x3fTypeComparator];
 }
 
 - (void)getFormat:(out GLenum*)format components:(out GLsizeiptr*)components offset:(out GLint*)offset stride:(out GLint*)stride normed:(out GLboolean*)normed vertsPerStruct:(out int*)vps forType:(in O3VertexDataType)type {

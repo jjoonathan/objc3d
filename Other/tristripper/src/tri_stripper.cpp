@@ -25,7 +25,7 @@ namespace triangle_stripper {
 
 
 tri_stripper::tri_stripper(const index* TriIndices, size_t count)
-	: m_Triangles(count),
+	: m_Triangles(count / 3), // Silently ignore extra indices if (Indices.size() % 3 != 0)
 	  m_StripID(0),
 	  m_FirstRun(true)
 {
@@ -39,9 +39,9 @@ tri_stripper::tri_stripper(const index* TriIndices, size_t count)
 
 
 
-void tri_stripper::Strip(primitive_vector * out_tris, primitive_vector * out_strips)
+void tri_stripper::Strip(primitive_vector * out_pPrimitivesVector)
 {
-	assert(out_tris && out_strips);
+	assert(out_pPrimitivesVector);
 
 	if (! m_FirstRun) {
 		unmark_nodes(m_Triangles);
@@ -54,16 +54,14 @@ void tri_stripper::Strip(primitive_vector * out_tris, primitive_vector * out_str
 		m_FirstRun = false;
 	}
 
-	out_tris->clear();
-	out_strips->clear();
+	out_pPrimitivesVector->clear();
 
 	InitTriHeap();
 
 	Stripify();
-	std::swap(m_PrimitivesVector, *out_strips);
-	
 	AddLeftTriangles();
-	std::swap(m_PrimitivesVector, *out_tris);
+	
+	std::swap(m_PrimitivesVector, (* out_pPrimitivesVector));
 }
 
 

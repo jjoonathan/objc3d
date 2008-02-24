@@ -26,9 +26,15 @@ typedef map<string, O3CGAnnotation*> AnnotationMap;
 
 const char** gDefaultCGEffectCompilerArguments = NULL;
 BOOL gO3CGEffectsEnabled = YES;
+ParameterMap gO3CGEffectGlobals;
 
 @implementation O3CGEffect
 O3DefaultO3InitializeImplementation
+
++ (void)o3init {
+}
+
+/************************************/ #pragma mark Inline C /************************************/
 void O3CGEffect_setEffectP(O3CGEffect* self, CGeffect newEffect) {
 	if (self->mEffect) cgDestroyEffect(self->mEffect);
 	self->mEffect = newEffect;
@@ -63,6 +69,20 @@ void O3CGEffect_autoDetectAutoSetParameters(O3CGEffect* self, CGeffect effect) {
 			self->mAutoSetParameters->push_back(newAutoSetter);
 		}
 	}
+}
+
+inline void mConnectGlobalParamsP(O3CGEffect* self) {
+	CGparameter eff_param = cgGetFirstEffectParameter(self->mEffect);
+	do {
+		string sem = cgGetParameterSemantic(eff_param);
+		ParameterMap::iterator param = gO3CGEffectGlobals.find(sem);
+		O3CGParameter* oc_param = param->second;
+		if (param==gO3CGEffectGlobals.end()) {
+			oc_param = [[O3CGParameter alloc] initWithType:cgGetParameterType(eff_param)];
+			param->second = oc_param;
+		}
+		cgConnectParameter([oc_param rawParameter], eff_param);
+	} while (eff_param = cgGetNextParameter(eff_param));
 }
 
 TechniqueMap* mTechniquesP(O3CGEffect* self) {
@@ -205,6 +225,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	}
 	O3Assign(source, mSource);
 	O3CGEffect_autoDetectAutoSetParameters(self, newEffect);
+	mConnectGlobalParamsP(self);
 	O3CGEffect_setEffectP(self, newEffect);	
 }
 
@@ -346,6 +367,40 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	gO3CGEffectsEnabled = enabled;
 	return nil;
 }
+
++ (O3CGParameter*)globalNamed:(NSString*)gpname {
+	string name = NSStringUTF8String(gpname);
+	ParameterMap::iterator param = gO3CGEffectGlobals.find(name);
+	if (param==gO3CGEffectGlobals.end()) return nil;
+	return param->second;
+}
+
++ (void)setGlobalValue:(id)val forKey:(NSString*)k {
+	string name = NSStringUTF8String(k);
+	ParameterMap::iterator param = gO3CGEffectGlobals.find(name);
+	if (param==gO3CGEffectGlobals.end()) {
+		O3AssertArg(NO, @"Key \"%@\" (to be set to \"%@\") does not exist in the global effect parameter repository.", k, val);
+		return;
+	}
+	[param->second setValue:val];	
+}
+
+///Adds a new key of name k and type t, if a global param by this name already exists it is left alone and no error is raised as long as the types are the same
++ (O3CGParameter*)createGlobalOfType:(CGtype)t forKey:(NSString*)k {
+	O3Asrt(k);
+	string name = NSStringUTF8String(k);
+	ParameterMap::iterator param = gO3CGEffectGlobals.find(name);
+	if (param==gO3CGEffectGlobals.end()) {
+		O3CGParameter* nparam = [[O3CGParameter alloc] initWithType:t];
+		gO3CGEffectGlobals[name] = nparam;
+		return nparam;
+	} else {
+		CGtype ot = cgGetParameterType([param->second rawParameter]);
+		O3Assert(ot==t, @"A key of name \"%@\" already exists, but it has a different type (%s instead of %s)", k, cgGetTypeString(ot), cgGetTypeString(t));
+		return param->second;
+	}
+}
+
 
 @end
 

@@ -208,6 +208,7 @@ O3END_EXTERN_C_BLOCK
 	BOOL other_is_vec = [oformat isKindOfClass:[O3VecStructType class]];
 	BOOL other_is_scalar = [oformat isKindOfClass:[O3ScalarStructType class]];
 	BOOL other_is_face = [oformat isKindOfClass:[O3TriFaceStructType class]];
+	BOOL this_is_face = [self isKindOfClass:[O3TriFaceStructType class]];
 	if (!(other_is_vec || other_is_scalar || other_is_face)) return [super translateStructs:instructs stride:s toFormat:oformat];
 	UIntP o_elementCount = other_is_scalar? 1 : [(O3VecStructType*)oformat elementCount];
 	UIntP* o_perms = other_is_vec? [(O3VecStructType*)oformat permutations] : nil;
@@ -226,6 +227,15 @@ O3END_EXTERN_C_BLOCK
 	
 	if (other_is_face) {
 		if (o_elementCount%mElementCount) {
+			O3LogWarn(@"Bad translation: counts don't match up");
+			return nil;
+		}
+		o_elementCount = mElementCount;
+		o_stride = o_eleStride*o_elementCount;
+	}
+	
+	if (this_is_face) {
+		if (mElementCount%o_elementCount) {
 			O3LogWarn(@"Bad translation: counts don't match up");
 			return nil;
 		}

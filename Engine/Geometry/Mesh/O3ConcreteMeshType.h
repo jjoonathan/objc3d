@@ -36,6 +36,9 @@ extern NSString* O3ConcreteMeshStrippedRenderMode;
 - (void)setFaces:(O3StructArray*)newFaces;
 - (void)setFaceVerticies:(O3StructArray*)verts indicies:(O3StructArray*)indicies;
 - (NSString*)renderMode;
+- (O3StructArray*)verticies;
+- (O3StructArray*)indicies;
+- (O3StructArray*)stripIndicies;
 
 //Operations
 - (void)indexFacesAndUpload:(BOOL)uploadNewFacesToGPU;

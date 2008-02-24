@@ -1456,7 +1456,7 @@
 				FCE0A2770D1CBDD600A800F8 /* Copy in BridgeSupport */,
 				FC2C1BB50C123F790084A599 /* Frameworks */,
 				FCE25B050CC44E4B0064CA75 /* Create Latest Build Shortcut */,
-				FC22CCD40D451C1E002FDAC6 /* ShellScript */,
+				FC22CCD40D451C1E002FDAC6 /* Run Tests */,
 			);
 			buildRules = (
 			);
@@ -1637,13 +1637,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		FC22CCD40D451C1E002FDAC6 /* ShellScript */ = {
+		FC22CCD40D451C1E002FDAC6 /* Run Tests */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Tests";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -56,7 +56,7 @@ namespace
 
 void make_connectivity_graph(graph_array<triangle> & Triangles, const index* Indices, size_t Index_Count)
 {
-	assert(Triangles.size() == (Index_Count/3));
+	assert(Triangles.size() == (Index_Count / 3));
 
 	// Fill the triangle data
 	for (size_t i = 0; i < Triangles.size(); ++i)

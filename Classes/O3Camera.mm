@@ -23,6 +23,7 @@ inline void O3Camera_init(O3Camera* self) {
 	self->mPostProjectionSpaceNeedsUpdate = YES;
 	self->mFlySpeed = 1./3.;
 	self->mRotRate = .015;
+	self->mBarrelRate = 2.6;
 }
 
 inline double O3Camera_aspectRatio(O3Camera* self) {
@@ -122,6 +123,8 @@ inline O3Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 - (void)setFlySpeed:(float)fs {mFlySpeed = fs;}
 - (float)rotRate {return mRotRate;}
 - (void)setRotRate:(float)rr {mRotRate = rr;}
+- (float)barrelRate {return mBarrelRate;}
+- (void)setBarrelRate:(float)rr {mBarrelRate = rr;}
 
 /************************************/ #pragma mark Use /************************************/
 - (void)setViewMatrix {
@@ -135,7 +138,8 @@ inline O3Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 }
 
 - (void)tickWithContext:(O3RenderContext*)context {
-	double t = context->elapsedTime * mFlySpeed;
+	double raw_t = context->elapsedTime;
+	double t = raw_t * mFlySpeed;
 	NSDictionary* d = [context->view viewState];
 	if ([d objectForKey:@"flyingFast"]) t *= 10;
 	if ([d objectForKey:@"flyingForward"])  {[self translateInObjectSpaceBy:O3Vec3d(0,0,t)];}
@@ -144,6 +148,8 @@ inline O3Space3* O3Camera_postProjectiveSpace(O3Camera* self) {
 	if ([d objectForKey:@"flyingRight"])    {[self translateInObjectSpaceBy:O3Vec3d(-t,0,0)]; }
 	if ([d objectForKey:@"flyingUp"])       {[self translateInObjectSpaceBy:O3Vec3d(0,-t,0)]; }
 	if ([d objectForKey:@"flyingDown"])     {[self translateInObjectSpaceBy:O3Vec3d(0,t,0)];}
+	if ([d objectForKey:@"barrelingLeft"])  {[self rotateOverOSAxis:O3Vec3d(0,0,-1) angle:-mBarrelRate*raw_t]; }
+	if ([d objectForKey:@"barrelingRight"]) {[self rotateOverOSAxis:O3Vec3d(0,0,-1) angle:mBarrelRate*raw_t];}
 }
 
 - (void)rotateForMouseMoved:(O3Vec2d)amount {

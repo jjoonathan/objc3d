@@ -5,7 +5,7 @@ CC = g++
 
 CFLAGS = -Wall -O2 -DNDEBUG -DUNIX 
 
-LFLAGS = -framework OpenGL  -framework GLUT
+LFLAGS = -lGL -lGLU -lglut
 
 INCLUDES = -Iinclude/
 
@@ -30,7 +30,7 @@ all: $(TEST)
 
 $(LIB): $(LIB_OBJS)
 	@echo "Creating $(LIB)"
-	@ar rcs $(LIB) $(LIB_OBJS)
+	@ar rc $(LIB) $(LIB_OBJS)
 
 $(TEST) : $(LIB) $(TEST_OBJS)
 	@echo "Linking $(TEST)"

@@ -1,34 +1,30 @@
 diff -ur tristripper-1.1.0-beta-5o/include/detail/connectivity_graph.h tristripper-1.1.0-beta-5n/include/detail/connectivity_graph.h
---- tristripper-1.1.0-beta-5o/include/detail/connectivity_graph.h	2008-01-31 18:48:01.000000000 -0700
-+++ tristripper-1.1.0-beta-5n/include/detail/connectivity_graph.h	2008-01-31 18:21:54.000000000 -0700
+--- tristripper-1.1.0-beta-5o/include/detail/connectivity_graph.h	2005-06-08 20:47:26.000000000 -0600
++++ tristripper-1.1.0-beta-5n/include/detail/connectivity_graph.h	2008-02-21 19:47:44.000000000 -0700
 @@ -24,7 +24,7 @@
  	namespace detail
  	{
  
 -		void make_connectivity_graph(graph_array<triangle> & Triangles, const indices & Indices);
-+		void make_connectivity_graph(graph_array<triangle> & Triangles, const index* Indices, size_t Index_Count);
++		void make_connectivity_graph(graph_array<triangle> & Triangles, const index * Indices, size_t Index_Count);
  
  	}
  
 diff -ur tristripper-1.1.0-beta-5o/include/tri_stripper.h tristripper-1.1.0-beta-5n/include/tri_stripper.h
---- tristripper-1.1.0-beta-5o/include/tri_stripper.h	2008-01-31 18:48:01.000000000 -0700
-+++ tristripper-1.1.0-beta-5n/include/tri_stripper.h	2008-01-31 18:18:40.000000000 -0700
-@@ -69,9 +69,9 @@
+--- tristripper-1.1.0-beta-5o/include/tri_stripper.h	2005-06-08 20:47:26.000000000 -0600
++++ tristripper-1.1.0-beta-5n/include/tri_stripper.h	2008-02-21 19:48:30.000000000 -0700
+@@ -69,7 +69,7 @@
  {
  public:
  
 -	tri_stripper(const indices & TriIndices);
 +	tri_stripper(const index* TriIndices, size_t count);
  
--	void Strip(primitive_vector * out_pPrimitivesVector);
-+	void Strip(primitive_vector * out_tris, primitive_vector * out_strips);
+ 	void Strip(primitive_vector * out_pPrimitivesVector);
  
- 	/* Stripifier Algorithm Settings */
- 	
-Binary files tristripper-1.1.0-beta-5o/src/.DS_Store and tristripper-1.1.0-beta-5n/src/.DS_Store differ
 diff -ur tristripper-1.1.0-beta-5o/src/connectivity_graph.cpp tristripper-1.1.0-beta-5n/src/connectivity_graph.cpp
---- tristripper-1.1.0-beta-5o/src/connectivity_graph.cpp	2008-01-31 18:48:01.000000000 -0700
-+++ tristripper-1.1.0-beta-5n/src/connectivity_graph.cpp	2008-01-31 18:17:12.000000000 -0700
+--- tristripper-1.1.0-beta-5o/src/connectivity_graph.cpp	2005-06-08 20:47:26.000000000 -0600
++++ tristripper-1.1.0-beta-5n/src/connectivity_graph.cpp	2008-02-21 19:49:15.000000000 -0700
 @@ -54,9 +54,9 @@
  
  
@@ -37,13 +33,13 @@ diff -ur tristripper-1.1.0-beta-5o/src/connectivity_graph.cpp tristripper-1.1.0-
 +void make_connectivity_graph(graph_array<triangle> & Triangles, const index* Indices, size_t Index_Count)
  {
 -	assert(Triangles.size() == (Indices.size() / 3));
-+	assert(Triangles.size() == (Index_Count/3));
++	assert(Triangles.size() == (Index_Count / 3));
  
  	// Fill the triangle data
  	for (size_t i = 0; i < Triangles.size(); ++i)
 diff -ur tristripper-1.1.0-beta-5o/src/tri_stripper.cpp tristripper-1.1.0-beta-5n/src/tri_stripper.cpp
---- tristripper-1.1.0-beta-5o/src/tri_stripper.cpp	2008-01-31 18:48:01.000000000 -0700
-+++ tristripper-1.1.0-beta-5n/src/tri_stripper.cpp	2008-01-31 18:20:08.000000000 -0700
+--- tristripper-1.1.0-beta-5o/src/tri_stripper.cpp	2005-06-08 20:47:26.000000000 -0600
++++ tristripper-1.1.0-beta-5n/src/tri_stripper.cpp	2008-02-21 19:50:47.000000000 -0700
 @@ -24,8 +24,8 @@
  
  
@@ -51,45 +47,16 @@ diff -ur tristripper-1.1.0-beta-5o/src/tri_stripper.cpp tristripper-1.1.0-beta-5
 -tri_stripper::tri_stripper(const indices & TriIndices)
 -	: m_Triangles(TriIndices.size() / 3), // Silently ignore extra indices if (Indices.size() % 3 != 0)
 +tri_stripper::tri_stripper(const index* TriIndices, size_t count)
-+	: m_Triangles(count),
++	: m_Triangles(count / 3), // Silently ignore extra indices if (Indices.size() % 3 != 0)
  	  m_StripID(0),
  	  m_FirstRun(true)
  {
-@@ -34,14 +34,14 @@
+@@ -34,7 +34,7 @@
  	SetBackwardSearch();
  	SetPushCacheHits();
  
 -	make_connectivity_graph(m_Triangles, TriIndices);
 +	make_connectivity_graph(m_Triangles, TriIndices, count);
- }
- 
- 
- 
--void tri_stripper::Strip(primitive_vector * out_pPrimitivesVector)
-+void tri_stripper::Strip(primitive_vector * out_tris, primitive_vector * out_strips)
- {
--	assert(out_pPrimitivesVector);
-+	assert(out_tris && out_strips);
- 
- 	if (! m_FirstRun) {
- 		unmark_nodes(m_Triangles);
-@@ -54,14 +54,16 @@
- 		m_FirstRun = false;
- 	}
- 
--	out_pPrimitivesVector->clear();
-+	out_tris->clear();
-+	out_strips->clear();
- 
- 	InitTriHeap();
- 
- 	Stripify();
--	AddLeftTriangles();
-+	std::swap(m_PrimitivesVector, *out_strips);
- 	
--	std::swap(m_PrimitivesVector, (* out_pPrimitivesVector));
-+	AddLeftTriangles();
-+	std::swap(m_PrimitivesVector, *out_tris);
  }
  
  

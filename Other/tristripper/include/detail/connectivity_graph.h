@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2004 Tanguy Fautré.
+// Copyright (C) 2004 Tanguy FautrÃˆ.
 // For conditions of distribution and use,
 // see copyright notice in tri_stripper.h
 //
@@ -24,7 +24,7 @@ namespace triangle_stripper
 	namespace detail
 	{
 
-		void make_connectivity_graph(graph_array<triangle> & Triangles, const index* Indices, size_t Index_Count);
+		void make_connectivity_graph(graph_array<triangle> & Triangles, const index * Indices, size_t Index_Count);
 
 	}
 

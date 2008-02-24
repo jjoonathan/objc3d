@@ -33,7 +33,8 @@
 }
 //Initialization
 - (id)initWithType:(CGtype)type;
-//- (id)initParameterArrayWithDimensions:(int*)dimensions count:(unsigned)count;
+- (id)initWithType:(CGtype)type count:(int)array_size;
+- (id)initWithType:(CGtype)type dimensions:(int*)array_size dimensionCount:(unsigned)dim_count;
 - (id)initWithParameter:(CGparameter)param;
 + (id)parameterWithParameter:(CGparameter)param; ///<Returns an O3CGParameter for a CGParameter that already has an O3CGParameter
 

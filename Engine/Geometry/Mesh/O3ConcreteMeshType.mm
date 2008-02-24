@@ -82,9 +82,10 @@ O3DefaultO3InitializeImplementation
 ///@warning May convert %newFaces to O3Triangle3x3f type
 - (void)setFaces:(O3StructArray*)newFaces {
 	if ([newFaces structType]!=O3Triangle3x3fType()) {
-		if (![newFaces setStructType:O3Triangle3x3fType()]) {
+		O3StructArray* nfmc = [newFaces mutableCopy];
+		if (![nfmc setStructType:O3Triangle3x3fType()])
 			[NSException raise:NSInvalidArgumentException format:@"%@ was not a O3Triangle3x3f struct array"];
-		}
+		[nfmc autorelease];
 	}
 	O3StructArrayVDS* vds = [[O3StructArrayVDS alloc] initWithStructArray:newFaces vertexDataType:O3VertexLocationDataType];
 	O3Assign(vds, mFaces);
@@ -105,6 +106,23 @@ O3DefaultO3InitializeImplementation
 	O3Assign(vds2, mFaceIndicies);
 }
 
+- (O3StructArray*)verticies {
+	return [mFaceVerticies structArray];
+}
+
+- (O3StructArray*)indicies {
+	return [mFaceIndicies structArray];
+}
+
+- (O3StructArray*)stripIndicies {
+	return [mStripIndicies structArray];
+}
+
+- (BOOL)indicesAreValid {
+	UIntP max_idx = O3Max([[[mStripIndicies structArray] highestValue] doubleValue], [[[mFaceIndicies structArray] highestValue] doubleValue]);
+	return max_idx<[mFaceVerticies count];
+}
+
 - (NSString*)renderMode {
 	if (mFaces) return O3ConcreteMeshFaceRenderMode;
 	if (!mStripLocations) return O3ConcreteMeshIndexedRenderMode;
@@ -112,38 +130,45 @@ O3DefaultO3InitializeImplementation
 }
 
 - (void)renderWithContext:(O3RenderContext*)ctx {
-	UIntP vds_count = O3CFArrayGetCount(mVertexDataSources);
-	UIntP i; for(i=0; i<vds_count; i++) {
-		O3VertexDataSource* vds = O3CFArrayGetValueAtIndex(mVertexDataSources, i);
-		[vds bind];
-	}
+	//glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+	[mVertexDataSources makeObjectsPerformSelector:@selector(bind)];
 	UIntP passes = [mDefaultMaterial renderPasses];
 	if (passes==0) passes=1;
-	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, GL_ZERO);
 	if (mFaces) { //Face by face
+		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, GL_ZERO);
 		UIntP count = [mFaces bind];
-		for (i=0;i<passes;i++) {
+		for (UIntP i=0;i<passes;i++) {
 			[mDefaultMaterial setRenderPass:i];
 			glDrawArrays(GL_TRIANGLES, 0, count);
 		}
+		[mFaces unbind];
 	}
 	if (mFaceVerticies && mFaceIndicies) { //Indexed
 		[mFaceVerticies bind];
 		UIntP count = [mFaceIndicies bind];
-		for (i=0;i<passes;i++) {
+		GLenum index_for = [mFaceIndicies format];
+		const GLvoid* index_ptr = [mFaceIndicies indicies];
+		for (UIntP i=0;i<passes;i++) {
 			[mDefaultMaterial setRenderPass:i];
-			glDrawElements(GL_TRIANGLES, count, [mFaceIndicies format], [mFaceVerticies indicies]);
+			glDrawElements(GL_TRIANGLES, count, index_for, index_ptr);
 		}
+		[mFaceVerticies unbind];
+		[mFaceIndicies unbind];
 	}
 	if (mFaceVerticies && mStripIndicies && mNumberStrips) { //Stripped
 		O3Asrt(mStripCounts && mStripLocations);
 		[mFaceVerticies bind];
-		[mStripIndicies bind];
-		for (i=0;i<passes;i++) {
+		[mStripIndicies bind]; O3Asrt([[[mStripIndicies structArray] rawData] isGPUData]);
+		GLenum idx_format = [mStripIndicies format];
+		for (UIntP i=0;i<passes;i++) {
 			[mDefaultMaterial setRenderPass:i];
-			glMultiDrawElements(GL_TRIANGLE_STRIP, mStripCounts, [mStripIndicies format], (const GLvoid**)mStripLocations, mNumberStrips);
+			glMultiDrawElements(GL_TRIANGLE_STRIP, mStripCounts, idx_format, (const GLvoid**)mStripLocations, mNumberStrips);
 		}
+		[mFaceVerticies unbind];
+		[mStripIndicies unbind];
 	}
+	[mVertexDataSources makeObjectsPerformSelector:@selector(unbind)];
+	//glPopClientAttrib();
 }
 
 - (void)tickWithContext:(O3RenderContext*)context {
@@ -160,14 +185,21 @@ O3DefaultO3InitializeImplementation
 
 /************************************/ #pragma mark Operations /************************************/
 - (void)indexFacesAndUpload:(BOOL)uploadNewFacesToGPU {
-	O3StructArray* faces = [[mFaces structArray] retain];
+	if (mFaceVerticies && mFaceIndicies) {
+		O3Fixme();
+		return;
+	}
+	O3StructArray* tri_verts = [[mFaces structArray] mutableCopy];
+	if (!tri_verts) return;
 	O3Destroy(mFaces);
-	O3StructArray* new_idxs = [faces uniqueify];
+	[tri_verts setStructType:O3Vec3fType()];
+	O3StructArray* new_idxs = [tri_verts uniqueify];
 	if (!new_idxs) {
 		O3Asrt(false /*Uniqueification failed*/);
 		mFaces = nil;
 	}
-	O3StructArrayVDS* verts = [[O3StructArrayVDS alloc] initWithStructArray:faces vertexDataType:O3VertexLocationDataType];
+	[new_idxs compressIntegerType];
+	O3StructArrayVDS* verts = [[O3StructArrayVDS alloc] initWithStructArray:tri_verts vertexDataType:O3VertexLocationDataType];
 	O3StructArrayVDS* idxs = [[O3StructArrayVDS alloc] initWithStructArray:new_idxs vertexDataType:O3VertexLocationIndexDataType];
 	O3Assign(verts, mFaceVerticies);
 	O3Assign(idxs, mFaceIndicies);
@@ -176,59 +208,77 @@ O3DefaultO3InitializeImplementation
 
 ///Very un-thread-safe
 - (void)stripFacesAndUpload:(BOOL)uploadStripsToGPU {
-	if (mNumberStrips) O3LogWarn(@"Stripping an already stripped mesh is bad");
+	if (mNumberStrips) O3LogWarn(@"Stripping an already stripped mesh is bad (the previous strip data will be leaked and/or ignored)");
 	[self indexFacesAndUpload:NO];
+	O3Asrt(mFaceIndicies&&mFaceVerticies);
 	O3StructArray* faces_i = [mFaceIndicies structArray];
 	O3Assert([[mFaceVerticies structArray] count] < ~(UInt32)0, @"Stripification does not support 64 bit indicies");
 	[faces_i setStructTypeName:@"ui32"];
 	UInt32* idxs = (UInt32*)[[faces_i rawData] bytes];
 	using namespace triangle_stripper;
-	tri_stripper* stripper = new tri_stripper((const triangle_stripper::index*)idxs, (size_t)[faces_i count]);
+	size_t faces_i_ct = [faces_i count];
+	O3Asrt(!(faces_i_ct%3));
+	tri_stripper* stripper = new tri_stripper((const triangle_stripper::index*)idxs, faces_i_ct);
 	stripper->SetCacheSize();
-	stripper->SetMinStripSize();
-	primitive_vector strips;
-	primitive_vector tris;
-	stripper->Strip(&strips, &tris);
+	stripper->SetMinStripSize(12);
+	primitive_vector outvec;
+	stripper->Strip(&outvec);
 	
-	UIntP new_idx_count=0;
-	for (UIntP i=0; i<tris.size(); i++) new_idx_count += tris[i].Indices.size();
-	UInt32* face_idxs = (UInt32*)malloc(sizeof(UInt32)*new_idx_count);
-	UIntP j=0;
-	for (UIntP i=0; i<tris.size(); i++) {
-		primitive_group& p = tris[i];
-		O3Asrt(p.Type==TRIANGLES);
-		for (UIntP k=0; k<p.Indices.size(); k++)
-			face_idxs[j++] = p.Indices[k];
+	UIntP tri_idx_count=0;
+	UIntP strip_idx_count=0;
+	UIntP strip_count=0;
+	UIntP outvec_size = outvec.size();
+	for (UIntP i=0; i<outvec_size; i++) {
+		primitive_group& p = outvec[i];
+		UIntP num_idxs = p.Indices.size();
+		if (p.Type==TRIANGLES) {
+			tri_idx_count += num_idxs;
+		} else if (p.Type==TRIANGLE_STRIP) {
+			strip_count++;
+			strip_idx_count += num_idxs;
+		} else O3Asrt(NO);
 	}
-	
-	mNumberStrips = 0;
+	static BOOL has_logged_header = NO;
+	if (!has_logged_header) {O3LogInfo(@"Strip Count, Strip Indicies, New Tri Idx Count, Old Tri Idx Count"); has_logged_header=YES;}
+	O3LogInfo(@"%i, %i, %i, %i", strip_count, strip_idx_count, tri_idx_count, faces_i_ct);
+
+	UIntP running_tri_idx=0;
+	UIntP running_strip_idx=0;
+	UIntP running_strip=0;
+	UInt32* tri_idxs = tri_idx_count? (UInt32*)malloc(sizeof(UInt32)*tri_idx_count): nil;
+	UInt32* strip_idxs = strip_idx_count? (UInt32*)malloc(sizeof(UInt32)*strip_idx_count) : nil;
 	if (mStripLocations) free(mStripLocations);
 	if (mStripCounts) free(mStripCounts);
-	mStripLocations = (UIntP*)malloc(sizeof(UIntP)*mNumberStrips);
-	mStripCounts = (GLsizei*)malloc(sizeof(GLsizei)*mNumberStrips);
-	UIntP new_strip_idx_count=0;
-	for (UIntP i=0; i<strips.size(); i++) new_strip_idx_count += strips[i].Indices.size();
-	UInt32* strip_idxs = (UInt32*)malloc(sizeof(UInt32)*new_strip_idx_count);
-	j=0;
-	for (UIntP i=0; i<strips.size(); i++) {
-		primitive_group& p = strips[i];
-		O3Asrt(p.Type==TRIANGLE_STRIP);
-		mStripLocations[i] = j;
-		UIntP l = mStripCounts[i] = p.Indices.size();
-		for (UIntP k=0; k<l; k++)
-			strip_idxs[j++] = p.Indices[k];
+	mStripLocations = (UIntP*)malloc(sizeof(UIntP)*strip_count);
+	mStripCounts = (GLsizei*)malloc(sizeof(GLsizei)*strip_count);
+	for (UIntP i=0; i<outvec_size; i++) {
+		primitive_group& p = outvec[i];
+		if (p.Type==TRIANGLES) {
+			UIntP idcs = p.Indices.size();
+			for (UIntP k=0; k<idcs; k++)
+				tri_idxs[running_tri_idx++] = p.Indices[k];
+		} else if (p.Type==TRIANGLE_STRIP) {
+			UIntP idcs = p.Indices.size();
+			mStripLocations[running_strip] = running_strip_idx;
+			mStripCounts[running_strip] = idcs;
+			running_strip++;
+			for (UIntP k=0; k<idcs; k++)
+				strip_idxs[running_strip_idx++] = p.Indices[k];			
+		} else O3Asrt(NO);
 	}
+	O3Asrt(running_strip_idx==strip_idx_count && running_tri_idx==tri_idx_count);
 	
-	O3StructArray* new_face_indicies = [[O3StructArray alloc] initWithBytes:face_idxs typeName:@"ui32" length:sizeof(UInt32)*new_idx_count];
-	O3StructArray* new_strip_indicies = [[O3StructArray alloc] initWithBytes:strip_idxs typeName:@"ui32" length:sizeof(UInt32)*new_strip_idx_count];
+	O3StructArray* new_face_indicies = [[O3StructArray alloc] initWithBytes:tri_idxs typeName:@"ui32" length:sizeof(UInt32)*tri_idx_count];
+	O3StructArray* new_strip_indicies = [[O3StructArray alloc] initWithBytes:strip_idxs typeName:@"ui32" length:sizeof(UInt32)*strip_idx_count];
 	[new_face_indicies compressIntegerType];
 	[new_strip_indicies compressIntegerType];
+	[new_strip_indicies uploadToGPU];
 	O3StructArrayVDS* new_face_vds = [[O3StructArrayVDS alloc] initWithStructArray:new_face_indicies vertexDataType:O3VertexLocationIndexDataType];
 	O3StructArrayVDS* new_strip_vds = [[O3StructArrayVDS alloc] initWithStructArray:new_strip_indicies vertexDataType:O3VertexLocationIndexDataType];
 	O3Assign(new_face_vds, mFaceIndicies);
 	O3Assign(new_strip_vds, mStripIndicies);
 
-	mNumberStrips = strips.size();
+	mNumberStrips = strip_count;
 	delete stripper;
 	[[faces_i rawData] relinquishBytes];
 	if (uploadStripsToGPU) [self uploadToGPU];

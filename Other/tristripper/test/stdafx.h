@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 
-#include <GLUT/glut.h>
+#include <GL/glut.h>
 
 #include "base_exception.h"
 #include "stdint.h"

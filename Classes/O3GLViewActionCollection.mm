@@ -25,5 +25,9 @@ O3DefaultO3InitializeImplementation
 + (void)stopFlyingUp:(O3GLView*)view {      [[view viewState] removeObjectForKey:@"flyingUp"];   }
 + (void)startFlyingFast:(O3GLView*)view {     [[view viewState] setObject:O3TrueObject() forKey:@"flyingFast"];   }
 + (void)stopFlyingFast:(O3GLView*)view {      [[view viewState] removeObjectForKey:@"flyingFast"];   }
++ (void)startBarrelingLeft:(O3GLView*)view {     [[view viewState] setObject:O3TrueObject() forKey:@"barrelingLeft"];   }
++ (void)stopBarrelingLeft:(O3GLView*)view {      [[view viewState] removeObjectForKey:@"barrelingLeft"];   }
++ (void)startBarrelingRight:(O3GLView*)view {     [[view viewState] setObject:O3TrueObject() forKey:@"barrelingRight"];   }
++ (void)stopBarrelingRight:(O3GLView*)view {      [[view viewState] removeObjectForKey:@"barrelingRight"];   }
 
 @end

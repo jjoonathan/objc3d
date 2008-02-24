@@ -86,7 +86,7 @@ inline void initP(O3GLView* self) {
 	self->mContextNeedsUpdate = YES;
 	self->mViewState = [[NSMutableDictionary alloc] init];
 	[self setSceneName:@"defaultScene"];
-	[self setUpdateInterval:1/35];
+	[self setUpdateInterval:1./35.];
 	[[self window] setAcceptsMouseMovedEvents:YES];
 }
 
@@ -324,10 +324,15 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 	return nil;
 }
 
-
 /************************************/ #pragma mark Drawing /************************************/
 - (void)drawRect:(NSRect)rect {
 	if (![self canDraw]) {O3LogWarn(@"Cannot draw %@", self); return;} //We don't want this to be an exception
+	if (mRenderingDisabled) {
+		if (![self needsDisplay]) return;
+		[self lockFocus];
+		[self drawBlackScreenOfDeath:@"Paused"];
+		[self unlockFocus];		
+	}
 	if (mScene) {
 		O3RenderContext ctx;
 		ctx.objCCompatibility = [NSNull class];
@@ -336,7 +341,10 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 		ctx.cameraSpace = [ctx.camera space];
 		ctx.glContext = [self context];		
 		[mScene renderWithContext:&ctx];
+		if (mLogFPS && ctx.elapsedTime>0.)
+			NSLog(@"%@ FPS: %f", self, 1/(ctx.elapsedTime));
 	} else {
+		if (![self needsDisplay]) return;
 		[self lockFocus];
 		[self drawBlackScreenOfDeath:@"No Scene"];
 		[self unlockFocus];
@@ -682,6 +690,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 
 - (void)setUpdateInterval:(double)newInt {
 	NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:newInt target:self selector:@selector(update) userInfo:nil repeats:YES];
+	[mUpdateTimer invalidate];
 	O3Assign(t, mUpdateTimer);
 }
 
@@ -696,6 +705,27 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 
 - (void)addObjects:(NSArray*)objs {
 	[[[self scene] rootRegion] addObjects:objs];
+}
+
+- (BOOL)paused {
+	return mRenderingDisabled;
+}
+
+- (void)setPaused:(BOOL)paused {
+	mRenderingDisabled = paused;
+	[self setNeedsDisplay:YES];
+}
+
+- (void)pause {
+	[self setPaused:YES];
+}
+
+- (BOOL)logsFPS {
+	return mLogFPS;
+}
+
+- (void)setLogsFPS:(BOOL)lfps {
+	mLogFPS = lfps;
 }
 
 
