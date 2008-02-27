@@ -16,7 +16,7 @@ typedef enum {
 	CGProgramAnnotationType	
 } CGannotationType;
 
-void O3SetCGParameterToValue(CGparameter param, id value);
+void O3SetCGParameterToValue(CGparameter param, id newValue, CGhandle typeContext);
 id   O3GetCGParameterValue(CGparameter param);
 void O3SetCGAnnotationToValue(CGannotation anno, id value);
 id   O3GetCGAnnotationValue(CGannotation anno);

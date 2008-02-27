@@ -32,8 +32,9 @@ extern CGcontext gCGContext;
 
 - (void)dealloc {
 	O3DestroyCppMap(AnnotationMap, mAnnotations);
-	O3CGParameterUnbindValue(self);
-	if (mFreeParamWhenDone)
+	if (mParam) O3CGParameterUnbindValue(self);
+	[mSubParams release];
+	if (mFreeParamWhenDone) cgDestroyParameter(mParam);
 	O3SuperDealloc();
 }
 
@@ -66,6 +67,26 @@ extern CGcontext gCGContext;
 	O3SuperInitOrDie();
 	mParam = param;
 	//mFreeParamWhenDone = NO;
+	return self;
+}
+
+- (id)initByDuplicatingParameter:(CGparameter)param {
+	O3SuperInitOrDie();
+	CGtype otype = cgGetParameterNamedType(param);
+	if (otype==CG_ARRAY) {
+		CGtype base_type = cgGetArrayType(param);
+		int dims = cgGetArrayDimension(param);
+		if (dims==1) self = [self initWithType:base_type count:cgGetArraySize(param, 0)];
+		else {
+			int* dim_arr = (int*)malloc(sizeof(int)*dims);
+			for (int i=0; i<dims; i++) dim_arr[i] = cgGetArraySize(param, i);
+			self = [self initWithType:base_type dimensions:dim_arr dimensionCount:dims];
+			free(dim_arr);
+		}
+	} else {
+		self = [self initWithType:otype];
+	}
+	[self setContext:((CGhandle)cgGetParameterEffect(param) ?: (CGhandle)cgGetParameterProgram(param))];
 	return self;
 }
 
@@ -132,9 +153,12 @@ extern CGcontext gCGContext;
 }
 
 - (void)setValue:(id)newValue {
-	O3SetCGParameterToValue(mParam, newValue);
+	O3SetCGParameterToValue(mParam, newValue, mContext);
 }
 
+- (void)setContext:(CGhandle)type_parent {
+	mContext = type_parent;
+}
 
 /************************************/ #pragma mark Thin Wrapper Management /************************************/
 - (BOOL)freeWhenDone {
@@ -183,6 +207,20 @@ extern CGcontext gCGContext;
 
 - (NSString*)stringValue {
 	return [[self value] stringValue];
+}
+
+- (O3CGParameter*)structField:(NSString*)name {
+	O3CGParameter* cval = [mSubParams objectForKey:name];
+	if (cval) return cval;
+	CGparameter member = cgGetNamedStructParameter(mParam, NSStringUTF8String(name));
+	cval = [[O3CGParameter alloc] initWithParameter:member];
+	if (!mSubParams) mSubParams = [[[NSMutableDictionary alloc] init] autorelease];
+	if (cval) [mSubParams setObject:cval forKey:name];
+	return cval;
+}
+
+- (id)valueForKey:(NSString*)key {
+	return [self structField:key];
 }
 
 /************************************/ #pragma mark Annotations /************************************/

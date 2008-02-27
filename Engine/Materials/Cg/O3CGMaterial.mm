@@ -59,12 +59,12 @@ inline void unbindParamsP(O3CGMaterial* self) {
 		return nil;
 	}
 	O3SuperInitOrDie();
-	NSMutableDictionary* pdict = [coder decodeObjectForKey:@"pdict"];
+	[self setMaterialTypeName:[coder decodeObjectForKey:@"materialType"]];
+	NSMutableDictionary* pdict = [coder decodeObjectForKey:@"params"];
 	NSEnumerator* pdictEnumerator = [pdict keyEnumerator];
 	while (NSString* o = [pdictEnumerator nextObject]) {
 		[self setValue:[pdict objectForKey:o] forKey:o];
 	}
-	[self setMaterialTypeName:[coder decodeObjectForKey:@"materialType"]];
 	return self;
 }
 
@@ -149,7 +149,10 @@ inline void unbindParamsP(O3CGMaterial* self) {
 		}
 		O3CGMaterialParameterPair& val = (*mParameters)[NSStringUTF8String(param)];
 		val.target = targ;
-		O3Assign([(O3CGParameter*)[O3CGParameter alloc] initWithType:[targ type]], val.value);
+		CGparameter targ_param = [targ rawParameter];
+		O3CGParameter* newParam = [[O3CGParameter alloc] initByDuplicatingParameter:targ_param];
+		[newParam setValue:value];
+		O3Assign(newParam, val.value);
 	} else {
 		O3CGMaterialParameterPair& val = location->second;
 		if (!value) {

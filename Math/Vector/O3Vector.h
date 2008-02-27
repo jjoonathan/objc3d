@@ -8,6 +8,8 @@
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #include "O3Math.h"
+#import "O3StructArray.h"
+#import "O3ScalarStructType.h"
 
 #define O3Vec_TT	template <typename TYPE, int NUMBER> 
 #define O3Vec_T	O3Vec<TYPE, NUMBER>
@@ -31,19 +33,18 @@ public: //Constructors
 	O3Vec(TYPE x, TYPE y)					{Set(x,y);}			///<Constructs a 2 or more dimensional vector with the given values. If the vector type has more than 2 dimensions, the unprovided dimensions are filled with 1.
 	O3Vec(TYPE x, TYPE y, TYPE z)			{Set(x,y,z);}		///<Constructs a 3 or more dimensional vector with the given values. If the vector type has more than 3 dimensions, the unprovided dimensions are filled with 1.
 	O3Vec(TYPE x, TYPE y, TYPE z, TYPE w)	{Set(x,y,z,w);}		///<Constructs a 4 or more dimensional vector with the given values. If the vector type has more than 4 dimensions, the unprovided dimensions are filled with 1.
-	O3Vec(NSValue* val)						{SetValue((NSValue*)val);}			///<Constructs a 4 or more dimensional vector with the given NSValue.
-	template <typename TYPE2>			 O3Vec(const TYPE2 *array, unsigned len)	{Set(array, len);}		///<Constructs a vector with the information pointed at by array. If array isn't the same size as the vector you are constructing, pass its length in \e len.
-	template <typename TYPE2, int SIZE2> O3Vec(const O3Vec<TYPE2, SIZE2>& v)				{Set(v);};				///<Constructs a vector from another vector.
+	O3Vec(NSArray* val)						{SetValue((NSArray*)val);}			///<Constructs a 4 or more dimensional vector with the given NSValue.
+	template <typename TYPE2>			 O3Vec(const TYPE2 *array, unsigned len)	{SetArray(array, len);}		///<Constructs a vector with the information pointed at by array. If array isn't the same size as the vector you are constructing, pass its length in \e len.
+	template <typename TYPE2, int SIZE2> O3Vec(const O3Vec<TYPE2, SIZE2>& v)		{Set(v);};				///<Constructs a vector from another vector.
 	
 public: //Setters
 	O3Vec_T& Set(TYPE x);			///<Sets all elements in the receiver to x
 	O3Vec_T& Set(TYPE x, TYPE y);
 	O3Vec_T& Set(TYPE x, TYPE y, TYPE z);
 	O3Vec_T& Set(TYPE x, TYPE y, TYPE z, TYPE w);
-	O3Vec_T& SetValue(NSValue* val);
-	template <typename TYPE2>			 O3Vec_T& Set(const TYPE2 *array, unsigned arraylen);
+	O3Vec_T& SetValue(NSArray* val);
 	template <typename TYPE2, int SIZE2> O3Vec_T& Set(const O3Vec<TYPE2, SIZE2>& v);
-	template <typename TYPE2>			 O3Vec_T& set_array(const TYPE2 array, unsigned arraylen=NUMBER);
+	template <typename TYPE2>			 O3Vec_T& SetArray(const TYPE2 array, unsigned arraylen=NUMBER);
 	
 public: //Methods and Method-accessors
 	O3Vec_T& Zero();								///<Fills the vector with zeros.
@@ -71,7 +72,8 @@ public: //Meta-attributes
 	bool IsNormalized(TYPE tolerance) const;						///<Returns true if the vector is normalized (within tolerance).
 	bool IsZero() const;											///<Returns true if the vector is zero (within epsilon).
 	bool IsZero(const TYPE tolerance) const;						///<Returns true if the vector is zero (within tolerance).
-	bool IsEqualTo(const O3Vec_T& v, TYPE tolerance /*= O3Epsilon(TYPE)*/) const;	///<Returns true if the difference between the receiver and v is less than tolerance (which defaults to epsilon).
+	template<class T2>
+		bool IsEqualTo(const T2& v, TYPE tolerance /*= O3Epsilon(TYPE)*/) const;	///<Returns true if the difference between the receiver and v is less than tolerance (which defaults to epsilon).
 	double Angle(const O3Vec_T& v) const; ///<Returns the angle between the receiver and v
 	
 public: //Overloaded Operators
@@ -137,7 +139,7 @@ public: //Accessors
 	TYPE  GetT() const {return v[1];}                	///<Acts just the same as receiver[1] but does not allow assignment.
 	TYPE  GetR() const {return v[2];}                	///<Acts just the same as receiver[2] but does not allow assignment.
 	TYPE  GetG() const {return v[3];}                	///<Acts just the same as receiver[3] but does not allow assignment.
-	NSValue* Value() const {return [NSValue valueWithBytes:this objCType:@encode(O3Vec_T)];}
+	O3StructArray* Value() const {return [[[O3StructArray alloc] initWithCopiedBytes:this type:O3ScalarStructTypeOf(TYPE) length:NUMBER*sizeof(TYPE)] autorelease];}
 	
 public: //Interface
 	std::string Description() const; ///<Returns a string description of the object. The caller is responsible for free()ing the returned char*.

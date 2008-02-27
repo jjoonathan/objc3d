@@ -29,7 +29,7 @@ BOOL gO3ShadersEnabled = YES; ///<Weather or not shaders are enabled. Don't acce
 
 
 void O3CGProgram_cgErrorCallback() {
-	O3CLogError(@"Cg error: %s\n", cgGetErrorString(cgGetError()));
+	NSLog(@"%s\n", cgGetErrorString(cgGetError()));
 }
 
 

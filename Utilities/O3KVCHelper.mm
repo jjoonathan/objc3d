@@ -21,9 +21,9 @@ O3DefaultO3InitializeImplementation
 }
 
 - (void)flushIMPCache {
-	mValueForKeyImp = (O3KVCGetterMethod)[mTarget methodForSelector:mValueForKeyMethod];
-	mSetValueForKeyImp = (O3KVCSetterMethod)[mTarget methodForSelector:mSetValueForKeyMethod];
-	mListKeysImp = (O3KVCListMethod)[mTarget methodForSelector:mListKeysMethod];
+	mValueForKeyImp = mValueForKeyMethod? (O3KVCGetterMethod)[mTarget methodForSelector:mValueForKeyMethod] : nil;
+	mSetValueForKeyImp = mSetValueForKeyMethod? (O3KVCSetterMethod)[mTarget methodForSelector:mSetValueForKeyMethod] : nil;
+	mListKeysImp = mListKeysMethod? (O3KVCListMethod)[mTarget methodForSelector:mListKeysMethod] : nil;
 }
 
 ///@note Returns nil if the target lacks the valueForKeyMethod selector
@@ -42,6 +42,10 @@ O3DefaultO3InitializeImplementation
 - (NSArray*)keys {
 	if (!mListKeysImp) return nil;
 	return mListKeysImp(mTarget, mListKeysMethod);
+}
+
+- (NSString*)description {
+	return [@"Keys: " stringByAppendingString:[[self keys] componentsJoinedByString:@", "]];
 }
 
 + (void)gdbBreak {

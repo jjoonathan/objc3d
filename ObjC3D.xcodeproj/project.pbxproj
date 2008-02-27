@@ -214,6 +214,8 @@
 		FC7783AB0C3997FF00A2E928 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FC7783AA0C3997FF00A2E928 /* Readme.rtf */; };
 		FC7CA0FF0D4154EA00F6B849 /* test_struct_array.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA0FE0D4154EA00F6B849 /* test_struct_array.rb */; };
 		FC7CA19C0D41CC6300F6B849 /* tests.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA19B0D41CC6300F6B849 /* tests.rb */; };
+		FC8FD4890D727D8300A906B3 /* NSArray+O3KVC.h in Headers */ = {isa = PBXBuildFile; fileRef = FC8FD4870D727D8300A906B3 /* NSArray+O3KVC.h */; };
+		FC8FD48A0D727D8300A906B3 /* NSArray+O3KVC.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC8FD4880D727D8300A906B3 /* NSArray+O3KVC.mm */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
 		FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB959A80D2DCC650083B948 /* ApplicationServices.framework */; };
@@ -551,6 +553,8 @@
 		FC7DD1E00C1B311A009D36A2 /* O3NonlinearWriter.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = O3NonlinearWriter.mm; path = Utilities/Archivers/O3NonlinearWriter.mm; sourceTree = SOURCE_ROOT; };
 		FC7DD1E10C1B311B009D36A2 /* O3NonlinearWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3NonlinearWriter.h; path = Utilities/Archivers/O3NonlinearWriter.h; sourceTree = SOURCE_ROOT; };
 		FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ObjCEncoding.h; path = Utilities/ObjCEncoding.h; sourceTree = SOURCE_ROOT; };
+		FC8FD4870D727D8300A906B3 /* NSArray+O3KVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+O3KVC.h"; sourceTree = "<group>"; };
+		FC8FD4880D727D8300A906B3 /* NSArray+O3KVC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+O3KVC.mm"; sourceTree = "<group>"; };
 		FC8FF9A00B6D3ABE006D2ECF /* test_srec.cgfx */ = {isa = PBXFileReference; fileEncoding = 4; languageSpecificationIdentifier = c.cpp; lastKnownFileType = text; name = test_srec.cgfx; path = Media/test_srec.cgfx; sourceTree = SOURCE_ROOT; };
 		FC922FA00AB30F74003878EA /* O3Vector.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; name = O3Vector.hpp; path = Math/Vector/O3Vector.hpp; sourceTree = SOURCE_ROOT; };
 		FC92305A0AB347E9003878EA /* O3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Utilities.h; path = Utilities/O3Utilities.h; sourceTree = SOURCE_ROOT; };
@@ -888,6 +892,8 @@
 				FC11C4470B59E09F0069119E /* O3CGParameterSupport.mm */,
 				FC0BBD460D23FE6800E5B388 /* O3Timer.h */,
 				FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */,
+				FC8FD4870D727D8300A906B3 /* NSArray+O3KVC.h */,
+				FC8FD4880D727D8300A906B3 /* NSArray+O3KVC.mm */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1438,6 +1444,7 @@
 				FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */,
 				FC3937FB0D54F2B3007CA922 /* O32DStructArray.h in Headers */,
 				FC39387E0D5574F2007CA922 /* O3MatStructType.h in Headers */,
+				FC8FD4890D727D8300A906B3 /* NSArray+O3KVC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1794,6 +1801,7 @@
 				FC35144F0D3D91080000C27C /* O3CTypes.mm in Sources */,
 				FC3937FC0D54F2B3007CA922 /* O32DStructArray.mm in Sources */,
 				FC39387F0D5574F2007CA922 /* O3MatStructType.mm in Sources */,
+				FC8FD48A0D727D8300A906B3 /* NSArray+O3KVC.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

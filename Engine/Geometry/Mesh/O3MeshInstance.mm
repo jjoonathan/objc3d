@@ -28,7 +28,9 @@ inline void initP(O3MeshInstance* self) {
 		return nil;
 	}
 	[super initWithCoder:coder];
-	[self setMaterialName:[coder decodeObjectForKey:@"materialName"]];
+	NSString* matName = [coder decodeObjectForKey:@"materialName"];
+	if (matName) [self setMaterialName:matName];
+	else         [self setMaterial:[coder decodeObjectForKey:@"material"]];
 	[self setMeshTypeName:[coder decodeObjectForKey:@"meshTypeName"]];	
 	return self;
 }
@@ -36,8 +38,10 @@ inline void initP(O3MeshInstance* self) {
 - (void)encodeWithCoder:(NSCoder*)coder {
 	if (![coder allowsKeyedCoding])
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
+	[super encodeWithCoder:coder];
 	[coder encodeObject:mMaterialName forKey:@"materialName"];
 	[coder encodeObject:mMeshName forKey:@"meshTypeName"];
+	if (!mMaterialName && mMaterial) [coder encodeObject:mMaterial forKey:@"material"];
 }
 
 - (void)dealloc {

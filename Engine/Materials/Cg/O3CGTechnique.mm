@@ -8,6 +8,7 @@
 #import "O3CGEffect.h"
 #import "O3CGAnnotation.h"
 #import "O3CGParameterSupport.h"
+#import "O3CGMaterial.h"
 #import "O3KVCHelper.h"
 #import "O3CGPass.h"
 
@@ -86,6 +87,10 @@ PassMap* mPassMapP(O3CGTechnique* self) {
 - (NSString*)name {
 	if (!mTechnique) return nil;
 	return [NSString stringWithUTF8String:cgGetTechniqueName(mTechnique)];
+}
+
+- (O3CGEffect*)effect {
+	return mEffect;
 }
 
 
@@ -172,6 +177,7 @@ PassMap* mPassMapP(O3CGTechnique* self) {
 	if (passnum>0) cgResetPassState(passes->at(passnum-1));
 	CGpass thepass = passes->at(passnum);
 	cgSetPassState(thepass);
+	O3GLBreak();
 }
 
 - (void)endRendering {
@@ -184,5 +190,32 @@ PassMap* mPassMapP(O3CGTechnique* self) {
 - (void)purgeCaches {
 	O3DestroyCppMap(AnnotationMap, mAnnotations);
 }
+
+///Returns a new material with default parameters for the receiver with a  retain count of 1
+- (O3CGMaterial*)newMaterial {
+	return [[O3CGMaterial alloc] initWithMaterialType:self];
+}
+
+/************************************/ #pragma mark Params /************************************/
+- (id)parameters {
+	return [mEffect parameters];
+}
+
+- (NSArray*)parameterKeys {
+	return [mEffect parameterKeys];
+}
+
+- (O3CGParameter*)parameterNamed:(NSString*)key {
+	return [mEffect parameterNamed:key];
+}
+
+- (void)setParameterValue:(id)value forKey:(NSString*)key {
+	[mEffect setParameterValue:value forKey:key];
+}
+
+- (CGtype)typeNamed:(NSString*)tname {
+	return [mEffect typeNamed:tname];
+}
+
 
 @end

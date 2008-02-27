@@ -75,3 +75,19 @@ O3EXTERN_C void* O3MemDup(const void* mem, UIntP len) {
 	memcpy(ret, mem, len);
 	return ret;
 }
+
+O3EXTERN_C id O3Descriptify(id bridge_object) {
+	if (![[bridge_object className] hasPrefix:@"OC_"]) return bridge_object;
+	static Class pyarr_class = nil;
+	if (!pyarr_class) pyarr_class = NSClassFromString(@"OC_PythonArray");
+	if ([bridge_object isMemberOfClass:pyarr_class]) {
+		NSMutableArray* ret = [[[NSMutableArray alloc] initWithCapacity:[bridge_object count]] autorelease];
+		NSEnumerator* bridge_objectEnumerator = [bridge_object objectEnumerator];
+		while (id o = [bridge_objectEnumerator nextObject]) {
+			[ret addObject:O3Descriptify(o)];
+		}
+		return ret;
+	}
+	O3CLogWarn(@"Un-depythonifiable obj %@", bridge_object);
+	return nil;
+}

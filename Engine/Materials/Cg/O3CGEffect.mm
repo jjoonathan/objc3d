@@ -75,13 +75,31 @@ inline void mConnectGlobalParamsP(O3CGEffect* self) {
 	CGparameter eff_param = cgGetFirstEffectParameter(self->mEffect);
 	do {
 		string sem = cgGetParameterSemantic(eff_param);
+		if (sem=="") continue;
+		BOOL should_go_to_next_param = NO;
+		for (UIntP i=0; i<gNumCGAutoSetParamaterTemplates; i++) {
+			string template_binding = gCGAutoSetParamaterTemplates[i].name;
+			if (sem==template_binding) {
+				should_go_to_next_param = YES;
+				break;
+			}
+		}
+		if (should_go_to_next_param) continue;
 		ParameterMap::iterator param = gO3CGEffectGlobals.find(sem);
 		O3CGParameter* oc_param = param->second;
+		BOOL made_param = NO; made_param;
+		CGtype eff_param_type = cgGetParameterType(eff_param);
 		if (param==gO3CGEffectGlobals.end()) {
-			oc_param = [[O3CGParameter alloc] initWithType:cgGetParameterType(eff_param)];
+			made_param = YES;
+			oc_param = [(O3CGParameter*)[O3CGParameter alloc] initWithType:eff_param_type];
 			param->second = oc_param;
 		}
-		cgConnectParameter([oc_param rawParameter], eff_param);
+		CGparameter global_param = [oc_param rawParameter];
+		#ifdef O3DEBUG
+		const char* eff_tname = cgGetTypeString(eff_param_type); eff_tname;
+		const char* glob_tname = cgGetTypeString(cgGetParameterType(global_param)); glob_tname;
+		#endif
+		cgConnectParameter(global_param, eff_param);
 	} while (eff_param = cgGetNextParameter(eff_param));
 }
 
@@ -225,8 +243,8 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	}
 	O3Assign(source, mSource);
 	O3CGEffect_autoDetectAutoSetParameters(self, newEffect);
-	mConnectGlobalParamsP(self);
 	O3CGEffect_setEffectP(self, newEffect);	
+	mConnectGlobalParamsP(self);
 }
 
 
@@ -273,6 +291,10 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	return mParameterKVCHelper;	
 }
 
+- (CGtype)typeNamed:(NSString*)tname {
+	return cgGetNamedUserType(mEffect, NSStringUTF8String(tname));
+}
+
 - (NSArray*)parameterKeys {
 	NSMutableArray* to_return = [NSMutableArray array];
 	CGparameter param = cgGetFirstEffectParameter(mEffect);
@@ -295,7 +317,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	return to_return;
 }
 
-- (void)setParameterValue:(NSValue*)value forKey:(NSString*)key {
+- (void)setParameterValue:(id)value forKey:(NSString*)key {
 	O3CGParameter* param = mParametersP(self)->find(NSStringUTF8String(key))->second;
 	if (!param) {
 		O3ToImplement();
@@ -356,6 +378,10 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	[mPrincipalTechniqueP(self) endRendering];
 }
 
+- (O3CGMaterial*)newMaterial {
+	return [mPrincipalTechniqueP(self) newMaterial];
+}
+
 /************************************/ #pragma mark Class /************************************/
 + (BOOL)effectsEnabled {
 	return gO3CGEffectsEnabled;
@@ -391,7 +417,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	string name = NSStringUTF8String(k);
 	ParameterMap::iterator param = gO3CGEffectGlobals.find(name);
 	if (param==gO3CGEffectGlobals.end()) {
-		O3CGParameter* nparam = [[O3CGParameter alloc] initWithType:t];
+		O3CGParameter* nparam = [(O3CGParameter*)[O3CGParameter alloc] initWithType:t];
 		gO3CGEffectGlobals[name] = nparam;
 		return nparam;
 	} else {

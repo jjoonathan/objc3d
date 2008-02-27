@@ -26,41 +26,12 @@ TYPE O3Vec_T::DistanceSquared(const O3Vec_T &vec) {
 
 /*******************************************************************/ #pragma mark Setters /*******************************************************************/
 ///Leniantly interperets objc encodings: don't pass it a value that isn't an array of some primitive type or it'll barf
-O3Vec_TT O3Vec_T& O3Vec_T::SetValue(NSValue* val) {
+O3Vec_TT O3Vec_T& O3Vec_T::SetValue(NSArray* val) {
 	if (!val) return Set(0);
-	const char* type = [val objCType];
-	const char* origtype = type;
-	while (*type && *type!='[') type++;
-	O3Assert(*type, @"Could not find an opening bracket indicating a vector type in %@", val);
-	if (!type) return Set(0);
-	type++;
-	int len = atoi(type);
-	while (isdigit(*type)) type++;
-	char octype = *type; type++;
-	O3Assert(*type==']', @"Missing end brace in objCType of val %@. Must be a type like ...[%%i%%c]...", val);
-	unsigned int bsize; NSGetSizeAndAlignment(origtype, &bsize, nil);
-	void* buf = malloc(len*bsize);
-	[val getValue:buf];
-	#define USE_ENC_TYPE(t, enct) case enct: for (UIntP i=0; i<NUMBER; i++) operator[](i) = ((t*)buf)[i];	break;
-	switch (octype) {
-		USE_ENC_TYPE(float, 'f');
-		USE_ENC_TYPE(double, 'd');
-		USE_ENC_TYPE(char, 'c');
-		USE_ENC_TYPE(unsigned char, 'C');
-		USE_ENC_TYPE(short, 's');
-		USE_ENC_TYPE(unsigned short, 'S');
-		USE_ENC_TYPE(int, 'i');
-		USE_ENC_TYPE(unsigned int, 'I');
-		USE_ENC_TYPE(long, 'l');
-		USE_ENC_TYPE(unsigned long, 'L');
-		USE_ENC_TYPE(long long, 'q');
-		USE_ENC_TYPE(unsigned long long, 'Q');
-		default:
-		O3Assert(false,@"Undefined type for O3Vec_T::Set(NSValue* val) (octype=%c)",octype);
-		Set(0);
-	}
-	#undef USE_ENC_TYPE
-	free(buf);
+	UIntP ct = [val count];
+	void* b = [val bytesOfType:O3ScalarStructTypeOf(TYPE)];
+	SetArray((TYPE*)b, ct);
+	free(b);
 	return *this;
 }
 
@@ -101,19 +72,12 @@ O3Vec_TT O3Vec_T& O3Vec_T::Set(TYPE x, TYPE y, TYPE z, TYPE w) {
 }
 
 O3Vec_TT template <typename TYPE2> 
-O3Vec_T& O3Vec_T::set_array(const TYPE2 array, unsigned arraylen) {
+O3Vec_T& O3Vec_T::SetArray(const TYPE2 array, unsigned arraylen) {
 	int i;
 	int j = O3Min(arraylen, NUMBER);
 	for (i=0;i<j;i++) v[i] = array[i];
 	for (i=j;i<NUMBER;i++) v[i] = 0;
 	return *this;
-}
-
-
-///Zero fills any elements not specified. You can specify more elements than are in a vector.
-O3Vec_TT template <typename TYPE2> 
-O3Vec_T& O3Vec_T::Set(const TYPE2 *array, unsigned arraylen) {
-	return set_array(array,arraylen);
 }
 
 ///Sets the receiver's elements to the values of \e vec's elements, filling in 0 anywhere where vec doesn't have a corresponding element
@@ -172,9 +136,9 @@ bool O3Vec_T::IsZero(TYPE tolerance) const {
 	return O3Equals(lengthsq, 0., tolerance*2); //Not Strictly Correct
 }
 
-O3Vec_TT
-bool O3Vec_T::IsEqualTo(const O3Vec_T& vec, TYPE tolerance = O3Epsilon(TYPE)) const {
-	id self = nil; O3Optimizable();
+O3Vec_TT template<class T2>
+bool O3Vec_T::IsEqualTo(const T2& vec, TYPE tolerance = O3Epsilon(TYPE)) const {
+	id self = nil; //O3Optimizable();
 	TYPE lengthsq = (*this-vec).LengthSquared();
 	return O3Equals(lengthsq, 0., tolerance*2); //Not Strictly Correct
 }

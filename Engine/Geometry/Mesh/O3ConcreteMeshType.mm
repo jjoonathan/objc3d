@@ -131,14 +131,17 @@ O3DefaultO3InitializeImplementation
 
 - (void)renderWithContext:(O3RenderContext*)ctx {
 	//glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+	NSObject<O3MultipassDirector,NSCoding>* the_material = (NSObject<O3MultipassDirector,NSCoding>*)ctx->scratch[0] ?: mDefaultMaterial;
 	[mVertexDataSources makeObjectsPerformSelector:@selector(bind)];
-	UIntP passes = [mDefaultMaterial renderPasses];
+	O3GLBreak();
+	UIntP passes = [the_material renderPasses];
+	[the_material beginRendering];
 	if (passes==0) passes=1;
 	if (mFaces) { //Face by face
 		glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER, GL_ZERO);
 		UIntP count = [mFaces bind];
 		for (UIntP i=0;i<passes;i++) {
-			[mDefaultMaterial setRenderPass:i];
+			[the_material setRenderPass:i];
 			glDrawArrays(GL_TRIANGLES, 0, count);
 		}
 		[mFaces unbind];
@@ -149,7 +152,9 @@ O3DefaultO3InitializeImplementation
 		GLenum index_for = [mFaceIndicies format];
 		const GLvoid* index_ptr = [mFaceIndicies indicies];
 		for (UIntP i=0;i<passes;i++) {
-			[mDefaultMaterial setRenderPass:i];
+			if (the_material) {
+				[the_material setRenderPass:i];
+			}
 			glDrawElements(GL_TRIANGLES, count, index_for, index_ptr);
 		}
 		[mFaceVerticies unbind];
@@ -161,12 +166,13 @@ O3DefaultO3InitializeImplementation
 		[mStripIndicies bind]; O3Asrt([[[mStripIndicies structArray] rawData] isGPUData]);
 		GLenum idx_format = [mStripIndicies format];
 		for (UIntP i=0;i<passes;i++) {
-			[mDefaultMaterial setRenderPass:i];
+			[the_material setRenderPass:i];
 			glMultiDrawElements(GL_TRIANGLE_STRIP, mStripCounts, idx_format, (const GLvoid**)mStripLocations, mNumberStrips);
 		}
 		[mFaceVerticies unbind];
 		[mStripIndicies unbind];
 	}
+	[the_material endRendering];
 	[mVertexDataSources makeObjectsPerformSelector:@selector(unbind)];
 	//glPopClientAttrib();
 }

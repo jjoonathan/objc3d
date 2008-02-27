@@ -20,35 +20,53 @@ inline void O3Locateable_UpdateSpaceIfNecessary(O3Locateable* self) {
 }
 
 void O3LocateableBeginRender(O3Locateable* self, O3RenderContext* ctx) {
+	O3Locateable_UpdateSpaceIfNecessary(self);
 	O3Space3* cspace = [ctx->camera space];
 	O3Mat4x4d mat = self->mSpace.MatrixToSpace(cspace);
 	glLoadMatrixd(mat.Data());
 }
 
 /************************************/ #pragma mark Init /************************************/
+- (id)init {
+	O3SuperInitOrDie();
+	mScale.Set(1., 1., 1.);
+	return self;	
+}
+
 - (id)initWithLocation:(O3Translation3)trans rotation:(O3Rotation3)rot scale:(O3Scale3)scale {
 	O3SuperInitOrDie();
 	mSpace.Set(trans, rot, scale);
 	mRotation.Set(rot);
 	mTranslation.Set(trans);
 	mScale.Set(scale);
+	mSpaceNeedsUpdate = YES;
 	return self;
 }
 
 - (O3Locateable*)initWithCoder:(NSCoder*)coder {
 	O3SuperInitOrDie();
-	O3Vec3d rot([coder decodeObjectForKey:@"rotation"]);
-	mRotation.Set(rot.X(), rot.Y(), rot.Z());
- 	mScale.SetValue([coder decodeObjectForKey:@"scale"]);
+	id rot = [coder decodeObjectForKey:@"rotation"];
+	id scale = [coder decodeObjectForKey:@"scale"];
+	id trans = [coder decodeObjectForKey:@"translation"];
+	if (scale) mScale.SetValue(scale); else mScale.Set(1., 1., 1.);
+	if (trans) mTranslation.SetValue(trans);
+	if (rot) {
+		O3Vec3d rvec(rot);
+		mRotation.Set(rvec[0], rvec[1], rvec[2]);
+	}
+	mSpaceNeedsUpdate = YES;
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
 	angle roll, pitch, yaw;
 	mRotation.GetEulerAngles(&roll, &pitch, &yaw);
-	[coder encodeObject:O3Vec3d(roll,pitch,yaw).Value() forKey:@"rotation"];
-	[coder encodeObject:mTranslation.Value() forKey:@"translation"];
-	[coder encodeObject:mScale.Value() forKey:@"scale"];
+	if (O3Equals(roll,0) && O3Equals(pitch,0) && O3Equals(yaw,0))
+		[coder encodeObject:O3Vec3d(roll,pitch,yaw).Value() forKey:@"rotation"];
+	if (mTranslation[0]||mTranslation[1]||mTranslation[2])
+		[coder encodeObject:mTranslation.Value() forKey:@"translation"];
+	if (O3Abs(mScale[0]-1.)+O3Abs(mScale[1]-1.)+O3Abs(mScale[2]-1.) > 1e-5)
+		[coder encodeObject:mScale.Value() forKey:@"scale"];
 }
 
 - (BOOL)isEqual:(O3Locateable*)other {
@@ -148,13 +166,13 @@ void O3LocateableBeginRender(O3Locateable* self, O3RenderContext* ctx) {
 }
 
 - (void)setTranslation:(O3Vec3d)newTrans {
-	mTranslation.set_array(newTrans);
+	mTranslation.SetArray(newTrans);
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }
 
 - (void)setScale:(O3Vec3d)newScale {
-	mScale.set_array(newScale);
+	mScale.SetArray(newScale);
 	mSpaceNeedsUpdate = YES;
 	O3Locateable_UpdateSpaceIfNecessary(self);
 }

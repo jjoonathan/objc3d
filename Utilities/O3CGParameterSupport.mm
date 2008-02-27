@@ -11,6 +11,8 @@
 #import "O3EncodingInterpretation.h"
 #import "O32DStructArray.h"
 #import "O3ScalarStructType.h"
+#import "O3CGProgram.h"
+#import "O3CGParameter.h"
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>
 
@@ -146,7 +148,7 @@ id O3GetCGParameterValue(CGparameter param) {
 		case CG_PARAMETERCLASS_ARRAY: {
 			NSMutableArray* to_return = [NSMutableArray array];
 			int count = cgGetArrayTotalSize(param);
-			for (UIntP i=0; i<count; i++) [to_return addObject:O3GetCGParameterValue(cgGetArrayParameter(param, i))];
+			for (UIntP i=0; i<count; i++) [to_return addObject:[[O3CGParameter alloc] initWithParameter:cgGetArrayParameter(param, i)]];
 			return to_return;
 		}
 		case CG_PARAMETERCLASS_SAMPLER: {
@@ -157,10 +159,12 @@ id O3GetCGParameterValue(CGparameter param) {
 		}
 		case CG_PARAMETERCLASS_STRUCT: {
 			NSMutableDictionary* to_return = [NSMutableDictionary dictionary];
+			[to_return setObject:[NSString stringWithCString:cgGetTypeString(cgGetParameterNamedType(param))] forKey:@"_class"];
 			CGparameter sparam = cgGetFirstStructParameter(param);
 			do {
 				[to_return setObject:O3GetCGParameterValue(sparam) forKey:[NSString stringWithUTF8String:cgGetParameterName(sparam)]];
 			} while (sparam = cgGetNextParameter(sparam)); //? should be cgGetNextStructParameter
+			return to_return;
 		}
 		case CG_PARAMETERCLASS_UNKNOWN:
 		default:
@@ -170,7 +174,7 @@ id O3GetCGParameterValue(CGparameter param) {
 	return nil;
 }
 
-void O3SetCGParameterToValue(CGparameter param, id newValue) {
+void O3SetCGParameterToValue(CGparameter param, id newValue, CGhandle typeContext) {
 	O3AssertArg(cgIsParameter(param), @"Parameter argument of O3CGSetParameterToValue must be a non-null parameter");
 	CGtype param_type = cgGetParameterType(param);
 	CGparameterclass param_class = cgGetParameterClass(param);	
@@ -199,23 +203,41 @@ void O3SetCGParameterToValue(CGparameter param, id newValue) {
 		case CG_PARAMETERCLASS_STRUCT: {
 			NSEnumerator* keyEnum = [newValue keyEnumerator];
 			id key;
+			NSString* user_class = [(NSDictionary*)newValue objectForKey:@"_class"];
+			CGparameter struct_param = param;
+			if (user_class) {
+				if (!typeContext) typeContext = (CGhandle)cgGetParameterEffect(param) ?: (CGhandle)cgGetParameterProgram(param);
+				CGtype stype = cgGetNamedUserType(typeContext, NSStringUTF8String(user_class));
+				struct_param = cgCreateParameter(O3GlobalCGContext(), stype);
+				CGparameter old_connected_param = cgGetConnectedParameter(param);
+				if (old_connected_param) {
+					cgDisconnectParameter(param);
+					cgDestroyParameter(old_connected_param);
+				}
+				cgConnectParameter(struct_param, param);
+			}
 			while (key = [keyEnum nextObject]) {
-				CGparameter sparam = cgGetNamedStructParameter(param, NSStringUTF8String(key));
+				if ([key isEqualToString:@"_class"]) continue;
+				CGparameter sparam = cgGetNamedStructParameter(struct_param, NSStringUTF8String(key));
 				if (!sparam) {
 					O3CLogWarn(@"Parameter \"%s\" not found in struct \"%s\". Ignoring.",NSStringUTF8String(key), cgGetParameterName(param));
 					continue;
 				}
 				O3Assert(cgIsParameter(sparam), @"");
-				O3SetCGParameterToValue(sparam, [newValue objectForKey:key]);
+				O3SetCGParameterToValue(sparam, [newValue objectForKey:key], typeContext);
 			}
 			return;
 		}
 		case CG_PARAMETERCLASS_ARRAY: {
 			int count = cgGetArrayTotalSize(param);
 			UIntP ncount = [newValue count];
+			#ifdef O3DEBUG
+			const char* param_type = cgGetTypeString(cgGetParameterNamedType(param));
+			param_type;
+			#endif
 			if (count!=ncount) cgSetArraySize(param, ncount);
 			for (UIntP i=0; i<ncount; i++) {
-				O3SetCGParameterToValue(cgGetArrayParameter(param, i), [newValue objectAtIndex:i]);
+				O3SetCGParameterToValue(cgGetArrayParameter(param, i), [newValue objectAtIndex:i], typeContext);
 			}
 			return;
 		}

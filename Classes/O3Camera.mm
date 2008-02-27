@@ -21,9 +21,9 @@ inline void O3Camera_init(O3Camera* self) {
 	self->mFarPlane = 100.;
 	self->mFOVY = 90.; //In degrees?!
 	self->mPostProjectionSpaceNeedsUpdate = YES;
-	self->mFlySpeed = 1./3.;
+	self->mFlySpeed = 2./3.;
 	self->mRotRate = .015;
-	self->mBarrelRate = 2.6;
+	self->mBarrelRate = 2.;
 }
 
 inline double O3Camera_aspectRatio(O3Camera* self) {

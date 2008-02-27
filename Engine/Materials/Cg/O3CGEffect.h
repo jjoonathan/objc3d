@@ -46,6 +46,9 @@ using namespace std;
 #endif
 	BOOL mRenderingBegun; ///<Used for debug purposes (YES if we are in the middle of a beginRendering / endRendering block)
 }
+//Convenience
+- (O3CGMaterial*)newMaterial; ///<Returns a new material with the default technique
+
 //Initialization
 + (void)o3init;
 - (id)initWithSource:(NSString*)source;
@@ -68,12 +71,13 @@ using namespace std;
 - (id)parameters;
 - (NSArray*)parameterKeys;
 - (O3CGParameter*)parameterNamed:(NSString*)key;
-- (void)setParameterValue:(NSValue*)value forKey:(NSString*)key;
+- (void)setParameterValue:(id)value forKey:(NSString*)key;
+- (CGtype)typeNamed:(NSString*)tname;
 
 //Use
 - (int)renderPasses;	///<How many passes are required for the receiver's foremost technique
 - (void)beginRendering;	///<Start rendering the receiver's foremost technique
-- (void)setRenderPass:(int)passnum;	///<Sets the OpenGL state tot hat required for pass number \e passnum of the receiver's foremost technique @warn Stomps on OpenGL state, reset anything important afterwards
+- (void)setRenderPass:(int)passnum;	///<Sets the OpenGL state to that required for pass number \e passnum of the receiver's foremost technique @warn Stomps on OpenGL state, reset anything important afterwards
 - (void)endRendering;	///<Stops rendering the receiver's foremost technique
 
 //Memory management

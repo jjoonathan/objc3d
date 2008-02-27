@@ -19,11 +19,7 @@ public: //Constructors
 	O3Scale(const O3Scale& other_scale) : vec(other_scale) {}; ///<Copy constructor
 	O3Scale(real x, real y)  : vec(x, y) {}; ///<Constructs a scale with the scaling factors over the X and Y axis being x and y respectively.
 	O3Scale(real x, real y, real z)  : vec(x, y, z) {}; ///<Constructs a scale with the scaling factors over the X, Y, and Z axis being x, y, and z respectively.
-	
-public: //Mutators
-	O3Scale<TYPE,DIMENSIONS>& Set() {vec::Set(1); return *this;}
-	template<typename TYPE2, int DIM2> O3Scale<TYPE, DIMENSIONS>& Set(const O3Scale<TYPE2,DIM2>& other) {vec::Set(other); return *this;}
-	
+		
 public: //Operators
 	bool operator==(const O3Scale& other_scale) {return vec::operator==(other_scale);};
 	bool operator!=(const O3Scale& other_scale) {return vec::operator!=(other_scale);};

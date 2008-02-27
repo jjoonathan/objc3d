@@ -45,17 +45,17 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 		return nil;
 	}
 	NSString* matTypeName = [coder decodeObjectForKey:@"materialType"];
-	if ([[O3RMGM() valueForKey:matTypeName] isKindOfClass:[O3CGMaterial class]]) {
+	if ([[O3RMGM() valueForKey:matTypeName] conformsToProtocol:@protocol(O3HasCGParameters)]) {
 		[self release];
 		self = [[O3CGMaterial alloc] initWithMaterialTypeNamed:matTypeName];
 	} else {
 		O3SuperInitOrDie();
 		[self setMaterialTypeName:matTypeName];		
 	}
-	NSMutableDictionary* pdict = [coder decodeObjectForKey:@"pdict"];
+	NSMutableDictionary* pdict = [coder decodeObjectForKey:@"params"];
 	NSEnumerator* pdictEnumerator = [pdict keyEnumerator];
 	while (NSString* o = [pdictEnumerator nextObject]) {
-		[self setValue:[pdict objectForKey:o] forKey:o];
+		[self setValue:[pdict objectForKey:o] forParameter:o];
 	}
 	return self;
 }
@@ -129,6 +129,7 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 ///@note if \e param isn't a valid parameter name, \e value is kept in the list of parameters anyways (and ignored). This behavior differs from that of O3CGMaterial.
 ///@note if setValue:forParameter: is called in the middle of a rendering pass, results take effect on the next pass. This behavior differs from that of O3CGMaterial.
 - (void)setValue:(NSObject*)value forParameter:(NSString*)param {
+	value = O3Descriptify(value);
 	if (!mParameters) mParameters = new mParameters_t();
 	mParameters_t::iterator location = mParameters->find(NSStringUTF8String(param));
 	if (location==mParameters->end()) {

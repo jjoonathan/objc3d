@@ -33,7 +33,7 @@ class ConsoleWindowController < OSX::NSObject
   end
 
   def windowWillClose(notification)
-    OSX::NSApplication.sharedApplication.terminate(self)
+    OSX::NSApplication.sharedApplication.terminate(nil)
   end
 
   def windowShouldClose(notification)
@@ -238,6 +238,7 @@ class RubyConsole < OSX::NSObject
 		return false
 	end
     replacement = replacement.to_s.gsub("\r","\n")
+    return true
     if replacement.length > 0 and replacement[-1].chr == "\n"
       @textview.textStorage.appendAttributedString(
         attString(replacement)

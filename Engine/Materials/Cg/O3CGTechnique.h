@@ -16,8 +16,9 @@ using namespace std;
 @class O3KVCHelper;
 @class O3CGAnnotation;
 @class O3CGPass;
+@class O3CGMaterial;
 
-@interface O3CGTechnique : NSObject <O3MultipassDirector> {
+@interface O3CGTechnique : NSObject <O3MultipassDirector, O3HasParameters, O3HasCGParameters> {
 	/*O3WEAK*/ O3CGEffect* mEffect; ///<The effect that contains the technique
 	CGtechnique mTechnique; ///<The actual technique wrapped by the O3CGTechnique
 	O3KVCHelper* mAnnotationKVCHelper;
@@ -38,6 +39,7 @@ using namespace std;
 //Inspectors
 - (BOOL)isValid; ///<YES iff the receiver can be used for rendering (is valid)
 - (NSString*)name;
+- (O3CGEffect*)effect;
 
 //Annotations
 - (id)annotations;
@@ -48,10 +50,17 @@ using namespace std;
 - (id)passes;
 - (NSArray*)passKeys;
 - (O3CGPass*)passNamed:(NSString*)key;
-
 - (void)purgeCaches;
 
+//Parameters
+- (id)parameters;
+- (NSArray*)parameterKeys;
+- (O3CGParameter*)parameterNamed:(NSString*)key;
+- (void)setParameterValue:(id)value forKey:(NSString*)key;
+- (CGtype)typeNamed:(NSString*)tname;
+
 //Use
+- (O3CGMaterial*)newMaterial;
 - (int)renderPasses;	///<How many passes are required for the receiver
 - (void)beginRendering;
 - (void)setRenderPass:(int)passnum;	///<Sets the OpenGL state tot hat required for pass number \e passnum of the receiver @warn Stomps on OpenGL state, reset anything important afterwards

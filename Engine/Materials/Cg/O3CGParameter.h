@@ -23,6 +23,8 @@
  */
 @interface O3CGParameter : NSObject {
 	O3KVCHelper* mAnnotationKVCHelper;
+	CGhandle mContext;
+	NSMutableDictionary* mSubParams; ///<Holds fields of a struct param
 #ifdef __cplusplus
 	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
 #else
@@ -35,8 +37,12 @@
 - (id)initWithType:(CGtype)type;
 - (id)initWithType:(CGtype)type count:(int)array_size;
 - (id)initWithType:(CGtype)type dimensions:(int*)array_size dimensionCount:(unsigned)dim_count;
-- (id)initWithParameter:(CGparameter)param;
+- (id)initWithParameter:(CGparameter)param; ///<Wraps a CGparameter in an O3CGParameter
+- (id)initByDuplicatingParameter:(CGparameter)param; ///<Duplicates the parameter
+
 + (id)parameterWithParameter:(CGparameter)param; ///<Returns an O3CGParameter for a CGParameter that already has an O3CGParameter
+
+- (void)setContext:(CGhandle)type_parent;
 
 //Inspectors
 - (NSString*)name;
@@ -47,6 +53,7 @@
 - (double)doubleValue;
 - (NSString*)stringValue;
 - (CGtype)type;
+- (O3CGParameter*)structField:(NSString*)name;
 
 //Thin wrapper management
 - (BOOL)freeWhenDone; ///<Weather or not the receiver is responsible for destroying mParam when it is done with it

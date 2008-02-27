@@ -251,5 +251,8 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 
 #define O3DefaultO3InitializeImplementation +(void)initialize{O3Init();}
 
+/************************************/ #pragma mark Scripting /************************************/
+O3EXTERN_C id O3Descriptify(id bridge_object); ///<Unwraps an object from the scripting bridge if necessary (don't use unless necessary)
+
 O3EXTERN_C void* O3NSDataDup(NSData* dat);
 O3EXTERN_C void* O3MemDup(const void* mem, UIntP len);
