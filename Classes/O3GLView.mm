@@ -49,7 +49,7 @@ O3Vec2d O3CenterMouse(NSView* view, NSEvent* e) {
 
 inline void updateContextIfNecessary(O3GLView* self) {
 	if (self->mContextNeedsUpdate) {
-		[self setContext:[self generateContext]];
+		[self setGLContext:[self generateGLContext]];
 		self->mContextNeedsUpdate = NO;
 	}
 }
@@ -303,7 +303,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 	return mContext;
 }
 
-- (void)setContext:(NSOpenGLContext*)context {
+- (void)setGLContext:(NSOpenGLContext*)context {
 	if (mContext) [mContext clearDrawable];
 	O3Assign(context, mContext);
 	[context setView:self];
@@ -334,15 +334,15 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 		[self unlockFocus];		
 	}
 	if (mScene) {
-		O3RenderContext ctx;
-		ctx.objCCompatibility = [NSNull class];
-		ctx.view = self;
-		ctx.camera = [self camera];
-		ctx.cameraSpace = [ctx.camera space];
-		ctx.glContext = [self context];		
-		[mScene renderWithContext:&ctx];
-		if (mLogFPS && ctx.elapsedTime>0.)
-			NSLog(@"%@ FPS: %f", self, 1/(ctx.elapsedTime));
+		O3RenderContext rctx;
+		rctx.objCCompatibility = [NSNull class];
+		rctx.view = self;
+		rctx.camera = [self camera];
+		rctx.cameraSpace = [rctx.camera space];
+		rctx.glContext = [self context];	
+		[mScene renderWithContext:&rctx];
+		if (mLogFPS && rctx.elapsedTime>0.)
+			NSLog(@"%@ FPS: %f", self, 1/(rctx.elapsedTime));
 	} else {
 		if (![self needsDisplay]) return;
 		[self lockFocus];
@@ -514,7 +514,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 	mContextNeedsUpdate=YES;
 }
 
-- (NSOpenGLContext*)generateContext {
+- (NSOpenGLContext*)generateGLContext {
 	NSOpenGLPixelFormatAttribute* attrs = (NSOpenGLPixelFormatAttribute*)malloc(100*sizeof(NSOpenGLPixelFormatAttribute));
 	int i=0;
 	
@@ -548,8 +548,8 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 	
 	attrs[i] = (NSOpenGLPixelFormatAttribute)0;
 	NSOpenGLPixelFormat* format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-	NSOpenGLContext* newContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:mContext];
-	[self setContext:newContext];
+	NSOpenGLContext* newContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:O3GLResourceContext()];
+	[self setGLContext:newContext];
 	[format release];
 	free(attrs);
 	return newContext;

@@ -20,20 +20,14 @@ using namespace std;
 @class O3CGAnnotation;
 
 extern const unsigned O3CGActionUndoableWhenPrecompiledError;
-extern CGcontext gCGContext; ///<Access with O3GlobalCGContext();
-	CGcontext O3GlobalCGContext();
 
-@interface O3CGProgram : NSObject <O3HasParameters, O3HasCGParameters, O3MultipassDirector> {
+@interface O3CGProgram : NSObject <O3HasParameters, O3MultipassDirector> {
 	CGprogram mProgram;		///<The CGprogram that is wrapped by the receiver
-	O3KVCHelper* mParameterKVCHelper; ///<Allows KVC to be used properly on parameters
-	O3KVCHelper* mAnnotationKVCHelper; ///<Allows KVC to be used properly on annotations
+	NSMutableDictionary* mParameters;
+	NSMutableDictionary* mAnnotations;
 #ifdef __cplusplus
-	map<string, O3CGParameter*>* mParameters; ///<All the receiver's parameters
-	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
 	vector<O3CGAutoSetParameter>* mAutoSetParameters;
 #else
-	void* mParameters;
-	void* mAnnotations;
 	void* mAutoSetParameters;
 #endif
 	#ifdef O3DEBUG
@@ -46,15 +40,16 @@ extern CGcontext gCGContext; ///<Access with O3GlobalCGContext();
 - (id)initWithPrecompiledData:(NSData*)data entryFunction:(NSString*)entryPoint profile:(CGprofile)profile;
 
 //Annotations
-- (id)annotations;
-- (NSArray*)annotationKeys;
-- (O3CGAnnotation*)annotationNamed:(NSString*)key;
+- (NSArray*)annotationNames;
+- (O3CGAnnotation*)annotation:(NSString*)key;
 
 //Parameters
-- (id)parameters;
-- (NSArray*)parameterKeys;
-- (O3CGParameter*)parameterNamed:(NSString*)key;
-- (void)setParameterValue:(NSValue*)value forKey:(NSString*)key;
+- (BOOL)paramsAreCGParams;
+- (NSArray*)paramNames;
+- (NSDictionary*)paramValues;
+- (id)valueForParam:(NSString*)pname;
+- (void)setValue:(id)val forParam:(NSString*)pname;
+- (O3CGParameter*)param:(NSString*)pname;
 
 //Profile
 - (CGprofile)profile;

@@ -100,8 +100,6 @@
 		FC2C1C420C125F530084A599 /* O3CGPass.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847A90BDFAB3E00A8FD75 /* O3CGPass.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C430C125F540084A599 /* O3CGParameter.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847A80BDFAB3E00A8FD75 /* O3CGParameter.mm */; };
 		FC2C1C440C125F540084A599 /* O3CGParameter.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847A70BDFAB3E00A8FD75 /* O3CGParameter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C450C125F550084A599 /* O3CGMaterial.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847A60BDFAB3E00A8FD75 /* O3CGMaterial.mm */; };
-		FC2C1C460C125F560084A599 /* O3CGMaterial.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847A50BDFAB3E00A8FD75 /* O3CGMaterial.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C470C125F560084A599 /* O3CGEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCE847A40BDFAB3E00A8FD75 /* O3CGEffect.mm */; };
 		FC2C1C480C125F570084A599 /* O3CGEffect.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847A30BDFAB3E00A8FD75 /* O3CGEffect.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C490C125F570084A599 /* O3CGAutoSetParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = FCE847A20BDFAB3E00A8FD75 /* O3CGAutoSetParameters.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -216,6 +214,12 @@
 		FC7CA19C0D41CC6300F6B849 /* tests.rb in Resources */ = {isa = PBXBuildFile; fileRef = FC7CA19B0D41CC6300F6B849 /* tests.rb */; };
 		FC8FD4890D727D8300A906B3 /* NSArray+O3KVC.h in Headers */ = {isa = PBXBuildFile; fileRef = FC8FD4870D727D8300A906B3 /* NSArray+O3KVC.h */; };
 		FC8FD48A0D727D8300A906B3 /* NSArray+O3KVC.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC8FD4880D727D8300A906B3 /* NSArray+O3KVC.mm */; };
+		FC97C0220D7520370060AFED /* O3Optimization.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC97C0210D7520370060AFED /* O3Optimization.mm */; };
+		FC97C0240D7521BD0060AFED /* O3Optimization.h in Headers */ = {isa = PBXBuildFile; fileRef = FC97C0230D7521BD0060AFED /* O3Optimization.h */; };
+		FC9FCAAB0D870C72001EFBD9 /* NSData+zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FC9FCAA90D870C72001EFBD9 /* NSData+zlib.h */; };
+		FC9FCAAC0D870C73001EFBD9 /* NSData+zlib.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC9FCAAA0D870C72001EFBD9 /* NSData+zlib.mm */; };
+		FC9FCAF70D885908001EFBD9 /* O3Parameter.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC9FCAF50D885908001EFBD9 /* O3Parameter.mm */; };
+		FC9FCAF80D885908001EFBD9 /* O3Parameter.h in Headers */ = {isa = PBXBuildFile; fileRef = FC9FCAF60D885908001EFBD9 /* O3Parameter.h */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
 		FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB959A80D2DCC650083B948 /* ApplicationServices.framework */; };
@@ -569,6 +573,12 @@
 		FC95449F0B629EC7009551D2 /* O3TestPrimitiveShadows.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = O3TestPrimitiveShadows.mm; path = Tests/Runables/O3TestPrimitiveShadows.mm; sourceTree = SOURCE_ROOT; };
 		FC9544A50B62A473009551D2 /* test_terr.verts */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_terr.verts; path = Media/test_terr.verts; sourceTree = SOURCE_ROOT; };
 		FC9680750BFD50A400D7508F /* O3ArchiveFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3ArchiveFormat.h; path = Utilities/Archivers/O3ArchiveFormat.h; sourceTree = SOURCE_ROOT; };
+		FC97C0210D7520370060AFED /* O3Optimization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Optimization.mm; sourceTree = "<group>"; };
+		FC97C0230D7521BD0060AFED /* O3Optimization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Optimization.h; sourceTree = "<group>"; };
+		FC9FCAA90D870C72001EFBD9 /* NSData+zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+zlib.h"; sourceTree = "<group>"; };
+		FC9FCAAA0D870C72001EFBD9 /* NSData+zlib.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+zlib.mm"; sourceTree = "<group>"; };
+		FC9FCAF50D885908001EFBD9 /* O3Parameter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3Parameter.mm; path = ../../../.Trash/O3Parameter.mm; sourceTree = SOURCE_ROOT; };
+		FC9FCAF60D885908001EFBD9 /* O3Parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Parameter.h; path = ../../../.Trash/O3Parameter.h; sourceTree = SOURCE_ROOT; };
 		FCA01CCA0B223F250087DA08 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		FCA35A2F0AA2812D0055819F /* O3Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Vector.h; path = Math/Vector/O3Vector.h; sourceTree = SOURCE_ROOT; };
 		FCA8BA530D5295BF004AE414 /* libstrip.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libstrip.xcodeproj; path = Other/libstrip.xcodeproj; sourceTree = "<group>"; };
@@ -621,8 +631,6 @@
 		FCE847A20BDFAB3E00A8FD75 /* O3CGAutoSetParameters.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3CGAutoSetParameters.h; path = Engine/Materials/Cg/O3CGAutoSetParameters.h; sourceTree = SOURCE_ROOT; };
 		FCE847A30BDFAB3E00A8FD75 /* O3CGEffect.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3CGEffect.h; path = Engine/Materials/Cg/O3CGEffect.h; sourceTree = SOURCE_ROOT; };
 		FCE847A40BDFAB3E00A8FD75 /* O3CGEffect.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = O3CGEffect.mm; path = Engine/Materials/Cg/O3CGEffect.mm; sourceTree = SOURCE_ROOT; };
-		FCE847A50BDFAB3E00A8FD75 /* O3CGMaterial.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3CGMaterial.h; path = Engine/Materials/Cg/O3CGMaterial.h; sourceTree = SOURCE_ROOT; };
-		FCE847A60BDFAB3E00A8FD75 /* O3CGMaterial.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = O3CGMaterial.mm; path = Engine/Materials/Cg/O3CGMaterial.mm; sourceTree = SOURCE_ROOT; };
 		FCE847A70BDFAB3E00A8FD75 /* O3CGParameter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3CGParameter.h; path = Engine/Materials/Cg/O3CGParameter.h; sourceTree = SOURCE_ROOT; };
 		FCE847A80BDFAB3E00A8FD75 /* O3CGParameter.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = O3CGParameter.mm; path = Engine/Materials/Cg/O3CGParameter.mm; sourceTree = SOURCE_ROOT; };
 		FCE847A90BDFAB3E00A8FD75 /* O3CGPass.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3CGPass.h; path = Engine/Materials/Cg/O3CGPass.h; sourceTree = SOURCE_ROOT; };
@@ -894,6 +902,10 @@
 				FC7EA1AB0BDBF54B00710E19 /* ObjCEncoding.h */,
 				FC8FD4870D727D8300A906B3 /* NSArray+O3KVC.h */,
 				FC8FD4880D727D8300A906B3 /* NSArray+O3KVC.mm */,
+				FC97C0230D7521BD0060AFED /* O3Optimization.h */,
+				FC97C0210D7520370060AFED /* O3Optimization.mm */,
+				FC9FCAA90D870C72001EFBD9 /* NSData+zlib.h */,
+				FC9FCAAA0D870C72001EFBD9 /* NSData+zlib.mm */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1289,6 +1301,8 @@
 			children = (
 				FCE847AF0BDFAB3E00A8FD75 /* O3Material.h */,
 				FCE847B00BDFAB3E00A8FD75 /* O3Material.mm */,
+				FC9FCAF60D885908001EFBD9 /* O3Parameter.h */,
+				FC9FCAF50D885908001EFBD9 /* O3Parameter.mm */,
 				FCE8479D0BDFAB3E00A8FD75 /* Cg */,
 				FCE847B10BDFAB3E00A8FD75 /* Textures */,
 			);
@@ -1305,8 +1319,6 @@
 				FCE847A20BDFAB3E00A8FD75 /* O3CGAutoSetParameters.h */,
 				FCE847A30BDFAB3E00A8FD75 /* O3CGEffect.h */,
 				FCE847A40BDFAB3E00A8FD75 /* O3CGEffect.mm */,
-				FCE847A50BDFAB3E00A8FD75 /* O3CGMaterial.h */,
-				FCE847A60BDFAB3E00A8FD75 /* O3CGMaterial.mm */,
 				FCE847A70BDFAB3E00A8FD75 /* O3CGParameter.h */,
 				FCE847A80BDFAB3E00A8FD75 /* O3CGParameter.mm */,
 				FCE847A90BDFAB3E00A8FD75 /* O3CGPass.h */,
@@ -1393,7 +1405,6 @@
 				FC2C1C400C125F510084A599 /* O3CGProgram.h in Headers */,
 				FC2C1C420C125F530084A599 /* O3CGPass.h in Headers */,
 				FC2C1C440C125F540084A599 /* O3CGParameter.h in Headers */,
-				FC2C1C460C125F560084A599 /* O3CGMaterial.h in Headers */,
 				FC2C1C480C125F570084A599 /* O3CGEffect.h in Headers */,
 				FC2C1C490C125F570084A599 /* O3CGAutoSetParameters.h in Headers */,
 				FC2C1C4B0C125F590084A599 /* O3CGAnnotation.h in Headers */,
@@ -1445,6 +1456,9 @@
 				FC3937FB0D54F2B3007CA922 /* O32DStructArray.h in Headers */,
 				FC39387E0D5574F2007CA922 /* O3MatStructType.h in Headers */,
 				FC8FD4890D727D8300A906B3 /* NSArray+O3KVC.h in Headers */,
+				FC97C0240D7521BD0060AFED /* O3Optimization.h in Headers */,
+				FC9FCAAB0D870C72001EFBD9 /* NSData+zlib.h in Headers */,
+				FC9FCAF80D885908001EFBD9 /* O3Parameter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1761,7 +1775,6 @@
 				FC2C1C3F0C125F510084A599 /* O3CGProgram.mm in Sources */,
 				FC2C1C410C125F520084A599 /* O3CGPass.mm in Sources */,
 				FC2C1C430C125F540084A599 /* O3CGParameter.mm in Sources */,
-				FC2C1C450C125F550084A599 /* O3CGMaterial.mm in Sources */,
 				FC2C1C470C125F560084A599 /* O3CGEffect.mm in Sources */,
 				FC2C1C4A0C125F580084A599 /* O3CGAnnotation.mm in Sources */,
 				FC2C1C4E0C125F5A0084A599 /* NSValueO3CGShaderAdditions.mm in Sources */,
@@ -1802,6 +1815,9 @@
 				FC3937FC0D54F2B3007CA922 /* O32DStructArray.mm in Sources */,
 				FC39387F0D5574F2007CA922 /* O3MatStructType.mm in Sources */,
 				FC8FD48A0D727D8300A906B3 /* NSArray+O3KVC.mm in Sources */,
+				FC97C0220D7520370060AFED /* O3Optimization.mm in Sources */,
+				FC9FCAAC0D870C73001EFBD9 /* NSData+zlib.mm in Sources */,
+				FC9FCAF70D885908001EFBD9 /* O3Parameter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2005,6 +2021,7 @@
 					"-ftime-report",
 					"-fmem-report",
 				);
+				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2046,6 +2063,7 @@
 					"-ftime-report",
 					"-fmem-report",
 				);
+				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2090,6 +2108,7 @@
 					"-ftime-report",
 					"-fmem-report",
 				);
+				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2132,6 +2151,8 @@
 					"-ftime-report",
 					"-fmem-report",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = "-lz";
 				PREBINDING = NO;
 				PRODUCT_NAME = ObjC3D;
 				VERSIONING_SYSTEM = "apple-generic";

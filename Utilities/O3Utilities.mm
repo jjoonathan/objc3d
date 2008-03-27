@@ -10,7 +10,6 @@
 #import "O3ResManager.h"
 #import "O3GPUData.h"
 #import "O3CGEffect.h"
-NSOpenGLContext* gO3DefaultGLContext;
  
 void O3FailAssertt() {
 }
@@ -22,20 +21,48 @@ O3EXTERN_C void O3Break() {
 	NSLog(@"Set a breakpoint on O3Break() for manual breaks. One was just hit.");
 }
 
+CGcontext gO3GlobalCGContext = nil;
+CGcontext O3GlobalCGContext() {
+	O3Init();
+	return gO3GlobalCGContext;
+}
+
+NSOpenGLContext* gO3GLResourceContext = nil;
+NSOpenGLContext* O3GLResourceContext() {
+	O3Init();
+	return gO3GLResourceContext;
+}
+
+void O3CGErrorCallback() {
+	NSLog(@"%s\n", cgGetErrorString(cgGetError()));
+}
+
 O3EXTERN_C void O3Init() {
 	NSAutoreleasePool* p = [[NSAutoreleasePool alloc] init];
 	static int inited = 0;
 	if (inited) return;
 	inited++;
 	
-	gO3DefaultGLContext = [[NSOpenGLContext alloc] initWithFormat:[NSOpenGLView defaultPixelFormat] shareContext:nil];
-	if ([[[NSBundle mainBundle] bundleIdentifier] isEqual:@"org.blenderfoundation.blender"]) {
+	////OpenGL
+	BOOL skip_gl_init = [[[NSBundle mainBundle] bundleIdentifier] isEqual:@"org.blenderfoundation.blender"];
+	gO3GLResourceContext = [[NSOpenGLContext alloc] initWithFormat:[NSOpenGLView defaultPixelFormat] shareContext:nil];
+	if (skip_gl_init) {
 		NSLog(@"**** ObjC3D Dirty Hack Alert ****");
 		NSLog(@"**** All ObjC3D OpenGL calls won't work. ****");
-		NSLog(@"**** Fix this by teaching objc3d to handle multiple contexts. ****");
-	} else {
-		[gO3DefaultGLContext makeCurrentContext];		
+		NSLog(@"**** Blender & ObjC3D don't like to share contexts. ****");
+		O3Destroy(gO3GLResourceContext);
 	}
+	
+	O3BeginGLRes();
+	////CG
+	gO3GlobalCGContext = cgCreateContext();
+	cgGLSetManageTextureParameters(gO3GlobalCGContext, CG_TRUE);
+	cgSetErrorCallback(O3CGErrorCallback);
+	cgGLRegisterStates(gO3GlobalCGContext);
+	cgGLSetOptimalOptions(CG_PROFILE_ARBVP1);
+    cgGLSetOptimalOptions(CG_PROFILE_ARBFP1);
+	
+	////GLEW
 	GLenum glewState = glewInit();
 	if (glewState != GLEW_OK) {
 		NSString* desc = @"an unknown error occured.";
@@ -46,20 +73,68 @@ O3EXTERN_C void O3Init() {
 		}
 		NSLog(@"ObjC3D could not be initialized because GLEW could not be initialized because %@", desc);
 	}
+	O3EndGLRes();
+	
+	////Log4Cocoa
+	[[L4Logger rootLogger] addAppender:[L4ConsoleAppender standardErrWithLayout:[L4Layout simpleLayout]]];
+	[[L4Logger rootLogger] setLevel:[L4Level info]];
+	
+	////Misc
 	[O3VecStructType o3init];
 	[O3ScalarStructType o3init];
 	[O3MatStructType o3init];
 	[O3ResManager o3init];
 	[O3CGEffect o3init];
 	
-	[[L4Logger rootLogger] addAppender:[L4ConsoleAppender standardErrWithLayout:[L4Layout simpleLayout]]];
-	[[L4Logger rootLogger] setLevel:[L4Level info]];
 	[p release];
 }
 
 O3EXTERN_C void O3GLBreak() {
 	glMap1f(GL_ZERO, 0., 0., 0, 0, NULL);
 }
+
+
+#ifdef O3UseCoreGraphics
+#include <OpenGL/CGLCurrent.h>
+static CGLContextObj globalCtx = NULL;
+static CGLContextObj oldCtx = NULL;
+O3EXTERN_C void O3BeginGLRes() {
+	NSOpenGLContext* rc = O3GLResourceContext();
+	if (!rc) {
+		O3CLogWarn(@"No ObjC3D resource context has been created, but one was used.%s", CGLGetCurrentContext()? " Using previously existing context." : "Using no context.");
+		return;
+	}
+	if (!globalCtx) {globalCtx = (CGLContextObj)[rc CGLContextObj];}
+	CGLContextObj thisctx = CGLGetCurrentContext();
+	if (thisctx!=globalCtx) {
+		O3Asrt(!oldCtx);
+		oldCtx = thisctx;
+		CGLSetCurrentContext(globalCtx);
+	}
+}
+
+O3EXTERN_C void O3EndGLRes() {
+	if (oldCtx) {
+		CGLSetCurrentContext(oldCtx);
+		oldCtx = NULL;
+	}
+}
+#else
+static NSOpenGLContext* oldCtx = NULL;
+O3EXTERN_C void O3BeginGLRes() {
+	if ([NSOpenGLContext currentContext]!=O3GLResourceContext()) {
+		O3Asrt(!oldCtx);
+		oldCtx = cctx;
+		[O3GLResourceContext() makeCurrentContext];
+	}
+}
+
+O3EXTERN_C void O3EndGLRes() {
+	if (oldCtx) [oldCtx makeCurrentContext];
+	oldCtx = NULL;
+}
+#endif
+
 
 O3EXTERN_C void* O3NSDataDup(NSData* dat) {
 	if (!dat) return nil;

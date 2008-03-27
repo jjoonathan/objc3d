@@ -10,6 +10,8 @@
 #include "O3Math.h"
 #import "O3StructArray.h"
 #import "O3ScalarStructType.h"
+class O3NonlinearWriter;
+class O3BufferedReader;
 
 #define O3Vec_TT	template <typename TYPE, int NUMBER> 
 #define O3Vec_T	O3Vec<TYPE, NUMBER>
@@ -142,6 +144,8 @@ public: //Accessors
 	O3StructArray* Value() const {return [[[O3StructArray alloc] initWithCopiedBytes:this type:O3ScalarStructTypeOf(TYPE) length:NUMBER*sizeof(TYPE)] autorelease];}
 	
 public: //Interface
+	void WriteTo(O3NonlinearWriter* w);
+	O3Vec_T& SetFromReader(O3BufferedReader* br, UIntP len);
 	std::string Description() const; ///<Returns a string description of the object. The caller is responsible for free()ing the returned char*.
 };
 

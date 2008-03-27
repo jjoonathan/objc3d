@@ -15,8 +15,6 @@
 //#define O3CGPARAMETER_FILL_ANNO_CACHE_AT_ONCE
 typedef map<string, O3CGAnnotation*> AnnotationMap;
 
-extern CGcontext gCGContext;
-
 @implementation O3CGParameter
 
 + (void)initialize {
@@ -31,35 +29,35 @@ extern CGcontext gCGContext;
 }
 
 - (void)dealloc {
-	O3DestroyCppMap(AnnotationMap, mAnnotations);
+	O3Destroy(mSubParams);
+	O3Destroy(mAnnotations);
 	if (mParam) O3CGParameterUnbindValue(self);
-	[mSubParams release];
 	if (mFreeParamWhenDone) cgDestroyParameter(mParam);
 	O3SuperDealloc();
 }
 
 - (id)initWithType:(CGtype)type {
 	O3SuperInitOrDie();
-	mParam = cgCreateParameter(gCGContext, type);
+	mParam = cgCreateParameter(O3GlobalCGContext(), type);
 	mFreeParamWhenDone = YES;
 	return self;
 }
 
 - (id)initWithType:(CGtype)type count:(int)array_size {
 	O3SuperInitOrDie();
-	mParam = cgCreateParameterArray(gCGContext, type, array_size);
+	mParam = cgCreateParameterArray(O3GlobalCGContext(), type, array_size);
 	mFreeParamWhenDone = YES;
 	return self;
 }
 
 - (id)initWithType:(CGtype)type dimensions:(int*)array_size dimensionCount:(unsigned)dim_count {
 	O3SuperInitOrDie();
-	mParam = cgCreateParameterMultiDimArray(gCGContext, type, dim_count, array_size);
+	mParam = cgCreateParameterMultiDimArray(O3GlobalCGContext(), type, dim_count, array_size);
 	mFreeParamWhenDone = YES;
 	return self;
 }
 
-- (id)initWithParameter:(CGparameter)param {
+- (id)initWithParam:(CGparameter)param {
 	if (!param) {
 		[self release];
 		return nil;
@@ -70,7 +68,7 @@ extern CGcontext gCGContext;
 	return self;
 }
 
-- (id)initByDuplicatingParameter:(CGparameter)param {
+- (id)initWithTypeFromParam:(CGparameter)param {
 	O3SuperInitOrDie();
 	CGtype otype = cgGetParameterNamedType(param);
 	if (otype==CG_ARRAY) {
@@ -86,12 +84,14 @@ extern CGcontext gCGContext;
 	} else {
 		self = [self initWithType:otype];
 	}
-	[self setContext:((CGhandle)cgGetParameterEffect(param) ?: (CGhandle)cgGetParameterProgram(param))];
 	return self;
 }
 
-+ (id)parameterWithParameter:(CGparameter)param {
-	return [[[self alloc] initWithParameter:param] autorelease];	
+- (id)initByCopying:(O3CGParameter*)other {
+	if (![self initWithTypeFromParam:[other rawParameter]]) return nil;
+	O3Assign([other name], mName);
+	[self setValue:[other value]];
+	return self;
 }
 
 /************************************/ #pragma mark Mutators /************************************/
@@ -153,11 +153,7 @@ extern CGcontext gCGContext;
 }
 
 - (void)setValue:(id)newValue {
-	O3SetCGParameterToValue(mParam, newValue, mContext);
-}
-
-- (void)setContext:(CGhandle)type_parent {
-	mContext = type_parent;
+	O3SetCGParameterToValue(mParam, newValue, O3GlobalCGContext());
 }
 
 /************************************/ #pragma mark Thin Wrapper Management /************************************/
@@ -171,7 +167,7 @@ extern CGcontext gCGContext;
 
 /************************************/ #pragma mark Inspectors /************************************/
 - (NSString*)name {
-	return [NSString stringWithCString:cgGetParameterName(mParam)];
+	return mName ?: [NSString stringWithCString:cgGetParameterName(mParam)];
 }
 
 ///@warn Does not turn off freeWhenDone if it is on, you must do that manually if you want to customize the behavior.
@@ -213,7 +209,7 @@ extern CGcontext gCGContext;
 	O3CGParameter* cval = [mSubParams objectForKey:name];
 	if (cval) return cval;
 	CGparameter member = cgGetNamedStructParameter(mParam, NSStringUTF8String(name));
-	cval = [[O3CGParameter alloc] initWithParameter:member];
+	cval = [[O3CGParameter alloc] initWithParam:member];
 	if (!mSubParams) mSubParams = [[[NSMutableDictionary alloc] init] autorelease];
 	if (cval) [mSubParams setObject:cval forKey:name];
 	return cval;
@@ -224,29 +220,7 @@ extern CGcontext gCGContext;
 }
 
 /************************************/ #pragma mark Annotations /************************************/
-AnnotationMap* mAnnotationsP(O3CGParameter* self) {
-	if (self->mAnnotations) return self->mAnnotations;
-	self->mAnnotations = new AnnotationMap();
-	#ifdef O3CGPARAMETER_FILL_ANNO_CACHE_AT_ONCE
-	CGannotation anno = cgGetFirstParameterAnnotation(self->mParam);
-	do {
-		string name = cgGetAnnotationName(anno);
-		O3CGAnnotation* newAnno = [[O3CGAnnotation alloc] initWithAnnotation:anno];
-		(*self->mAnnotations)[name] = newAnno;
-	} while (anno = cgGetNextAnnotation(anno));
-	#endif
-	return self->mAnnotations;
-}
-
-- (id)annotations {
-	if (!mAnnotationKVCHelper) mAnnotationKVCHelper = [[O3KVCHelper alloc] initWithTarget:self
-                                                                        valueForKeyMethod:@selector(annotationNamed:)
-                                                                     setValueForKeyMethod:nil
-                                                                           listKeysMethod:@selector(annotationKeys)];
-	return mAnnotationKVCHelper;
-}
-
-- (NSArray*)annotationKeys {
+- (NSArray*)annotationNames {
 	NSMutableArray* to_return = [NSMutableArray array];
 	CGannotation anno = cgGetFirstParameterAnnotation(mParam);
 	do {
@@ -256,21 +230,19 @@ AnnotationMap* mAnnotationsP(O3CGParameter* self) {
 }
 
 - (O3CGAnnotation*)annotationNamed:(NSString*)key {
-	AnnotationMap* annos = mAnnotationsP(self);
-	string name = NSStringUTF8String(key);
-	AnnotationMap::iterator anno_loc = annos->find(name);
-	O3CGAnnotation* to_return = anno_loc->second;
-	if (anno_loc==annos->end()) {
-		CGannotation anno = cgGetNamedParameterAnnotation(mParam, name.c_str());
-		if (!anno) return nil;
-		(*annos)[name] = to_return = [[O3CGAnnotation alloc] initWithAnnotation:anno];
-	}
-	return to_return;
+	O3CGAnnotation* an = [mAnnotations objectForKey:key];
+	if (an) return an;
+	if (!mAnnotations) mAnnotations = [[NSMutableDictionary alloc] init];
+	CGannotation anno = cgGetNamedParameterAnnotation(mParam, [key UTF8String]);
+	if (!anno) return nil;
+	an = [[O3CGAnnotation alloc] initWithAnnotation:anno];
+	[mAnnotations setObject:an forKey:key];
+	return [an autorelease];
 }
 
 ///@note To get Cg acceleration, \e binding and \e keyPath must be @"value" (it is best but not necessary that the constant string is used) and options must be null. Otherwise plain Objective C bindings are used.
 ///@note \eto is the destination and \e from is the place the value is gotten from. The ordering is to maintain consistency with KVB (PLS).
-O3EXTERN_C void O3CGParameterBindValue_to_(O3CGParameter* to, O3CGParameter* from) {
+O3EXTERN_C void O3CGParameterBindValueFrom_to_(O3CGParameter* from, O3CGParameter* to) {
 	#ifdef O3DEBUG
 	static Class O3CGParameter_class = nil;
 		if (!O3CGParameter_class) O3CGParameter_class = [O3CGParameter class];

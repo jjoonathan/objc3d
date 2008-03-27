@@ -30,13 +30,14 @@ public:
 	NSDictionary* mCT; ///<@note Not retained
 	
 private: //Fast malloc memory
-	static const int mBlockSize = 4096; //One page
+	static const int mBlockSize = 4096;
 	std::vector<void*> mBuffers; //Buffers to be freed
 	std::vector<NSObject*> mToRelease; //Objects to be released
 	UInt8* mCurrentPos;
 	UIntP mBytesLeft;
 	UIntP mLastAllocationSize; //The size of the last allocation via AllocBytes
 	void* mLastAllocation; //Last allocation via AllocBytes
+	void* mLastAllocationBlock;
 
 	UInt8* AllocBytes(UIntP bytes);
 	void   RelinquishBytes(UIntP bytes);
@@ -64,12 +65,13 @@ public:
 	UIntP WriteCCStringAtPlaceholder(NSString* str, UIntP p, O3CCSTableType tabletype = O3CCSStringTable);
 	UIntP WriteDataAtPlaceholder(NSData* dat, UIntP p);
 	UIntP WriteBytesAtPlaceholder(const void* bytes, UIntP len, UIntP p, BOOL freeWhenDone = NO);
+	UIntP WriteChildrenHeaderAtPlaceholder(std::vector<O3ChildEnt>* children, UIntP p, NSDictionary* kt=nil, NSDictionary* ct=nil);
 	UIntP WriteTypedObjectHeaderAtPlaceholder(NSString* className, UIntP size, enum O3PkgType type, UIntP placeholder);
 	UIntP WriteKVHeaderAtPlaceholder(NSString* key, NSString* className, UIntP size, enum O3PkgType type, UIntP placeholder);
 	UIntP WriteStringArrayAtPlaceholder(const std::vector<std::string>& strings, UIntP placeholder);
 	
-	UIntP BytesWrittenInPlaceholderRange(UIntP start, UIntP length);
-	UIntP BytesWrittenAfterPlaceholder(UIntP p) {return BytesWrittenInPlaceholderRange(p, LastPlaceholder()-p);}
+	UIntP BytesWrittenInPlaceholderRange(IntP start, IntP length);
+	UIntP BytesWrittenAfterPlaceholder(IntP p) {return BytesWrittenInPlaceholderRange(p+1, LastPlaceholder()-p);}
 	IntP LastPlaceholder(); //-1 if no placeholders
 	
 	NSData* Data();

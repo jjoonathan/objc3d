@@ -6,21 +6,57 @@
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #ifdef __cplusplus
+#import "O3CGParameter.h"
 #include <map>
 #include <string>
 using namespace std;
 #endif
-@class O3KVCHelper;
+@class O3KVCHelper, O3Material, O3Parameter;
 
 struct O3MaterialParameterPair {
-	NSObject* target;	//Has -setValue:
-	NSObject* value;	//Has -value
 #ifdef __cplusplus
-	O3MaterialParameterPair() { ///<Default constructor for use in the map
-		target = nil;
-		value = nil;
+	O3MaterialParameterPair(): value(nil), cg_value(nil), cg_to(nil), paramName(nil) {} ///<Default constructor for use in the map
+	~O3MaterialParameterPair() {
+		O3Destroy(value);
+		O3Destroy(cg_value);
+		O3Destroy(cg_to);
+		O3Destroy(paramName);
 	}
+	id Value() {return value ?: [cg_value value];}
+	O3Parameter* Param(O3Material* pt);
+	void SetValue(id nval) {
+		if (cg_to) {
+			if (!cg_value) cg_value = [[O3CGParameter alloc] initByCopying:cg_to];
+			[cg_value setValue:nval];
+		} else
+			O3Assign(nval, value);
+	}
+	NSString* Name() {return paramName;}
+	void SetName(NSString* nn) {O3Assign(nn, paramName);}
+	void Set(O3Material* parentMaterial);
+	void SetTarget(NSObject<O3MultipassDirector, O3HasParameters>* matType) {
+		if (cg_value) {
+			O3Assign([cg_value value], value);
+			O3Destroy(cg_value);
+		}
+		if ([matType paramsAreCGParams]) {
+			O3CGParameter* pTo = (O3CGParameter*)[matType param:paramName];
+			O3CGParameter* newP = [[O3CGParameter alloc] initByCopying:pTo];
+			if (value) [newP setValue:value];
+			O3Destroy(value);
+			O3Assign(pTo, cg_to);
+			O3Assign(newP, cg_value);
+			[newP release];
+		} else {
+			O3Destroy(cg_to);
+		}
+	}
+	private:
 #endif
+	O3CGParameter* cg_value;
+	id value;	//The value to send to -setValue, but only if cg_value doesn't provide a value for cg_to.
+	O3CGParameter* cg_to;
+	NSString* paramName;
 };
 
 /**
@@ -30,10 +66,9 @@ struct O3MaterialParameterPair {
  * @warn O3Material doesn't clean up after itself for efficiency reasons. -endRendering is just for compatibility.
  * @bug Possible bug: doesn't retain target parameters
  */
-@interface O3Material : NSObject <O3MultipassDirector> {
+@interface O3Material : NSObject <O3MultipassDirector, O3HasParameters> {
 	NSString* mMaterialTypeName; ///<The name of the material type if a name should be used
 	NSObject<O3MultipassDirector, O3HasParameters>* mMaterialType;	///<The type of material (the shader that implements this type of material). @warning This does not get archived.
-	O3KVCHelper* mParameterKVCHelper;
 #ifdef __cplusplus
 	map<string, O3MaterialParameterPair>* mParameters;
 #else
@@ -50,11 +85,12 @@ struct O3MaterialParameterPair {
 - (NSObject<O3MultipassDirector, O3HasParameters>*)materialType;
 - (void)setMaterialType:(NSObject<O3MultipassDirector, O3HasParameters>*)materialType;
 
-//mParameters
-- (id)parameters;
-- (NSArray*)parameterNames;
-- (void)setValue:(NSObject*)value forParameter:(NSString*)param;
-- (NSObject*)valueForParameter:(NSString*)param;
+//O3HasParameters
+- (NSDictionary*)paramValues;
+- (id)valueForParam:(NSString*)pname;
+- (void)setValue:(id)val forParam:(NSString*)pname;
+- (O3Parameter*)param:(NSString*)pname;
+- (NSArray*)paramNames;
 
 //O3MultipassDirector
 - (int)renderPasses; ///<How many passes the receiver takes to be rendered properly

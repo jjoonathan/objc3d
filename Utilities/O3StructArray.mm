@@ -11,6 +11,8 @@
 #import "O3CompoundStructType.h"
 #import "O3VertexFormats.h"
 #import "O3ScalarStructType.h"
+#import "O3NonlinearWriter.h"
+#import "O32DStructArray.h"
 
 @implementation O3StructArray
 O3DefaultO3InitializeImplementation
@@ -701,6 +703,154 @@ static UIntP* mergeSortH(const merge_sort_info_t* info, UIntP loc, UIntP len) {
 	return b;
 }
 
+O3EXTERN_C void O3StructArrayWrite(O3StructType* type, const void* bytes, UIntP rows, UIntP cols, O3NonlinearWriter* writeTo) {
+	O3Asrt(writeTo);
+	UInt8 infoByte = 0;
+	UIntP ibPlaceholder = writeTo->ReservePlaceholder();
+	UIntP count = (cols?:1)*(rows?:1);
+	
+	if (rows<8) infoByte += rows<<2;
+	else {
+		infoByte += 7<<2;
+		writeTo->WriteCIntAtPlaceholder(rows,writeTo->ReservePlaceholder());
+	}
+	
+	if (cols<8) infoByte += cols<<5;
+	else {
+		infoByte += 7<<5;
+		writeTo->WriteCIntAtPlaceholder(rows,writeTo->ReservePlaceholder());
+	}
+	
+	if (type==O3FloatType()) {
+		infoByte+=(int)O3PkgFloatValue;
+		O3Asrt(sizeof(float)==4);
+		float* farr = (float*)O3MemDup(bytes, 4*count);
+		for (UIntP i=0; i<count; i++) farr[i] = O3ByteswapHostToLittle(farr[i]);
+		writeTo->WriteBytesAtPlaceholder(farr, 4*count, writeTo->ReservePlaceholder(), YES);
+	} else if (type==O3DoubleType()) {
+		infoByte+=(int)O3PkgDoubleValue;
+		O3Asrt(sizeof(double)==8);
+		double* farr = (double*)O3MemDup(bytes, 8*count);
+		for (UIntP i=0; i<count; i++) farr[i] = O3ByteswapHostToLittle(farr[i]);
+		writeTo->WriteBytesAtPlaceholder(farr, 8*count, writeTo->ReservePlaceholder(), YES);
+	} else {
+		infoByte+=(int)O3PkgTypeNamedValue;
+		writeTo->WriteCCStringAtPlaceholder([type name], writeTo->ReservePlaceholder());
+		NSData* d = [type portabalizeStructsAt:bytes count:count stride:0];
+		writeTo->WriteBytesAtPlaceholder([d bytes], [d length], writeTo->ReservePlaceholder(), NO);
+	}
+	writeTo->WriteByteAtPlaceholder(infoByte, ibPlaceholder);
+}
+
+///@param len the length of the typename+data
+O3EXTERN_C O3StructArray* O3StructArrayRead(O3BufferedReader* readFrom, UIntP len) {
+	O3Asrt(readFrom);
+	UIntP o1 = readFrom->Offset();
+	UInt8 ib = readFrom->ReadByte();
+	O3PkgValueType t = (O3PkgValueType)(ib&0x3);
+	UIntP rows = ib&(7<<2); if (rows==7) rows = readFrom->ReadCIntAsInt32();
+	UIntP cols = ib&(7<<5); if (cols==7) cols = readFrom->ReadCIntAsInt32();
+	UIntP count = (rows?:1)*(cols?:1);
+	switch (t) {
+		case O3PkgFloatValue: {
+			O3Asrt(sizeof(float)==4);
+			float* arr = (float*)(readFrom->ReadBytes(count*4));
+			for (UIntP i=0; i<count; i++) arr[i] = O3ByteswapLittleToHost(arr[i]);
+			if (!rows || !cols) return [[O3StructArray alloc] initWithBytes:arr type:O3FloatType() length:count*4];
+			return [[[O32DStructArray alloc] initWithBytes:arr type:O3FloatType() length:count*4] rows:rows cols:cols rowMajor:YES];
+		}
+		case O3PkgDoubleValue: {
+			O3Asrt(sizeof(double)==8);
+			double* arr = (double*)(readFrom->ReadBytes(count*8));
+			for (UIntP i=0; i<count; i++) arr[i] = O3ByteswapLittleToHost(arr[i]);
+			if (!rows || !cols) return [[O3StructArray alloc] initWithBytes:arr type:O3DoubleType() length:count*8];
+			return [[[O32DStructArray alloc] initWithBytes:arr type:O3DoubleType() length:count*8] rows:rows cols:cols rowMajor:YES];
+		}
+		case O3PkgTypeNamedValue:
+			NSString* tname = readFrom->ReadCCString();
+			UIntP o2 = readFrom->Offset();
+			len -= (o2-o1);
+			return [[O3StructArray alloc] initWithType:O3StructTypeForName(tname) portableData:[NSData dataWithBytesNoCopy:readFrom->ReadBytes(len) length:len freeWhenDone:YES]];
+	}
+	O3Assert(false, @"Unknown struct array type 2. Undefined in this version of the archive format.");
+	return nil;
+}
+
+///@param len the length of the typename+data
+O3EXTERN_C float* O3StructArrayReadFloats(O3BufferedReader* readFrom, UIntP len, UIntP* o_rows, UIntP* o_cols) {
+	O3Asrt(readFrom&&o_rows&&o_cols);
+	UIntP o1 = readFrom->Offset();
+	UInt8 ib = readFrom->ReadByte();
+	O3PkgValueType t = (O3PkgValueType)(ib&0x3);
+	UIntP rows = ib&(7<<2); if (rows==7) rows = readFrom->ReadCIntAsInt32(); if (o_rows) *o_rows = rows;
+	UIntP cols = ib&(7<<5); if (cols==7) cols = readFrom->ReadCIntAsInt32(); if (o_cols) *o_cols = cols;
+	UIntP count = (rows?:1)*(cols?:1);
+	switch (t) {
+		case O3PkgFloatValue: {
+			O3Asrt(sizeof(float)==4);
+			float* arr = (float*)(readFrom->ReadBytes(count*4));
+			for (UIntP i=0; i<count; i++) arr[i] = O3ByteswapLittleToHost(arr[i]);
+			return arr;
+		}
+		case O3PkgDoubleValue: {
+			O3Asrt(sizeof(double)==8);
+			double* arr = (double*)(readFrom->ReadBytes(count*8));
+			float* arr2 = (float*)(malloc(4*count));
+			for (UIntP i=0; i<count; i++) arr2[i] = O3ByteswapLittleToHost(arr[i]);
+			free(arr);
+			return arr2;
+		}
+		case O3PkgTypeNamedValue:
+			NSString* tname = readFrom->ReadCCString();
+			O3StructType* t = O3StructTypeForName(tname); O3Asrt(t);
+			UIntP o2 = readFrom->Offset();
+			len -= (o2-o1);
+			O3StructArray* a = [[O3StructArray alloc] initWithType:t portableData:[NSData dataWithBytesNoCopy:readFrom->ReadBytes(len) length:len freeWhenDone:YES]];
+			float* ret = (float*)[a bytesOfType:O3FloatType()];
+			[a release];
+			return ret;
+	}
+	O3Assert(false, @"Unknown struct array type 2. Undefined in this version of the archive format.");
+	return nil;
+}
+
+///@param len the length of the typename+data
+O3EXTERN_C double* O3StructArrayReadDoubles(O3BufferedReader* readFrom, UIntP len, UIntP* o_rows, UIntP* o_cols) {
+	O3Asrt(readFrom&&o_rows&&o_cols);
+	UIntP o1 = readFrom->Offset();
+	UInt8 ib = readFrom->ReadByte();
+	O3PkgValueType t = (O3PkgValueType)(ib&0x3);
+	UIntP rows = ib&(7<<2); if (rows==7) rows = readFrom->ReadCIntAsInt32(); if (o_rows) *o_rows = rows;
+	UIntP cols = ib&(7<<5); if (cols==7) cols = readFrom->ReadCIntAsInt32(); if (o_cols) *o_cols = cols;
+	UIntP count = (rows?:1)*(cols?:1);
+	switch (t) {
+		case O3PkgFloatValue: {
+			O3Asrt(sizeof(float)==4);
+			float* arr = (float*)(readFrom->ReadBytes(count*4));
+			double* arr2 = (double*)(malloc(8*count));
+			for (UIntP i=0; i<count; i++) arr2[i] = O3ByteswapLittleToHost(arr[i]);
+			free(arr);
+			return arr2;
+		}
+		case O3PkgDoubleValue: {
+			O3Asrt(sizeof(double)==8);
+			double* arr = (double*)(readFrom->ReadBytes(count*8));
+			for (UIntP i=0; i<count; i++) arr[i] = O3ByteswapLittleToHost(arr[i]);
+			return arr;
+		}
+		case O3PkgTypeNamedValue:
+			NSString* tname = readFrom->ReadCCString();
+			O3StructType* t = O3StructTypeForName(tname); O3Asrt(t);
+			UIntP o2 = readFrom->Offset();
+			len -= (o2-o1);
+			O3StructArray* a = [[O3StructArray alloc] initWithType:t portableData:[NSData dataWithBytesNoCopy:readFrom->ReadBytes(len) length:len freeWhenDone:YES]];
+			double* ret = (double*)[a bytesOfType:O3DoubleType()];
+			[a release];
+			return ret;
+	}
+	O3Assert(false, @"Unknown struct array type 2. Undefined in this version of the archive format.");
+	return nil;
+}
 @end
 
 @implementation NSArray (O3StructArrayExtensions)

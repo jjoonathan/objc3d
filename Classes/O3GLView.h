@@ -9,11 +9,11 @@
 @class O3ResManager, O3Camera, O3Scene, O3GLViewController;
 
 @interface O3GLView : NSView {
-	NSOpenGLContext* mContext;
 	O3ResManager* mResManager;
 	NSString* mSceneName;
 	O3Scene* mScene;
 	O3Camera* mCamera;
+	NSOpenGLContext* mContext;
 	
 	//Pixel format attribs
 	NSOpenGLPixelFormatAttribute mMultisampleStyle;
@@ -76,7 +76,7 @@
 - (void)setPaused:(BOOL)paused;
 
 //Pixel format attributes
-- (NSOpenGLContext*)generateContext; ///<Generates a context based on the parameters stored in the receiver and transfers textures, etc. This is called if no context exists when one is needed.
+- (NSOpenGLContext*)generateGLContext; ///<Generates a context based on the parameters stored in the receiver and transfers textures, etc. This is called if no context exists when one is needed.
 - (long)colorBits;
 - (void)setColorBits:(long)bits;
 - (BOOL)floatingPointColor;
@@ -127,6 +127,6 @@
 - (void)setPolicyString:(NSString*)abstr;
 
 //Private
-- (void)setContext:(NSOpenGLContext*)context;
+- (void)setGLContext:(NSOpenGLContext*)context;
 
 @end

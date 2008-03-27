@@ -1,4 +1,5 @@
-#include "O3NonlinearWriter.h"
+#import "O3NonlinearWriter.h"
+#import "O3GPUData.h"
 #import <sys/uio.h>
 #ifndef UIO_MAXIOV
 #define UIO_MAXIOV 1024
@@ -23,6 +24,7 @@ UInt8* O3NonlinearWriter::AllocBytes(UIntP bytes) {
 		mBytesLeft = mBlockSize - bytes;
 		mLastAllocationSize = bytes;
 		mLastAllocation = buf;
+		mLastAllocationBlock = buf;
 		return buf;
 	}
 	UInt8* buf = (UInt8*)malloc(bytes); //If all else fails, just use malloc
@@ -31,6 +33,7 @@ UInt8* O3NonlinearWriter::AllocBytes(UIntP bytes) {
 	mBytesLeft = 0;
 	mLastAllocationSize = bytes;
 	mLastAllocation = buf;
+	mLastAllocationBlock = buf;
 	return buf;
 }
 
@@ -103,8 +106,9 @@ UIntP O3NonlinearWriter::WriteCCStringAtPlaceholder(NSString* str, UIntP p, O3CC
 	return len;
 }
 
+///@note dat is retained, but it must not be a mutable data that then changes
 UIntP O3NonlinearWriter::WriteDataAtPlaceholder(NSData* dat, UIntP p) {
-	mToRelease.push_back([dat retain]);
+	mToRelease.push_back([dat copy]);
 	UIntP len = [dat length];
 	WriteBytesAtPlaceholder([dat bytes], len, p);
 	return len;
@@ -113,25 +117,25 @@ UIntP O3NonlinearWriter::WriteDataAtPlaceholder(NSData* dat, UIntP p) {
 ///@warning It is unknown what happens with \e bytes. Likely nothing (the const should be obeyed), but if things happen, make copies. I do not mean the warning about not freeWhenDone-ing AllocBytes().
 UIntP O3NonlinearWriter::WriteBytesAtPlaceholder(const void* bytes, UIntP len, UIntP p, BOOL freeWhenDone) {
 	#ifdef O3DEBUG
-	char* lastbuf = mBuffers.size()?(char*)mBuffers.back():NULL;
+	char* lastbuf = (char*)mLastAllocationBlock;
 	if (freeWhenDone && bytes>lastbuf && bytes<(lastbuf+mBlockSize) && lastbuf) {
 		O3CLogError(@"Do not tell O3NonlinearWriter::WriteBytesAtPlaceholder to freeWhenDone buffers allocated with AllocBytes(), namely %p. They are automatically freed, and malloc errors will ensue with O3DEBUG turned off.", bytes);
 		freeWhenDone=NO;
 	}
 	#endif
+	#undef O3NonlinearWriterCombinationOptimization /*Causes issues with BytesWrittenInPlaceholderRange*/
 	#ifdef O3NonlinearWriterCombinationOptimization
 	UIntP lastChunkIndex = mChunksToWrite.size()-1;
 	if ((lastChunkIndex==p) && ((UInt8*)(mChunksToWrite[lastChunkIndex-1].iov_base)+mChunksToWrite[lastChunkIndex-1].iov_len)==bytes) {
 		mChunksToWrite[lastChunkIndex-1].iov_len += len;
 		mChunksToWrite.pop_back();
 		O3Assert(!freeWhenDone, @"?");
+		return len;
 	} else
 	#endif
-	{
-		if (freeWhenDone) mBuffers.push_back((void*)bytes);
-		mChunksToWrite[p].iov_base = (void*)bytes;
-		mChunksToWrite[p].iov_len  = len;
-	}
+	if (freeWhenDone) mBuffers.push_back((void*)bytes);
+	mChunksToWrite[p].iov_base = (void*)bytes;
+	mChunksToWrite[p].iov_len  = len;
 	return len;
 }
 
@@ -193,8 +197,31 @@ UIntP O3NonlinearWriter::WriteStringArrayAtPlaceholder(const std::vector<std::st
 	return usedBytes;
 }
 
-UIntP O3NonlinearWriter::BytesWrittenInPlaceholderRange(UIntP start, UIntP length) {
-	O3Assert(start+length<=LastPlaceholder(), @"Range for BytesWrittenInPlaceholderRange out of bounds");
+UIntP O3NonlinearWriter::WriteChildrenHeaderAtPlaceholder(std::vector<O3ChildEnt>* children, UIntP p, NSDictionary* kt, NSDictionary* ct) {
+	UIntP size = 0;
+	O3Asrt(children);
+	std::vector<O3ChildEnt>::iterator it=children->begin(),  e=children->end();
+	for (; it!=e; it++) {
+		O3ChildEnt& e = *it;
+		if (e.key) size += O3BytesNeededForCCStringWithTable(e.key, kt);
+		size += O3BytesNeededForTypedObjectHeader(e.len, e.className, ct, nil);
+	}
+	UInt8* b = (UInt8*)malloc(size);
+	UIntP pos=0;
+	it=children->begin();
+	for (; it!=e; it++) {
+		O3ChildEnt& e = *it;
+		if (e.key) pos += O3WriteCCStringWithTableOrIndex(b+pos, e.key, kt, nil);
+		pos += O3WriteTypedObjectHeader(b+pos, e.type, e.len, e.className, ct, nil);
+	}
+	O3Assert(size==pos, @"Header size prediction was incorrect, an overflow or underflow occured while writing!");
+	WriteBytesAtPlaceholder(b, size, p, YES);
+	return pos;
+}
+
+UIntP O3NonlinearWriter::BytesWrittenInPlaceholderRange(IntP start, IntP length) {
+	if (length<0 || start<0) return 0;
+	O3Assert(start+length-1<=LastPlaceholder(), @"Range for BytesWrittenInPlaceholderRange out of bounds");
 	UIntP end = start+length;
 	UIntP accum_len = 0;
 	for (; start<end; start++) accum_len += mChunksToWrite[start].iov_len;
@@ -202,7 +229,7 @@ UIntP O3NonlinearWriter::BytesWrittenInPlaceholderRange(UIntP start, UIntP lengt
 }
 
 IntP O3NonlinearWriter::LastPlaceholder() {
-	return mChunksToWrite.size();
+	return mChunksToWrite.size()-1;
 }
 
 /************************************/ #pragma mark Memory Management /************************************/
@@ -210,6 +237,7 @@ void O3NonlinearWriter::Init() {
 	mCurrentPos = NULL;
 	mBytesLeft = 0;
 	mCT = mKT = mST = nil;
+	mLastAllocationBlock = NULL;
 }
 
 O3NonlinearWriter::O3NonlinearWriter() {
@@ -219,7 +247,11 @@ O3NonlinearWriter::O3NonlinearWriter() {
 O3NonlinearWriter::~O3NonlinearWriter() {
 	UIntP i;
 	for (i=0; i<mBuffers.size(); i++) free(mBuffers[i]);
-	for (i=0; i<mToRelease.size(); i++) [mToRelease[i] release];
+	for (i=0; i<mToRelease.size(); i++) {
+		IMP rb = [mToRelease[i] methodForSelector:@selector(relinquishBytes)];
+		if (rb) rb(mToRelease[i], @selector(relinquishBytes));
+		[mToRelease[i] release];
+	}
 }
 
 /************************************/ #pragma mark  Collection /************************************/

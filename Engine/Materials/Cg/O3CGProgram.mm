@@ -23,36 +23,12 @@ typedef map<string, O3CGParameter*> ParameterMap;
 typedef map<string, O3CGAnnotation*> AnnotationMap;
 
 const unsigned 	O3CGActionUndoableWhenPrecompiledError = 1;
-CGcontext 		gCGContext;
 const char**	gCGDefaultCompilerArguments;
 BOOL gO3ShadersEnabled = YES; ///<Weather or not shaders are enabled. Don't access directly, use [[O3CGProgram class] shadersEnabled]. Does not affect O3Effect or other shading classes. Defaults to YES.
 
 
-void O3CGProgram_cgErrorCallback() {
-	NSLog(@"%s\n", cgGetErrorString(cgGetError()));
-}
-
-
 @implementation O3CGProgram
 O3DefaultO3InitializeImplementation
-inline void initializeP() {
-	static bool shading_initialized = NO; //Make sure we are run once
-	if (shading_initialized) return;
-	shading_initialized = YES;
-	
-	//O3CGProgram_FlushParameterCache(self);
-	gCGContext = cgCreateContext();
-	cgGLSetManageTextureParameters(gCGContext, CG_TRUE);
-	cgSetErrorCallback(O3CGProgram_cgErrorCallback);
-	cgGLRegisterStates(gCGContext);
-	cgGLSetOptimalOptions(CG_PROFILE_ARBVP1);
-    cgGLSetOptimalOptions(CG_PROFILE_ARBFP1);
-}
-
-CGcontext O3GlobalCGContext() {
-	initializeP();
-	return gCGContext;
-}
 
 void O3CGProgram_setAutoSetParameters(O3CGProgram* self) {
 	if (!self->mAutoSetParameters) return;
@@ -72,31 +48,19 @@ void autoDetectAutoSetParametersP(O3CGProgram* self) {
 	}
 }
 
-ParameterMap* mParametersP(O3CGProgram* self) {
+NSMutableDictionary* mParametersP(O3CGProgram* self) {
 	if (self->mParameters) return self->mParameters;
-	self->mParameters = new ParameterMap();
-	#ifdef O3CGPROGRAM_FILL_PARAM_CACHE_AT_ONCE
-	CGparameter parameter = cgGetFirstParameter(self->mProgram);
-	do {
-		string name = cgGetParameterName(parameter);
-		O3CGParameter* newParam = [[O3CGParameter alloc] initWithParameter:parameter];
-		(*self->mParameters)[name] = newParam;
-	} while (parameter = cgGetNextParameter(parameter));
-	#endif
+	NSMutableDictionary* mdct = [[NSMutableDictionary alloc] init];
+	O3Assign(mdct, self->mParameters);
+	[mdct release];
 	return self->mParameters;
 }
 
-AnnotationMap*	mAnnotationsP(O3CGProgram* self) {
+NSMutableDictionary* mAnnotationsP(O3CGProgram* self) {
 	if (self->mAnnotations) return self->mAnnotations;
-	self->mAnnotations = new AnnotationMap();
-	#ifdef O3CGPROGRAM_FILL_ANNO_CACHE_AT_ONCE
-	CGannotation anno = cgGetFirstProgramAnnotation(self->mProgram);
-	do {
-		string name = cgGetAnnotationName(anno);
-		O3CGAnnotation* newAnno = [[O3CGAnnotation alloc] initWithAnnotation:anno];
-		(*self->mAnnotations)[name] = newAnno;
-	} while (anno = cgGetNextAnnotation(anno));
-	#endif
+	NSMutableDictionary* mdct = [[NSMutableDictionary alloc] init];
+	O3Assign(mdct, self->mAnnotations);
+	[mdct release];
 	return self->mAnnotations;
 }
 
@@ -104,13 +68,14 @@ AnnotationMap*	mAnnotationsP(O3CGProgram* self) {
 /************************************/ #pragma mark Initialization /************************************/
 ///Instance initialization
 inline void initP(O3CGProgram* self) {
-	initializeP();
 	self->mAutoSetParameters = new vector<O3CGAutoSetParameter>();
 }
 
 - (void)dealloc {
 	cgDestroyProgram(mProgram);
 	[mUnusedSource release];
+	[mParameters release];
+	[mAnnotations release];
 	[super dealloc];
 }
 
@@ -128,7 +93,7 @@ inline void initP(O3CGProgram* self) {
 		[self release];
 		return nil;
 	}	
-	mProgram = cgCreateProgram(gCGContext, CG_SOURCE, [source UTF8String], profile, NSStringUTF8String(entryPoint), gCGDefaultCompilerArguments);
+	mProgram = cgCreateProgram(O3GlobalCGContext(), CG_SOURCE, [source UTF8String], profile, NSStringUTF8String(entryPoint), gCGDefaultCompilerArguments);
 	autoDetectAutoSetParametersP(self);
 	
 	return self;
@@ -142,7 +107,7 @@ inline void initP(O3CGProgram* self) {
 		[self release];
 		return nil;
 	}
-	mProgram = cgCreateProgram(gCGContext, CG_OBJECT, (char*)[data bytes], profile, (char*)[data bytes], gCGDefaultCompilerArguments);
+	mProgram = cgCreateProgram(O3GlobalCGContext(), CG_OBJECT, (char*)[data bytes], profile, (char*)[data bytes], gCGDefaultCompilerArguments);
 	autoDetectAutoSetParametersP(self);
 	return self;
 }
@@ -229,15 +194,7 @@ inline void initP(O3CGProgram* self) {
 
 
 /************************************/ #pragma mark Annotations /************************************/
-- (id)annotations {
-	if (!mAnnotationKVCHelper) mAnnotationKVCHelper = [[O3KVCHelper alloc] initWithTarget:self
-                                                                        valueForKeyMethod:@selector(annotationNamed:)
-                                                                     setValueForKeyMethod:nil
-                                                                           listKeysMethod:@selector(annotationKeys)];
-	return mAnnotationKVCHelper;
-}
-
-- (NSArray*)annotationKeys {
+- (NSArray*)annotationNames {
 	NSMutableArray* to_return = [NSMutableArray array];
 	CGannotation anno = cgGetFirstProgramAnnotation(mProgram);
 	do {
@@ -246,63 +203,59 @@ inline void initP(O3CGProgram* self) {
 	return to_return;
 }
 
-- (O3CGAnnotation*)annotationNamed:(NSString*)key {
-	AnnotationMap* annos = mAnnotationsP(self);
-	string name = NSStringUTF8String(key);
-	AnnotationMap::iterator anno_loc = annos->find(name);
-	O3CGAnnotation* to_return = anno_loc->second;
-	if (anno_loc==annos->end()) {
-		CGannotation anno = cgGetNamedProgramAnnotation(mProgram, name.c_str());
-		if (!anno) return nil;
-		(*annos)[name] = to_return = [[O3CGAnnotation alloc] initWithAnnotation:anno];
-	}
-	return to_return;
+- (O3CGAnnotation*)annotation:(NSString*)key {
+	O3CGAnnotation* cga = [mAnnotationsP(self) objectForKey:key];
+	if (cga) return cga;
+	cga = [[[O3CGAnnotation alloc] initWithAnnotation:cgGetNamedProgramAnnotation(mProgram, [key UTF8String])] autorelease];
+	[mAnnotationsP(self) setObject:cga forKey:key];
+	return cga;
 }
 
 
 
 /************************************/ #pragma mark Parameters /************************************/
-- (id)parameters {
-	if (!mParameterKVCHelper) mParameterKVCHelper = [[O3KVCHelper alloc] initWithTarget:self
-                                                                      valueForKeyMethod:@selector(parameterNamed:)
-                                                                   setValueForKeyMethod:@selector(setParameterValue:forKey:)
-                                                                         listKeysMethod:@selector(parameterKeys)];
-	return mParameterKVCHelper;	
-}
-
-- (NSArray*)parameterKeys {
-	NSMutableArray* to_return = [NSMutableArray array];
-	CGparameter param = cgGetFirstParameter(mProgram, CG_GLOBAL);
-	do {
-		[to_return addObject:[NSString stringWithUTF8String:cgGetParameterName(param)]];
-	} while (param = cgGetNextParameter(param));
-	param = cgGetFirstParameter(mProgram, CG_PROGRAM);
-	do {
-		[to_return addObject:[NSString stringWithUTF8String:cgGetParameterName(param)]];
-	} while (param = cgGetNextParameter(param));
-	return to_return;	
-}
-
-- (O3CGParameter*)parameterNamed:(NSString*)key {
-	ParameterMap* params = mParametersP(self);
-	string name = NSStringUTF8String(key);
-	ParameterMap::iterator param_loc = params->find(name);
-	O3CGParameter* to_return = param_loc->second;
-	if (param_loc==params->end()) {
-		CGparameter param = cgGetNamedParameter(mProgram, name.c_str());
-		if (!param) return nil;
-		(*params)[name] = to_return = [[O3CGParameter alloc] initWithParameter:param];
+- (NSDictionary*)paramValues {
+	NSArray* keys = [self paramNames];
+	UIntP ct = [keys count];
+	NSMutableDictionary* md = [[NSMutableDictionary alloc] init];
+	for (UIntP i=0; i<ct; i++) {
+		NSString* str = [keys objectAtIndex:i];
+		[md setObject:[[self param:str] value] forKey:str];
 	}
+	return [md autorelease];
+}
+
+- (id)valueForParam:(NSString*)pname {
+	return [[self param:pname] value];
+}
+
+- (void)setValue:(id)val forParam:(NSString*)pname {
+	[[self param:pname] setValue:val];
+}
+
+- (O3CGParameter*)param:(NSString*)pname {
+	O3CGParameter* cp = [mParametersP(self) objectForKey:pname];
+	if (cp) return cp;
+	CGparameter prm = cgGetNamedParameter(mProgram, [pname UTF8String]);
+	cp = [[[O3CGParameter alloc] initWithParam:prm] autorelease];
+	[mParametersP(self) setObject:cp forKey:pname];
+	return cp;
+}
+
+- (NSArray*)paramNames {
+	NSMutableArray* to_return = [NSMutableArray array];
+	CGparameter parm = cgGetFirstParameter(mProgram, CG_PROGRAM);
+	do {
+		[to_return addObject:[NSString stringWithUTF8String:cgGetParameterName(parm)]];
+	} while (parm = cgGetNextParameter(parm));
+	parm = cgGetFirstParameter(mProgram, CG_GLOBAL);
+	do {
+		[to_return addObject:[NSString stringWithUTF8String:cgGetParameterName(parm)]];
+	} while (parm = cgGetNextParameter(parm));
 	return to_return;
 }
 
-- (void)setParameterValue:(NSValue*)value forKey:(NSString*)key {
-	O3CGParameter* param = mParametersP(self)->find(NSStringUTF8String(key))->second;
-	if (!param) {
-		O3ToImplement();
-	}
-	[param setValue:value];
-}
+- (BOOL)paramsAreCGParams {return YES;}
 
 
 /************************************/ #pragma mark Use /************************************/
@@ -336,34 +289,30 @@ inline void initP(O3CGProgram* self) {
 
 /************************************/ #pragma mark Memory management /************************************/
 - (void)purgeCaches {
-	O3DestroyCppMap(AnnotationMap, mAnnotations);
-	O3DestroyCppMap(ParameterMap, mParameters);
+	O3Destroy(mAnnotations);
+	O3Destroy(mParameters);
 }
 
 
 /************************************/ #pragma mark Class Methods /************************************/
 + (BOOL)compiledLazily {
-	 initializeP();
-	return cgGetAutoCompile(gCGContext)==CG_COMPILE_LAZY;
+	return cgGetAutoCompile(O3GlobalCGContext())==CG_COMPILE_LAZY;
 }
 
 + (BOOL)compiledAutomatically {
-	 initializeP();
-	return cgGetAutoCompile(gCGContext)!=CG_COMPILE_MANUAL;
+	return cgGetAutoCompile(O3GlobalCGContext())!=CG_COMPILE_MANUAL;
 }
 
 + (void)setCompiledLazily:(BOOL)lazy {
-	 initializeP();	
-	cgSetAutoCompile(gCGContext, (lazy)? CG_COMPILE_LAZY : CG_COMPILE_IMMEDIATE);
+	cgSetAutoCompile(O3GlobalCGContext(), (lazy)? CG_COMPILE_LAZY : CG_COMPILE_IMMEDIATE);
 }
 
 + (void)setCompiledAutomatically:(BOOL)compiledAutomatically {
-	 initializeP();
 	CGenum to_set = (compiledAutomatically)? CG_COMPILE_LAZY : CG_COMPILE_IMMEDIATE;
 	if (compiledAutomatically) 
-		if (cgGetAutoCompile(gCGContext)==CG_COMPILE_IMMEDIATE) 
+		if (cgGetAutoCompile(O3GlobalCGContext())==CG_COMPILE_IMMEDIATE) 
 			to_set = CG_COMPILE_IMMEDIATE;
-	cgSetAutoCompile(gCGContext, to_set);
+	cgSetAutoCompile(O3GlobalCGContext(), to_set);
 }
 
 ///@note Does not enable or disable \e effects, which are usually how shaders are used anyhow. Also does not prevent effects from using shaders.

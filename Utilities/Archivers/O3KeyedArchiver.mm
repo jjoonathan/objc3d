@@ -9,6 +9,8 @@
 #import "O3KeyedArchiver.h"
 #import "O3NonlinearWriter.h"
 #import "O3ArchiveStatisticsGatherer.h"
+#import "NSData+zlib.h"
+#import "O3GPUData.h"
 
 NSString* O3UnkeyedMethodSendToKeyedArchiverException = @"O3UnkeyedMethodSendToKeyedArchiverException";
 NSPropertyListFormat O3ArchiveFormat0 = (NSPropertyListFormat)'O';
@@ -22,7 +24,9 @@ O3DefaultO3InitializeImplementation
 inline void initP(O3KeyedArchiver* self) {
 	self->mCompatibility = YES;
 	self->mCompress = YES;
-	self->mWriter = new O3NonlinearWriter();
+	self->mArchInfo = new O3ArchiveInfo();
+	self->mArchInfo->writer = new O3NonlinearWriter();
+	self->mArchInfo->archiver = self;
 }
 
 - (void)dealloc {
@@ -32,6 +36,7 @@ inline void initP(O3KeyedArchiver* self) {
 	[mClassNameMappings release];
 	[mDat release];
 	[mWrittenClasses release];
+	if (mArchInfo) {delete mArchInfo; mArchInfo=NULL;}
 	O3SuperDealloc();
 }
 
@@ -53,7 +58,7 @@ inline void initP(O3KeyedArchiver* self) {
 /*- (id)initForWritingWithWriter:(O3NonlinearWriter*)writer {
 	O3SuperInitOrDie();
 	initP(self);
-	mWriter = writer;
+	mArchInfo->writer = writer;
 	return self;
 }*/
 
@@ -87,65 +92,6 @@ inline void initP(O3KeyedArchiver* self) {
 	[a finishEncoding];
 	[a release];
 	[pool release];
-}
-
-void finishCompressionInitP(O3KeyedArchiver* self) {
-	self->mWriter->mKT = [O3ArchiveStringMapFromArray(self->mKT) retain];
-	self->mWriter->mST = [O3ArchiveStringMapFromArray(self->mST) retain];
-	self->mWriter->mCT = [O3ArchiveStringMapFromArray(self->mCT) retain];
-	if ([self->mWriter->mKT count]) [self encodeObject:self->mKT forKey:@"KT"];
-	if ([self->mWriter->mST count]) [self encodeObject:self->mST forKey:@"ST"];
-	if ([self->mWriter->mCT count]) [self encodeObject:self->mCT forKey:@"CT"];
-}
-
-#define beginEncodingIfNecessaryP(obj, theKey) {                                                               \
-	if (!self->mArchivingBegun) {                                                                              \
-		self->mHeader = self->mWriter->ReservePlaceholder();                                                   \
-		self->mArchivingBegun = YES;                                                                           \
-		if (self->mCompatibility) {                                                                            \
-			self->mWrittenClasses = [NSMutableSet new];                                                        \
-		}                                                                                                      \
-		if (self->mCompress) {                                                                                 \
-			[O3ArchiveStatisticsGatherer gatherStatisticsForRootObject:obj                                     \
-    	                                                           key:theKey                                  \
-    	                                                            KT:&(self->mKT)                            \
-    	                                                            ST:&(self->mST)                            \
-																	CT:&(self->mCT)                            \
-														  classNameMap:self->mClassNameMappings];              \
-			finishCompressionInitP(self);                                                                      \
-		}                                                                                                      \
-	}                                                                                                          \
-}
-
-///Doesn't actually finish encoding, just flushes it to the data. Note that this is probably inefficient (data copy). Use the class methods if you can.
-///Worst hack ever!
-- (void)finishEncoding {
-	O3AssertIvar(mWriter && (mDat || mFD));
-	[mDelegate archiverWillFinish:(NSKeyedArchiver*)self];
-	
-	beginEncodingIfNecessaryP(nil, nil);
-	if (mCompatibility) {
-		O3Optimizable();
-		NSMutableData* dat = [NSMutableData new];
-		O3KeyedArchiver* arch = [[O3KeyedArchiver alloc] initForWritingWithMutableData:dat];
-		[arch retain];
-		NSMutableDictionary* dict = [NSMutableDictionary new];
-		NSEnumerator* classEnum = [mWrittenClasses objectEnumerator];
-		while (Class curclass = [classEnum nextObject]) {
-			NSArray* fallbacks = [curclass classFallbacksForKeyedArchiver];
-			if (fallbacks) [dict setObject:fallbacks forKey:[curclass className]];
-		}
-		[arch encodeObject:dict forKey:@"C"];
-		mWriter->WriteDataAtPlaceholder(dat, mHeader);
-		[dict release];
-		[arch release];
-		[dat release];
-	}
-	
-	if (mDat) [mDat appendData:mWriter->Data()];
-	else if (mFD) mWriter->WriteToFileDescriptor(mFD);
-	O3Asrt(!mDat&&mFD || mDat&&!mFD);
-	[mDelegate archiverDidFinish:(NSKeyedArchiver*)self];
 }
 
 
@@ -203,40 +149,60 @@ format:@"%@ can't handle method \"%s\" since it is meant for an unkeyed archiver
 #undef RaiseSubclassRevoked
 
 /************************************/ #pragma mark O3WriteTypedObjectKey Writing Methods /************************************/
-- (void)encodeBool:(BOOL)v forKey:(NSString*)k {
-	O3AssertIvar(mWriter); beginEncodingIfNecessaryP([NSNumber numberWithBool:NO], k);
-	mWriter->WriteKVHeaderAtPlaceholder(k, nil, 0, v?O3PkgTypeTrue:O3PkgTypeFalse, mWriter->ReservePlaceholder());
+inline void beginWithArchiver_key_tenativeObj_(O3KeyedArchiver* a, NSString* k, id obj) {
+	if (!a->mArchivingBegun) [a beginEncodingWithTenativeRoot:obj];
+	O3AssertIvar(a->mArchInfo->writer);
+	O3ChildEnt ent;
+	ent.key = [k retain];
+	ent.offset = a->mArchInfo->writer->LastPlaceholder();
+	a->mArchInfo->children.top().push_back(ent);
 }
 
-- (void)encodeBytes:(void*)ptr length:(UIntP)len forKey:(NSString*)k {
-	O3AssertIvar(mWriter); beginEncodingIfNecessaryP([NSData dataWithBytesNoCopy:ptr length:len freeWhenDone:NO], k);
-	mWriter->WriteKVHeaderAtPlaceholder(k, nil, len, O3PkgTypeRawData, mWriter->ReservePlaceholder());
-	mWriter->WriteBytesAtPlaceholder(ptr, len, mWriter->ReservePlaceholder());
+inline void endWithArchiver_className_pkgType(O3KeyedArchiver* a, NSString* cname, O3PkgType ptype) {
+	O3ChildEnt& e = a->mArchInfo->children.top().back();
+	e.className = [cname retain];
+	e.len = a->mArchInfo->writer->BytesWrittenAfterPlaceholder(e.offset);
+	e.type = ptype;
+}
+
+- (void)encodeBool:(BOOL)v forKey:(NSString*)k {
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	endWithArchiver_className_pkgType(self, nil, v?O3PkgTypeTrue:O3PkgTypeFalse);
+}
+
+- (void)encodeBytes:(const void*)ptr length:(UIntP)len forKey:(NSString*)k {
+	void* myptr = O3MemDup(ptr, len);
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	mArchInfo->writer->WriteBytesAtPlaceholder(myptr, len, mArchInfo->writer->ReservePlaceholder(), YES);
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeRawData);
 }
 
 - (void)encodeConditionalObject:(id)obj forKey:(NSString*)k {
-	//O3AssertIvar(mWriter);  beginEncodingIfNecessaryP(self);
+	//O3AssertIvar(mArchInfo->writer);  beginEncodingIfNecessaryP(self);
 	//Note to self: fill this in in the dummy archiver as well
 	O3Assert(false, @"-encodeConditionalObject is not supported in O3KeyedArchiver");
 }
 
 - (void)encodeDouble:(double)v forKey:(NSString*)k {
-	O3AssertIvar(mWriter); beginEncodingIfNecessaryP([NSNumber numberWithDouble:v], k);
-	mWriter->WriteKVHeaderAtPlaceholder(k, nil, sizeof(double), O3PkgTypeFloat, mWriter->ReservePlaceholder());
-	mWriter->WriteDoubleAtPlaceholder(v, mWriter->ReservePlaceholder());
+	Int64 iv = v; if (iv==v) return [self encodeInt64:iv forKey:k];
+	float fv = v; if (fv==v) return [self encodeFloat:v forKey:k];
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	mArchInfo->writer->WriteDoubleAtPlaceholder(v, mArchInfo->writer->ReservePlaceholder());
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeFloat);
 }
 
 - (void)encodeFloat:(float)v forKey:(NSString*)k {
-	O3AssertIvar(mWriter); beginEncodingIfNecessaryP([NSNumber numberWithFloat:v], k);
-	mWriter->WriteKVHeaderAtPlaceholder(k, nil, sizeof(float), O3PkgTypeFloat, mWriter->ReservePlaceholder());
-	mWriter->WriteFloatAtPlaceholder(v, mWriter->ReservePlaceholder());
+	Int64 iv = v; if (iv==v) return [self encodeInt64:iv forKey:k];
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	mArchInfo->writer->WriteFloatAtPlaceholder(v, mArchInfo->writer->ReservePlaceholder());
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeFloat);
 }
 
 inline void encodeInt64P(O3KeyedArchiver* self, NSString* k, UInt64 v, BOOL negative = NO) {
-	O3AssertIvar(self->mWriter); beginEncodingIfNecessaryP(negative?[NSNumber numberWithLongLong:v]:[NSNumber numberWithUnsignedLongLong:v], k);
-	int size = O3BytesNeededForUInt(v);
-	self->mWriter->WriteKVHeaderAtPlaceholder(k, nil, size, negative?O3PkgTypeNegativeInt:O3PkgTypePositiveInt, self->mWriter->ReservePlaceholder());
-	self->mWriter->WriteUIntAsBytesAtPlaceholder(v, size, self->mWriter->ReservePlaceholder());
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	UIntP p = self->mArchInfo->writer->ReservePlaceholder();
+	self->mArchInfo->writer->WriteUIntAsBytesAtPlaceholder(v, O3BytesNeededForUInt(v), p);
+	endWithArchiver_className_pkgType(self, nil, negative?O3PkgTypeNegativeInt:O3PkgTypePositiveInt);
 }
 
 - (void)encodeInt:(int)v forKey:(NSString*)k {
@@ -255,16 +221,6 @@ inline void encodeInt64P(O3KeyedArchiver* self, NSString* k, UInt64 v, BOOL nega
 	encodeInt64P(self, k, v, NO);
 }
 
-inline void writeValueP(O3KeyedArchiver* self, NSValue* v, NSString* k) {
-	O3AssertIvar(self->mWriter);  beginEncodingIfNecessaryP(v, k);
-	UIntP header_placeholder = self->mWriter->ReservePlaceholder();
-	const char* vtype = [v objCType];
-	unsigned int size; NSGetSizeAndAlignment(vtype, &size, nil);
-	void* buf = malloc(size);
-	self->mWriter->WriteBytesAtPlaceholder(buf, size, self->mWriter->ReservePlaceholder(), NO);
-	self->mWriter->WriteKVHeaderAtPlaceholder(k, nil, size, O3PkgTypeValue, header_placeholder);
-}
-
 NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c) {
 	NSString* className = [c className]; //Technically the metaclass but it appears to work
 	NSString* archiverOverride = [self->mClassNameMappings objectForKey:c];
@@ -276,101 +232,226 @@ NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c) {
 	return className;
 }
 
-///@todo Add runtime response checks
-- (void)encodeObject:(id)obj forKey:(NSString*)k {
-	if (!obj) return;
-	O3AssertIvar(mWriter);  beginEncodingIfNecessaryP(obj, k);
-	[mDelegate archiver:(NSKeyedArchiver*)self willEncodeObject:obj];
-	static NSNumber* trueNumber = nil;  if (!trueNumber)  trueNumber  = [NSNumber numberWithBool:YES];
-	static NSNumber* falseNumber = nil; if (!falseNumber) falseNumber = [NSNumber numberWithBool:NO];
-	if ([obj isSpeciallyHandledByO3Archiver]) {
-		if ([obj isKindOfClass:[NSValue class]]) {
-			if ([trueNumber isEqual:obj])
-				mWriter->WriteKVHeaderAtPlaceholder(k, nil, 0, O3PkgTypeTrue, mWriter->ReservePlaceholder());
-			else if ([falseNumber isEqual:obj])
-				mWriter->WriteKVHeaderAtPlaceholder(k, nil, 0, O3PkgTypeFalse, mWriter->ReservePlaceholder());
-			else {
-				const char* t = [obj objCType];
-				switch (*t) {
-					case 'd': [self encodeDouble:[(NSNumber*)obj doubleValue] forKey:k]; break;
-					case 'f': [self encodeFloat:[(NSNumber*)obj floatValue] forKey:k]; break;
-					case 'c': case 'C': 
-					case 's': case 'S':
-					case 'i': case 'I':
-					case 'l': case 'q': {
-						Int64 v = [(NSNumber*)obj longLongValue];
-						encodeInt64P(self, k, ::llabs(v), v<0);
-						break;
-					}
-					case 'Q': case 'L': encodeInt64P(self, k, [(NSNumber*)obj unsignedLongLongValue], NO); break;
-					default: writeValueP(self, (NSValue*)obj, k);
-				} //Switch
-			} //else
-		} //is NSValue
-		else if ([obj isKindOfClass:[NSData class]]) {
-			mWriter->WriteKVHeaderAtPlaceholder(k, nil, [(NSData*)obj length], O3PkgTypeRawData, mWriter->ReservePlaceholder());
-			mWriter->WriteDataAtPlaceholder((NSData*)obj, mWriter->ReservePlaceholder());
-		}
-		else if ([obj isKindOfClass:[NSString class]]) {
-			UIntP header_placeholder = mWriter->ReservePlaceholder();
-			mWriter->WriteBytesAtPlaceholder([(NSString*)obj UTF8String], [(NSString*)obj lengthOfBytesUsingEncoding:NSUTF8StringEncoding], mWriter->ReservePlaceholder());
-			UIntP size = mWriter->BytesWrittenAfterPlaceholder(header_placeholder);
-			mWriter->WriteKVHeaderAtPlaceholder(k, nil, size, O3PkgTypeString, header_placeholder);
-		}
-		else if ([obj isKindOfClass:[NSArray class]]) {
-			UIntP header_placeholder = mWriter->ReservePlaceholder();
-			UIntP i,j = [(NSArray*)obj count];
-			for (i=0; i<j; i++) [self encodeObject:[(NSArray*)obj objectAtIndex:i] forKey:nil];
-			UIntP size = mWriter->BytesWrittenAfterPlaceholder(header_placeholder);
-			mWriter->WriteKVHeaderAtPlaceholder(k, nil, size, O3PkgTypeArray, header_placeholder);
-		}
-		else if ([obj isKindOfClass:[NSDictionary class]]) {
-			UIntP header_placeholder = mWriter->ReservePlaceholder();
-			NSEnumerator* keyE = [(NSDictionary*)obj keyEnumerator];
-			NSEnumerator* valE = [(NSDictionary*)obj objectEnumerator];
-			NSString* key;
-			NSObject* val;
-			while (key = [keyE nextObject]) {
-				val = [valE nextObject]; O3Asrt(val);
-				[self encodeObject:val forKey:key];
-			}
-			UIntP size = mWriter->BytesWrittenAfterPlaceholder(header_placeholder);
-			mWriter->WriteKVHeaderAtPlaceholder(k, nil, size, O3PkgTypeDictionary, header_placeholder);
-			
-		}
-		else O3AssertFalse(@"No special case found, but %@ (for key %@) responds YES to isSpeciallyHandledByO3Archiver", obj, k);
-		return;
-	}
-	obj = [obj replacementObjectForKeyedArchiver:(NSKeyedArchiver*)self]?:obj;
-	UIntP header_placeholder = mWriter->ReservePlaceholder();
-	[obj encodeWithCoder:self];
-	UIntP size = mWriter->BytesWrittenAfterPlaceholder(header_placeholder);
+inline NSString* encodeNameOfObjClass(O3KeyedArchiver* self, id obj) {
 	Class theClass = [obj classForKeyedArchiver]?:[obj class];
 	NSString* className = O3KeyedArchiverEncodedNameOfClass(self, theClass);
-	if (mCompatibility) O3CFSetAddValue(mWrittenClasses, theClass);
-	mWriter->WriteKVHeaderAtPlaceholder(k, className, size, O3PkgTypeObject, header_placeholder);
-	[mDelegate archiver:(NSKeyedArchiver*)self didEncodeObject:obj];
+	if (self->mCompatibility) O3CFSetAddValue(self->mWrittenClasses, theClass);
+	return className;
+}
+
+- (void)encodeObject:(id)obj forKey:(NSString*)k {
+	#ifdef O3DEBUG
+	if (![obj respondsToSelector:@selector(encodeWithO3ArchiveInfo:key:)]) {
+		O3LogWarn(@"Ignoring object which does not respond to encodeWithO3ArchiveInfo:key:. Ignoring IN DEBUG MODE ONLY.");
+		return;
+	}
+	#endif
+	[obj encodeWithO3ArchiveInfo:mArchInfo key:k];
 }
 
 - (void)encodePoint:(NSPoint)pt forKey:(NSString*)k {
-	writeValueP(self, [NSValue valueWithPoint:pt], k);
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	O3StructType* t = (sizeof(pt.x)==sizeof(float))? O3FloatType() : O3DoubleType();
+	O3StructArrayWrite(t, &pt, 2, 0, self->mArchInfo->writer);
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeStructArray);
 }
 
 - (void)encodeRect:(NSRect)r forKey:(NSString*)k {
-	writeValueP(self, [NSValue valueWithRect:r], k);
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	O3StructType* t = (sizeof(r.origin.x)==sizeof(float))? O3FloatType() : O3DoubleType();
+	O3StructArrayWrite(t, &r, 4, 0, self->mArchInfo->writer);
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeStructArray);
 }
 
 - (void)encodeSize:(NSSize)s forKey:(NSString*)k {
-	writeValueP(self, [NSValue valueWithSize:s], k);
+	beginWithArchiver_key_tenativeObj_(self, k, nil);
+	O3StructType* t = (sizeof(s.width)==sizeof(float))? O3FloatType() : O3DoubleType();
+	O3StructArrayWrite(t, &s, 2, 0, self->mArchInfo->writer);
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeStructArray);
+}
+
+
+/************************************/ #pragma mark Init, Finalization of Encoding Process /************************************/
+///@param tr The tenative root is used to calculate the frequencies of keys and generate the name tables
+- (void)beginEncodingWithTenativeRoot:(id)tr {
+	O3Asrt(!mArchivingBegun);
+	mArchivingBegun = YES;
+	mArchInfo->children.push(O3ArchiveInfo::child_arr_t());
+	mHeader = mArchInfo->writer->ReservePlaceholder();
+	if (mCompatibility) {
+		mWrittenClasses = [NSMutableSet new];
+	}
+	if (mCompress) {
+		if (tr) {
+			[O3ArchiveStatisticsGatherer gatherStatisticsForRootObject:tr
+																   key:nil
+																	KT:&(mKT)
+																	ST:&(mST)
+																	CT:&(mCT)
+														  classNameMap:mClassNameMappings];
+			mArchInfo->writer->mKT = [O3ArchiveStringMapFromArray(mKT) retain];
+			mArchInfo->writer->mST = [O3ArchiveStringMapFromArray(mST) retain];
+			mArchInfo->writer->mCT = [O3ArchiveStringMapFromArray(mCT) retain];
+			if ([mKT count]) [self encodeObject:mKT forKey:@"KT"];
+			if ([mST count]) [self encodeObject:mST forKey:@"ST"];
+			if ([mCT count]) [self encodeObject:mCT forKey:@"CT"];
+		}
+		mArchInfo->data_compression_level = 8; //zlib level 7
+	}
+}
+
+- (void)finishEncoding {
+	O3AssertIvar(mArchInfo->writer && (mDat || mFD));
+	[mDelegate archiverWillFinish:(NSKeyedArchiver*)self];
+	
+	if (!mArchivingBegun) [self beginEncodingWithTenativeRoot:nil];
+	if (mCompatibility && [mWrittenClasses count]) {
+		NSMutableDictionary* dict = [NSMutableDictionary new];
+		NSEnumerator* classEnum = [mWrittenClasses objectEnumerator];
+		while (Class curclass = [classEnum nextObject]) {
+			NSArray* fallbacks = [curclass classFallbacksForKeyedArchiver];
+			if (fallbacks) [dict setObject:fallbacks forKey:[curclass className]];
+		}
+		if ([dict count]) [self encodeObject:dict forKey:@"C"];
+		[dict release];
+	}
+	mArchInfo->writer->WriteChildrenHeaderAtPlaceholder(&(mArchInfo->children.top()), mHeader, mArchInfo->writer->mKT, mArchInfo->writer->mCT);
+	mArchInfo->children.pop();
+	
+	if (mDat) [mDat appendData:mArchInfo->writer->Data()];
+	if (mFD) mArchInfo->writer->WriteToFileDescriptor(mFD);
+	[mDelegate archiverDidFinish:(NSKeyedArchiver*)self];
 }
 
 @end
 
-#define ClassIsSpeciallyHandledByO3Archiver(class, special) @implementation class (O3KeyedArchiverSpecialness) - (BOOL)isSpeciallyHandledByO3Archiver {return special;} @end
-ClassIsSpeciallyHandledByO3Archiver(NSObject, NO);
-ClassIsSpeciallyHandledByO3Archiver(NSValue, YES);
-ClassIsSpeciallyHandledByO3Archiver(NSData, YES);
-ClassIsSpeciallyHandledByO3Archiver(NSString, YES);
-ClassIsSpeciallyHandledByO3Archiver(NSArray, YES);
-ClassIsSpeciallyHandledByO3Archiver(NSDictionary, YES);
-#undef ClassIsSpeciallyHandledByO3Archiver
+
+
+@implementation NSObject (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
+	UIntP headerp = arch->writer->ReservePlaceholder();
+	beginWithArchiver_key_tenativeObj_(arch->archiver, k, self);
+	arch->children.push(O3ArchiveInfo::child_arr_t());
+	[(id<NSCoding>)self encodeWithCoder:arch->archiver];
+	endWithArchiver_className_pkgType(arch->archiver, encodeNameOfObjClass(arch->archiver, self), O3PkgTypeObject);
+	arch->writer->WriteChildrenHeaderAtPlaceholder(&(arch->children.top()), headerp, arch->writer->mKT, arch->writer->mCT);
+	arch->children.pop();
+}
+@end
+
+@implementation NSDictionary (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
+	beginWithArchiver_key_tenativeObj_(arch->archiver, k, self);
+	arch->children.push(O3ArchiveInfo::child_arr_t());
+	UIntP headerp = arch->writer->ReservePlaceholder();
+	NSEnumerator* keyEnum = [self keyEnumerator];
+	if (O3AssumeSimultaneousDictEnumeration) {
+		NSEnumerator* objEnum = [self objectEnumerator];
+		while (id k = [keyEnum nextObject]) {
+			id o = [objEnum nextObject];
+			[o encodeWithO3ArchiveInfo:arch key:k];
+		}
+	} else {
+		while (id k = [keyEnum nextObject]) {
+			id o = [self objectForKey:k];
+			[o encodeWithO3ArchiveInfo:arch key:k];
+		}
+	}
+	arch->writer->WriteChildrenHeaderAtPlaceholder(&(arch->children.top()), headerp, arch->writer->mKT, arch->writer->mCT);
+	arch->children.pop();
+	endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeDictionary);
+}
+@end
+
+@implementation NSString (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
+	beginWithArchiver_key_tenativeObj_(arch->archiver, k, nil);
+	NSNumber* num = [arch->writer->mST objectForKey:self];
+	if (num) {
+		UIntP idx = O3NSNumberLongLongValue(num);
+		arch->writer->WriteUCIntAtPlaceholder(idx, arch->writer->ReservePlaceholder());
+		return;
+	}
+	const char* str = NSStringUTF8String(self); UIntP len = strlen(str);
+	UIntP ph = arch->writer->ReservePlaceholder();
+	arch->writer->WriteBytesAtPlaceholder(str, len, ph);
+	endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeString);
+}
+@end
+
+@implementation NSData (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
+	UIntP len = [self length];
+	BOOL will_compress = arch->data_compression_level;
+	beginWithArchiver_key_tenativeObj_(arch->archiver, k, nil);
+	if (will_compress) {
+		O3DeflationOptions dopts;
+		dopts.rawDeflate = YES;
+		dopts.compressionLevel=arch->data_compression_level-1;
+		NSMutableData* deflated = [self o3DeflateWithOptions:dopts];
+		UIntP dlen = [deflated length];
+		UIntP dhlen = dlen + O3BytesNeededForTypedObjectHeader(len, nil);
+		if (dhlen<len) {
+			arch->writer->WriteTypedObjectHeaderAtPlaceholder(nil, len, O3PkgTypeRawData, arch->writer->ReservePlaceholder());
+			arch->writer->WriteBytesAtPlaceholder([deflated mutableBytes], dlen, arch->writer->ReservePlaceholder(), NO);
+			endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeCompressed);
+			return;
+		}
+	}
+	arch->writer->WriteDataAtPlaceholder(self, arch->writer->ReservePlaceholder());
+	endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeRawData);
+}
+@end
+
+@implementation NSArray (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
+	beginWithArchiver_key_tenativeObj_(arch->archiver, k, self);
+	arch->children.push(O3ArchiveInfo::child_arr_t());
+	UIntP h = arch->writer->ReservePlaceholder();
+	NSEnumerator* selfEnumerator = [self objectEnumerator];
+	while (NSObject* o = [selfEnumerator nextObject]) {
+		[o encodeWithO3ArchiveInfo:arch key:nil];
+	}
+	arch->writer->WriteChildrenHeaderAtPlaceholder(&(arch->children.top()), h, arch->writer->mKT, arch->writer->mCT);
+	arch->children.pop();
+	endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeArray);	
+}
+@end
+
+@implementation O3StructArray (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
+	beginWithArchiver_key_tenativeObj_(arch->archiver, k, self);
+	NSData* d = [self rawData];
+	O3StructArrayWrite([self structType], [d bytes], [self count], 0, arch->writer);
+	[d relinquishBytes];
+	endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeStructArray);	
+}
+@end
+
+@implementation NSValue (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
+	static NSNumber* trueNumber = nil;  if (!trueNumber)  trueNumber  = [NSNumber numberWithBool:YES];
+	static NSNumber* falseNumber = nil; if (!falseNumber) falseNumber = [NSNumber numberWithBool:NO];
+	if ([trueNumber isEqual:self]) {[arch->archiver encodeBool:YES forKey:k]; return;}
+	if ([falseNumber isEqual:self]) {[arch->archiver encodeBool:NO forKey:k]; return;}
+	const char* t = [self objCType];
+	switch (*t) {
+		case 'd': [arch->archiver encodeDouble:[(NSNumber*)self doubleValue] forKey:k]; return;
+		case 'f': [arch->archiver encodeFloat:[(NSNumber*)self floatValue] forKey:k]; return;
+		case 'c': case 'C': 
+		case 's': case 'S':
+		case 'i': case 'I':
+		case 'l': case 'q': {
+			Int64 v = [(NSNumber*)self longLongValue];
+			[arch->archiver encodeInt64:v forKey:k];
+			return;
+		}
+		case 'Q': case 'L': {
+			UInt64 v = [(NSNumber*)self unsignedLongLongValue];
+			[arch->archiver encodeUInt64:v forKey:k];
+			return;
+		}
+	} //Switch
+	[super encodeWithO3ArchiveInfo:arch key:k];
+}
+@end

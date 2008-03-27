@@ -526,8 +526,7 @@ O3Vec_T& O3Vec_T::Abs() {
 
 O3Vec_TT
 O3Vec_T O3Vec_T::GetAbs() const {
-	O3Vec_T
-to_return;
+	O3Vec_T to_return;
 	int i; for (i=0;i<NUMBER;i++) to_return[i] = abs(v[i]);
 	return to_return;
 }
@@ -540,8 +539,7 @@ O3Vec_T& O3Vec_T::Negate() {
 
 O3Vec_TT
 O3Vec_T O3Vec_T::GetNegated() const {
-	O3Vec_T
-to_return;
+	O3Vec_T to_return;
 	int i; for (i=0;i<NUMBER;i++) to_return[i] = -v[i];
 	return to_return;
 }
@@ -559,3 +557,23 @@ std::string O3Vec_T::Description() const {
 	return to_return.str();
 }
 #endif /*defined(__cplusplus)*/
+
+O3Vec_TT
+void O3Vec_T::WriteTo(O3NonlinearWriter* w) {
+	O3StructArrayWrite(O3ScalarStructTypeOf(TYPE), this, NUMBER, w);
+}
+
+O3Vec_TT
+O3Vec_T& O3Vec_T::SetFromReader(O3BufferedReader* br, UIntP len) {
+	const char* t = ElementType();
+	UIntP r,c;
+	if (*t=='d' || *t=='f') {
+		double* darr = O3StructArrayReadDoubles(br, len, &r, &c);
+		SetArray(darr, (r?:1)*(c?:1));
+		free(darr);
+	} else {
+		NSArray* sr = O3StructArrayRead(br,len);
+		SetValue(sr);
+		[sr free];
+	}
+}

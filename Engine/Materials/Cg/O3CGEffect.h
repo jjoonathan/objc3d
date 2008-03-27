@@ -16,38 +16,28 @@
 #include <string>
 using namespace std;
 #endif
-@class O3CGTechnique;
-@class O3KVCHelper;
-@class O3CGParameter;
-@class O3CGAnnotation;
-@class O3CGMaterial;
+@class O3CGTechnique, O3KVCHelper, O3CGParameter, O3CGAnnotation;
 
-@interface O3CGEffect : NSObject <O3HasParameters, O3HasCGParameters, O3MultipassDirector> {
+@interface O3CGEffect : NSObject <O3HasParameters, O3MultipassDirector> {
 	CGeffect mEffect;	///<The effect wrapped by the receiver
 	int mTechniqueLevel; ///<The number of techniques that failed validation before one was found that passed (for stats only, not actually used)
 	int mPasses; ///<The number of renderPasses required by the receiver (or 0 if the number has yet to be discovered; it's lazy loaded)
 	O3CGTechnique* mPrincipalTechnique; ///<The first supported technique
-	O3KVCHelper* mTechniqueKVCHelper; ///<Allows KVC to be used properly on techniques
-	O3KVCHelper* mParameterKVCHelper; ///<Allows KVC to be used properly on parameters
-	O3KVCHelper* mAnnotationKVCHelper; ///<Allows KVC to be used properly on annotations
+	NSMutableDictionary* mTechniques;
+	NSMutableDictionary* mParameters;
+	NSMutableDictionary* mAnnotations;
 	NSString* mSource; ///<Saved for archiving purposes
 #ifdef __cplusplus
-	map<string, O3CGTechnique*>* mTechniques; ///<All the techniques in the receiver
-	map<string, O3CGParameter*>* mParameters; ///<All the receiver's parameters
-	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
 	vector<O3CGAutoSetParameter>* mAutoSetParameters; ///<Parameters that need to be automatically set
 	set<CGparameter>* mTextureParams; ///<Parameters that have a sampler and therefore need to be manually enabled and disabled
 #else
-	void* mTechniques;
-	void* mParameters;
-	void* mAnnotations;
 	void* mAutoSetParameters;
 	void* mTextureParams;
 #endif
 	BOOL mRenderingBegun; ///<Used for debug purposes (YES if we are in the middle of a beginRendering / endRendering block)
 }
 //Convenience
-- (O3CGMaterial*)newMaterial; ///<Returns a new material with the default technique
+- (O3Material*)newMaterial; ///<Returns a new material with the default technique
 
 //Initialization
 + (void)o3init;
@@ -58,21 +48,20 @@ using namespace std;
 - (void)setSource:(NSString*)source; //Clears out params, techniques, etc.
 
 //Annotations
-- (id)annotations;
-- (NSArray*)annotationKeys;
+- (NSArray*)annotationNames;
 - (O3CGAnnotation*)annotationNamed:(NSString*)key;
 
 //Techniques
-- (id)techniques;
-- (NSArray*)techniqueKeys;
+- (NSArray*)techniqueNames;
 - (O3CGTechnique*)techniqueNamed:(NSString*)key;
 
 //Parameters
-- (id)parameters;
-- (NSArray*)parameterKeys;
-- (O3CGParameter*)parameterNamed:(NSString*)key;
-- (void)setParameterValue:(id)value forKey:(NSString*)key;
-- (CGtype)typeNamed:(NSString*)tname;
+- (BOOL)paramsAreCGParams;
+- (NSDictionary*)paramValues;
+- (NSArray*)paramNames;
+- (id)valueForParam:(NSString*)pname;
+- (void)setValue:(id)val forParam:(NSString*)pname;
+- (O3CGParameter*)param:(NSString*)pname;
 
 //Use
 - (int)renderPasses;	///<How many passes are required for the receiver's foremost technique

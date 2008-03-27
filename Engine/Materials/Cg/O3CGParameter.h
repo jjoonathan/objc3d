@@ -7,6 +7,7 @@
  */
 #import <Cg/cg.h>
 #import <Cg/cgGL.h>
+#import "O3Parameter.h"
 #ifdef __cplusplus
 #include <map>
 #include <string>
@@ -21,15 +22,9 @@
  * It doesn't do anything else special.
  * It is safe and acceptable to use -rawParameter to get the wrapped parameter and modify it.
  */
-@interface O3CGParameter : NSObject {
-	O3KVCHelper* mAnnotationKVCHelper;
-	CGhandle mContext;
+@interface O3CGParameter : O3Parameter {
 	NSMutableDictionary* mSubParams; ///<Holds fields of a struct param
-#ifdef __cplusplus
-	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
-#else
-	void* mAnnotations;
-#endif
+	NSMutableDictionary* mAnnotations;
 	CGparameter mParam;
 	BOOL mFreeParamWhenDone;
 }
@@ -37,17 +32,12 @@
 - (id)initWithType:(CGtype)type;
 - (id)initWithType:(CGtype)type count:(int)array_size;
 - (id)initWithType:(CGtype)type dimensions:(int*)array_size dimensionCount:(unsigned)dim_count;
-- (id)initWithParameter:(CGparameter)param; ///<Wraps a CGparameter in an O3CGParameter
-- (id)initByDuplicatingParameter:(CGparameter)param; ///<Duplicates the parameter
-
-+ (id)parameterWithParameter:(CGparameter)param; ///<Returns an O3CGParameter for a CGParameter that already has an O3CGParameter
-
-- (void)setContext:(CGhandle)type_parent;
+- (id)initWithParam:(CGparameter)param; ///<Wraps a CGparameter in an O3CGParameter
+- (id)initWithTypeFromParam:(CGparameter)param; ///<Duplicates the parameter
+- (id)initByCopying:(O3CGParameter*)other;
 
 //Inspectors
-- (NSString*)name;
 - (CGparameter)rawParameter;
-- (id)value; ///<Returns an ObjC-ized value of the receiver
 - (int)intValue;
 - (float)floatValue;
 - (double)doubleValue;
@@ -75,14 +65,11 @@
 - (void)setDoubleMatrixValue:(const double*)val rows:(unsigned)rows columns:(unsigned)cols;
 - (void)setDoubleMatrixValue:(const double*)val rows:(unsigned)rows columns:(unsigned)cols rowMajor:(BOOL)rowMajor;
 
-- (void)setValue:(id)newValue; ///<Sets the value of the receiver to newValue without changing the receiver's type
-
 //Annotations
-- (id)annotations;
-- (NSArray*)annotationKeys;
+- (NSArray*)annotationNames;
 - (O3CGAnnotation*)annotationNamed:(NSString*)key;
 @end
 
 ///Essentially binds \e from to \e to on the key @"value". Does not work for other key-value bindings, and disconnecting is handeled autoamatically if you don't do it manually. A parameter can only be bound to one source parameter at a time (multiple destination parameters are possible).
-O3EXTERN_C void O3CGParameterBindValue_to_(O3CGParameter* to, O3CGParameter* from);
+O3EXTERN_C void O3CGParameterBindValueFrom_to_(O3CGParameter* from, O3CGParameter* to);
 O3EXTERN_C BOOL O3CGParameterUnbindValue(O3CGParameter* self);

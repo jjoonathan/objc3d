@@ -6,10 +6,16 @@
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #ifdef __cplusplus
+#include <vector>
+#include <stack>
 class O3NonlinearWriter;
+#else
+struct O3NonlinearWriter;
 #endif
+#import "O3ArchiveFormat.h"
 extern NSString* O3UnkeyedMethodSendToKeyedArchiverException;
 extern NSPropertyListFormat O3ArchiveFormat0;
+@class O3KeyedArchiver;
 
 ///Conditional objects are written as aliases, but they must be defered until the end of archiving if they are not found at first
 ///O3KeyedArchiver doesn't deal with conditional objects outside of a VFS.
@@ -18,14 +24,23 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 	id obj; //Deferred object
 } O3KeyedArchiverDeferedAlias;*/
 
+///O3ArchiveInfo is used while archiving to pass data quicker than one could using just an objc interface
+typedef struct {
+	O3KeyedArchiver* archiver;
+	O3NonlinearWriter* writer;
+	#ifdef __cplusplus
+	typedef std::vector<O3ChildEnt> child_arr_t;
+	std::stack<child_arr_t> children;
+	#else
+	void* keys;
+	#endif
+	int data_compression_level:5; //0-10 (disabled=0, 1=zlib level 0, 10=zlib level 9)
+} O3ArchiveInfo;
+
 ///@todo Make classFallbacksForKeyedArchiver work
 @interface O3KeyedArchiver : NSCoder {
 	NSMutableSet* mWrittenClasses;
-#ifdef __cplusplus
-	O3NonlinearWriter* mWriter;
-#else
-	void* mWriter;
-#endif
+	O3ArchiveInfo* mArchInfo;
 	NSMutableDictionary* mClassNameMappings; ///<Class->NSString
 	id mDelegate;
 	BOOL mRootObjectWritten;
@@ -47,7 +62,8 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 //Archiving
 + (NSData*)archivedDataWithRootObject:(id)obj;				
 + (void)archiveRootObject:(id)obj toFile:(NSString*)file;
-+ (void)archiveRootObject:(id)obj toFileDescriptor:(int)fd;	
++ (void)archiveRootObject:(id)obj toFileDescriptor:(int)fd;
+- (void)beginEncodingWithTenativeRoot:(id)tr;
 - (void)finishEncoding;
 
 //All encode:forKey: methods are supported.
@@ -71,6 +87,6 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 O3EXTERN_C NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Class c); ///<This is used in the actual encoding process, it can be useful elsewhere.
 @end
 
-@interface NSObject (O3KeyedArchiverSpecialness)
-- (BOOL)isSpeciallyHandledByO3Archiver; ///Returns YES if the receiver needs to be handled specially (archived as an int rather than as an object, etc)
+@interface NSObject (O3KeyedArchiving)
+- (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k;
 @end

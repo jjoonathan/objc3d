@@ -148,7 +148,7 @@ id O3GetCGParameterValue(CGparameter param) {
 		case CG_PARAMETERCLASS_ARRAY: {
 			NSMutableArray* to_return = [NSMutableArray array];
 			int count = cgGetArrayTotalSize(param);
-			for (UIntP i=0; i<count; i++) [to_return addObject:[[O3CGParameter alloc] initWithParameter:cgGetArrayParameter(param, i)]];
+			for (UIntP i=0; i<count; i++) [to_return addObject:[[O3CGParameter alloc] initWithParam:cgGetArrayParameter(param, i)]];
 			return to_return;
 		}
 		case CG_PARAMETERCLASS_SAMPLER: {

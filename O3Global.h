@@ -6,7 +6,9 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#include "O3Utilities.h"
+#import "O3Utilities.h"
+#include <Cg/cg.h>
+#include <Cg/cgGL.h>
 
 /******************************/ #pragma mark Exceptions /********************************/
 #ifdef __OBJC__
@@ -50,28 +52,39 @@ typedef enum O3SupportLevel {
 #ifdef O3AllowHacks
 	//Allows the use of CF* functions on toll-free-bridged classes for extra speed.
 	#ifdef __COREFOUNDATION__
-		#define O3UseCoreFoundation
+		#define O3UseCoreFoundation 1
 	#endif
+	
+	#define O3UseCoreGraphics 1
 
 	//O3AllowObjcInitAndDeallocSpeedHack allows O3Retain and O3Release to use special fast methods of allocation and release that skip the ObjC runtime and eek out extra speed.
 	//NOTE: As of now, this option is somewhat tied to the one above. If CoreFoundation can't be used, this option automatically is ignored and the fallback ObjC -retain and -release are used normally.
-	#define O3AllowObjcInitAndDeallocSpeedHack
+	#define O3AllowObjcInitAndDeallocSpeedHack 1
 	
 	//Allows thi assumption that [NSDict objectEnumerator] and [NSDict keyEnumerator] enumerate simultaneously
-	#define O3AssumeSimultaneousDictEnumeration
+	#define O3AssumeSimultaneousDictEnumeration 1
 	
 	//This allows O3Retain(), O3Release() macros which were originally intended to speed up the retain/release cycle. However, there are problems with the CoreFoudation bridge, so the macros only work some of the time
-	//#define O3AllowObjcMemoryManagementHack
+	//#define O3AllowObjcMemoryManagementHack 1
 	
 	//This allows std::vectors to be converted straight to C arrays by assuming that everything is stored sequentially (using &first_element).
-	#define O3AllowVectorConversionHack
+	#define O3AllowVectorConversionHack 1
 	
 	//Allows gcc-specific code to be used
-	#define O3AssumeGCCHack
+	#define O3AssumeGCCHack 1
 	
 	//Allows the skiping of initialization where it would be pointless (assumes NSObject's -init does nothing, which is true in Cocoa)
-	#define O3AllowInitHack
+	#define O3AllowInitHack 1
 	
 	//Allows the use of mach calls to increase speed
-	#define O3AllowMachCalls
+	#define O3AllowMachCalls 1
 #endif
+
+/************************************/ #pragma mark Context Management /************************************/
+static UInt64 gO3GL2xContextSwitches = 0; ///<O3BeginGLRes increments this by 3, O3EndGLRes decrements it by 1. While in a resource context it should be odd, and when outside it should be even. You can watch it to improve performance by eliminating switches.
+static void O3GL2xContextSwitchesDummyUser() {gO3GL2xContextSwitches;}
+O3EXTERN_C CGcontext O3GlobalCGContext(); ///<All CG stuff goes here
+O3EXTERN_C NSOpenGLContext* O3GLResourceContext(); ///<This is where all O3D textures, etc are stored. IT SHOULD NOT BE USED FOR RENDERING. Share the resources with your render context to use them :)
+O3EXTERN_C void O3BeginGLRes(); ///<Enters the global resource context (which should be separate from the rendering context).
+O3EXTERN_C void O3EndGLRes(); ///<Exits the global resource context (and restores the previous context).
+

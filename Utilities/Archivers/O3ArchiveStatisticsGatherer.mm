@@ -15,7 +15,7 @@ O3DefaultO3InitializeImplementation
 inline NSString* getKey(O3ArchiveStatistic* self) {return self->key;}
 inline void      setKey(O3ArchiveStatistic* self, NSString* k) {self->key = k;}
 inline UIntP getCount(O3ArchiveStatistic* self) {return self->numOccurances;}
-inline void      incCount(O3ArchiveStatistic* self) {self->numOccurances++;}
+inline UIntP      incCount(O3ArchiveStatistic* self) {return self->numOccurances++;}
 inline IntP getWinnage(O3ArchiveStatistic* self) {
 	if (self->winnage) return self->winnage;
 	UIntP stringlen = [self->key lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
@@ -123,9 +123,9 @@ inline NSArray* putIntoArrayOrderAndCutLosses(NSDictionary* dict) {
 - (void)encodeValueOfObjCType:(const char*)type at:(void*)ptr {}
 
 #ifdef O3AllowInitHack
-#define incrementKeyCounter(key) {O3ArchiveStatistic* arcs = [mKT objectForKey:key];    if (!arcs) {[mKT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key);} incCount(arcs);}
-#define incrementStringCounter(key) {O3ArchiveStatistic* arcs = [mST objectForKey:key]; if (!arcs) {[mST setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key);} incCount(arcs);}
-#define incrementClassCounter(key) {O3ArchiveStatistic* arcs = [mCT objectForKey:key];  if (!arcs) {[mCT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key);} incCount(arcs);}
+#define incrementKeyCounter(key) {O3ArchiveStatistic* arcs = [mKT objectForKey:key];    if (!arcs) {[mKT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key);} UIntP c = incCount(arcs); O3LogDebug(@"KT Entry: %@:%i",key,c);}
+#define incrementStringCounter(key) {O3ArchiveStatistic* arcs = [mST objectForKey:key]; if (!arcs) {[mST setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key);} UIntP c = incCount(arcs); O3LogDebug(@"ST Entry: %@:%i",key,c);}
+#define incrementClassCounter(key) {O3ArchiveStatistic* arcs = [mCT objectForKey:key];  if (!arcs) {[mCT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key);} UIntP c = incCount(arcs); O3LogDebug(@"CT Entry: %@:%i",key,c);}
 #else
 #define incrementKeyCounter(key) {O3ArchiveStatistic* arcs = [mKT objectForKey:key];    if (!arcs) {[mKT setObject:arcs=[[O3ArchiveStatistic alloc] init] forKey:key]; setKey(arcs, key);} incCount(arcs);}
 #define incrementStringCounter(key) {O3ArchiveStatistic* arcs = [mST objectForKey:key]; if (!arcs) {[mST setObject:arcs=[[O3ArchiveStatistic alloc] init] forKey:key]; setKey(arcs, key);} incCount(arcs);}
@@ -154,25 +154,26 @@ inline NSString* classNameForClassCP(Class c) {
 - (void)encodeSize:(NSSize)s forKey:(NSString*)k {incrementKeyCounter(k);}
 - (void)encodeObject:(id)obj forKey:(NSString*)k {
 	if (k) incrementKeyCounter(k);
-	if ([obj isSpeciallyHandledByO3Archiver]) {
-		//if ([obj isKindOfClass:[NSValue class]]) {}
-		if ([obj isKindOfClass:[NSString class]]) {incrementStringCounter(obj);}
-		else if ([obj isKindOfClass:[NSArray class]]) {
-			UIntP i,j = [(NSArray*)obj count];
-			for (i=0; i<j; i++) [self encodeObject:[(NSArray*)obj objectAtIndex:i] forKey:nil];
-		}
-		else if ([obj isKindOfClass:[NSDictionary class]]) {
-			NSEnumerator* keyE = [(NSDictionary*)obj keyEnumerator];
-			NSEnumerator* valE = [(NSDictionary*)obj objectEnumerator];
-			NSString* key;
-			NSObject* val;
-			while (key = [keyE nextObject]) {
-				val = [valE nextObject]; O3Asrt(val);
-				[self encodeObject:val forKey:key];
-			}
+	if ([obj isKindOfClass:[NSString class]]) {incrementStringCounter(obj); return;}
+	if ([obj isKindOfClass:[NSArray class]]) {
+		UIntP i,j = [(NSArray*)obj count];
+		for (i=0; i<j; i++) [self encodeObject:[(NSArray*)obj objectAtIndex:i] forKey:nil];
+		return;
+	}
+	if ([obj isKindOfClass:[NSDictionary class]]) {
+		NSEnumerator* keyE = [(NSDictionary*)obj keyEnumerator];
+		NSEnumerator* valE = [(NSDictionary*)obj objectEnumerator];
+		NSString* key;
+		NSObject* val;
+		while (key = [keyE nextObject]) {
+			val = [valE nextObject]; O3Asrt(val);
+			[self encodeObject:val forKey:key];
 		}
 		return;
 	}
+	if ([obj isKindOfClass:[NSValue class]]) return;
+	if ([obj isKindOfClass:[O3StructArray class]]) return;
+	if (![obj respondsToSelector:@selector(encodeWithCoder:)]) return;
 	[obj encodeWithCoder:self];
 	Class theClass = [obj classForKeyedArchiver] ?: [obj class];
 	NSString* archiverOverride = [mClassNameMappings objectForKey:theClass];

@@ -12,16 +12,15 @@ enum O3PkgType { //See below for the full definitions of these types
 	O3PkgTypePositiveInt=2,		//Positive big endian integer (not a UCInt) of a variable length. 
 	O3PkgTypeNegativeInt=3,		//Big endian negative integer (not a CInt) of a variable length. No sense in storing signed and unsigned if you can store positive and negative and win a bit!
 	O3PkgTypeFloat=4,		//Variable length big endian half/float/double/bignum (float and bignum not implemented at present)
-	//O3PkgTypeNil=5,	//Variable length value that is interpreted as unsigned_int_value/(pow(2,sizeof(data)*8)-1)
-	O3PkgTypeIndexedString=6, //A O3PkgTypePositiveInt that is an index into the O3PkgTypeStringArray defined by the root key "ST"
+	O3PkgTypeIndexedString=5, //A O3PkgTypePositiveInt that is an index into the O3PkgTypeStringArray defined by the root key "ST"
 	O3PkgTypeString=6,		//A non-null-terminated C string (not a CCString)
-	O3PkgTypeValue=7,		//Stores both vectors and matricies.
-	O3PkgTypeDictionary=8, 	//Stored as a dictionary. By default it is unarchived as a dictionary but because of the coder callbacks VFS is also a possibility
+	//O3PkgTypeValue=7,		//Stores both vectors and matricies. Basically an optimized StructArray format. Now handled by StructArray
+	O3PkgTypeDictionary=8, 	//Stored as a dictionary. By default it is unarchived as a dictionary.
 	O3PkgTypeArray=9,		//An array of objects in it's simplest form. Just a bunch of TypedObjs. See above.	
-	O3PkgTypeValueArray=0xA,	//A bunch of efficiently stored @encoded types from an vArray.
+	O3PkgTypeStructArray=0xA,
 	O3PkgTypeStringArray=0xB,//A bunch of CCStrings. 
 	O3PkgTypeRawData=0xC,	//Basically an NSData.
-	//O3PkgTypeSoftAlias=0xD,	//A StringArray where the strings are implicitly separated by "/". Note that this is perfectly legal: (CCString)"usr/lib" (CCString)"gcc" would result in "usr/lib/gcc". It is the VFS path to the resource the alias will point to. The alias is a proxy to the real object or a pointer to the real object depending on implementation, but the target is not loaded twice like a HardAlias.
+	O3PkgTypeCompressed=0xD, //A transparent (to the decoded data) type whose payload is (RealTypedObjHeaderWithDecompressedLength+HeaderlessCompressedData)
 	O3PkgTypeObject=0xE //An object that is encodeWithCoder:d
 };
 
@@ -209,6 +208,20 @@ inline UIntP O3WriteCCStringWithTableOrIndex(UInt8* bytes, NSString* str, NSDict
 *if (size==0xF) UCInt realsize;
 *UInt8 data[size or realsize];
 */
+class O3ChildEnt {
+public:
+	NSString* key;
+	NSString* className;
+	O3PkgType type;
+	IntP offset; //When unarchiving, the offset of the child in the file, when archiving, the placeholder before writing the object
+	UIntP len;
+	~O3ChildEnt() {
+		[key release];
+		[className release];
+	}
+	O3ChildEnt(): key(nil), className(nil), len(0), offset(0) {}
+	O3ChildEnt(const O3ChildEnt& o) : key([o.key retain]), className([o.className retain]), type(o.type), offset(o.offset), len(o.len) {}
+};
 
 ///@param index_out Cache this and len_out for a performance win (feed it into O3WriteTypedObjectHeader). This is not a hint, so don't mess with it.
 inline UIntP O3BytesNeededForTypedObjectHeader(UIntP size, NSString* className, NSDictionary* table = nil, O3CCStringHint* classNameHintOut = NULL) {
@@ -259,15 +272,8 @@ inline UIntP O3WriteTypedObjectHeader(UInt8* buf, O3PkgType type, UIntP size, NS
 *Always tack another 0x00 on the end, you can never really go wrong (but make sure to drop the last null byte when writing or the string will grow with every write).
 */
 
-/*O3Mat:
-* BYTE info;
-*	//The 2 most significant bytes (info>>6) dictate type (0=float, 1=double, 2=CInt, 3=type follows)
-*	//The next 3 (info>>3&0x7) dictate the number of rows (for a column vector this is the number of elements). 0x7 indicates that a UCInt follows with the number of rows.
-*	//The next 3 (info&0x7) dictate the number of columns (1 for a column vector). 0x7 indicates that a UCInt follows with the number of columns.
-* if (rows==0x7) UCInt realrows;
-* if (columns==0x7) UCInt realcols;
-* if (type==3) CCString realtype;
-* type[rows*columns] data; //Row-major (first 0,0 then 1,0 then 2,0 then 0,1)
+/*O3PkgTypeIndexedString:
+*UCInt index; //Index into ST
 */
 
 /*Dictionary:
@@ -279,15 +285,20 @@ inline UIntP O3WriteTypedObjectHeader(UInt8* buf, O3PkgType type, UIntP size, NS
 *TypedObj objects[count]; //Just keep reading objects until the size specified in the TypedObj header has been reached
 */
 
-/*FixedSizeArray:
-*TypedObj-data element_type; //Gives the type of each of the elements. Obviously, the data field is N/A here (since an array of data fields follows)
-*UInt8 data[element_type.size][count] //Just keep reading objects until the size specified in the TypedObj header has been reached
-*/
-
-/*FixedSizeMatrix:
-*TypedObj-data element_type; //Gives the type of each of the elements. Obviously, the data field is N/A here (since an array of data fields follows)
-*UCInt columns;  //Just keep reading objects until the size specified in the TypedObj header has been reached
-*UInt8 data[element_type.size][rows][columns]; //Row-major (first 0,0 then 1,0 then 2,0 then 0,1)
+typedef enum {
+	O3PkgFloatValue=0,
+	O3PkgDoubleValue=1,
+	O3PkgReservedValue=2, //Could be used for half floats?
+	O3PkgTypeNamedValue=3
+} O3PkgValueType;
+/*StructArray:
+*  UInt8 info = (pkgValueType | rows<<2 | cols<<5); //if rows==0 or cols==0, this is a vector
+*  if (rows==7) UCInt rows;
+*  if (cols==7) UCInt cols;
+*  if (pkgValueType==3) CCString structArrayTypeName;
+*  if (pkgValueType==0) double val; //Little endian
+*  if (pkgValueType==1) float val;  //Little endian
+*  if (pkgValueType==3) UInt8 portableData[]; //Row-major (first 0,0 then 1,0 then 2,0 then 0,1)
 */
 
 /*StringArray:
@@ -296,17 +307,6 @@ inline UIntP O3WriteTypedObjectHeader(UInt8* buf, O3PkgType type, UIntP size, NS
 
 /*RawData:
 *Just raw, untyped data
-*/
-
-/*Alias: *** DEPRICATED ***
-*CCString path;
-*/
-
-/*Paths: (not really a type, but how they are used) *** DEPRICATED ***
-* /... is relative to the VFS root
-* ~/... is relative to the local package
-* ./... is in the same virtual folder/object as the place it is specified
-* ../... is in the folder above the place it is specified
 */
 
 #endif /*defined(__cplusplus)*/

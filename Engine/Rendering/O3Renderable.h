@@ -6,7 +6,7 @@
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
 #import "O3Space.h"
-@class O3Camera, O3GLView;
+@class O3Camera, O3GLView, O3Context;
 
 typedef struct {
 	void* scratch[5]; ///<You can use this for internal communication in a "stack" of objects. Always clear to NULL. scratch[4] should only be used to point to another, larger structure so you don't run out of space.
@@ -15,6 +15,7 @@ typedef struct {
 	O3Camera* camera;
 	O3Space3*   cameraSpace;
 	double elapsedTime; ///<The time elapsed since the last frame. Note that elapsedTime is in "seconds," but may be positive, 0, or negative (you may want to pause or rewind, so to speak.)
+	O3Context* ctx;
 	NSOpenGLContext* glContext;
 	void* reserved[5];
 } O3RenderContext;

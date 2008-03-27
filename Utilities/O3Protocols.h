@@ -21,22 +21,13 @@
 /**
  * O3HasParameters is a protocol for all objects (shaders, effects, and such) that have KVC-enabled parameters 
  */
+@class O3Parameter;
 @protocol O3HasParameters
-- (id)parameters;
-- (NSArray*)parameterKeys;
-- (NSObject*)parameterNamed:(NSString*)key;
-- (void)setParameterValue:(NSValue*)value forKey:(NSString*)key;
-@end
-
-/**
- * O3HasCGParameters is a protocol for all objects (shaders, effects, and such) that have KVC-enabled CG parameters 
- */
-@class O3CGParameter;
-@protocol O3HasCGParameters
-- (id)parameters;
-- (NSArray*)parameterKeys;
-- (O3CGParameter*)parameterNamed:(NSString*)key;
-- (void)setParameterValue:(NSValue*)value forKey:(NSString*)key;
+- (BOOL)paramsAreCGParams;
+- (NSDictionary*)paramValues;
+- (id)valueForParam:(NSString*)pname;
+- (void)setValue:(id)val forParam:(NSString*)pname;
+- (O3Parameter*)param:(NSString*)pname;
 @end
 
 /**

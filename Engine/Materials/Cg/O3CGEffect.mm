@@ -103,48 +103,6 @@ inline void mConnectGlobalParamsP(O3CGEffect* self) {
 	} while (eff_param = cgGetNextParameter(eff_param));
 }
 
-TechniqueMap* mTechniquesP(O3CGEffect* self) {
-	if (self->mTechniques) return self->mTechniques;
-	self->mTechniques = new TechniqueMap();
-	#ifdef O3CGEFFECT_FILL_TECHNIQUE_CACHE_AT_ONCE
-	CGtechnique technique = cgGetFirstTechnique(self->mEffect);
-	do {
-		string name = cgGetTechniqueName(technique);
-		O3CGTechnique* newTechnique = [[O3CGTechnique alloc] initWithTechnique:technique fromEffect:self];
-		(*self->mTechniques)[name] = newTechnique;
-	} while (technique = cgGetNextTechnique(technique));
-	#endif
-	return self->mTechniques;
-}
-
-ParameterMap*	mParametersP(O3CGEffect* self) {
-	if (self->mParameters) return self->mParameters;
-	self->mParameters = new ParameterMap();
-	#ifdef O3CGEFFECT_FILL_PARAM_CACHE_AT_ONCE
-	CGparameter parameter = cgGetFirstEffectParameter(self->mEffect);
-	do {
-		string name = cgGetParameterName(parameter);
-		O3CGParameter* newParam = [[O3CGParameter alloc] initWithParameter:parameter];
-		(*self->mParameters)[name] = newParam;
-	} while (parameter = cgGetNextParameter(parameter));
-	#endif
-	return self->mParameters;
-}
-
-AnnotationMap*	mAnnotationsP(O3CGEffect* self) {
-	if (self->mAnnotations) return self->mAnnotations;
-	self->mAnnotations = new AnnotationMap();
-	#ifdef O3CGEFFECT_FILL_ANNO_CACHE_AT_ONCE
-	CGannotation anno = cgGetFirstEffectAnnotation(self->mEffect);
-	do {
-		string name = cgGetAnnotationName(anno);
-		O3CGAnnotation* newAnno = [[O3CGAnnotation alloc] initWithAnnotation:anno];
-		(*self->mAnnotations)[name] = newAnno;
-	} while (anno = cgGetNextAnnotation(anno));
-	#endif
-	return self->mAnnotations;
-}
-
 inline O3CGTechnique* mPrincipalTechniqueP(O3CGEffect* self) {
 	if (self->mPrincipalTechnique) return self->mPrincipalTechnique;
 	CGtechnique tech = cgGetFirstTechnique(self->mEffect);
@@ -196,17 +154,14 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	if (mAutoSetParameters) delete mAutoSetParameters;
 	if (mTextureParams) delete mTextureParams;
 	[self purgeCaches];
-	[mAnnotationKVCHelper release];
-	[mParameterKVCHelper release];
-	[mTechniqueKVCHelper release];
 	[mSource release];
 	[super dealloc];
 }
 
 - (void)purgeCaches {
-	O3DestroyCppMap(AnnotationMap, mAnnotations);
-	O3DestroyCppMap(TechniqueMap, mTechniques);
-	O3DestroyCppMap(ParameterMap, mParameters);
+	O3Destroy(mAnnotations);
+	O3Destroy(mTechniques);
+	O3Destroy(mParameters);
 }
 
 - (id)initWithCoder:(NSCoder*)coder {
@@ -250,15 +205,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 
 
 /************************************/ #pragma mark Annotations /************************************/
-- (id)annotations {
-	if (!mAnnotationKVCHelper) mAnnotationKVCHelper = [[O3KVCHelper alloc] initWithTarget:self
-                                                                        valueForKeyMethod:@selector(annotationNamed:)
-                                                                     setValueForKeyMethod:nil
-                                                                           listKeysMethod:@selector(annotationKeys)];
-	return mAnnotationKVCHelper;
-}
-
-- (NSArray*)annotationKeys {
+- (NSArray*)annotationNames {
 	NSMutableArray* to_return = [NSMutableArray array];
 	CGannotation anno = cgGetFirstEffectAnnotation(mEffect);
 	do {
@@ -268,75 +215,62 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 }
 
 - (O3CGAnnotation*)annotationNamed:(NSString*)key {
-	AnnotationMap* annos = mAnnotationsP(self);
-	string name = NSStringUTF8String(key);
-	AnnotationMap::iterator anno_loc = annos->find(name);
-	O3CGAnnotation* to_return = anno_loc->second;
-	if (anno_loc==annos->end()) {
-		CGannotation anno = cgGetNamedEffectAnnotation(mEffect, name.c_str());
-		if (!anno) return nil;
-		(*annos)[name] = to_return = [[O3CGAnnotation alloc] initWithAnnotation:anno];
-	}
-	return to_return;
+	O3CGAnnotation* cga = [mAnnotations objectForKey:key];
+	if (cga) return cga;
+	CGannotation anno = cgGetNamedEffectAnnotation(mEffect, [key UTF8String]);
+	if (!anno) return nil;
+	cga = [[[O3CGAnnotation alloc] initWithAnnotation:anno] autorelease];
+	if (!mAnnotations) mAnnotations = [[NSMutableDictionary alloc] init];
+	[mAnnotations setObject:cga forKey:key];
+	return cga;
 }
-
 
 
 /************************************/ #pragma mark Parameters /************************************/
-- (id)parameters {
-	if (!mParameterKVCHelper) mParameterKVCHelper = [[O3KVCHelper alloc] initWithTarget:self
-                                                                      valueForKeyMethod:@selector(parameterNamed:)
-                                                                   setValueForKeyMethod:@selector(setParameterValue:forKey:)
-                                                                         listKeysMethod:@selector(parameterKeys)];
-	return mParameterKVCHelper;	
-}
-
-- (CGtype)typeNamed:(NSString*)tname {
-	return cgGetNamedUserType(mEffect, NSStringUTF8String(tname));
-}
-
-- (NSArray*)parameterKeys {
-	NSMutableArray* to_return = [NSMutableArray array];
-	CGparameter param = cgGetFirstEffectParameter(mEffect);
-	do {
-		[to_return addObject:[NSString stringWithUTF8String:cgGetParameterName(param)]];
-	} while (param = cgGetNextParameter(param));
-	return to_return;	
-}
-
-- (O3CGParameter*)parameterNamed:(NSString*)key {
-	ParameterMap* params = mParametersP(self);
-	string name = NSStringUTF8String(key);
-	ParameterMap::iterator param_loc = params->find(name);
-	O3CGParameter* to_return = param_loc->second;
-	if (param_loc==params->end()) {
-		CGparameter param = cgGetNamedEffectParameter(mEffect, name.c_str());
-		if (!param) return nil;
-		(*params)[name] = to_return = [[O3CGParameter alloc] initWithParameter:param];
+- (NSDictionary*)paramValues {
+	NSArray* keys = [self paramNames];
+	UIntP ct = [keys count];
+	NSMutableDictionary* md = [[NSMutableDictionary alloc] init];
+	for (UIntP i=0; i<ct; i++) {
+		NSString* str = [keys objectAtIndex:i];
+		[md setObject:[[self param:str] value] forKey:str];
 	}
+	return [md autorelease];
+}
+
+- (id)valueForParam:(NSString*)pname {
+	return [[self param:pname] value];
+}
+
+- (void)setValue:(id)val forParam:(NSString*)pname {
+	[[self param:pname] setValue:val];
+}
+
+- (O3CGParameter*)param:(NSString*)pname {
+	O3CGParameter* cp = [mParameters objectForKey:pname];
+	if (cp) return cp;
+	if (!mParameters) mParameters = [[NSMutableDictionary alloc] init];
+	CGparameter prm = cgGetNamedEffectParameter(mEffect, [pname UTF8String]);
+	cp = [[[O3CGParameter alloc] initWithParam:prm] autorelease];
+	[mParameters setObject:cp forKey:pname];
+	return cp;
+}
+
+- (NSArray*)paramNames {
+	NSMutableArray* to_return = [NSMutableArray array];
+	CGparameter parm = cgGetFirstEffectParameter(mEffect);
+	do {
+		[to_return addObject:[NSString stringWithUTF8String:cgGetParameterName(parm)]];
+	} while (parm = cgGetNextParameter(parm));
 	return to_return;
 }
 
-- (void)setParameterValue:(id)value forKey:(NSString*)key {
-	O3CGParameter* param = mParametersP(self)->find(NSStringUTF8String(key))->second;
-	if (!param) {
-		O3ToImplement();
-	}
-	[param setValue:value];
-}
+- (BOOL)paramsAreCGParams {return YES;}
 
 
 
 /************************************/ #pragma mark Techniques /************************************/
-- (id)techniques {
-	if (!mTechniqueKVCHelper) mTechniqueKVCHelper = [[O3KVCHelper alloc] initWithTarget:self
-                                                                      valueForKeyMethod:@selector(techniqueNamed:)
-                                                                   setValueForKeyMethod:nil
-                                                                         listKeysMethod:@selector(techniqueKeys)];
-	return mTechniqueKVCHelper;
-}
-
-- (NSArray*)techniqueKeys {
+- (NSArray*)techniqueNames {
 	NSMutableArray* to_return = [NSMutableArray array];
 	CGtechnique techn = cgGetFirstTechnique(mEffect);
 	do {
@@ -346,16 +280,14 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 }
 
 - (O3CGTechnique*)techniqueNamed:(NSString*)key {
-	TechniqueMap* tmap = mTechniquesP(self);
-	string name = NSStringUTF8String(key);
-	TechniqueMap::iterator technique_loc = tmap->find(name);
-	O3CGTechnique* to_return = technique_loc->second;
-	if (technique_loc==tmap->end()) {
-		CGtechnique techn = cgGetNamedTechnique(mEffect, name.c_str());
-		if (!techn) return nil;
-		(*tmap)[name] = to_return = [[O3CGTechnique alloc] initWithTechnique:techn fromEffect:self];
-	}
-	return to_return;
+	O3CGTechnique* cgt = [mTechniques objectForKey:key];
+	if (cgt) return cgt;
+	CGtechnique techn = cgGetNamedTechnique(mEffect, [key UTF8String]);
+	if (!techn) return nil;
+	cgt = [[[O3CGTechnique alloc] initWithTechnique:techn fromEffect:self] autorelease];
+	if (!mTechniques) mTechniques = [[NSMutableDictionary alloc] init];
+	[mTechniques setObject:cgt forKey:key];
+	return cgt;
 }
 
 
@@ -378,7 +310,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 	[mPrincipalTechniqueP(self) endRendering];
 }
 
-- (O3CGMaterial*)newMaterial {
+- (O3Material*)newMaterial {
 	return [mPrincipalTechniqueP(self) newMaterial];
 }
 

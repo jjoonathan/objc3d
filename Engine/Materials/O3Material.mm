@@ -8,15 +8,35 @@
 #import "O3Material.h"
 #import "O3KVCHelper.h"
 #import "O3ResManager.h"
-#import "O3CGMaterial.h"
+#import "O3Parameter.h"
 
 typedef map<string, O3MaterialParameterPair> mParameters_t;
+
+#ifdef __cplusplus
+O3Parameter* O3MaterialParameterPair::Param(O3Material* pt) {
+	if (cg_value) return cg_value;
+	return [[[O3Parameter alloc] initWithName:paramName parent:pt] autorelease];
+}
+
+void O3MaterialParameterPair::Set(O3Material* parentMaterial) {
+		if (cg_value && cg_to) {
+			O3CGParameterBindValueFrom_to_(cg_value, cg_to);
+		} else {
+			[parentMaterial setValue:value forParam:paramName];
+		}
+	}
+#endif
 
 @implementation O3Material
 O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Private /************************************/
 inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3HasParameters>* matType) {
 	O3Assign(matType, self->mMaterialType);
+	if (!self->mParameters) return;
+	mParameters_t::iterator it=self->mParameters->begin(), e=self->mParameters->end();
+	do {
+		it->second.SetTarget(matType);
+	} while ((++it)!=e);
 }
 
 /************************************/ #pragma mark Construction and Destruction /************************************/
@@ -45,17 +65,12 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 		return nil;
 	}
 	NSString* matTypeName = [coder decodeObjectForKey:@"materialType"];
-	if ([[O3RMGM() valueForKey:matTypeName] conformsToProtocol:@protocol(O3HasCGParameters)]) {
-		[self release];
-		self = [[O3CGMaterial alloc] initWithMaterialTypeNamed:matTypeName];
-	} else {
-		O3SuperInitOrDie();
-		[self setMaterialTypeName:matTypeName];		
-	}
+	O3SuperInitOrDie();
+	[self setMaterialTypeName:matTypeName];		
 	NSMutableDictionary* pdict = [coder decodeObjectForKey:@"params"];
 	NSEnumerator* pdictEnumerator = [pdict keyEnumerator];
 	while (NSString* o = [pdictEnumerator nextObject]) {
-		[self setValue:[pdict objectForKey:o] forParameter:o];
+		[self setValue:[pdict objectForKey:o] forParam:o];
 	}
 	return self;
 }
@@ -63,20 +78,19 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 - (void)encodeWithCoder:(NSCoder*)coder {
 	if (![coder allowsKeyedCoding])
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
-	NSArray* pnames = [self parameterNames];
+	NSArray* pnames = [self paramNames];
 	NSEnumerator* pnamesEnumerator = [pnames objectEnumerator];
 	NSMutableDictionary* pdict = [[NSMutableDictionary alloc] init];
 	while (NSString* o = [pnamesEnumerator nextObject])
-		[pdict setObject:[self valueForParameter:o] forKey:o];
+		[pdict setObject:[[self param:o] value] forKey:o];
 	[coder encodeObject:pdict forKey:@"params"];
 	if (mMaterialTypeName) [coder encodeObject:mMaterialTypeName forKey:@"materialType"];
 	[pdict release];
 }
 
 - (void)dealloc {
-	O3Destroy(mParameterKVCHelper);
 	O3Destroy(mMaterialType);
-	O3DestroyCppContainer(mParameters_t, mParameters, , ->second.value);
+	delete mParameters;
 	O3Destroy(mMaterialTypeName);
 	[self unbind:@"materialType"];
 	O3SuperDealloc();
@@ -106,54 +120,62 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 
 
 /************************************/ #pragma mark mParameters /************************************/
-- (id)parameters {
-	if (!mParameterKVCHelper) mParameterKVCHelper = [[O3KVCHelper alloc] initWithTarget:self
-                                                                        valueForKeyMethod:@selector(valueForParameter:)
-                                                                     setValueForKeyMethod:@selector(setValue:forParameter:)
-                                                                           listKeysMethod:@selector(parameterNames)];
-	return mParameterKVCHelper;
-}
-
-- (NSArray*)parameterNames {
-	if (!mParameters) return [NSArray array];
+- (NSDictionary*)paramValues {
+	NSMutableDictionary* md = [[[NSMutableDictionary alloc] init] autorelease];
 	mParameters_t::iterator it = mParameters->begin();
-	mParameters_t::iterator end = mParameters->end();
-	NSMutableArray* to_return = [NSMutableArray array];
-	for (; it!=end; it++) {
-		const char* cstr = it->first.c_str();
-		[to_return addObject:[NSString stringWithUTF8String:cstr]];
-	}
-	return to_return;
+	mParameters_t::iterator e = mParameters->end();
+	do {
+		[md setObject:it->second.Value() forKey:it->second.Name()];
+	} while (it++ != e);
+	return md;
 }
 
-///@note if \e param isn't a valid parameter name, \e value is kept in the list of parameters anyways (and ignored). This behavior differs from that of O3CGMaterial.
-///@note if setValue:forParameter: is called in the middle of a rendering pass, results take effect on the next pass. This behavior differs from that of O3CGMaterial.
-- (void)setValue:(NSObject*)value forParameter:(NSString*)param {
-	value = O3Descriptify(value);
+- (NSArray*)paramNames {
+	NSMutableArray* nms = [NSMutableArray array];
+	mParameters_t::iterator it = mParameters->begin();
+	mParameters_t::iterator e = mParameters->end();
+	do {
+		[nms addObject:it->second.Name()];
+	} while (it++ != e);
+	return nms;
+}
+
+- (id)valueForParam:(NSString*)pname {
+	string k = [pname UTF8String];
+	mParameters_t::iterator it = mParameters->find(k);
+	if (it==mParameters->end()) return nil;
+	return it->second.Value();
+}
+
+- (void)setValue:(id)val forParam:(NSString*)pname {
+	string k = [pname UTF8String];
 	if (!mParameters) mParameters = new mParameters_t();
-	mParameters_t::iterator location = mParameters->find(NSStringUTF8String(param));
-	if (location==mParameters->end()) {
-		if (!value) return;
-		O3MaterialParameterPair& val = (*mParameters)[NSStringUTF8String(param)];
-		O3Assign(value, val.value);
+	mParameters_t::iterator it = mParameters->find(k);
+	if (it==mParameters->end()) {
+		O3MaterialParameterPair& newPair = (*mParameters)[k];
+		newPair.SetName(pname);
+		newPair.SetTarget(mMaterialType);
+		newPair.SetValue(val);
 	} else {
-		O3MaterialParameterPair& val = location->second;
-		if (!value) {
-			O3Destroy(val.value);
-			mParameters->erase(location);
-			return;
-		}
-		O3Assign(value, val.value);
+		it->second.SetValue(val);
 	}
 }
 
-- (NSObject*)valueForParameter:(NSString*)param {
-	if (!mParameters) return nil;
-	const char* cname = NSStringUTF8String(param);
-	mParameters_t::iterator loc = mParameters->find(cname);
-	if (loc==mParameters->end()) return nil;
-	return loc->second.value;
+- (O3Parameter*)param:(NSString*)pname {
+	string k = [pname UTF8String];
+	if (!mParameters) mParameters = new mParameters_t();
+	mParameters_t::iterator it = mParameters->find(k);
+	if (it==mParameters->end()) {
+		O3MaterialParameterPair& newPair = (*mParameters)[k];
+		newPair.SetName(pname);
+		newPair.SetTarget(mMaterialType);
+		return newPair.Param(self);
+	} else {
+		return it->second.Param(self);
+	}
+	return nil;
 }
+
 
 
 /************************************/ #pragma mark O3MultipassDirector /************************************/
@@ -165,10 +187,7 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 	if (mParameters) {
 		mParameters_t::iterator it = mParameters->begin();
 		mParameters_t::iterator end = mParameters->end();
-		for (; it!=end; it++) {
-			O3MaterialParameterPair& pair = it->second;
-			[pair.target setValue:pair.value];
-		}
+		for (; it!=end; it++) it->second.Set(self);
 	}
 	[mMaterialType beginRendering];
 }
@@ -181,7 +200,9 @@ inline void setMaterialTypeP(O3Material* self, NSObject<O3MultipassDirector, O3H
 	[mMaterialType endRendering];
 }
 	
-
+- (BOOL)paramsAreCGParams {
+	return NO;
+}
 
 @end
 

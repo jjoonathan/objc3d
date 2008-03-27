@@ -42,7 +42,7 @@
 <constant name='O3ResManagerKeyDidChangeNotification' type='@'/>
 <constant name='O3ResManagerKeyWillChangeNotification' type='@'/>
 <constant name='O3UnkeyedMethodSendToKeyedArchiverException' type='@'/>
-<constant name='gCGContext' type='^{_CGcontext=}'/>
+<constant name='gO3CGContext' type='^{_CGcontext=}'/>
 <constant name='gMaximumVertexAttributes' type='i'/>
 <constant name='gO3KeyedUnarchiverLazyThreshhold' type='i'/>
 <constant name='gO3ResManagerSharedInstance' type='@'/>
@@ -135,7 +135,7 @@
 <arg type='@'/>
 <retval type='@'/>
 </function>
-<function name='O3CGParameterBindValue_to_'>
+<function name='O3CGParameterBindValueFrom_to_'>
 <arg type='@'/>
 <arg type='@'/>
 </function>

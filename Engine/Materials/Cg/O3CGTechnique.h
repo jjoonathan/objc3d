@@ -12,25 +12,17 @@
 #include <string>
 using namespace std;
 #endif
-@class O3CGEffect;
-@class O3KVCHelper;
-@class O3CGAnnotation;
-@class O3CGPass;
-@class O3CGMaterial;
+@class O3CGEffect, O3KVCHelper, O3CGAnnotation, O3CGPass, O3Material;
 
-@interface O3CGTechnique : NSObject <O3MultipassDirector, O3HasParameters, O3HasCGParameters> {
+@interface O3CGTechnique : NSObject <O3MultipassDirector, O3HasParameters> {
 	/*O3WEAK*/ O3CGEffect* mEffect; ///<The effect that contains the technique
 	CGtechnique mTechnique; ///<The actual technique wrapped by the O3CGTechnique
-	O3KVCHelper* mAnnotationKVCHelper;
-	O3KVCHelper* mPassesKVCHelper;
+	NSMutableDictionary* mAnnotations;
+	NSMutableDictionary* mPassMap;
 #ifdef __cplusplus
 	vector<CGpass>* mPasses; ///<A cache of the passes in the O3CGTechnique (not the ObjC objects)
-	map<string, O3CGPass*>* mPassMap; ///<All the receiver's pass objects organized into a map by name
-	map<string, O3CGAnnotation*>* mAnnotations; ///<All the receiver's annotations
 #else
 	void* mPasses;
-	void* mPassMap;
-	void* mAnnotations;
 #endif
 }
 //Init
@@ -42,25 +34,23 @@ using namespace std;
 - (O3CGEffect*)effect;
 
 //Annotations
-- (id)annotations;
-- (NSArray*)annotationKeys;
-- (O3CGAnnotation*)annotationNamed:(NSString*)key;
+- (NSArray*)annotationNames;
+- (O3CGAnnotation*)annotation:(NSString*)key;
 
 //Passes
-- (id)passes;
-- (NSArray*)passKeys;
+- (NSArray*)passNames;
 - (O3CGPass*)passNamed:(NSString*)key;
 - (void)purgeCaches;
 
 //Parameters
-- (id)parameters;
-- (NSArray*)parameterKeys;
-- (O3CGParameter*)parameterNamed:(NSString*)key;
-- (void)setParameterValue:(id)value forKey:(NSString*)key;
-- (CGtype)typeNamed:(NSString*)tname;
+- (BOOL)paramsAreCGParams;
+- (NSDictionary*)paramValues;
+- (id)valueForParam:(NSString*)pname;
+- (void)setValue:(id)val forParam:(NSString*)pname;
+- (O3Parameter*)param:(NSString*)pname;
 
 //Use
-- (O3CGMaterial*)newMaterial;
+- (O3Material*)newMaterial;
 - (int)renderPasses;	///<How many passes are required for the receiver
 - (void)beginRendering;
 - (void)setRenderPass:(int)passnum;	///<Sets the OpenGL state tot hat required for pass number \e passnum of the receiver @warn Stomps on OpenGL state, reset anything important afterwards
