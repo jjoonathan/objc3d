@@ -40,22 +40,23 @@ inline enum O3ResManagerLaziness mLazinessP(O3ResSource* self) {
  	[coder encodeInt:(int)mLaziness forKey:@"Laziness"];
  }
 
+- (void)subresourceDied:(O3ResSource*)rs {
+}
+
 /************************************/ #pragma mark Abstract methods /************************************/
 - (double)searchPriorityForObjectNamed:(NSString*)key {
 	[self doesNotRecognizeSelector:_cmd];
 	return nil;
 }
 
-- (id)loadObjectNamed:(NSString*)name {
+///@param temporaryFailure is set to YES if the failure to load was just due to a lock not being acquired or something. If YES is passed to begin with, the receiver will try again on its own, and will always return NO in temporaryFailure.
+- (BOOL)handleLoadRequest:(NSString*)requestedObject fromManager:(O3ResManager*)rm tryAgain:(inout BOOL*)temporaryFailure {
 	[self doesNotRecognizeSelector:_cmd];
-	return nil;
+	if (temporaryFailure) *temporaryFailure = NO;
+	return NO;
 }
 
-- (void)loadAllObjectsInto:(O3ResManager*)manager {
-	[self doesNotRecognizeSelector:_cmd];
-}
-
-- (BOOL)isBig {
+- (BOOL)shouldLoadLazily {
 	[self doesNotRecognizeSelector:_cmd];
 	return NO;
 }
@@ -67,39 +68,6 @@ inline enum O3ResManagerLaziness mLazinessP(O3ResSource* self) {
 
 - (void)setStringValue:(NSString*)string {
 	[self doesNotRecognizeSelector:_cmd];
-}
-
-
-
-///Non-abstract method method. Override -(id)loadObjectNamed and -(void)loadAllObjectsIntoManager.
-///Keys that cannot be loaded are ignored (nil is returned on failure).
-- (id)loadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager {
-	switch (mLazinessP(self)) {
-		case O3ResManagerNoOpinionLazy:
-			O3AssertFalse(@"mLazinessP should never return O3ResManagerNoOpinionLazy.");
-		case O3ResManagerFileLazy: {
-			[self loadAllObjectsInto:manager];
-			return [manager valueForKey:key];
-		}
-		case O3ResManagerModerateLazy: {
-			if ([self isBig]) {
-				[self loadAllObjectsInto:manager];
-				return [manager valueForKeyWithoutLoading:key];			
-			} else {
-				id obj = [self loadObjectNamed:key];
-				if (obj) [manager setValue:obj forKey:key];
-				return obj;
-			}
-		}
-		case O3ResManagerObjectLazy: {
-			id obj = [self loadObjectNamed:key];
-			if (obj) [manager setValue:obj forKey:key];
-			return obj;			
-		}
-		default:
-			O3AssertFalse(@"Improper laziness: %i", mLazinessP(self));
-	}
-	return nil;
 }
 
 

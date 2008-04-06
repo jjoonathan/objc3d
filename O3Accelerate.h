@@ -13,9 +13,9 @@
 #define O3CFRelease(x) CFRelease((CFArrayRef)x)
 #define O3CFArrayGetCount(x) CFArrayGetCount((CFArrayRef)x)
 #define O3CFDictionarySetValue(dict, key, value) CFDictionarySetValue((CFMutableDictionaryRef)dict, key, value)
-#define O3CFDictionaryGetValue(dict, key)  CFDictionaryGetValue((CFDictionaryRef)dict, key)
+#define O3CFDictionaryGetValue(dict, key)  (id)CFDictionaryGetValue((CFDictionaryRef)dict, key)
 #define O3CFDataGetBytes(dat)  CFDataGetBytePtr((CFDataRef)dat)
-#define O3CFArrayGetValueAtIndex(arr, idx) CFArrayGetValueAtIndex((CFArrayRef)arr, idx)
+#define O3CFArrayGetValueAtIndex(arr, idx) (id)CFArrayGetValueAtIndex((CFArrayRef)arr, idx)
 #define O3NSNumberWithLong(l) [(NSNumber*)CFNumberCreate(NULL, kCFNumberLongType, &l) autorelease]
 #define O3NSNumberWithLongLong(l) [(NSNumber*)CFNumberCreate(NULL, kCFNumberLongLongType, &l) autorelease]
 #define O3CFArrayGetFirstIndexOfValue(arr, v) CFArrayGetFirstIndexOfValue((NSArray*)arr, (CFRange){0,0}, v)
@@ -78,43 +78,31 @@ inline NSNumber* O3TrueObject() {
 	return gTrue;
 }
 
-#ifndef O3UseCoreFoundation
 static IMP NSStringInitWithBytesLengthEncoding = nil;
 static IMP NSStringInitWithBytesNoCopyEtc = nil;
-static IMP NSStringAutoreleaseMethod = nil;
-#endif
+//static IMP NSStringAutoreleaseMethod = nil;
 static id NSStringAllocPlaceholder = nil;
 
 static void O3AccelerateInitialize() {
 	static BOOL initialized = NO; if (initialized) return; initialized = YES;
-	#ifndef O3UseCoreFoundation
 	NSStringAllocPlaceholder = [NSString allocWithZone:nil];
 	NSStringInitWithBytesLengthEncoding = [NSStringAllocPlaceholder methodForSelector:@selector(initWithBytes:length:encoding:)];
 	NSStringInitWithBytesNoCopyEtc = [NSStringAllocPlaceholder methodForSelector:@selector(initWithBytesNoCopy:length:encoding:freeWhenDone:)];
-	#endif
-	NSStringAutoreleaseMethod = [NSString methodForSelector:@selector(autorelease)];
+	//NSStringAutoreleaseMethod = [NSString methodForSelector:@selector(autorelease)];
 }
 
 inline NSString* NSStringWithUTF8String(const char* str, IntP len) {
 	O3AccelerateInitialize();
 	if (len==-1) len = strlen(str);
-	#ifndef O3UseCoreFoundation
 	NSString* nsstr = NSStringInitWithBytesLengthEncoding(NSStringAllocPlaceholder, @selector(initWithBytes:length:encoding:),   str, len, NSUTF8StringEncoding);
-	return NSStringAutoreleaseMethod(nsstr, @selector(autorelease));
-	#else
-	return NSStringAutoreleaseMethod(   CFStringCreateWithBytes(NULL, str, len, false)   );
-	#endif
+	return [nsstr autorelease];
 }
 
 inline NSString* NSStringWithUTF8StringNoCopy(const char* str, IntP len, BOOL freeWhenDone) {
 	O3AccelerateInitialize();
 	if (len==-1) len = strlen(str);
-	#ifndef O3UseCoreFoundation
 	NSString* nsstr = NSStringInitWithBytesNoCopyEtc(NSStringAllocPlaceholder, @selector(initWithBytesNoCopy:length:encoding:freeWhenDone:),   str, len, NSUTF8StringEncoding, freeWhenDone);
-	return NSStringAutoreleaseMethod(nsstr, @selector(autorelease));
-	#else
-	return NSStringAutoreleaseMethod(   CFStringCreateWithBytesNoCopy(NULL, str, len, NSUTF8StringEncoding, false, kCFAllocatorDefault)   );
-	#endif
+	return [nsstr autorelease];
 }
 
 /************************************/ #pragma mark NSString Acceleration /************************************/

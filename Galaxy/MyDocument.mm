@@ -52,6 +52,8 @@
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError {
+	BOOL success = YES;
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	@try {
  		NSDictionary* dict = [O3KeyedUnarchiver unarchiveObjectWithData:data];
 		NSEnumerator* ke = [dict keyEnumerator];
@@ -71,9 +73,10 @@
 		NSString* desc = [NSString stringWithFormat:@"An error occured while opening the file. Reason:\n%@", [e reason]];
 		NSDictionary* info = [NSDictionary dictionaryWithObject:desc forKey:NSLocalizedDescriptionKey];
 		if (outError) *outError = [NSError errorWithDomain:O3DefaultErrorDomain code:2 userInfo:info];
-		return NO;
+		success = NO;
 	}
-   return YES;
+	[pool release];
+	return success;
 }
 
 - (id)objectForKey:(NSString*)name {

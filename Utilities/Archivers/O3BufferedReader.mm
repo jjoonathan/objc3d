@@ -5,6 +5,7 @@
  *  @copyright Copyright (c) 2007 Jonathan deWerd. All rights reserved, except those explicitly granted by the MIT license in LICENSE.txt.
  */
 #include "O3BufferedReader.h"
+#import "NSData+zlib.h"
 #include <string>
 
 /************************************/ #pragma mark Init and Destruction /************************************/
@@ -18,12 +19,18 @@ O3BufferedReader::O3BufferedReader(NSData* data) {
 
 O3BufferedReader::O3BufferedReader(NSFileHandle* handle) {
 	Init();
+	int fd = [handle fileDescriptor];
+	flock(fd, LOCK_SH);
 	O3Assign(handle, mHandle);
 	mHandle_readDataOfLength_ = (mHandle_readDataOfLength_t)[handle methodForSelector:@selector(readDataOfLength:)];
 	mOffset	= 0;
 }
 
 O3BufferedReader::~O3BufferedReader() {
+	if (mHandle) {
+		int fd = [mHandle fileDescriptor];
+		flock(fd, LOCK_UN);
+	}
 	O3Destroy(mHandle);
 	O3Destroy(mBlockData);
 }
@@ -59,59 +66,68 @@ inline void O3BufferedReader::Advance(UInt64 bytes) {
 }
 
 /************************************/ #pragma mark Public Reader Methods /************************************/
-///@param classname the class nome of the object (an autoreleased NSString) iff type==O3PkgTypeObj. Otherwise it is untouched (not set to nil!)
-enum O3PkgType O3BufferedReader::ReadObjectHeader(UIntP* size, NSString** classname) {
-	UInt8 infobyte = ReadByte();
-	enum O3PkgType type = (enum O3PkgType)((infobyte&0xF0)>>4);
-	if (type==O3PkgTypeObject && classname) *classname = ReadCCString(O3CCSClassTable);
-	UIntP readsize = infobyte&0xF;
-	UIntP realsize = readsize;
-	if (readsize==0xF) realsize = ReadUCIntAsUInt64();
-	if (size) {
-		if (readsize==0xE) realsize = 64;
-		else if (readsize==0xD) realsize = 32;
-		else if (readsize==0xC) realsize = 16;
-		else if (readsize==0xB) realsize = 12;
-		*size = realsize;
+std::vector<O3ChildEnt> O3BufferedReader::ReadChildEntsOfTotalLength(UIntP len, BOOL have_keys) {
+	std::vector<O3ChildEnt> ret;
+	UInt64 accum_len=0; //The ammount of accumulated object data (not header data)
+	UInt64 old_offset=Offset(); //Used to calculate accumulated header data
+	UInt64 pos=0;
+	while (pos<len) {
+		NSString* k = nil;
+		if (have_keys) k = [ReadCCString(O3CCSKeyTable) retain];
+		O3ChildEnt e(ReadChildEnt());
+		e.key = k;
+		e.offset=accum_len; //This is the offset past the ents list
+		ret.push_back(e);
+		accum_len+=e.len;
+		pos = accum_len+(Offset()-old_offset);
 	}
-	return type;
+	UInt64 post_ents_offset=Offset();
+	std::vector<O3ChildEnt>::iterator it=ret.begin(), e=ret.end();
+	for (; it!=e; it++)
+		(*it).offset += post_ents_offset;
+	return ret;
 }
 
-///Skips over an object header and that header's object
-void O3BufferedReader::SkipObject() {
-	UIntP size;
-	ReadObjectHeader(&size);
-	if (mBlockBytesRemaining>size) {
-		Advance(size);
-		return;
-	}
-	SeekToOffset(Offset()+size);
+O3ChildEnt O3BufferedReader::ReadChildEnt() {
+	O3ChildEnt ret;
+	UInt8 infobyte = ReadByte();
+	ret.type = (enum O3PkgType)((infobyte&0xF0)>>4);
+	if (ret.type==O3PkgTypeObject) ret.className = [ReadCCString(O3CCSClassTable) retain];
+	UIntP size = infobyte&0xF;
+	if (size==0xF) size = ReadUCIntAsUInt64();
+	else if (size==0xE) size = 64;
+	else if (size==0xD) size = 32;
+	else if (size==0xC) size = 16;
+	else if (size==0xB) size = 12;
+	ret.len = size;
+	return ret;
 }
+
 
 ///@warning This will fail to read archived objects (if coder is nil, because of the callback). Use O3KeyedUnarchiver.
 ///@return an autoreleased object
 ///@param coder The NSCoder handling the deserialization (for callback purposes, namely readO3ADictionary:) or nil. If [coder readO3ADictionary:] returns YES the buffered reader will continue deserializing under the assumption that deserialazation of the dictionary is complete and it has been seeked past. Otherwise it will simply make a NSDictionary and populate it.
 ///@param z The zone objects will be allocated in (%coder must be aware of this zone as well, or callback objects will be allocated by the coder)
-id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone* z) {
-	UIntP size;
-	NSString* className;
-	enum O3PkgType type = ReadObjectHeader(&size, &className);
-	UIntP oldOffset = Offset();
+id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone* z, O3ChildEnt& ent) {
+	switch (ent.type) {
+		case O3PkgTypeFalse:		return [[[NSNumber allocWithZone:z] initWithBool:NO] autorelease];
+		case O3PkgTypeTrue:			return [[[NSNumber allocWithZone:z] initWithBool:YES] autorelease];
+	}
+	SeekToOffset(ent.offset);
 	id to_return = nil;
-	switch (type) {
-		case O3PkgTypeFalse:		to_return = [[NSNumber allocWithZone:z] initWithBool:NO];								                 break;
-		case O3PkgTypeTrue:			to_return = [[NSNumber allocWithZone:z] initWithBool:YES];                                               break;
-		case O3PkgTypePositiveInt:	to_return = [[NSNumber allocWithZone:z] initWithUnsignedLongLong:ReadBytesAsUInt64(size)];               break;
-		case O3PkgTypeNegativeInt:	to_return = [[NSNumber allocWithZone:z] initWithLongLong:-(Int64)ReadBytesAsUInt64(size)];               break;
-		//case O3PkgTypeValue:		to_return = [[O3Value allocWithZone:z] initByReadingFrom:this];                                      break;
-		//case O3PkgTypeValueArray:   to_return = [[[O3ValueArray allocWithZone:z] initWithPortableBufferReader:this] autorelease];        break;
-		//case O3PkgType01Fixed:		to_return = [[NSNumber allocWithZone:z] initWithDouble:ReadBytesAsUInt64(size)/(double)(1<<(8*size)-1)]; break;
-		case O3PkgTypeRawData:      to_return = ReadData(size);                                                              break;
-		case O3PkgTypeFloat:{	 	
-			if (size==sizeof(float))  {to_return = [[NSNumber allocWithZone:z] initWithFloat:ReadFloat()];   break;}
-			if (size==sizeof(double)) {to_return = [[NSNumber allocWithZone:z] initWithDouble:ReadDouble()]; break;}
+	UInt64 size = ent.len;
+	switch (ent.type) {
+		case O3PkgTypePositiveInt:	to_return = [[[NSNumber allocWithZone:z] initWithUnsignedLongLong:ReadBytesAsUInt64(size)] autorelease];               break;
+		case O3PkgTypeNegativeInt:	to_return = [[[NSNumber allocWithZone:z] initWithLongLong:-(Int64)ReadBytesAsUInt64(size)] autorelease];               break;
+		case O3PkgTypeFloat:{
+			if (size==sizeof(float))  {to_return = [[[NSNumber allocWithZone:z] initWithFloat:ReadFloat()] autorelease];   break;}
+			if (size==sizeof(double)) {to_return = [[[NSNumber allocWithZone:z] initWithDouble:ReadDouble()] autorelease]; break;}
 			O3Assert(NO, @"Cannot read a %l byte float!", (long)size);
 			to_return = nil; break;
+		}
+		case O3PkgTypeIndexedString: {
+			UIntP idx = ReadBytesAsUInt64(size);
+			to_return = [mST objectAtIndex:idx]; break;
 		}
 		case O3PkgTypeString: {
 			if (!size) {to_return = @""; break;}
@@ -121,28 +137,34 @@ id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone
 			to_return = nil; break;
 		}
 		case O3PkgTypeDictionary: {
-			id dict = [coder readO3ADictionaryFrom:this size:size];
-			if (!dict) {
-				unsigned long long dict_end = Offset()+size;
-				dict = [[[NSMutableDictionary allocWithZone:z] init] autorelease];
-				while (Offset()<dict_end) {
-					NSString* key = ReadCCString(O3CCSKeyTable);
-					[dict setValue:ReadObject(coder, z) forKey:key];
-				}
+			id cdict = [coder readO3ADictionaryFrom:this size:size];
+			if (cdict) return cdict;
+			std::vector<O3ChildEnt> ents = ReadChildEntsOfTotalLength(size, YES);
+			std::vector<O3ChildEnt>::iterator it=ents.begin(), e=ents.end();
+			NSMutableDictionary* dict = [[[NSMutableDictionary allocWithZone:z] init] autorelease];
+			for (; it!=e; it++) {
+				O3ChildEnt& chEnt = *it;
+				NSString* k = chEnt.key;
+				if (chEnt.domain) k = [chEnt.domain stringByAppendingString:k];
+				[dict setValue:ReadObject(coder, z, chEnt) forKey:k];
 			}
 			to_return = dict; break;
 		}
 		case O3PkgTypeArray: {
-			NSArray* arr = [coder readO3AArrayFrom:this size:size];
-			if (!arr) {
-				unsigned long long arr_end = Offset()+size;
-				arr = [[[NSMutableArray allocWithZone:z] init] autorelease];
-				while (Offset()<arr_end) {
-					id obj = ReadObject(coder, z);
-					[(NSMutableArray*)arr addObject:obj];
-				}
+			id carr = [coder readO3AArrayFrom:this size:size];
+			if (carr) return carr;
+			std::vector<O3ChildEnt> ents = ReadChildEntsOfTotalLength(size, NO);
+			std::vector<O3ChildEnt>::iterator it=ents.begin(), e=ents.end();
+			NSMutableArray* marr = [[[NSMutableArray allocWithZone:z] initWithCapacity:ents.size()] autorelease];
+			for (; it!=e; it++) {
+				O3ChildEnt& chEnt = *it;
+				[marr addObject:ReadObject(coder, z, chEnt)];
 			}
-			to_return = arr; break;
+			to_return = marr; break;
+		}
+		O3PkgTypeStructArray: {
+			to_return = [O3StructArrayRead(this, size) autorelease];
+			break;
 		}
 		case O3PkgTypeStringArray: {
 			NSMutableArray* arr = [[[NSMutableArray allocWithZone:z] initWithCapacity:size/6] autorelease];
@@ -156,22 +178,42 @@ id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone
 			free(bytes);
  			to_return = arr; break;
 		}
+		case O3PkgTypeRawData: {
+			to_return = ReadData(size);
+			break;
+		}
+		case O3PkgTypeCompressed: {
+			UInt64 o0 = Offset();
+			O3ChildEnt ee(ReadChildEnt());
+			UInt64 o1 = Offset();
+			UInt64 clen = size - (o1-o0);
+			O3InflationOptions iopts;
+			NSMutableData* md = iopts.inflateInto = [[NSMutableData allocWithZone:z] initWithCapacity:ee.len];
+			iopts.rawInflate = YES;
+			[ReadDataNoCopy(clen) o3InflateWithOptions:iopts];
+			O3BufferedReader br2(md);
+			br2.mKT = mKT; br2.mST = mST; br2.mCT = mCT;
+			ee.offset = 0;
+			to_return = ReadObject(coder, z, ee);
+			[md release];
+			break;
+		}
 		case O3PkgTypeObject: {
 			if (!coder) {
 				to_return = nil;
 				O3CLogWarn(@"All O3PkgTypeObjects are replaced with nil in an archive which is unarchived with O3BufferedReader::ReadObject and a nil coder.");
 				break;
 			}
-			to_return = [coder readO3AObjectOfClass:className from:this size:size];
+			to_return = [coder readO3AObjectOfClass:ent.className from:this size:size];
 			break;
 		}
 		default:
 			O3AssertFalse(@"PkgType not recognized!");
 	} //switch
 	UIntP offset = Offset();
-	UIntP correctOffset = oldOffset+size;
+	UIntP correctOffset = ent.offset+size;
 	if (offset!=correctOffset) {
-		O3CLogWarn(@"The contract in the O3UnarchiverCallbackable protocol was broken: during the reading of (type:%i size:0x%X) %@, the offset was 0x%X after reading when it should have been 0x%X according to the object header ending at 0x%X. Attempting recovery (returning nil).", type, size, to_return, offset, correctOffset, oldOffset);
+		O3CLogWarn(@"The contract in the O3UnarchiverCallbackable protocol was broken: during the reading of (type:%i size:0x%X) %@, the offset was 0x%X after reading when it should have been 0x%X according to the object header ending at 0x%X. Attempting recovery (returning nil).", ent.type, size, to_return, offset, correctOffset, ent.offset);
 		@try {
 			SeekToOffset(correctOffset);
 			to_return = nil;
@@ -471,4 +513,13 @@ BOOL O3BufferedReader::IsAtEnd() {
 		}
 	}
 	return YES;
+}
+
+UInt64 O3BufferedReader::TotalLength() {
+	if (!mHandle) return [mBlockData length];
+	UInt64 off = [mHandle offsetInFile];
+	[mHandle seekToEndOfFile];
+	UInt64 noff = [mHandle offsetInFile];
+	[mHandle seekToFileOffset:off];
+	return noff;
 }

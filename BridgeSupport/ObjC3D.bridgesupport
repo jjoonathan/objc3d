@@ -574,12 +574,12 @@
 </method>
 </class>
 <class name='O3DirectoryResSource'>
-<method selector='isBig'>
+<method selector='shouldLoadLazily'>
 <retval type='B'/>
 </method>
 </class>
 <class name='O3FileResSource'>
-<method selector='isBig'>
+<method selector='shouldLoadLazily'>
 <retval type='B'/>
 </method>
 <method selector='needsUpdate'>
@@ -777,7 +777,7 @@
 </method>
 </class>
 <class name='O3ResSource'>
-<method selector='isBig'>
+<method selector='shouldLoadLazily'>
 <retval type='B'/>
 </method>
 </class>

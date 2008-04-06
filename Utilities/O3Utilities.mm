@@ -42,8 +42,10 @@ O3EXTERN_C void O3Init() {
 	static int inited = 0;
 	if (inited) return;
 	inited++;
+	BOOL l = NO;
 	
 	////OpenGL
+	if (l) NSLog(@"Starting OpenGL");
 	BOOL skip_gl_init = [[[NSBundle mainBundle] bundleIdentifier] isEqual:@"org.blenderfoundation.blender"];
 	gO3GLResourceContext = [[NSOpenGLContext alloc] initWithFormat:[NSOpenGLView defaultPixelFormat] shareContext:nil];
 	if (skip_gl_init) {
@@ -55,6 +57,7 @@ O3EXTERN_C void O3Init() {
 	
 	O3BeginGLRes();
 	////CG
+	if (l) NSLog(@"Starting Cg");
 	gO3GlobalCGContext = cgCreateContext();
 	cgGLSetManageTextureParameters(gO3GlobalCGContext, CG_TRUE);
 	cgSetErrorCallback(O3CGErrorCallback);
@@ -63,6 +66,7 @@ O3EXTERN_C void O3Init() {
     cgGLSetOptimalOptions(CG_PROFILE_ARBFP1);
 	
 	////GLEW
+	if (l) NSLog(@"Starting GLEW");
 	GLenum glewState = glewInit();
 	if (glewState != GLEW_OK) {
 		NSString* desc = @"an unknown error occured.";
@@ -76,16 +80,19 @@ O3EXTERN_C void O3Init() {
 	O3EndGLRes();
 	
 	////Log4Cocoa
+	if (l) NSLog(@"Starting L4C");
 	[[L4Logger rootLogger] addAppender:[L4ConsoleAppender standardErrWithLayout:[L4Layout simpleLayout]]];
 	[[L4Logger rootLogger] setLevel:[L4Level info]];
 	
 	////Misc
+	if (l) NSLog(@"Starting misc");
 	[O3VecStructType o3init];
 	[O3ScalarStructType o3init];
 	[O3MatStructType o3init];
 	[O3ResManager o3init];
 	[O3CGEffect o3init];
 	
+	if (l) NSLog(@"Cleaning Up");
 	[p release];
 }
 

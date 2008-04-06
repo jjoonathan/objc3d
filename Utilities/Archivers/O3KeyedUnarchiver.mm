@@ -11,11 +11,12 @@
 @implementation O3KeyedUnarchiver
 O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Accessors /************************************/
+static void readRootEnts(O3KeyedUnarchiver* self);
 - (NSZone*)objectZone {return mObjectZone;}
 - (void)setObjectZone:(NSZone*)zone {mObjectZone = zone;}
 - (BOOL)allowsKeyedCoding {return YES;}
-- (NSString*)domain {return mDomain;}
-- (NSDictionary*)classFallbacks {return mClassFallbacks;}
+- (NSString*)domain {readRootEnts(self); return mDomain;}
+- (NSDictionary*)classFallbacks {readRootEnts(self); return mClassFallbacks;}
 
 /************************************/ #pragma mark Construction /************************************/
 - (O3KeyedUnarchiver*)initForReadingWithData:(NSData*)dat {
@@ -43,35 +44,52 @@ O3DefaultO3InitializeImplementation
 }
 
 - (void)dealloc {
-	[mBr->mKT release];
-	[mBr->mST release];
-	[mBr->mCT release];
-	if (mDeleteBr&&mBr) delete mBr;
+	if (mBr) {
+		[mBr->mKT release];
+		[mBr->mST release];
+		[mBr->mCT release];
+		if (mDeleteBr) delete mBr;
+	}
 	[mClassFallbacks release];
 	[mClassOverrides release];
 	[mDomain release];
+	[mMetadata release];
 	O3SuperDealloc();
 }
 
 /************************************/ #pragma mark Read /************************************/
 //Returns the value or nil if it doesn't know what to do. If it didn't know what to do, it didn't read it.
-id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
-	if ([key isEqualToString:@"KT"])
-		return O3Assign(self->mBr->ReadObject(self, self->mObjectZone), self->mBr->mKT);
-	else if ([key isEqualToString:@"ST"])
-		return O3Assign(self->mBr->ReadObject(self, self->mObjectZone), self->mBr->mST);
-	else if ([key isEqualToString:@"CT"])
-		return O3Assign(self->mBr->ReadObject(self, self->mObjectZone), self->mBr->mCT);
-	else if ([key isEqualToString:@"C"])
-		return O3Assign(self->mBr->ReadObject(self, self->mObjectZone), self->mClassFallbacks);
-	else if ([key isEqualToString:@"D"])
-		return O3Assign(self->mBr->ReadObject(self, self->mObjectZone), self->mDomain);
+id handleMetadataKeyP(O3KeyedUnarchiver* self, O3ChildEnt ent) {
+	NSString* k = ent.key;
+	if ([k isEqualToString:@""]) return nil;
+	self->mMetadata = self->mMetadata ?: [[NSMutableDictionary alloc] init];
+	id obj = self->mBr->ReadObject(self, self->mObjectZone, ent);
+	[self->mMetadata setObject:obj forKey:k];
+	if ([k isEqualToString:@"KT"])
+		return O3Assign(obj, self->mBr->mKT);
+	else if ([k isEqualToString:@"ST"])
+		return O3Assign(obj, self->mBr->mST);
+	else if ([k isEqualToString:@"CT"])
+		return O3Assign(obj, self->mBr->mCT);
+	else if ([k isEqualToString:@"C"])
+		return O3Assign(obj, self->mClassFallbacks);
+	else if ([k isEqualToString:@"D"])
+		return O3Assign(obj, self->mDomain);
 	return nil;
 }
 
-- (void)reset {
-	O3AssertIvar(mBr);
-	mBr->SeekToOffset(0);
+static void readRootEnts(O3KeyedUnarchiver* self) {
+	if (self->mHasReadRootEnts) return;
+	self->mHasReadRootEnts = YES;
+	self->mBr->SeekToOffset(0);
+	self->mRootEnts = self->mBr->ReadChildEntsOfTotalLength(self->mBr->TotalLength(), YES);
+	std::vector<O3ChildEnt>::iterator it=self->mRootEnts.begin(), e=self->mRootEnts.end();
+	for (; it!=e; it++) {
+		O3ChildEnt& ent = *it;
+		if (handleMetadataKeyP(self, ent)) continue;
+		if (![ent.key isEqualToString:@""])
+			O3LogWarn(@"Unknown root key encountered: \"%@\". Ignoring it.", ent.key);
+	}
 }
 
 ///@warning One-shot: only call read once, since it leaves the read position at the end of the buffer. Calling twice without calling -reset will produce an error.
@@ -79,107 +97,41 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 	O3AssertIvar(mBr);
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	id to_return;
-	while (!mBr->IsAtEnd()) {
-		NSString* key = mBr->ReadCCString(O3CCSKeyTable); //Should never be in the key table, but we have to be pedantic about following specs
-		if (!handleMetadataKeyP(self, key)) {
-			if ([key isEqualToString:@""])
-				to_return = [mBr->ReadObject(self, mObjectZone) retain];
-			else {
-				O3LogWarn(@"Unknown root key encountered: \"%@\" -> %@. Reading its value, but ignoring it.", key, mBr->ReadObject(self, mObjectZone));
-			}
+	readRootEnts(self);
+	std::vector<O3ChildEnt>::iterator it=mRootEnts.begin(), e=mRootEnts.end();
+	for (; it!=e; it++) {
+		O3ChildEnt& ent = *it;
+		if ([ent.key isEqualToString:@""]) {
+			ent.domain = [mDomain retain];
+			to_return = [mBr->ReadObject(self, mObjectZone, ent) retain];
+			break;
 		}
 	}
 	[pool release];
-	mHasReadMetadata = YES;
 	return [to_return autorelease];
 }
 
-///@warning One-shot. Either call read or readAndLoadIntoManager, but not both, as the second will cause issues. Use -reset if you must readAndLoadIntoManager after reading.
-///@param returnDummyDict if YES, the dictionary returned is full of [NSNull null] rather than anything useful. Often the receiver might want to know what keys were loaded, but not retain them. Using the null object works great in these situatios. NSSet would be more logical, but less convenient.
-- (id)readAndLoadIntoManager:(O3ResManager*)manager returnDummyDict:(BOOL)returnDummyDict {
-	NSDictionary* loaded_objects = [self read];
-	NSEnumerator* k = [loaded_objects keyEnumerator];
-	id nullval = returnDummyDict?O3NSNull():nil;
-	#ifdef O3AssumeSimultaneousDictEnumeration
-	NSEnumerator* o = [loaded_objects objectEnumerator];
-	while (id obj = [o nextObject]) {
-		id val = (returnDummyDict?nullval:obj);
-		[manager setValue:val forKey:[k nextObject]];
-	}
-	#else
-	while (id key = [k nextObject]) {
-		id val = (returnDummyDict?nullval:[loaded_objects objectForKey:key]);
-		[manager setValue:val forKey:key];
-	}	
-	#endif
-	return loaded_objects;
-}
-
 - (NSDictionary*)metadata {
-	if (mMetadata) return mMetadata;
-	O3AssertIvar(mBr);
-	UInt64 oldoffset = mBr->Offset();
-	mBr->SeekToOffset(0);
-	mDepth+=100;
-	
-	NSMutableDictionary* mdata = [[[NSMutableDictionary alloc] init] autorelease];
-	while (!mBr->IsAtEnd()) {
-		NSString* key = mBr->ReadCCString(O3CCSKeyTable); //Should never be in the key table, but we have to be pedantic about following specs
-		id value = handleMetadataKeyP(self, key);
-		if (!value) {
-			if ([key isEqualToString:@""]) {
-				value = O3NSNumberWithLongLong(mBr->Offset());
-				mBr->SkipObject();
-			}
-			else value = mBr->ReadObject(self, mObjectZone);
-		}
-		O3CFDictionarySetValue(mdata,key,value);
-	}
-	
-	mDepth-=100;
-	mHasReadMetadata = YES;
-	mBr->SeekToOffset(oldoffset);
-	O3Assign(mdata, mMetadata);
-	return mdata;
+	readRootEnts(self);
+	return mMetadata;
 }
 
-///@param prependDomainToKeys O3Archives by default prepend every key in their root level (every key that is globally visible without calling accessors) with the domain. skimDictionaryAtOffset has no way of knowing if we are in the root level (level 1), so you must provide this info.
-///@warning Be sure to call readMetadata first, or this will likely burn and die with an archive corrupt message
-- (NSDictionary*)skimDictionaryAtOffset:(UIntP)offs levelOne:(BOOL)prependDomainToKeys {
-	if (!mHasReadMetadata) {
-		O3LogWarn(@"Skimming was requested of unarchiver %@. This is not a good idea without having first read metadata, since you won't know what you are skimming. Metadata was automatically read to assure consistency.");
-		[self metadata];
-	}
-	mDepth+=100; //Just to be safe, we get away from other special behavior
-	NSMutableDictionary* to_return = [[[NSMutableDictionary alloc] init] autorelease];
-	O3AssertIvar(mBr);
-	mBr->SeekToOffset(offs);
-	UIntP size;
-	enum O3PkgType type = mBr->ReadObjectHeader(&size);
-	if (!(type==O3PkgTypeObject || type==O3PkgTypeDictionary))
-		[NSException raise:NSInconsistentArchiveException format:@"Tried to skim non-dictionary & non-object thing at %p"];
-	UIntP endOffset = mBr->Offset()+size;
-	while (mBr->Offset()<endOffset) {
-		NSString* localKey = mBr->ReadCCString(O3CCSKeyTable);
-		if (self->mDomain&&prependDomainToKeys) localKey = [self->mDomain stringByAppendingString:localKey];
-		O3CFDictionarySetValue(to_return, localKey, O3NSNumberWithLongLong(mBr->Offset()));
-		mBr->SkipObject();
-	}
-	mDepth-=100;
-	return to_return;
+- (std::vector<O3ChildEnt>*)rootEnts {
+	readRootEnts(self);
+	return &mRootEnts;
 }
 
-- (id)readObjectAtOffset:(UIntP)offset {
-	if (!mHasReadMetadata) {
-		O3LogWarn(@"Raw object reading was requested of unarchiver %@. This is not a good idea without having first read metadata, since you won't know what you are jumping to. Metadata was automatically read to assure consistency.");
-		[self metadata];
-	}
-	mDepth+=100; //Just to be safe, we get away from other special behavior
-	O3AssertIvar(mBr);
-	mBr->SeekToOffset(offset);
-	id to_return = mBr->ReadObject(self, mObjectZone);
-	mDepth-=100;
-	return to_return;
+- (std::vector<O3ChildEnt>)entsForDictionary:(O3ChildEnt&)dict {
+	O3Asrt(dict.type==O3PkgTypeDictionary || dict.type==O3PkgTypeObject);
+	O3Asrt(mBr);
+	mBr->SeekToOffset(dict.offset);
+	return mBr->ReadChildEntsOfTotalLength(dict.len, YES);
+}
+
+- (id)objectForEnt:(O3ChildEnt&)ent {
+	O3Asrt(ent.type==O3PkgTypeDictionary || ent.type==O3PkgTypeObject);
+	O3Asrt(mBr);
+	return mBr->ReadObject(self, mObjectZone, ent);
 }
 
 
@@ -201,33 +153,11 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 
 /************************************/ #pragma mark Unarchiving protocol /************************************/
 - (NSObject*)readO3ADictionaryFrom:(O3BufferedReader*)reader size:(UIntP)size {
-	NSMutableDictionary* dict = [[[NSMutableDictionary alloc] init] autorelease];
-	UIntP offset = reader->Offset();
-	UIntP end = offset + size;
-	mDepth++;
-	while(offset<end) {
-		NSString* k = reader->ReadCCString(O3CCSKeyTable);
-		O3Assert(reader->Offset()<end, @"Archive corrupt");
-		if (mDepth==1&&mDomain) k = [mDomain stringByAppendingString:k];
-		NSObject* v = reader->ReadObject(self, mObjectZone);
-		if (v) O3CFDictionarySetValue(dict, k, v);
-		offset = reader -> Offset();
-	}
-	mDepth--;
-	return dict;
+	return nil; //Causes the bufferedreader to default
 }
 
 - (NSArray*)readO3AArrayFrom:(O3BufferedReader*)reader size:(UIntP)size {
-	NSMutableArray* arr = [[[NSMutableArray alloc] init] autorelease];
-	UIntP offs = reader->Offset();
-	UIntP end = offs + size;
-	mDepth++;
-	while(offs<end) {
-		O3CFArrayAppendValue(arr, reader->ReadObject(self, mObjectZone));
-		offs = reader->Offset();
-	};
-	mDepth--;
-	return arr;
+	return nil; //Causes the bufferedreader to default
 }
 
 ///@todo make more efficient
@@ -246,19 +176,17 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 			objClass = NSClassFromString(name);
 		}
 	}
-	
+	std::vector<O3ChildEnt> ents = reader->ReadChildEntsOfTotalLength(size, YES);
+	std::vector<O3ChildEnt>::iterator it=ents.begin(), e=ents.end();
 	NSDictionary* oldDict = mObjDict;
 	mObjDict = [[NSMutableDictionary alloc] init];
-	UIntP end = reader->Offset() + size;
 	mDepth++;
-	do {
-		NSString* k = reader->ReadCCString(O3CCSKeyTable);
-		NSObject* v = reader->ReadObject(self, mObjectZone);
-		O3CFDictionarySetValue(mObjDict, k, v);
-	} while(reader->Offset()<end);
+	for (; it!=e; it++) {
+		O3ChildEnt& ent = *it;
+		O3CFDictionarySetValue(mObjDict, ent.key, reader->ReadObject(self, mObjectZone, ent));
+	}
 	mDepth--;
 	NSObject* to_return = [[[objClass alloc] initWithCoder:self] autorelease];
-	//O3Optimizeable();
 	[mObjDict release];
 	mObjDict = oldDict;
 	return to_return;
@@ -350,6 +278,15 @@ id handleMetadataKeyP(O3KeyedUnarchiver* self, NSString* key) {
 	if (mDeleteBr) {
 		delete mBr;
 		mBr = NULL;
+	}
+}
+
+/************************************/ #pragma mark Debug/Testing /************************************/
++ (void)testUnarchivingData:(NSData*)dat {
+	for (UIntP i=0; i<100000; i++) {
+		NSAutoreleasePool *pool = [NSAutoreleasePool new];
+		[O3KeyedUnarchiver unarchiveObjectWithData:dat];
+		[pool release];
 	}
 }
 

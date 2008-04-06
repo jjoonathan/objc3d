@@ -52,6 +52,7 @@ public:
 	void SeekToOffset(unsigned long long offset);
 	unsigned long long Offset();
 	BOOL IsAtEnd();
+	UInt64 TotalLength();
 	void Close();
 	
 	UInt8 ReadByte();
@@ -70,9 +71,9 @@ public:
 	void ReadBytesInto(void* b, UInt64 len);
 	NSData* ReadData(UInt64 len);
 	NSData* ReadDataNoCopy(UInt64 len); ///<Only works if the receiver is based on an NSData*, and the returned data will only be valid as long as the input data is alive. Use with caution.
-	enum O3PkgType ReadObjectHeader(UIntP* size, NSString** classname = nil);
-	void SkipObject();
-	id ReadObject(NSCoder<O3UnarchiverCallbackable>* coder = nil, NSZone* z = nil);
+	O3ChildEnt ReadChildEnt();
+	std::vector<O3ChildEnt> ReadChildEntsOfTotalLength(UIntP len, BOOL have_keys);
+	id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone* z, O3ChildEnt& ent);
 	
 	NSArray* mKT; ///<The Key Table. Note that this is a public var, and the assigner is therefore also responsible for disposal.
 	NSArray* mCT; ///<The ClassName Table. Note that this is a public var, and the assigner is therefore also responsible for disposal.

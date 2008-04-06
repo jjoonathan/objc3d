@@ -5,7 +5,11 @@
 //  Created by Jonathan deWerd on 9/27/07.
 //  Copyright 2007 __MyCompanyName__. All rights reserved.
 //
+#ifdef __cplusplus
+#import <map>
+#endif
 #import "O3ResSource.h"
+#import "O3ArchiveFormat.h"
 @class O3DirectoryResSource, O3KeyedUnarchiver;
 
 extern int gO3KeyedUnarchiverLazyThreshhold; ///1MB default for lazy loading
@@ -14,8 +18,13 @@ extern int gO3KeyedUnarchiverLazyThreshhold; ///1MB default for lazy loading
 	NSString* mPath;
 	NSDate* mLastUpdatedDate;
 	O3KeyedUnarchiver* mUnarchiver;
-	NSDictionary* mKeys;
-	O3DirectoryResSource* mContainerResSource;
+	O3ResSource* mContainerResSource;
+	NSLock* mResLock;
+	
+	NSString* mDomain;
+	#ifdef __cplusplus
+	std::vector<O3ChildEnt>* mRootEnts; //Note: these are not metadata roots, these are archive root objects
+	#endif
 	
 	NSString* mCachedName;
 	float     mCachedPriority;
@@ -23,17 +32,18 @@ extern int gO3KeyedUnarchiverLazyThreshhold; ///1MB default for lazy loading
 	BOOL mFullyLoaded:1;
 	BOOL mIsBig:1; BOOL mIsBigDetermined:1;
 }
-- (O3FileResSource*)initWithPath:(NSString*)path parentResSource:(O3DirectoryResSource*)drs;
-- (NSDictionary*)keyLocationDict; ///<A perfectly acceptable substitute for -keys, and it can be searched quicker too.
+- (O3FileResSource*)initWithPath:(NSString*)path parentResSource:(O3ResSource*)drs;
 - (NSString*)domain;
+
+//Private loading methods
+- (id)loadObjectNamed:(NSString*)name; //Not lock protected
+- (NSDictionary*)loadAllObjects; //Not lock protected
 
 //O3ResSource abstract methods
 - (double)searchPriorityForObjectNamed:(NSString*)key;
-- (void)loadAllObjectsInto:(O3ResManager*)manager;
-- (id)loadObjectNamed:(NSString*)name;
-- (BOOL)isBig;
+- (BOOL)handleLoadRequest:(NSString*)requestedObject fromManager:(O3ResManager*)rm tryAgain:(BOOL*)temporaryFailure;
+- (BOOL)shouldLoadLazily;
 
-//Semi-Private
 - (BOOL)needsUpdate;
 - (void)close;
 @end

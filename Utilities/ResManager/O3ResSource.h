@@ -8,10 +8,10 @@
 @class O3ResManager;
 
 enum O3ResManagerLaziness {
-	O3ResManagerFileLazy=0,		///<Each file will be entirely loaded whenever any object is needed from it
-	O3ResManagerModerateLazy=1,	///<Small files will be loaded all at once, but big files will be loaded object-by-object. Generally finer control is available.
-	O3ResManagerObjectLazy=2,		///<Each object will be loaded only when needed
-	O3ResManagerNoOpinionLazy=3	///<Passes control of laziness to next higher tier. This is the default for everything except the global lazy setting, which defaults to O3ResManagerModerateLazy.
+	O3ResManagerFileLazy=0,		///<Each file will be entirely loaded whenever any object is needed from it. Not lazy at all.
+	O3ResManagerModerateLazy=1,	///<Small files will be loaded all at once, but big files will be loaded object-by-object. Lets each res source make its own decision.
+	O3ResManagerObjectLazy=2,		///<Each object will be loaded only when needed. Forces laziness.
+	O3ResManagerNoOpinionLazy=3	///<Passes control of laziness to next higher tier. This is the default for everything except the global lazy setting, which defaults to O3ResManagerModerateLazy. Only used internally, won't ever be returned by -laziness.
 };
 
 /** O3ResSource is an abstract class for all classes which provide ways of loading resources. 
@@ -27,15 +27,13 @@ enum O3ResManagerLaziness {
 @private
 	enum O3ResManagerLaziness mLaziness;
 }
-- (id)loadObjectNamed:(NSString*)key intoResManager:(O3ResManager*)manager; ///<@warning this method may have side effects: if mLaziness is FileLazy, all other keys in the file will also be loaded. The object will be reloaded and replaced if necesary.
-
 //To be implemented by subclass
 - (id)initWithCoder:(NSCoder*)coder;
 - (void)encodeWithCoder:(NSCoder*)coder;
 - (double)searchPriorityForObjectNamed:(NSString*)key;
-- (id)loadObjectNamed:(NSString*)name;
-- (void)loadAllObjectsInto:(O3ResManager*)manager;
-- (BOOL)isBig; ///<Returns YES if the resource soure is over the critical limit under O3ResManagerModerateLazy between lazy and not-lazy loading
+- (BOOL)handleLoadRequest:(NSString*)requestedObject fromManager:(O3ResManager*)rm tryAgain:(inout BOOL*)temporaryFailure;
+- (BOOL)shouldLoadLazily; ///<Returns YES if the resource soure is over the critical limit under O3ResManagerModerateLazy between lazy and not-lazy loading
+- (void)subresourceDied:(O3ResSource*)rs; ///<Default implementation does nothing
 
 //Allows binding to a table or somesuch
 - (NSString*)stringValue;

@@ -67,7 +67,6 @@ public:
 	UIntP WriteBytesAtPlaceholder(const void* bytes, UIntP len, UIntP p, BOOL freeWhenDone = NO);
 	UIntP WriteChildrenHeaderAtPlaceholder(std::vector<O3ChildEnt>* children, UIntP p, NSDictionary* kt=nil, NSDictionary* ct=nil);
 	UIntP WriteTypedObjectHeaderAtPlaceholder(NSString* className, UIntP size, enum O3PkgType type, UIntP placeholder);
-	UIntP WriteKVHeaderAtPlaceholder(NSString* key, NSString* className, UIntP size, enum O3PkgType type, UIntP placeholder);
 	UIntP WriteStringArrayAtPlaceholder(const std::vector<std::string>& strings, UIntP placeholder);
 	
 	UIntP BytesWrittenInPlaceholderRange(IntP start, IntP length);

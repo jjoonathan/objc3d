@@ -10,23 +10,28 @@
 
 @interface O3DirectoryResSource : O3ResSource {
 	NSString* mPath;
-	NSMutableDictionary* mFileSources; ///< (NSString*)path -> (O3FileResSource*)fsource
+	O3ResSource* mParentResSource;
+	NSMutableDictionary* mSubSources; ///< (NSString*)path -> (O3ResSource*)fsource
+	NSArray* mSubSourceArray;
 	
 	NSString* mCacheKey;
 	NSArray* mCacheOrder;
 }
-- (O3DirectoryResSource*)initWithPath:(NSString*)path;
+- (O3DirectoryResSource*)initWithPath:(NSString*)path parentResSource:(O3ResSource*)prs;
 
 //O3ResSource stuff
 - (O3DirectoryResSource*)initWithCoder:(NSCoder*)coder;
 - (void)encodeWithCoder:(NSCoder*)coder;
 - (double)searchPriorityForObjectNamed:(NSString*)key;
-- (id)loadObjectNamed:(NSString*)name;
-- (void)loadAllObjectsInto:(O3ResManager*)manager;
-- (BOOL)isBig; ///<Always returns YES
+- (BOOL)handleLoadRequest:(NSString*)requestedObject fromManager:(O3ResManager*)rm tryAgain:(BOOL*)ta;
+- (BOOL)shouldLoadLazily; ///<Always returns YES
 - (NSString*)path;
 - (void)setPath:(NSString*)path;
 
-//Notifications (used by files)
-- (void)fileDidClose:(O3FileResSource*)file;
+//Notifications (used by files) and other private methods
+- (void)subresourceDied:(O3FileResSource*)file; //Removes file as a res source, since it is gone now
+- (BOOL)updatePaths; //Finds any previously undiscovered files and adds them. Also gets rid of files that have disappeared. Returns NO if the dir the receiver represents disappeared, and the current operation should be aborted.
+
+//Convenience
+- (NSArray*)resourceSources;
 @end

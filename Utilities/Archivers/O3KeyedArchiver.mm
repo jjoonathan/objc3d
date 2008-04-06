@@ -36,7 +36,14 @@ inline void initP(O3KeyedArchiver* self) {
 	[mClassNameMappings release];
 	[mDat release];
 	[mWrittenClasses release];
-	if (mArchInfo) {delete mArchInfo; mArchInfo=NULL;}
+	if (mArchInfo) {
+		[mArchInfo->writer->mKT release];
+		[mArchInfo->writer->mST release];
+		[mArchInfo->writer->mCT release];
+		delete mArchInfo->writer;
+		delete mArchInfo;
+		mArchInfo=NULL;
+	}
 	O3SuperDealloc();
 }
 
@@ -65,13 +72,14 @@ inline void initP(O3KeyedArchiver* self) {
 
 + (NSData*)archivedDataWithRootObject:(id)obj {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
-	NSMutableData* d = [NSMutableData dataWithCapacity:32];
+	NSMutableData* d = [NSMutableData dataWithCapacity:512];
 	O3KeyedArchiver* a = [[O3KeyedArchiver alloc] initForWritingWithMutableData:d];
 	[a encodeObject:obj forKey:@""];
 	[a finishEncoding];
 	[a release];
-	return d;
+	[d retain];
 	[pool release];
+	return [d autorelease];
 }
 
 + (void)archiveRootObject:(id)obj toFile:(NSString*)file {
@@ -323,19 +331,31 @@ inline NSString* encodeNameOfObjClass(O3KeyedArchiver* self, id obj) {
 	[mDelegate archiverDidFinish:(NSKeyedArchiver*)self];
 }
 
+/************************************/ #pragma mark Testing /************************************/
+#ifdef O3DEBUG
++ (void)testMem {
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
+	NSArray* a = [NSArray arrayWithObjects:[NSNumber numberWithInt:1],[NSNumber numberWithInt:2],[NSNumber numberWithInt:3],[NSNumber numberWithInt:4],[NSNumber numberWithInt:5],[NSNumber numberWithInt:6],@"somestring",@"str2",nil];
+	for (UIntP i=0; i<1000; i++) {
+		[O3KeyedArchiver archivedDataWithRootObject:a];
+	}
+	[pool release];
+}
+#endif
+
 @end
 
 
 
 @implementation NSObject (O3KeyedArchiving)
 - (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k {
-	UIntP headerp = arch->writer->ReservePlaceholder();
 	beginWithArchiver_key_tenativeObj_(arch->archiver, k, self);
+	UIntP headerp = arch->writer->ReservePlaceholder();
 	arch->children.push(O3ArchiveInfo::child_arr_t());
 	[(id<NSCoding>)self encodeWithCoder:arch->archiver];
-	endWithArchiver_className_pkgType(arch->archiver, encodeNameOfObjClass(arch->archiver, self), O3PkgTypeObject);
 	arch->writer->WriteChildrenHeaderAtPlaceholder(&(arch->children.top()), headerp, arch->writer->mKT, arch->writer->mCT);
 	arch->children.pop();
+	endWithArchiver_className_pkgType(arch->archiver, encodeNameOfObjClass(arch->archiver, self), O3PkgTypeObject);
 }
 @end
 
@@ -369,7 +389,8 @@ inline NSString* encodeNameOfObjClass(O3KeyedArchiver* self, id obj) {
 	NSNumber* num = [arch->writer->mST objectForKey:self];
 	if (num) {
 		UIntP idx = O3NSNumberLongLongValue(num);
-		arch->writer->WriteUCIntAtPlaceholder(idx, arch->writer->ReservePlaceholder());
+		arch->writer->WriteUIntAsBytesAtPlaceholder(idx, O3BytesNeededForUInt(idx),arch->writer->ReservePlaceholder());
+		endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeIndexedString);
 		return;
 	}
 	const char* str = NSStringUTF8String(self); UIntP len = strlen(str);

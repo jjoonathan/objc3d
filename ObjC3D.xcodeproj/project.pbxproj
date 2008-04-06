@@ -33,6 +33,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		FC0B09DD0DA5DF8800441FD9 /* O3Num.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0B09DB0DA5DF8800441FD9 /* O3Num.h */; };
+		FC0B09DE0DA5DF8800441FD9 /* O3Num.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC0B09DC0DA5DF8800441FD9 /* O3Num.mm */; };
 		FC0BBD410D233F0700E5B388 /* O3Renderable.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC0BBD400D233EF900E5B388 /* O3Renderable.mm */; };
 		FC0BBD480D23FE6800E5B388 /* O3Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD460D23FE6800E5B388 /* O3Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC0BBD4C0D24122200E5B388 /* O3GLViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0BBD4A0D24122200E5B388 /* O3GLViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -421,6 +423,8 @@
 		FC02C30C0B3AE719000DC47C /* O3RenderBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3RenderBuffer.mm; path = Engine/Rendering/O3RenderBuffer.mm; sourceTree = SOURCE_ROOT; };
 		FC02C4530B3B271E000DC47C /* O3TestDXT1Convert.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3TestDXT1Convert.mm; path = Tests/Runables/O3TestDXT1Convert.mm; sourceTree = SOURCE_ROOT; };
 		FC030FB40A953A89007E04C1 /* Todo.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Todo.rtf; sourceTree = "<group>"; };
+		FC0B09DB0DA5DF8800441FD9 /* O3Num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Num.h; sourceTree = "<group>"; };
+		FC0B09DC0DA5DF8800441FD9 /* O3Num.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Num.mm; sourceTree = "<group>"; };
 		FC0BBD400D233EF900E5B388 /* O3Renderable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3Renderable.mm; path = Engine/Rendering/O3Renderable.mm; sourceTree = SOURCE_ROOT; };
 		FC0BBD460D23FE6800E5B388 /* O3Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Timer.h; path = Utilities/O3Timer.h; sourceTree = SOURCE_ROOT; };
 		FC0BBD4A0D24122200E5B388 /* O3GLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3GLViewController.h; path = Classes/O3GLViewController.h; sourceTree = SOURCE_ROOT; };
@@ -906,6 +910,8 @@
 				FC97C0210D7520370060AFED /* O3Optimization.mm */,
 				FC9FCAA90D870C72001EFBD9 /* NSData+zlib.h */,
 				FC9FCAAA0D870C72001EFBD9 /* NSData+zlib.mm */,
+				FC0B09DB0DA5DF8800441FD9 /* O3Num.h */,
+				FC0B09DC0DA5DF8800441FD9 /* O3Num.mm */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1459,6 +1465,7 @@
 				FC97C0240D7521BD0060AFED /* O3Optimization.h in Headers */,
 				FC9FCAAB0D870C72001EFBD9 /* NSData+zlib.h in Headers */,
 				FC9FCAF80D885908001EFBD9 /* O3Parameter.h in Headers */,
+				FC0B09DD0DA5DF8800441FD9 /* O3Num.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1818,6 +1825,7 @@
 				FC97C0220D7520370060AFED /* O3Optimization.mm in Sources */,
 				FC9FCAAC0D870C73001EFBD9 /* NSData+zlib.mm in Sources */,
 				FC9FCAF70D885908001EFBD9 /* O3Parameter.mm in Sources */,
+				FC0B09DE0DA5DF8800441FD9 /* O3Num.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1918,6 +1926,7 @@
 				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/Support";
 				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_FAST_OBJC_DISPATCH = YES;
@@ -1991,9 +2000,11 @@
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../MyApplications/OmniObjectMeter.app/Contents/Resources\"";
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -2039,9 +2050,11 @@
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../MyApplications/OmniObjectMeter.app/Contents/Resources\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
@@ -2083,9 +2096,11 @@
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../MyApplications/OmniObjectMeter.app/Contents/Resources\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -2126,9 +2141,11 @@
 					"$(SRCROOT)/build/Support",
 					"$(SRCROOT)/Other",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/build\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/build\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../MyApplications/OmniObjectMeter.app/Contents/Resources\"";
 				FRAMEWORK_VERSION = A;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -2205,10 +2222,11 @@
 				);
 				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILD_DIR)/Support";
-				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_DEBUGGING_SYMBOLS = default;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_FAST_OBJC_DISPATCH = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_OBJC_CALL_CXX_CDTORS = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;

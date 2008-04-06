@@ -20,6 +20,7 @@ UInt8* O3NonlinearWriter::AllocBytes(UIntP bytes) {
 	}
 	if (bytes<=mBlockSize) { //Otherwise make a new arena and return a chunk off it
 		UInt8* buf = (UInt8*)malloc(mBlockSize);
+		mBuffers.push_back(buf);
 		mCurrentPos = buf + bytes;
 		mBytesLeft = mBlockSize - bytes;
 		mLastAllocationSize = bytes;
@@ -141,7 +142,7 @@ UIntP O3NonlinearWriter::WriteBytesAtPlaceholder(const void* bytes, UIntP len, U
 
 UIntP O3NonlinearWriter::WriteTypedObjectHeaderAtPlaceholder(NSString* className, UIntP size, enum O3PkgType type, UIntP placeholder) {
 	if ((className?YES:NO)^type==O3PkgTypeObject)
-		[NSException raise:NSInvalidArgumentException format:@"In WriteKVHeaderAtPlaceholder, a className (%@) must be and must only be provided for type==O3PkgTypeObject==14 (%i)", className, type];
+		[NSException raise:NSInvalidArgumentException format:@"In WriteTypedObjectHeaderAtPlaceholder, a className (%@) must be and must only be provided for type==O3PkgTypeObject==14 (%i)", className, type];
 	O3CCStringHint classNameHint;
 	UIntP allocSize = O3BytesNeededForTypedObjectHeader(size, className, mCT, &classNameHint);
 	UInt8* buf = (UInt8*)AllocBytes(allocSize);
@@ -152,26 +153,6 @@ UIntP O3NonlinearWriter::WriteTypedObjectHeaderAtPlaceholder(NSString* className
 	WriteBytesAtPlaceholder(buf, usedBytes, placeholder);
 	return usedBytes;
 }
-
-UIntP O3NonlinearWriter::WriteKVHeaderAtPlaceholder(NSString* key, NSString* className, UIntP size, enum O3PkgType type, UIntP placeholder) {
-	if ((className?YES:NO)^type==O3PkgTypeObject)
-		[NSException raise:NSInvalidArgumentException format:@"In WriteKVHeaderAtPlaceholder, a className (%@) must be and must only be provided for type==O3PkgTypeObject==14 (%i)", className, type];
-	O3CCStringHint classNameHint, keyHint;
-	UIntP TOHsize = O3BytesNeededForTypedObjectHeader(size, className, mCT, &classNameHint);
-	UIntP Ksize = O3BytesNeededForCCStringWithTable(key, mKT, &keyHint);
-	UInt8* buf = (UInt8*)AllocBytes(TOHsize + Ksize);
-	
-	UIntP rKsize = O3WriteCCStringWithTableOrIndex(buf, key, mKT, &keyHint);
-	UIntP rTOHsize = O3WriteTypedObjectHeader(buf+rKsize, type, size, className, mCT, &classNameHint);
-	
-	//RelinquishBytes(allocedBytes-usedBytes);
-	UIntP usedBytes = rTOHsize+rKsize;
-	O3Assert(rKsize==Ksize, @"Allocation estimation equation in WriteTypedObjectHeaderAtPlaceholder was wrong, archive is possibly corrupt.");
-	O3Assert(rTOHsize==TOHsize, @"Allocation estimation equation in WriteTypedObjectHeaderAtPlaceholder was wrong, archive is possibly corrupt.");
-	WriteBytesAtPlaceholder(buf, usedBytes, placeholder);
-	return usedBytes;
-}
-
 
 UIntP O3NonlinearWriter::WriteStringArrayAtPlaceholder(const std::vector<std::string>& strings, UIntP placeholder) {
 	UIntP usedBytes=0;

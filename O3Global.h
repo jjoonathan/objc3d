@@ -6,7 +6,7 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#import "O3Utilities.h"
+//#import "O3Utilities.h" //Imported at the end to catch the defs in this file
 #include <Cg/cg.h>
 #include <Cg/cgGL.h>
 
@@ -53,6 +53,8 @@ typedef enum O3SupportLevel {
 	//Allows the use of CF* functions on toll-free-bridged classes for extra speed.
 	#ifdef __COREFOUNDATION__
 		#define O3UseCoreFoundation 1
+	#else
+		#define O3UseCoreFoundation 0
 	#endif
 	
 	#define O3UseCoreGraphics 1
@@ -79,6 +81,9 @@ typedef enum O3SupportLevel {
 	//Allows the use of mach calls to increase speed
 	#define O3AllowMachCalls 1
 #endif
+
+/************************************/ #pragma mark Deferred Global Imports /************************************/
+#import "O3Utilities.h"
 
 /************************************/ #pragma mark Context Management /************************************/
 static UInt64 gO3GL2xContextSwitches = 0; ///<O3BeginGLRes increments this by 3, O3EndGLRes decrements it by 1. While in a resource context it should be odd, and when outside it should be even. You can watch it to improve performance by eliminating switches.

@@ -280,12 +280,6 @@ module IRB
     irb = Irb.new(nil, console.inputMethod)
     @CONF[:IRB_RC].call(irb.context) if @CONF[:IRB_RC]
     @CONF[:MAIN_CONTEXT] = irb.context
-    trap("SIGINT") do
-      irb.signal_handle
-    end
-	trap("SIGTERM") do
-      NSApplication.sharedApplication.terminate(self)
-    end
     old_stdout, old_stderr = $stdout, $stderr
     $stdout = $stderr = console
     catch(:IRB_EXIT) do
@@ -293,7 +287,8 @@ module IRB
         begin
           irb.eval_input
         rescue Exception
-		  exit if "#{$!}"=="exit"
+		  errstr = "#{$!}"
+		  NSApplication.sharedApplication.terminate(nil) if errstr=="exit" || errstr=="SIGTERM"
           puts "Error: #{$!}"
         end
       end

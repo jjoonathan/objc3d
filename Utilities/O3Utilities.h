@@ -196,11 +196,11 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 #endif /*defined(__cplusplus)*/
 
 #ifdef O3AllowObjcInitAndDeallocSpeedHack
-#include <objc-runtime.h>
+#include <objc/objc-runtime.h>
 #define O3SuperInitOrDie() {													\
 	static IMP super_init = NULL;												\
 	if (!super_init)															\
-		super_init = [super.super_class instanceMethodForSelector:@selector(init)];	\
+		super_init = [((objc_super*)super)->super_class instanceMethodForSelector:@selector(init)];	\
 	if (!super_init(self, @selector(init))) {									\
 		O3Release(self);														\
 		return nil;																\
@@ -209,7 +209,7 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 #define O3SuperDealloc() {														\
 	static IMP super_dealloc = NULL;											\
 	if (!super_dealloc) 														\
-		super_dealloc = [super.super_class instanceMethodForSelector:@selector(dealloc)];	\
+		super_dealloc = [((objc_super*)super)->super_class instanceMethodForSelector:@selector(dealloc)];	\
 	super_dealloc(self, @selector(dealloc));									\
 	if (0) [super dealloc];														\
 }
@@ -250,6 +250,8 @@ inline id<NSCopying> O3Copy(id<NSCopying> obj)	{return O3Copy(obj,NULL);}
 #define O3DestroyCppVector(type, name) O3DestroyCppContainer(type, name, *, )
 
 #define O3DefaultO3InitializeImplementation +(void)initialize{O3Init();}
+
+#define O3Return(val) {ret = val; goto end;}
 
 /************************************/ #pragma mark Scripting /************************************/
 O3EXTERN_C id O3Descriptify(id bridge_object); ///<Unwraps an object from the scripting bridge if necessary (don't use unless necessary)

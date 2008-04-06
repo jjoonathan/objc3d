@@ -8,29 +8,28 @@
 #import "O3DirectoryResSource.h"
 #import "O3KeyedUnarchiver.h"
 #import "O3FileResSource.h"
+#import "O3ResManager.h"
 
 @implementation O3DirectoryResSource
 O3DefaultO3InitializeImplementation
 
-- (O3DirectoryResSource*)initWithPath:(NSString*)path {
+- (O3DirectoryResSource*)initWithPath:(NSString*)path parentResSource:(O3ResSource*)prs {
 	O3SuperInitOrDie(); //Don't mod without updating setStringValue
+	mParentResSource = prs;
 	[self setPath:path];
 	return self;
 }
 
 - (void)dealloc {
-	[mFileSources release];
+	[mSubSources release];
 	[mPath release];
-	[mCacheKey release];
-	[mCacheOrder release];
+	O3Destroy(mSubSourceArray);
 	O3SuperDealloc();
 }
 
-- (void)fileDidClose:(O3FileResSource*)file {
-	NSArray* sources = [mFileSources allKeysForObject:file];
-	[mFileSources removeObjectsForKeys:sources];
-	O3Destroy(mCacheKey);
-	O3Destroy(mCacheOrder);
+- (void)subresourceDied:(O3FileResSource*)file {
+	NSArray* sources = [mSubSources allKeysForObject:file];
+	[mSubSources removeObjectsForKeys:sources];
 }
 
 - (O3DirectoryResSource*)initWithCoder:(NSCoder*)coder {
@@ -40,61 +39,44 @@ O3DefaultO3InitializeImplementation
 		return nil;
 	}
 	[super initWithCoder:coder];
-	[self setPath:[coder decodeObjectForKey:@"Path"]];	
+	[self setPath:[coder decodeObjectForKey:@"path"]];	
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
 	if (![coder allowsKeyedCoding])
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
-	[coder encodeObject:mPath forKey:@"Path"];
+	[coder encodeObject:mPath forKey:@"path"];
+}
+
+inline NSArray* mSubSourceArrayP(O3DirectoryResSource* self) {
+	if (self->mSubSourceArray) return self->mSubSourceArray;
+	O3Assign([self->mSubSources allValues], self->mSubSourceArray);
+	return self->mSubSourceArray;
 }
 
 
 /************************************/ #pragma mark O3ResSource stuff /************************************/
-static int searchPrioritySort(O3FileResSource* l, O3FileResSource* r, void* vkey) {
-	NSString* key = (NSString*)vkey;
-	double ll = O3FileResSourceSearchPriority(l, key);
-	double rr = O3FileResSourceSearchPriority(r, key);
-	if (ll<rr) return NSOrderedDescending; //Swapped on purpose
-	if (ll>rr) return NSOrderedAscending;
-	return NSOrderedSame;
-}
-
-NSArray* prioritySortedFilesP(O3DirectoryResSource* self, NSString* key) {
-	if (key==self->mCacheKey) return self->mCacheOrder;
-	NSArray* files = [self->mFileSources allValues];
-	files = [files sortedArrayUsingFunction:searchPrioritySort context:key];
-	O3Assign(files, self->mCacheOrder);
-	O3Assign(key, self->mCacheKey);	
-	return files;
+- (BOOL)handleLoadRequest:(NSString*)requestedObject fromManager:(O3ResManager*)rm tryAgain:(BOOL*)ta {
+	if (ta) *ta = NO;
+	NSArray* ssrcs = mSubSourceArrayP(self);
+	BOOL primary_success = O3ResSourcesLoadNamed_fromPreloadCache_orSources_intoManager_(requestedObject, nil, ssrcs, rm);
+	if (primary_success) return YES;
+	if (![self updatePaths]) return NO;
+	BOOL secondary_success = O3ResSourcesLoadNamed_fromPreloadCache_orSources_intoManager_(requestedObject, nil, ssrcs, rm);
+	return secondary_success;
 }
 
 - (double)searchPriorityForObjectNamed:(NSString*)key {
-	NSArray* files = prioritySortedFilesP(self, key);
-	return [files count]? O3FileResSourceSearchPriority([files objectAtIndex:0], key) : 0;
-}
-
-- (id)loadObjectNamed:(NSString*)name {
-	NSArray* files = prioritySortedFilesP(self, name);
-	NSEnumerator* filesEnumerator = [files objectEnumerator];
-	while (O3FileResSource* o = [filesEnumerator nextObject]) {
-		id lobj = [o loadObjectNamed:name];
-		if (lobj) return lobj;
-		if (O3FileResSourceSearchPriority(o, name) <= 0.) return nil;
+	NSEnumerator* ssEnumerator = [mSubSourceArrayP(self) objectEnumerator];
+	double max = 0; //Can't be negative, or we will never try to load and paths will never be updated
+	while (O3ResSource* o = [ssEnumerator nextObject]) {
+		max = O3Max(max, [o searchPriorityForObjectNamed:key]);
 	}
-	return nil;
+	return max;
 }
 
-- (void)loadAllObjectsInto:(O3ResManager*)manager {
-	NSArray* files = [mFileSources allValues];
-	NSEnumerator* filesEnumerator = [files objectEnumerator];
-	while (O3FileResSource* o = [filesEnumerator nextObject]) {
-		[o loadAllObjectsInto:manager];
-	}
-}
-
-- (BOOL)isBig {
+- (BOOL)shouldLoadLazily {
 	return YES;
 }
 
@@ -102,26 +84,46 @@ NSArray* prioritySortedFilesP(O3DirectoryResSource* self, NSString* key) {
 	return mPath;
 }
 
-- (void)setPath:(NSString*)path {
-	if (![path isEqualToString:mPath]) {
-		O3Assign(path, mPath);
-		
-		NSMutableDictionary* newSources = [[NSMutableDictionary alloc] init];
-		NSArray* subpaths = [[NSFileManager defaultManager] subpathsAtPath:path];
-		NSEnumerator* subpathsEnumerator = [subpaths objectEnumerator];
-		NSString* p = nil;
-		while (p = [subpathsEnumerator nextObject]) {
-			p = [path stringByAppendingPathComponent:p];
-			O3FileResSource* frs = [mFileSources objectForKey:p] ?: [[O3FileResSource alloc] initWithPath:p parentResSource:self];
-			[newSources setObject:frs forKey:p];
-			[frs release];
-		}
-		
-		O3Assign(newSources, mFileSources);
-		[newSources release];
-		[mCacheKey release];
-		[mCacheOrder release];		
+- (BOOL)updatePaths {
+	@try {
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
+	NSFileManager* dm = [NSFileManager defaultManager];
+	NSArray* subpaths = [dm subpathsAtPath:mPath];
+	if (!subpaths) {
+		[mParentResSource subresourceDied:self];
+		return NO;
 	}
+	NSEnumerator* subpathsEnumerator = [subpaths objectEnumerator];
+	NSMutableDictionary* newSources = [[[NSMutableDictionary alloc] init] autorelease];
+	while (NSString* o = [subpathsEnumerator nextObject]) {
+		NSString* path = [mPath stringByAppendingPathComponent:o];
+		BOOL dir; BOOL exists = [dm fileExistsAtPath:path isDirectory:&dir];
+		if (!exists) continue;
+		O3ResSource* newSource = [mSubSources objectForKey:path]; //First try old source = new source
+		if (!newSource) { //But if that doesn't work
+			if (dir) { //Make a new subdirectory res source
+				//Unneeded: each directory res source will automatically find all the files in all subdirectories
+				//newSource = [[O3DirectoryResSource alloc] initWithPath:path parentResSource:self];
+			} else { //Make a new file resource
+				newSource = [[O3FileResSource alloc] initWithPath:path parentResSource:self];
+			}
+		}
+		if (newSource) [newSources setObject:newSource forKey:path];
+	}
+	O3Assign(newSources, mSubSources);
+	O3Destroy(mSubSourceArray);
+	[pool release];
+	} @catch (NSException* e) {}
+	return YES;
+}
+
+- (void)setPath:(NSString*)path {
+	O3Assign(path, mPath);
+	[self updatePaths];
+}
+
+- (NSArray*)resourceSources {
+	return mSubSourceArrayP(self);
 }
 
 /************************************/ #pragma mark Bindings /************************************/

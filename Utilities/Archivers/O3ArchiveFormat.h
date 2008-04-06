@@ -14,7 +14,6 @@ enum O3PkgType { //See below for the full definitions of these types
 	O3PkgTypeFloat=4,		//Variable length big endian half/float/double/bignum (float and bignum not implemented at present)
 	O3PkgTypeIndexedString=5, //A O3PkgTypePositiveInt that is an index into the O3PkgTypeStringArray defined by the root key "ST"
 	O3PkgTypeString=6,		//A non-null-terminated C string (not a CCString)
-	//O3PkgTypeValue=7,		//Stores both vectors and matricies. Basically an optimized StructArray format. Now handled by StructArray
 	O3PkgTypeDictionary=8, 	//Stored as a dictionary. By default it is unarchived as a dictionary.
 	O3PkgTypeArray=9,		//An array of objects in it's simplest form. Just a bunch of TypedObjs. See above.	
 	O3PkgTypeStructArray=0xA,
@@ -210,17 +209,19 @@ inline UIntP O3WriteCCStringWithTableOrIndex(UInt8* bytes, NSString* str, NSDict
 */
 class O3ChildEnt {
 public:
+	NSString* domain;
 	NSString* key;
 	NSString* className;
+	Int64 offset; //When unarchiving, the offset of the child in the file, when archiving, the placeholder before writing the object
+	Int64 len;
 	O3PkgType type;
-	IntP offset; //When unarchiving, the offset of the child in the file, when archiving, the placeholder before writing the object
-	UIntP len;
 	~O3ChildEnt() {
 		[key release];
 		[className release];
+		[domain release];
 	}
-	O3ChildEnt(): key(nil), className(nil), len(0), offset(0) {}
-	O3ChildEnt(const O3ChildEnt& o) : key([o.key retain]), className([o.className retain]), type(o.type), offset(o.offset), len(o.len) {}
+	O3ChildEnt(): key(nil), className(nil), domain(nil), len(0), offset(0) {}
+	O3ChildEnt(const O3ChildEnt& o) : key([o.key retain]), className([o.className retain]), type(o.type), offset(o.offset), len(o.len), domain([o.domain retain]) {}
 };
 
 ///@param index_out Cache this and len_out for a performance win (feed it into O3WriteTypedObjectHeader). This is not a hint, so don't mess with it.
