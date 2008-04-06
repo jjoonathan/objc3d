@@ -83,10 +83,23 @@ private:
 	inline void AssertOpen() {
 		O3Assert(mHandle || mBlockData, @"O3BufferedReader 0x%X has probably closed prematurely.", this);
 	}
-	inline void FetchNextBlockOrThrow();
+	inline void FetchNextBlockOrThrow(UIntP min_size=0);
+	inline void AssureBytesLeft(UIntP bl); ///<Makes sure that at least bl bytes are available in the current block, fetching another block and appending it if necessary
 	inline BOOL BytesLeft(UInt64 bytes); ///<Bytes left in the current block
 	inline void Advance(UInt64 bytes); //Returns 0
 	inline void Init();
+	inline void FillFetchIMPCache(NSData* d) {
+		if (mBlockData_bytes) return;
+		mBlockData_bytes = (mBlockData_bytes_t)[d methodForSelector:@selector(bytes)];
+		mBlockData_length = (mBlockData_length_t)[d methodForSelector:@selector(length)];
+	}
+	inline UInt8 ReadAssuredByte() {
+		UInt8 r = *mBlockBytes;
+		mOffset++;
+		mBlockBytesRemaining--;
+		mBlockBytes++;
+		return r;
+	}
 };
 
 inline void O3BufferedReader::Init() {

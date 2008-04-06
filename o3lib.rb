@@ -192,3 +192,28 @@ ObjectSpace.each_object(Class) {|c|
 	  vec_defs.call c,$1.to_i,$2
 	end
 }
+
+#############GUI convenience
+def O3WrapInScrollview(content) #Lifted from console.rb
+  scrollview = OSX::NSScrollView.alloc.initWithFrame(content.frame)
+  clipview = OSX::NSClipView.alloc.initWithFrame(scrollview.frame)
+  scrollview.contentView = clipview
+  scrollview.documentView = clipview.documentView = content
+  content.frame = clipview.frame
+  scrollview.hasVerticalScroller = scrollview.hasHorizontalScroller = 
+    scrollview.autohidesScrollers = true
+  resizingMask = OSX::NSViewWidthSizable + OSX::NSViewHeightSizable
+  content.autoresizingMask = clipview.autoresizingMask = 
+    scrollview.autoresizingMask = resizingMask
+  scrollview
+end
+
+def O3MakeTextWindow()
+  w=NSWindow.alloc.initWithContentRect_styleMask_backing_defer_(NSRect.new(0,0,500,500),NSTitledWindowMask+NSClosableWindowMask+NSMiniaturizableWindowMask+NSResizableWindowMask, NSBackingStoreBuffered, false)
+  tv=NSTextView.alloc.initWithFrame(NSRect.new(0,0,500,500))
+  tv.setAutoresizingMask(NSViewWidthSizable)
+  sv=O3WrapInScrollview(tv)
+  w.contentView.addSubview(sv)
+  w.makeKeyAndOrderFront(1)
+  return w,tv
+end

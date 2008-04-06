@@ -297,12 +297,12 @@ inline NSString* encodeNameOfObjClass(O3KeyedArchiver* self, id obj) {
 																	ST:&(mST)
 																	CT:&(mCT)
 														  classNameMap:mClassNameMappings];
-			mArchInfo->writer->mKT = [O3ArchiveStringMapFromArray(mKT) retain];
-			mArchInfo->writer->mST = [O3ArchiveStringMapFromArray(mST) retain];
-			mArchInfo->writer->mCT = [O3ArchiveStringMapFromArray(mCT) retain];
 			if ([mKT count]) [self encodeObject:mKT forKey:@"KT"];
 			if ([mST count]) [self encodeObject:mST forKey:@"ST"];
 			if ([mCT count]) [self encodeObject:mCT forKey:@"CT"];
+			mArchInfo->writer->mKT = [O3ArchiveStringMapFromArray(mKT) retain];
+			mArchInfo->writer->mST = [O3ArchiveStringMapFromArray(mST) retain];
+			mArchInfo->writer->mCT = [O3ArchiveStringMapFromArray(mCT) retain];
 		}
 		mArchInfo->data_compression_level = 8; //zlib level 7
 	}
@@ -388,7 +388,7 @@ inline NSString* encodeNameOfObjClass(O3KeyedArchiver* self, id obj) {
 	beginWithArchiver_key_tenativeObj_(arch->archiver, k, nil);
 	NSNumber* num = [arch->writer->mST objectForKey:self];
 	if (num) {
-		UIntP idx = O3NSNumberLongLongValue(num);
+		UIntP idx = O3NSNumberLongLongValue(num)-1;
 		arch->writer->WriteUIntAsBytesAtPlaceholder(idx, O3BytesNeededForUInt(idx),arch->writer->ReservePlaceholder());
 		endWithArchiver_className_pkgType(arch->archiver, nil, O3PkgTypeIndexedString);
 		return;

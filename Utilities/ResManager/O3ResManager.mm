@@ -14,6 +14,37 @@ NSString* O3ResManagerKeyWillChangeNotification = @"O3ResManagerKeyWillChangeNot
 NSString* O3ResManagerKeyDidChangeNotification = @"O3ResManagerKeyDidChangeNotification";
 O3ResManager* gO3ResManagerSharedInstance = nil;
 
+
+@interface O3ResManagerLoadRequest : NSObject {
+	double mPriority;
+	NSString* mKey;
+}
+- (NSComparisonResult)comparePriority:(O3ResManagerLoadRequest*)o;
+- (O3ResManagerLoadRequest*)initWithPriority:(double)p key:(NSString*)key;
+- (NSString*)key;
+- (double)priority;
+- (void)setPriority:(double)np;
+@end
+@implementation O3ResManagerLoadRequest
+- (NSComparisonResult)comparePriority:(O3ResManagerLoadRequest*)o {
+	double op = o->mPriority;
+	if (mPriority>op) return NSOrderedAscending; //We want highest priority to be first
+	if (mPriority<op) return NSOrderedDescending;
+	return NSOrderedSame;
+}
+- (O3ResManagerLoadRequest*)initWithPriority:(double)p key:(NSString*)key {
+	if (!O3AllowInitHack) if (![super init]) return nil;
+	mPriority=p;
+	mKey=[key retain];
+	return self;
+}
+- (NSString*)key {return mKey;}
+- (double)priority {return mPriority;}
+- (void)setPriority:(double)np {mPriority = np;}
+- (void)dealloc {[mKey release]; O3SuperDealloc();}
+@end
+
+
 @implementation O3ResManager
 O3DefaultO3InitializeImplementation
 
@@ -44,9 +75,11 @@ inline void spawnNewLoaderThread(O3ResManager* self) {
 	O3SuperInitOrDie();
 	mObjectsForNames = [[NSMutableDictionary alloc] init];
 	mResourceSources = [[NSMutableArray alloc] init];
-	mObserverCount = [[NSMutableDictionary alloc] init];
+	mObserverCount = [[NSCountedSet alloc] init];
 	mFreeQueue = [[NSMutableArray alloc] init];
 	mLoadRequests = [[NSMutableArray alloc] init];
+	mGCLock = [[NSLock alloc] init];
+	mLRQLock = [[NSLock alloc] init]; 
 	return self;
 }
 
@@ -70,9 +103,11 @@ inline void spawnNewLoaderThread(O3ResManager* self) {
 		}
 	}
 	mResourceSources = [[NSMutableArray alloc] initWithArray:sources copyItems:NO];
-	mObserverCount = [[NSMutableDictionary alloc] init];
+	mObserverCount = [[NSCountedSet alloc] init];
 	mFreeQueue = [[NSMutableArray alloc] init];
 	mLoadRequests = [[NSMutableArray alloc] init];
+	mGCLock = [[NSLock alloc] init];
+	mLRQLock = [[NSLock alloc] init]; 
 	return self;	
 }
 
@@ -83,6 +118,8 @@ inline void spawnNewLoaderThread(O3ResManager* self) {
 	[mObserverCount release];
 	[mFreeQueue release];
 	[mLoadRequests release];
+	[mGCLock release];
+	[mLRQLock release];
 	[super dealloc];
 }
 
@@ -163,6 +200,19 @@ inline void spawnNewLoaderThread(O3ResManager* self) {
 	[center postNotificationName:O3ResManagerKeyDidChangeNotification object:self userInfo:kdict];
 }
 
+- (void)removeValueForKey:(NSString*)key {
+	NSDictionary* kdict = [NSDictionary dictionaryWithObject:key forKey:@""];
+	NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+	[center postNotificationName:O3ResManagerKeyWillChangeNotification object:self userInfo:kdict];
+	[self willChangeValueForKey:key];
+	
+	[mObjectsForNames removeObjectForKey:key];
+	
+	[self didChangeValueForKey:key];
+	[center postNotificationName:O3ResManagerKeyDidChangeNotification object:self userInfo:kdict];
+
+}
+
 //Flipped so that the array is sorted into descending priority
 int sortBySearchPriority(id l, id r, void* objname) {
 	double lv = [(O3ResSource*)l searchPriorityForObjectNamed:(NSString*)objname];
@@ -193,34 +243,58 @@ int sortBySearchPriority(id l, id r, void* objname) {
 	}
 }
 
+inline NSString* objectNameForPath(NSString* path) {
+	const char* str = [path UTF8String];
+	int dotidx = -1;
+	for (int i=0; str[i]; i++) if (str[i]=='.') dotidx=i;
+	NSString* objName = path;
+	if (dotidx!=-1) {
+		char* smallstr = (char*)malloc(dotidx+1);
+		memcpy(smallstr, str, dotidx);
+		smallstr[dotidx+1] = 0;
+		objName = NSStringWithUTF8StringNoCopy(smallstr, dotidx, YES);
+	}
+	return objName;
+}
+
 - (void)addObserver:(NSObject *)anObserver forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context {
-	NSString* objName = keyPath;
-	O3Num* ct = [mObserverCount objectForKey:objName];
-	if (!ct) [mObserverCount setObject:ct=[[O3Num alloc] initWithInt:0] forKey:objName];
-	O3NumInc(ct);
+	NSString* objName = objectNameForPath(keyPath);
+	[mObserverCount addObject:objName];
 	[super addObserver:anObserver forKeyPath:keyPath options:options context:context];
 	if (![mObjectsForNames objectForKey:objName]) [self requestResNamed:objName];
 }
 
 - (void)removeObserver:(NSObject *)anObserver forKeyPath:(NSString *)keyPath {
-	const char* str = [keyPath UTF8String];
-	int dotidx = -1;
-	for (int i=0; str[i]; i++) if (str[i]!='.') dotidx=i;
-	NSString* objName = keyPath;
-	if (dotidx!=-1) {
-		char* smallstr = (char*)malloc(dotidx+1);
-		memcpy(smallstr, str, dotidx);
-		smallstr[dotidx+1] = 0;
-		keyPath = NSStringWithUTF8StringNoCopy(smallstr, dotidx, YES);
-	}
-	
-	O3Num* ct = [mObserverCount objectForKey:objName];
-	if (!ct) {
-		O3LogWarn(@"We shouldn't be removing an observer that was never added...");
-	} else {
-		if (!O3NumDec(ct)) [mFreeQueue addObject:objName];
-	}
+	NSString* objName = objectNameForPath(keyPath);
+	[mObserverCount removeObject:objName];
+	if (![mObserverCount countForObject:objName]) [self keyBecameGarbage:objName];
 	[super removeObserver:anObserver forKeyPath:keyPath];
+}
+
+- (void)keyBecameGarbage:(NSString*)k {
+	[mGCLock lock];
+	[mFreeQueue addObject:k];
+	[mGCLock unlock];
+}
+
+- (void)collectGarbage {
+	if (![mGCLock tryLock]) return;
+	NSEnumerator* mFreeQueueEnumerator = [mFreeQueue objectEnumerator];
+	while (NSString* k = [mFreeQueueEnumerator nextObject])
+		[self removeValueForKey:k];
+	[mFreeQueue removeAllObjects];
+	[mGCLock unlock];
+}
+
+- (void)collectAllZeroObserverKeys {
+	[mGCLock lock];
+	[mFreeQueue removeAllObjects];
+	NSEnumerator* keyEnumerator = [mObjectsForNames keyEnumerator];
+	while (NSString* k = [keyEnumerator nextObject]) {
+		if (![mObserverCount countForObject:k])
+			[self removeValueForKey:k];
+	}
+	[mGCLock unlock];
 }
 
 
@@ -322,8 +396,12 @@ int sortBySearchPriority(id l, id r, void* objname) {
 
 /************************************/ #pragma mark Loading /************************************/
 - (void)requestResNamed:(NSString*)resName {
-	[mLoadRequests addObject:resName];
+	O3ResManagerLoadRequest* r = [[O3ResManagerLoadRequest alloc] initWithPriority:100.0 key:resName];
+	[mLRQLock lock];
+	[mLoadRequests addObject:r];
+	[mLRQLock unlock];
 	if (!mNumThreads) [self setNumThreads:1];
+	[r release];
 }
 
 - (BOOL)loadResourceNamed:(NSString*)resName {
@@ -343,10 +421,11 @@ BOOL O3ResSourcesLoadNamed_fromPreloadCache_orSources_intoManager_(NSString* res
 	
 	NSMutableSet* second_try_reses = [[NSMutableSet alloc] init];
 	NSEnumerator* sourceEnum = [reses objectEnumerator];
+	int try_again_tries = 0;
 	while (1) {
 		O3ResSource* s = [sourceEnum nextObject];
 		if (!s) {
-			if ([second_try_reses count]) {
+			if ([second_try_reses count] && try_again_tries++<5) {
 				s = [(sourceEnum=[second_try_reses objectEnumerator]) nextObject];
 			} else goto end;			
 		}
@@ -368,50 +447,47 @@ BOOL O3ResSourcesLoadNamed_fromPreloadCache_orSources_intoManager_(NSString* res
 	return ret;
 }
 
-//Flipped, so that ascending sort places highest priority first
-int O3ResManagerResPrioritySort(NSString* l, NSString* r, void* context) {
-	NSDictionary* obsct = ((O3ResManager*)context)->mObserverCount;
-	O3Num* lv = [obsct objectForKey:l];
-	O3Num* rv = [obsct objectForKey:r];
-	if (!lv || !rv) return NSOrderedSame;
-	UIntP lc = O3NumInt64Value(lv);
-	UIntP rc = O3NumInt64Value(rv);
-	if (lc>rc) return NSOrderedAscending;
-	if (rc>lc) return NSOrderedDescending;
-	return NSOrderedSame;
-}
-
 - (void)resourceLoaderThread:(id)obj {
 	int counter=0;
-	while (1) { //Continuously try to load stuff
+	BOOL should_die = NO; //YES if there are too many threads and we should close
+	while (!should_die) { //Continuously try to load stuff
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		[mLoadRequests sortUsingFunction:O3ResManagerResPrioritySort context:NULL];
-		NSEnumerator* mLoadRequestsEnumerator = [mLoadRequests objectEnumerator];
+		[mLRQLock lock];
+		NSArray* r1 = [mLoadRequests sortedArrayUsingSelector:@selector(comparePriority:)];
+		[mLoadRequests removeAllObjects];
+		[mLRQLock unlock];
 		UIntP failures = 0;
-		while (NSString* o = [mLoadRequestsEnumerator nextObject]) { //Loop through each object
-			NSAutoreleasePool* p2 = nil;
+		UIntP ct = [r1 count];
+		for (UIntP i=0; i<ct; i++) { //Loop through each request
+			O3ResManagerLoadRequest* o = [r1 objectAtIndex:i];
+			NSString* k = [o key];
+			if ([mObjectsForNames objectForKey:k]) continue;
+			NSAutoreleasePool* p2 = [[NSAutoreleasePool alloc] init];
 			@try {
-				p2 = [[NSAutoreleasePool alloc] init];
-				BOOL success = [self loadResourceNamed:o];
-				if (!success) failures++;
+				BOOL success = [self loadResourceNamed:[o key]];
+				if (!success) {
+					[mLRQLock lock];
+					[mLoadRequests addObject:o];
+					[mLRQLock unlock];
+					failures++;
+				}
+				O3LogDebug(@"%s in loading resource named %@.",success?"Succeeded":"Failed", k);
 				counter++;
 				if (!(counter&7)) {
 					if (mNumThreads<mTargetNumThreads) {spawnNewLoaderThread(self);}
-					if (mNumThreads>mTargetNumThreads) goto end;
+					if (mNumThreads>mTargetNumThreads) should_die = YES;
 				}
 			} @catch (NSException* e) {
-				O3LogDebug(@"Loading exception ignored: %@", e);
-			} @finally {
-				[p2 release];
+				O3LogDebug(@"Loading exception for key %@ ignored: %@", k, e);
 			}
-		}
-		if (mNumThreads<mTargetNumThreads) {spawnNewLoaderThread(self);}
-		if (mNumThreads>mTargetNumThreads) goto end;
+			[p2 release];
+		} //Loop through each request
+		if (!should_die && mNumThreads<mTargetNumThreads) {spawnNewLoaderThread(self);}
+		if (mNumThreads>mTargetNumThreads) should_die = YES;
 		[pool release];
-		if (failures==[mLoadRequests count]) sleep(1); //So that we don't hammer away on things that aren't there
-	}
+		if (!should_die && failures==[mLoadRequests count]) sleep(1); //So that we don't hammer away on things that aren't there
+	} //Rinse, repeat
 	
-	end:
 	mNumThreads--;
 }
 

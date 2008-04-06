@@ -27,28 +27,42 @@ O3BufferedReader::O3BufferedReader(NSFileHandle* handle) {
 }
 
 O3BufferedReader::~O3BufferedReader() {
-	if (mHandle) {
-		int fd = [mHandle fileDescriptor];
-		flock(fd, LOCK_UN);
-	}
-	O3Destroy(mHandle);
-	O3Destroy(mBlockData);
+	if (mHandle||mBlockData) Close();
 }
 
-/************************************/ #pragma mark Private Inline Stuff /************************************/
-void O3BufferedReader::FetchNextBlockOrThrow() {
+/************************************/ #pragma mark Private Stuff /************************************/
+inline void O3BufferedReader::AssureBytesLeft(UIntP bl) {
+	Int64 remaining = (Int64)mBlockBytesRemaining - (Int64)bl;
+	if (remaining>=0) return;
+	FetchNextBlockOrThrow(-remaining); //If a negative number remain, try to fetch them
+}
+
+void O3BufferedReader::FetchNextBlockOrThrow(UIntP min_size) {
 	AssertOpen();
+	UIntP try_size = O3Max(min_size, mBlockSize);
 	if (!mHandle) [NSException raise:NSRangeException format:@"!NSData (%@) based O3BufferedReader tried to read past end", mBlockData];
-	O3Destroy(mBlockData);
-	O3Assign(mHandle_readDataOfLength_(mHandle, @selector(readDataOfLength:), mBlockSize), mBlockData);
-	if (!mBlockData) [NSException raise:NSRangeException format:@"O3BufferedReader %p tried to read past end of file", this];
-	if (!mBlockData_bytes) {
-		mBlockData_bytes = (mBlockData_bytes_t)[mBlockData methodForSelector:@selector(bytes)];
-		mBlockData_length = (mBlockData_length_t)[mBlockData methodForSelector:@selector(length)];
+	//O3Destroy(mBlockData);
+	NSData* new_data = mHandle_readDataOfLength_(mHandle, @selector(readDataOfLength:), try_size);
+	if (!new_data) [NSException raise:NSRangeException format:@"O3BufferedReader %p tried to read past end of file", this];
+	FillFetchIMPCache(new_data);
+	UIntP fetched_len = mBlockData_length(new_data, @selector(length));
+	UInt8* fetched_bytes = (UInt8*)mBlockData_bytes(new_data, @selector(bytes));
+	if (mBlockBytesRemaining) {
+		UIntP newBufLen = fetched_len+mBlockBytesRemaining;
+		UInt8* newBuf = (UInt8*)malloc(newBufLen);
+		memcpy(newBuf, mBlockBytes, mBlockBytesRemaining);
+		memcpy(newBuf+mBlockBytesRemaining, fetched_bytes, fetched_len);
+		NSData* d = [[NSData alloc] initWithBytesNoCopy:newBuf length:newBufLen freeWhenDone:YES];
+		O3Assign(d, mBlockData);
+		[d release];
+		mBlockBytes = newBuf;
+		mBlockBytesRemaining = newBufLen;
+	} else {
+		O3Assign(new_data, mBlockData);
+		mBlockBytes = fetched_bytes;
+		mBlockBytesRemaining = fetched_len;
 	}
-	mBlockBytesRemaining = mBlockData_length(mBlockData, @selector(length));
-	if (!mBlockBytesRemaining) [NSException raise:NSRangeException format:@"O3BufferedReader %p tried to read past end of file", this];
-	mBlockBytes = (UInt8*)mBlockData_bytes(mBlockData, @selector(bytes));
+	if (mBlockBytesRemaining<min_size) [NSException raise:NSRangeException format:@"O3BufferedReader %p tried to read past end of file", this];
 	O3Assert(mBlockBytes, @"Cannot get data from NSData %@ returned by %@", mBlockData, mHandle);
 }
 
@@ -131,10 +145,10 @@ id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone
 		}
 		case O3PkgTypeString: {
 			if (!size) {to_return = @""; break;}
-			to_return = [[[NSString allocWithZone:z] initWithBytesNoCopy:ReadBytes(size) length:size encoding:NSUTF8StringEncoding freeWhenDone:YES] autorelease];
+			void* b = ReadBytes(size);
+			NSString* s = [[NSString allocWithZone:z] initWithBytesNoCopy:b length:size encoding:NSUTF8StringEncoding freeWhenDone:YES];
+			to_return = [s autorelease];
 			break;
-			O3Assert(NO, @"Cannot read an indexed CCString yet!");
-			to_return = nil; break;
 		}
 		case O3PkgTypeDictionary: {
 			id cdict = [coder readO3ADictionaryFrom:this size:size];
@@ -158,7 +172,8 @@ id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone
 			NSMutableArray* marr = [[[NSMutableArray allocWithZone:z] initWithCapacity:ents.size()] autorelease];
 			for (; it!=e; it++) {
 				O3ChildEnt& chEnt = *it;
-				[marr addObject:ReadObject(coder, z, chEnt)];
+				id obj = ReadObject(coder, z, chEnt);
+				[marr addObject:obj];
 			}
 			to_return = marr; break;
 		}
@@ -226,17 +241,14 @@ id O3BufferedReader::ReadObject(NSCoder<O3UnarchiverCallbackable>* coder, NSZone
 }
 
 UInt8 O3BufferedReader::ReadByte() {
-	AssertOpen();
-	if (!BytesLeft(1)) FetchNextBlockOrThrow();
-	UInt8 to_return = *mBlockBytes;
-	Advance(1);
-	return to_return;
+	AssureBytesLeft(1);
+	return ReadAssuredByte();
 }
 
 Int32 O3BufferedReader::ReadBytesAsInt32(int bytes) {
-	AssertOpen();
 	O3AssertArg(bytes>0 && bytes<100, @"Absurd value for parameter bytes: %i", bytes);
-	if (bytes==4 && BytesLeft(bytes)) {
+	AssureBytesLeft(bytes);
+	if (bytes==4) {
 		UInt32 uval = O3ByteswapBigToHost(*(UInt32*)mBlockBytes);
 		BOOL negative = (*mBlockBytes)&0x80;
 		Advance(4);
@@ -245,13 +257,13 @@ Int32 O3BufferedReader::ReadBytesAsInt32(int bytes) {
 		return to_return;
 	}
 	Int32 to_return = 0;
-	UInt8 firstbyte = ReadByte();
+	UInt8 firstbyte = ReadAssuredByte();
 	BOOL negative = firstbyte&0x80;
 	to_return += firstbyte&0x7F;
 	while (--bytes) {
 		to_return<<=8;
 		if (bytes>=4 && to_return>>24) O3CLogWarn(@"Definite loss of precision (more than 4 bytes being put into a 32 bit integer) in O3BufferedReader::ReadBytesAsUInt32");
-		to_return |= ReadByte();
+		to_return |= ReadAssuredByte();
 	}
 	to_return&=0x7FFFFFFF;
 	if (negative) to_return = (-to_return)-1;
@@ -259,9 +271,9 @@ Int32 O3BufferedReader::ReadBytesAsInt32(int bytes) {
 }
 
 Int64 O3BufferedReader::ReadBytesAsInt64(int bytes) {
-	AssertOpen();
 	O3AssertArg(bytes>0 && bytes<100, @"Absurd value for parameter bytes: %i", bytes);
-	if (bytes==8 && BytesLeft(bytes)) {
+	AssureBytesLeft(bytes);
+	if (bytes==8) {
 		UInt64 uval = O3ByteswapBigToHost(*(UInt64*)mBlockBytes);
 		BOOL negative = (*mBlockBytes)&0x80;
 		Advance(8);
@@ -276,7 +288,7 @@ Int64 O3BufferedReader::ReadBytesAsInt64(int bytes) {
 	while (--bytes) {
 		to_return<<=8;
 		if (bytes>=8 && to_return>>56) O3CLogWarn(@"Definite loss of precision (more than 8 bytes being put into a 64 bit integer) in O3BufferedReader::ReadBytesAsUInt32");
-		to_return |= ReadByte();
+		to_return |= ReadAssuredByte();
 	}
 	to_return&=0x7FFFFFFFFFFFFFFFull;
 	if (negative) to_return = (-to_return)-1;
@@ -284,9 +296,9 @@ Int64 O3BufferedReader::ReadBytesAsInt64(int bytes) {
 }
 
 UInt32 O3BufferedReader::ReadBytesAsUInt32(int bytes) {
-	AssertOpen();
 	O3AssertArg(bytes>0, @"Absurd value for parameter bytes: %i", bytes);
-	if (bytes==4 && BytesLeft(bytes)) {
+	AssureBytesLeft(bytes);
+	if (bytes==4) {
 		UInt32 to_return = O3ByteswapBigToHost(*(UInt32*)mBlockBytes);
 		Advance(4);
 		return to_return;
@@ -295,15 +307,15 @@ UInt32 O3BufferedReader::ReadBytesAsUInt32(int bytes) {
 	while (bytes--) {
 		to_return<<=8;
 		if (bytes>=4 && to_return>>24) O3CLogWarn(@"Definite loss of precision (more than 4 bytes being put into a 32 bit integer) in O3BufferedReader::ReadBytesAsUInt32");
-		to_return |= ReadByte();
+		to_return |= ReadAssuredByte();
 	}
 	return  to_return;		
 }
 
 UInt64 O3BufferedReader::ReadBytesAsUInt64(int bytes) {
-	AssertOpen();
 	O3AssertArg(bytes>0, @"Absurd value for parameter bytes: %i", bytes);
-	if (bytes==8 && BytesLeft(bytes)) {
+	AssureBytesLeft(bytes);
+	if (bytes==8) {
 		UInt64 to_return = O3ByteswapBigToHost(*(UInt64*)mBlockBytes);
 		Advance(8);
 		return to_return;
@@ -312,7 +324,7 @@ UInt64 O3BufferedReader::ReadBytesAsUInt64(int bytes) {
 	while (bytes--) {
 		to_return<<=8;
 		if (bytes>=8 && to_return>>56) O3CLogWarn(@"Definite loss of precision (more than 8 bytes being put into a 64 bit integer) in O3BufferedReader::ReadBytesAsUInt32");
-		to_return |= ReadByte();
+		to_return |= ReadAssuredByte();
 	}
 	return  to_return;		
 }
@@ -421,74 +433,37 @@ NSString* O3BufferedReader::ReadCCString(enum O3CCSTableType ttype) {
 
 ///@todo Make secure: assure that len is resonable.
 void* O3BufferedReader::ReadBytes(UInt64 len, UInt64 extra_bytes) {
-	AssertOpen();
-	UInt64 to_read = len+extra_bytes;
-	void* to_return;
-	if (BytesLeft(len)) {
-		to_return = malloc(to_read);
-		memcpy(to_return, mBlockBytes, len);
-		Advance(len);
-	} else {
-		if (!mHandle) [NSException raise:NSInconsistentArchiveException format:@"Attempt to read past end of archived data (archive is corrupt)"];
-		to_return = malloc(mBlockBytesRemaining);
-		memcpy(to_return, mBlockBytes, mBlockBytesRemaining);
-		O3Destroy(mBlockData);
-		UInt64 new_toread = to_read-mBlockBytesRemaining;
-		UIntP old_remaining_data = mBlockBytesRemaining;
-		mBlockBytesRemaining=0;
-		NSData* newBytes = mHandle_readDataOfLength_(mHandle, @selector(readDataOfLength:), new_toread);
-		if (!mBlockData_bytes) {
-			mBlockData_bytes = (mBlockData_bytes_t)[mBlockData methodForSelector:@selector(bytes)];
-			mBlockData_length = (mBlockData_length_t)[mBlockData methodForSelector:@selector(length)];
-		}
-		UIntP redlen = mBlockData_length(newBytes, @selector(length));
-		O3Assert(redlen==new_toread , @"Attempt to read outside of file in O3BufferedReader::ReadBytes");
-		void* redbytes = mBlockData_bytes(newBytes, @selector(bytes));
-		to_return = realloc(to_return, old_remaining_data+redlen);
-		void* new_pos = (UInt8*)to_return+old_remaining_data;
-		memcpy(new_pos, redbytes, new_toread);
-	}
+	AssureBytesLeft(len);
+	UInt64 len_to_return = len+extra_bytes;
+	void* to_return = malloc(len_to_return);
+	memcpy(to_return, mBlockBytes, len);
+	Advance(len);
 	return to_return;
 }
 
 void O3BufferedReader::ReadBytesInto(void* b, UInt64 len) {
-	AssertOpen();
-	if (BytesLeft(len)) {
-		memcpy(b, mBlockBytes, len);
-		Advance(len);
-	} else {
-		if (!mHandle) [NSException raise:NSInconsistentArchiveException format:@"Attempt to read past end of archived data (archive is corrupt)"];
-		memcpy(b, mBlockBytes, mBlockBytesRemaining);
-		O3Destroy(mBlockData);
-		void* new_pos = (UInt8*)b+mBlockBytesRemaining;
-		UInt64 new_toread = len-mBlockBytesRemaining;
-		mBlockBytesRemaining=0;
-		NSData* newBytes = mHandle_readDataOfLength_(mHandle, @selector(readDataOfLength:), new_toread);
-		if (!mBlockData_bytes) {
-			mBlockData_bytes = (mBlockData_bytes_t)[mBlockData methodForSelector:@selector(bytes)];
-			mBlockData_length = (mBlockData_length_t)[mBlockData methodForSelector:@selector(length)];
-		}
-		O3Assert(mBlockData_length(newBytes, @selector(length))==new_toread , @"Attempt to read outside of file in O3BufferedReader::ReadBytes");
-		memcpy(new_pos, mBlockData_bytes(newBytes, @selector(bytes)), new_toread);
-	}
+	AssureBytesLeft(len);
+	memcpy(b, mBlockBytes, len);
+	Advance(len);
 }
 
 NSData* O3BufferedReader::ReadData(UInt64 len) {
-	AssertOpen();
 	return [NSData dataWithBytesNoCopy:ReadBytes(len,0) length:len freeWhenDone:YES];
 }
 
 NSData* O3BufferedReader::ReadDataNoCopy(UInt64 len) {
-	if (BytesLeft(len)) {
-		return [NSData dataWithBytesNoCopy:mBlockBytes length:len freeWhenDone:NO];
-		Advance(len);
-	}
-	O3Assert(false, @"ReadDataNoCopy does not work with readers that weren't made from an NSData. This could also be an attempt to read outside of the file.")
+	AssureBytesLeft(len);
+	return [NSData dataWithBytesNoCopy:mBlockBytes length:len freeWhenDone:NO];
+	Advance(len);
 	return nil;
 }
 
 void O3BufferedReader::Close() {
 	AssertOpen();
+	if (mHandle) {
+		int fd = [mHandle fileDescriptor];
+		flock(fd, LOCK_UN);
+	}
 	O3Destroy(mHandle);
 	O3Destroy(mBlockData);
 }

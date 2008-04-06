@@ -23,8 +23,10 @@ O3EXTERN_C O3ResManager* O3RMGM(); //Shortcut for the global res manager
 	NSMutableDictionary* mPreloadedObjects; ///<Objects that were loaded but not requested (yet)
 	NSMutableArray* mLoadRequests;
 	
-	NSMutableDictionary* mObserverCount; ///<A dictionary of NSNumbers with the number of observers for each key
+	NSCountedSet* mObserverCount; ///<Counts the numebr of observers for each key
 	NSMutableArray* mFreeQueue; ///<A queue of object names whose bind counts have dropped to zero and need to be freed
+	NSLock* mGCLock;
+	NSLock* mLRQLock;
 	int mNumThreads, mTargetNumThreads;
 }
 + (void)o3init;
@@ -50,6 +52,12 @@ O3EXTERN_C O3ResManager* O3RMGM(); //Shortcut for the global res manager
 - (void)setParentManager:(O3ResManager*)newParent;
 - (int)numThreads;
 - (void)setNumThreads:(int)nt;
+
+//GC
+- (void)keyBecameGarbage:(NSString*)k; //The number of observers of k fell to 0
+- (void)collectGarbage;
+- (void)collectAllZeroObserverKeys;
+- (void)removeValueForKey:(NSString*)key; //Semi-private, and it may cause issues if used incorrectly. Be careful.
 
 //Resource Source Management
 - (void)addResourceSource:(O3ResSource*)s;

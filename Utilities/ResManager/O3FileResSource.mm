@@ -16,7 +16,11 @@ int gO3KeyedUnarchiverLazyThreshhold = 1 * 1024 * 1024;
 O3DefaultO3InitializeImplementation
 /************************************/ #pragma mark Private Accessors /************************************/
 static O3KeyedUnarchiver* mUnarchiverP(O3FileResSource* self) {
-	if (self->mUnarchiver && ![self needsUpdate]) return self->mUnarchiver;
+	BOOL needs_upd = [self needsUpdate];
+	if (self->mRootsAreBad && !needs_upd) return nil;
+	if (self->mUnarchiver && !needs_upd) return self->mUnarchiver;
+	self->mRootsAreBad = self->mLoadAllIsBad = NO;
+	[self->mKnownFailObjects removeAllObjects];
 	O3Destroy(self->mUnarchiver);
 	O3Destroy(self->mDomain);
 	if (self->mRootEnts) {
@@ -40,15 +44,17 @@ static O3KeyedUnarchiver* mUnarchiverP(O3FileResSource* self) {
 	O3Assign(path, mPath);
 	mContainerResSource = drs;
 	mResLock = [[NSLock alloc] init];
+	self->mKnownFailObjects = [[NSMutableSet alloc] init];
 	return self;
 }
 
 - (void)dealloc {
-	O3Release(mPath);
-	O3Release(mLastUpdatedDate);
-	O3Release(mDomain);
+	O3Destroy(mKnownFailObjects);
+	O3Destroy(mPath);
+	O3Destroy(mLastUpdatedDate);
+	O3Destroy(mDomain);
 	[self close];
-	O3Release(mResLock);
+	O3Destroy(mResLock);
 	if (mRootEnts) delete mRootEnts;
 	O3SuperDealloc();
 }
@@ -103,18 +109,28 @@ double O3FileResSourceSearchPriority(O3FileResSource* self, NSString* key) {
 //Returns nil if the archive root is compressed
 static std::vector<O3ChildEnt>* rootEntsP(O3FileResSource* self) {
 	if (self->mRootEnts) return self->mRootEnts;
-	O3KeyedUnarchiver* ua = mUnarchiverP(self);
-	if (!ua) return nil;
-	std::vector<O3ChildEnt>* metadataRootEnts = [ua rootEnts];
-	std::vector<O3ChildEnt>::iterator it=metadataRootEnts->begin(), e=metadataRootEnts->end();
-	for (; it!=e; it++) {
-		O3ChildEnt& ent = *it;
-		if ([ent.key isEqualToString:@""]) {
-			if (ent.type == O3PkgTypeCompressed) return nil;
-			return self->mRootEnts = new std::vector<O3ChildEnt>([ua entsForDictionary:ent]);
-		}
+	@try {
+		O3KeyedUnarchiver* ua = mUnarchiverP(self);
+		std::vector<O3ChildEnt>* metadataRootEnts = [ua rootEnts];
+		if (!metadataRootEnts) {
+			self->mRootsAreBad=YES;
+			O3Destroy(self->mUnarchiver);
+		} else { //if we could find the root ents
+			std::vector<O3ChildEnt>::iterator it=metadataRootEnts->begin(), e=metadataRootEnts->end();
+			for (; it!=e; it++) {
+				O3ChildEnt& ent = *it;
+				if ([ent.key isEqualToString:@""]) {
+					if (ent.type == O3PkgTypeCompressed) return nil;
+					self->mRootEnts = new std::vector<O3ChildEnt>([ua entsForDictionary:ent]);
+					break;
+				}
+			} //for all metadata roots
+		} //if we could find the root ents
+	} @catch (NSException* e) {
+		self->mRootsAreBad = YES;
+		O3Destroy(self->mUnarchiver);
 	}
-	return NULL;
+	return self->mRootEnts;
 }
 
 - (id)loadObjectNamed:(NSString*)name {
@@ -123,23 +139,40 @@ static std::vector<O3ChildEnt>* rootEntsP(O3FileResSource* self) {
 	std::vector<O3ChildEnt>::iterator it=res->begin(), e=res->end();
 	for (; it!=e; it++) {
 		O3ChildEnt& ent = *it;
+		if (ent.isBad) continue;
 		if (![ent.key isEqualToString:name]) continue;
-		return [mUnarchiverP(self) objectForEnt:ent];
-	}
+		id obj = nil;
+		@try {
+			obj = [mUnarchiverP(self) objectForEnt:ent];
+		} @catch (NSException* e) {
+			O3LogDebug(@"Caught object unarchiving exception: %@", e);
+			[mKnownFailObjects addObject:name];
+		}
+		return obj;
+	} //for all archive roots
 	return nil;
 }
 
 - (NSDictionary*)loadAllObjects {
-	std::vector<O3ChildEnt>* res = [mUnarchiverP(self) rootEnts];
-	if (!res) return nil;
-	std::vector<O3ChildEnt>::iterator it=res->begin(), e=res->end();
-	for (; it!=e; it++) {
-		O3ChildEnt& ent = *it;
-		if ([ent.key isEqualToString:@""]) {
-			return [mUnarchiverP(self) objectForEnt:ent];
+	if (mLoadAllIsBad) return nil;
+	NSDictionary* ret = nil;
+	@try {
+		std::vector<O3ChildEnt>* res = [mUnarchiverP(self) rootEnts];
+		if (!res) return nil;
+		std::vector<O3ChildEnt>::iterator it=res->begin(), e=res->end();
+		for (; it!=e; it++) {
+			O3ChildEnt& ent = *it;
+			if ([ent.key isEqualToString:@""]) {
+				ret = [mUnarchiverP(self) objectForEnt:ent];
+				break;
+			}
 		}
+	} @catch (NSException* e) {
+		O3LogDebug(@"Unarchiving exception caught: %@", e);
+		mLoadAllIsBad = YES;
+		ret = nil;
 	}
-	return nil;
+	return ret;
 }
 
 inline BOOL loadAllInto_lookForNamed_(O3FileResSource* self, O3ResManager* rm, NSString* name) {
@@ -148,7 +181,7 @@ inline BOOL loadAllInto_lookForNamed_(O3FileResSource* self, O3ResManager* rm, N
 	if (!d) return NO;
 	NSEnumerator* dEnumerator = [d objectEnumerator];
 	NSEnumerator* dkEnumerator = [d keyEnumerator];
-	BOOL loaded=NO;
+	BOOL loaded=NO; //If we found what we wanted
 	while (1) {
 		id o = [dEnumerator nextObject];
 		NSString* k = [dkEnumerator nextObject];
@@ -156,11 +189,19 @@ inline BOOL loadAllInto_lookForNamed_(O3FileResSource* self, O3ResManager* rm, N
 		if ([k isEqualToString:name]) {[rm setValue:o forKey:k]; loaded=YES;}
 		else [rm addPreloadedObject:o forKey:k];
 	}
+	self->mFullyLoaded = YES; //We are fully loaded even if we didn't find what we wanted
 	return loaded;
 }
 
-///This method is lock-protected. The others aren't, since they are private.
+///This method is lock-protected. The others aren't, since they are private and should only be called from protected methods.
 - (BOOL)handleLoadRequest:(NSString*)requestedObject fromManager:(O3ResManager*)rm tryAgain:(BOOL*)temporaryFailure {
+	BOOL nu = [self needsUpdate];
+	BOOL already_determined = mFullyLoaded ?: [mKnownFailObjects containsObject:requestedObject];
+	already_determined &= !nu;
+	if (already_determined) { //Assume failure since we would have loaded otherwise
+		*temporaryFailure = NO;
+		return NO;
+	}
 	if (temporaryFailure&&*temporaryFailure) [mResLock lock];
 	else if (![mResLock tryLock]) {
 		if (temporaryFailure) *temporaryFailure = YES;
@@ -169,23 +210,24 @@ inline BOOL loadAllInto_lookForNamed_(O3FileResSource* self, O3ResManager* rm, N
 	BOOL ret = NO;
 	
 	if ([self shouldLoadLazily]) {
-		id obj = [self loadObjectNamed:requestedObject];
+		id obj = nil;
 		if (temporaryFailure) *temporaryFailure = NO;
-		if (!obj) {
-			O3Return(loadAllInto_lookForNamed_(self, rm, requestedObject));
+		obj = [self loadObjectNamed:requestedObject];
+		if (!obj) ret = loadAllInto_lookForNamed_(self, rm, requestedObject);
+		else {
+			[rm setValue:obj forKey:requestedObject]; ///<Should already have a nonzero value in the GC table
+			ret = YES;
 		}
-		[rm setValue:obj forKey:requestedObject]; ///<Should already have a nonzero value in the GC table
-		O3Return(YES);
 	} else {
-		O3Return(loadAllInto_lookForNamed_(self, rm, requestedObject));
+			ret = loadAllInto_lookForNamed_(self, rm, requestedObject);
 	}
 	
-	end:
 	[mResLock unlock];
 	return ret;
 }
 
 - (BOOL)shouldLoadLazily {
+	if (mLoadAllIsBad) return YES; //May as well try individual objects if something went wrong higher up
 	O3ResManagerLaziness lzy = [self laziness];
 	if (lzy==O3ResManagerObjectLazy) return YES;
 	if (lzy==O3ResManagerFileLazy) return NO;

@@ -214,14 +214,15 @@ public:
 	NSString* className;
 	Int64 offset; //When unarchiving, the offset of the child in the file, when archiving, the placeholder before writing the object
 	Int64 len;
-	O3PkgType type;
+	O3PkgType type:8;
+	BOOL isBad:1;
 	~O3ChildEnt() {
 		[key release];
 		[className release];
 		[domain release];
 	}
-	O3ChildEnt(): key(nil), className(nil), domain(nil), len(0), offset(0) {}
-	O3ChildEnt(const O3ChildEnt& o) : key([o.key retain]), className([o.className retain]), type(o.type), offset(o.offset), len(o.len), domain([o.domain retain]) {}
+	O3ChildEnt(): key(nil), className(nil), domain(nil), len(0), offset(0), isBad(NO) {}
+	O3ChildEnt(const O3ChildEnt& o) : key([o.key retain]), className([o.className retain]), type(o.type), offset(o.offset), len(o.len), domain([o.domain retain]), isBad(o.isBad) {}
 };
 
 ///@param index_out Cache this and len_out for a performance win (feed it into O3WriteTypedObjectHeader). This is not a hint, so don't mess with it.

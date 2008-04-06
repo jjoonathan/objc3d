@@ -21,6 +21,7 @@ extern int gO3KeyedUnarchiverLazyThreshhold; ///1MB default for lazy loading
 	O3ResSource* mContainerResSource;
 	NSLock* mResLock;
 	
+	//Info about the data itself. Kill if the file changes.
 	NSString* mDomain;
 	#ifdef __cplusplus
 	std::vector<O3ChildEnt>* mRootEnts; //Note: these are not metadata roots, these are archive root objects
@@ -28,9 +29,11 @@ extern int gO3KeyedUnarchiverLazyThreshhold; ///1MB default for lazy loading
 	
 	NSString* mCachedName;
 	float     mCachedPriority;
-	
+	NSMutableSet* mKnownFailObjects; //Objects for whom reading failed
 	BOOL mFullyLoaded:1;
 	BOOL mIsBig:1; BOOL mIsBigDetermined:1;
+	BOOL mRootsAreBad:1; //True if reading the whole archive threw an exception at one point
+	BOOL mLoadAllIsBad:1; //True if loading all objects failed
 }
 - (O3FileResSource*)initWithPath:(NSString*)path parentResSource:(O3ResSource*)drs;
 - (NSString*)domain;
