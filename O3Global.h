@@ -80,6 +80,19 @@ typedef enum O3SupportLevel {
 	
 	//Allows the use of mach calls to increase speed
 	#define O3AllowMachCalls 1
+	
+	//Use BSD-specific APIs (some may have sneaked past, this was added later)
+	#define O3AllowBSDCalls 1
+#else
+	//#define O3UseCoreFoundation 0
+	//#define O3UseCoreGraphics 0
+	//#define O3AllowObjcInitAndDeallocSpeedHack 0
+	//#define O3AssumeSimultaneousDictEnumeration 0
+	//#define O3AllowVectorConversionHack 0
+	//#define O3AssumeGCCHack 0
+	//#define O3AllowInitHack 0
+	//#define O3AllowMachCalls 0
+	//#define O3AllowBSDCalls 0
 #endif
 
 /************************************/ #pragma mark Deferred Global Imports /************************************/

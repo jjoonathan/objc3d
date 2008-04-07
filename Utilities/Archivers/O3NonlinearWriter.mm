@@ -252,6 +252,8 @@ NSData* O3NonlinearWriter::Data() {
 }
 
 void O3NonlinearWriter::WriteToFileDescriptor(int descriptor) {
+	int s = flock(descriptor, LOCK_EX);
+	if (s) O3CLogError(@"Error getting lock: errno=%i",errno);
 	struct iovec* towrite = NULL;
 #ifdef O3AllowVectorConversionHack
 	towrite = &(mChunksToWrite[0]);
@@ -266,4 +268,5 @@ void O3NonlinearWriter::WriteToFileDescriptor(int descriptor) {
 		O3Assert(stat!=-1, @"O3NonlinearWriter writing failed, errno=%i",errno);
 		iovtw -= iov_on_this_pass;
 	}
+	flock(descriptor, LOCK_UN);
 }

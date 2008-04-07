@@ -8,15 +8,26 @@
 #ifdef __cplusplus
 #import <map>
 #endif
+
 #import "O3ResSource.h"
 #import "O3ArchiveFormat.h"
+
+#if defined(O3AllowBSDCalls)
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
+
 @class O3DirectoryResSource, O3KeyedUnarchiver;
 
 extern int gO3KeyedUnarchiverLazyThreshhold; ///1MB default for lazy loading
 
 @interface O3FileResSource : O3ResSource {
 	NSString* mPath;
+#if defined(O3AllowBSDCalls)
+	time_t mLastUpdatedDate;
+#else
 	NSDate* mLastUpdatedDate;
+#endif
 	O3KeyedUnarchiver* mUnarchiver;
 	O3ResSource* mContainerResSource;
 	NSLock* mResLock;

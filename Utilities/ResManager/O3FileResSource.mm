@@ -34,7 +34,11 @@ static O3KeyedUnarchiver* mUnarchiverP(O3FileResSource* self) {
 	}
 	O3BufferedReader* br = new O3BufferedReader(rhandle);
 	self->mUnarchiver = [[O3KeyedUnarchiver alloc] initForReadingWithReader:br deleteWhenDone:YES];
+#if !defined(O3AllowBSDCalls)
 	O3Assign([NSDate date], self->mLastUpdatedDate);
+#else
+	self->mLastUpdatedDate = time(NULL);
+#endif
 	return self->mUnarchiver;
 }
 
@@ -51,7 +55,9 @@ static O3KeyedUnarchiver* mUnarchiverP(O3FileResSource* self) {
 - (void)dealloc {
 	O3Destroy(mKnownFailObjects);
 	O3Destroy(mPath);
+#if !defined(O3AllowBSDCalls)
 	O3Destroy(mLastUpdatedDate);
+#endif
 	O3Destroy(mDomain);
 	[self close];
 	O3Destroy(mResLock);
@@ -68,13 +74,22 @@ static O3KeyedUnarchiver* mUnarchiverP(O3FileResSource* self) {
 
 - (BOOL)needsUpdate {
 	if (!mLastUpdatedDate) return YES;
+#if defined(O3AllowBSDCalls)
+	struct stat s;
+	int fail = stat([mPath UTF8String], &s);
+	if (fail) O3LogWarn(@"stat faild with errno %i", errno);
+	time_t modtime = s.st_mtimespec.tv_sec+(s.st_mtimespec.tv_nsec*1.0e-9);
+	if (modtime>mLastUpdatedDate) return YES;
+#else
+	NSDate* modDate = nil;
 	NSDictionary* attrs = [[NSFileManager defaultManager] fileAttributesAtPath:mPath traverseLink:YES];
-	NSDate* modDate = [attrs objectForKey:NSFileModificationDate];
+	modDate = [attrs objectForKey:NSFileModificationDate];
 	if (!modDate && attrs) {
 		O3LogWarn(@"No modification date could be read for file \"%@\". Assuming it is unmodified.");
 		return NO;
 	}
 	if ([mLastUpdatedDate timeIntervalSinceDate:modDate]<0) return YES;
+#endif
 	return NO;
 }
 
@@ -232,9 +247,20 @@ inline BOOL loadAllInto_lookForNamed_(O3FileResSource* self, O3ResManager* rm, N
 	if (lzy==O3ResManagerObjectLazy) return YES;
 	if (lzy==O3ResManagerFileLazy) return NO;
 	if (mIsBigDetermined) return mIsBig;
+	//O3Optimizeable
+#if defined(O3AllowBSDCalls)
+	struct stat s;
+	int fail = stat([mPath UTF8String], &s);
+	if (fail) {
+		O3LogWarn(@"stat faild with errno %i. Assuming unlazy loading is warranted, since its slightly safer.", errno);
+		return NO;
+	}
+	UInt64 size = s.st_size;
+#else
 	NSDictionary* attrs = [[NSFileManager defaultManager] fileAttributesAtPath:mPath traverseLink:YES];
 	if (!attrs) return NO;
-	UIntP size = O3NSNumberLongLongValue([attrs objectForKey:NSFileSize]);
+	UInt64 size = O3NSNumberLongLongValue([attrs objectForKey:NSFileSize]);
+#endif
 	mIsBig = size>gO3KeyedUnarchiverLazyThreshhold;
 	return mIsBig;
 }
