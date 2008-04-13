@@ -1,29 +1,33 @@
 <?xml version='1.0'?>
 <!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
 <signatures version='0.9'>
+<depends_on path='/Users/jon/Documents/Prog/objc3d/build/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework'/>
 <depends_on path='/Users/jon/Documents/Prog/objc3d/build/ObjC3D.framework/Versions/Current/Frameworks/Cg.framework'/>
 <depends_on path='/System/Library/Frameworks/Cocoa.framework'/>
 <depends_on path='/System/Library/Frameworks/OpenGL.framework'/>
 <depends_on path='/System/Library/Frameworks/Carbon.framework'/>
-<depends_on path='/Users/jon/Documents/Prog/objc3d/build/ObjC3D.framework/Versions/Current/Frameworks/Log4Cocoa.framework'/>
 <depends_on path='/System/Library/Frameworks/ApplicationServices.framework'/>
 <depends_on path='/System/Library/Frameworks/CoreFoundation.framework'/>
 <depends_on path='/System/Library/Frameworks/AppKit.framework'/>
 <depends_on path='/System/Library/Frameworks/Foundation.framework'/>
+<struct name='O3ArchiveInfo' type='{_O3ArchiveInfo=&quot;archiver&quot;@&quot;O3KeyedArchiver&quot;&quot;keys&quot;^v&quot;data_compression_level&quot;b5}'/>
 <struct name='O3CGAutoSetParameter' type='{_O3CGAutoSetParameter=&quot;param&quot;^{_CGparameter}&quot;matrix&quot;i&quot;transform&quot;i}'/>
 <struct name='O3CGAutoSetParameterTemplate' type='{_O3CGAutoSetParameterTemplate=&quot;name&quot;*&quot;matrix&quot;i&quot;transform&quot;i}'/>
+<struct name='O3DeflationOptions' type='{_O3DeflationOptions=&quot;rawDeflate&quot;c&quot;windowBits&quot;i&quot;memLevel&quot;i&quot;compressionLevel&quot;i}'/>
 <struct name='O3GLBufferObj' type='{_O3GLBufferObj=&quot;id&quot;I&quot;references&quot;I}'/>
+<struct name='O3InflationOptions' type='{_O3InflationOptions=&quot;rawInflate&quot;c&quot;inflateInto&quot;@&quot;NSMutableData&quot;}'/>
 <struct name='O3Mat3x3d' type='{O3Mat&lt;double,3,3&gt;=&quot;v&quot;[9d]}'/>
 <struct name='O3Mat3x3f' type='{O3Mat&lt;float,3,3&gt;=&quot;v&quot;[9f]}'/>
 <struct name='O3Mat3x3r' type='{O3Mat&lt;real,3,3&gt;=&quot;v&quot;[9f]}'/>
 <struct name='O3Mat4x4d' type='{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}'/>
 <struct name='O3Mat4x4f' type='{O3Mat&lt;float,4,4&gt;=&quot;v&quot;[16f]}'/>
 <struct name='O3Mat4x4r' type='{O3Mat&lt;real,4,4&gt;=&quot;v&quot;[16f]}'/>
+<struct name='O3OptInfo' type='{_O3OptInfo=&quot;stats&quot;^{?}&quot;benefit&quot;f&quot;cost&quot;f}'/>
+<struct name='O3OptStats' type='{_O3OptStats=&quot;accum_count&quot;C&quot;prev_accum_count&quot;C&quot;reassess_at&quot;C&quot;accum_time&quot;f&quot;prev_accum_time&quot;f&quot;revert_usr_data&quot;@}'/>
 <struct name='O3Quaternion' type='{_O3Quaternion=&quot;v&quot;[4d]}'/>
 <struct name='O3RawData' type='{_O3RawData=&quot;bytes&quot;^v&quot;length&quot;I}'/>
-<struct name='O3RenderContext' type='{_O3RenderContext=&quot;scratch&quot;[5^v]&quot;objCCompatibility&quot;#&quot;view&quot;@&quot;O3GLView&quot;&quot;camera&quot;@&quot;O3Camera&quot;&quot;cameraSpace&quot;^{_O3Space3}&quot;elapsedTime&quot;d&quot;glContext&quot;@&quot;NSOpenGLContext&quot;&quot;reserved&quot;[5^v]}'/>
+<struct name='O3RenderContext' type='{_O3RenderContext=&quot;scratch&quot;[5^v]&quot;objCCompatibility&quot;#&quot;view&quot;@&quot;O3GLView&quot;&quot;camera&quot;@&quot;O3Camera&quot;&quot;cameraSpace&quot;@&quot;O3Space&quot;&quot;elapsedTime&quot;d&quot;ctx&quot;@&quot;O3Context&quot;&quot;glContext&quot;@&quot;NSOpenGLContext&quot;&quot;reserved&quot;[5^v]}'/>
 <struct name='O3Rotation3' type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}'/>
-<struct name='O3Space3' type='{_O3Space3=&quot;mSuperspace&quot;^{_O3Space3}&quot;mFromSuperspace&quot;{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}&quot;mFromRootspace&quot;{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}&quot;mPseudohash&quot;I&quot;mSuperPseudohash&quot;I}'/>
 <struct name='O3Transformation3' type='{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}'/>
 <struct name='O3Vec2d' type='{O3Vec&lt;double,2&gt;=&quot;v&quot;[2d]}'/>
 <struct name='O3Vec2f' type='{O3Vec&lt;float,2&gt;=&quot;v&quot;[2f]}'/>
@@ -42,7 +46,6 @@
 <constant name='O3ResManagerKeyDidChangeNotification' type='@'/>
 <constant name='O3ResManagerKeyWillChangeNotification' type='@'/>
 <constant name='O3UnkeyedMethodSendToKeyedArchiverException' type='@'/>
-<constant name='gO3CGContext' type='^{_CGcontext=}'/>
 <constant name='gMaximumVertexAttributes' type='i'/>
 <constant name='gO3KeyedUnarchiverLazyThreshhold' type='i'/>
 <constant name='gO3ResManagerSharedInstance' type='@'/>
@@ -55,6 +58,13 @@
 <enum name='CGPassAnnotationType' value='2'/>
 <enum name='CGProgramAnnotationType' value='4'/>
 <enum name='CGTechniqueAnnotationType' value='3'/>
+<enum name='O3AllowBSDCalls' value='1'/>
+<enum name='O3AllowInitHack' value='1'/>
+<enum name='O3AllowMachCalls' value='1'/>
+<enum name='O3AllowObjcInitAndDeallocSpeedHack' value='1'/>
+<enum name='O3AllowVectorConversionHack' value='1'/>
+<enum name='O3AssumeGCCHack' value='1'/>
+<enum name='O3AssumeSimultaneousDictEnumeration' value='1'/>
 <enum name='O3BigEndian' value='1'/>
 <enum name='O3CTypeEnumCap' value='12'/>
 <enum name='O3ColorDataType' value='2'/>
@@ -71,20 +81,21 @@
 <enum name='O3InvalidVertexDataType' value='255'/>
 <enum name='O3LittleEndian' value='0'/>
 <enum name='O3NormalDataType' value='1'/>
+<enum name='O3OptReversionBias' value='1.1000000000000001'/>
 <enum name='O3PkgTypeArray' value='9'/>
+<enum name='O3PkgTypeCompressed' value='13'/>
 <enum name='O3PkgTypeDictionary' value='8'/>
 <enum name='O3PkgTypeFalse' value='0'/>
 <enum name='O3PkgTypeFloat' value='4'/>
-<enum name='O3PkgTypeIndexedString' value='6'/>
+<enum name='O3PkgTypeIndexedString' value='5'/>
 <enum name='O3PkgTypeNegativeInt' value='3'/>
 <enum name='O3PkgTypeObject' value='14'/>
 <enum name='O3PkgTypePositiveInt' value='2'/>
 <enum name='O3PkgTypeRawData' value='12'/>
 <enum name='O3PkgTypeString' value='6'/>
 <enum name='O3PkgTypeStringArray' value='11'/>
+<enum name='O3PkgTypeStructArray' value='10'/>
 <enum name='O3PkgTypeTrue' value='1'/>
-<enum name='O3PkgTypeValue' value='7'/>
-<enum name='O3PkgTypeValueArray' value='10'/>
 <enum name='O3ResManagerFileLazy' value='0'/>
 <enum name='O3ResManagerModerateLazy' value='1'/>
 <enum name='O3ResManagerNoOpinionLazy' value='3'/>
@@ -106,6 +117,8 @@
 <enum name='O3UInt64CType' value='10'/>
 <enum name='O3UInt8CType' value='7'/>
 <enum name='O3UIntPCType' value='11'/>
+<enum name='O3UseCoreFoundation' value='1'/>
+<enum name='O3UseCoreGraphics' value='1'/>
 <enum name='O3VecStructColor' value='6'/>
 <enum name='O3VecStructIndex' value='4'/>
 <enum name='O3VecStructPoint' value='2'/>
@@ -135,6 +148,7 @@
 <arg type='@'/>
 <retval type='@'/>
 </function>
+<function name='O3BeginGLRes'/>
 <function name='O3CGParameterBindValueFrom_to_'>
 <arg type='@'/>
 <arg type='@'/>
@@ -280,11 +294,16 @@
 <arg type='*'/>
 <retval type='I'/>
 </function>
+<function name='O3Descriptify'>
+<arg type='@'/>
+<retval type='@'/>
+</function>
 <function name='O3DeserializeDataOfType'>
 <arg NEW='1' type='^v' type_modifier='o'/>
 <arg type='*'/>
 <arg type='@'/>
 </function>
+<function name='O3EndGLRes'/>
 <function name='O3FailAssert'/>
 <function name='O3FileResSourceSearchPriority'>
 <arg type='@'/>
@@ -299,6 +318,9 @@
 <arg type='B'/>
 </function>
 <function name='O3GLBreak'/>
+<function name='O3GLResourceContext'>
+<retval type='@'/>
+</function>
 <function name='O3GetCGAnnotationValue'>
 <arg NEW='1' type='^{_CGannotation=}' type_modifier='o'/>
 <retval type='@'/>
@@ -325,9 +347,8 @@
 <arg type='#'/>
 <retval type='@'/>
 </function>
-<function name='O3LocateableBeginRender'>
-<arg type='@'/>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' type_modifier='o'/>
+<function name='O3Mat4x4rType'>
+<retval type='@'/>
 </function>
 <function name='O3MemDup'>
 <arg NEW='1' type='^v' type_modifier='o'/>
@@ -344,9 +365,43 @@
 <arg type='@'/>
 <retval type='^v'/>
 </function>
+<function name='O3NumDec'>
+<arg type='@'/>
+<retval type='q'/>
+</function>
+<function name='O3NumDoubleValue'>
+<arg type='@'/>
+<retval type='d'/>
+</function>
+<function name='O3NumInc'>
+<arg type='@'/>
+<retval type='q'/>
+</function>
+<function name='O3NumInt64Value'>
+<arg type='@'/>
+<retval type='q'/>
+</function>
+<function name='O3NumSetDoubleValue'>
+<arg type='@'/>
+<arg type='d'/>
+</function>
+<function name='O3NumSetInt64Value'>
+<arg type='@'/>
+<arg type='q'/>
+</function>
+<function name='O3RMGM'>
+<retval type='@'/>
+</function>
 <function name='O3RawVertexData_indicies'>
 <arg type='@'/>
 <retval type='^v'/>
+</function>
+<function name='O3ResSourcesLoadNamed_fromPreloadCache_orSources_intoManager_'>
+<arg type='@'/>
+<arg type='@'/>
+<arg type='@'/>
+<arg type='@'/>
+<retval type='B'/>
 </function>
 <function name='O3SACTypeCast'>
 <arg type='@'/>
@@ -367,6 +422,7 @@
 <function name='O3SetCGParameterToValue'>
 <arg NEW='1' type='^{_CGparameter=}' type_modifier='o'/>
 <arg type='@'/>
+<arg NEW='1' type='^v' type_modifier='o'/>
 </function>
 <function name='O3StructTypeDict'>
 <retval type='@'/>
@@ -416,6 +472,12 @@
 </method>
 </class>
 <class name='NSCoder'>
+<method selector='encodeVec3d:forKey:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+</method>
+<method selector='encodeVec3f:forKey:'>
+<arg type='{O3Vec&lt;real,3&gt;=[3f]}' index='0'/>
+</method>
 <method selector='isStatisticGatherer'>
 <retval type='B'/>
 </method>
@@ -426,14 +488,20 @@
 </method>
 </class>
 <class name='NSObject'>
-<method selector='isSpeciallyHandledByO3Archiver'>
+<method selector='encodeWithO3ArchiveInfo:key:'>
+<arg NEW='1' type='^{_O3ArchiveInfo=@^vb5}' index='0' type_modifier='o'/>
+</method>
+<method selector='optimizationInfo'>
+<retval type='{_O3OptInfo=^{?}ff}'/>
+</method>
+<method selector='paramsAreCGParams'>
 <retval type='B'/>
 </method>
 <method selector='renderWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='tickWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='addObject:'>
 <arg NEW='1' index='0' type_modifier='o'/>
@@ -442,6 +510,20 @@
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
 <method selector='insertObject:atIndex:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+</method>
+</class>
+<class name='O32DStructArray'>
+<method selector='isRowMajor'>
+<retval type='B'/>
+</method>
+<method selector='rows:cols:rowMajor:'>
+<arg type='B' index='2'/>
+</method>
+<method selector='getStruct:atRow:col:'>
+<arg NEW='1' index='0' type_modifier='o'/>
+</method>
+<method selector='setStruct:atRow:col:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
 </class>
@@ -469,6 +551,9 @@
 <method class_method='true' selector='effectsEnabled'>
 <retval type='B'/>
 </method>
+<method selector='paramsAreCGParams'>
+<retval type='B'/>
+</method>
 <method class_method='true' selector='setEffectsEnabled:'>
 <arg type='B' index='0'/>
 </method>
@@ -492,10 +577,13 @@
 <arg type='B' index='3'/>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
-<method selector='initWithParameter:'>
+<method selector='initWithParam:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
-<method class_method='true' selector='parameterWithParameter:'>
+<method selector='initWithType:dimensions:dimensionCount:'>
+<arg NEW='1' index='1' type_modifier='o'/>
+</method>
+<method selector='initWithTypeFromParam:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
 <method selector='setDoubleArrayValue:count:'>
@@ -527,6 +615,9 @@
 <method selector='needsCompiling'>
 <retval type='B'/>
 </method>
+<method selector='paramsAreCGParams'>
+<retval type='B'/>
+</method>
 <method class_method='true' selector='setCompiledAutomatically:'>
 <arg type='B' index='0'/>
 </method>
@@ -544,6 +635,9 @@
 <method selector='isValid'>
 <retval type='B'/>
 </method>
+<method selector='paramsAreCGParams'>
+<retval type='B'/>
+</method>
 <method selector='initWithTechnique:fromEffect:'>
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
@@ -556,7 +650,7 @@
 <arg type='{O3Vec&lt;double,2&gt;=[2d]}' index='0'/>
 </method>
 <method selector='tickWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='viewMatrix'>
 <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
@@ -574,15 +668,26 @@
 </method>
 </class>
 <class name='O3DirectoryResSource'>
+<method selector='handleLoadRequest:fromManager:tryAgain:'>
+<arg NEW='1' type='^B' index='2' type_modifier='o'/>
+<retval type='B'/>
+</method>
 <method selector='shouldLoadLazily'>
+<retval type='B'/>
+</method>
+<method selector='updatePaths'>
 <retval type='B'/>
 </method>
 </class>
 <class name='O3FileResSource'>
-<method selector='shouldLoadLazily'>
+<method selector='handleLoadRequest:fromManager:tryAgain:'>
+<arg NEW='1' type='^B' index='2' type_modifier='o'/>
 <retval type='B'/>
 </method>
 <method selector='needsUpdate'>
+<retval type='B'/>
+</method>
+<method selector='shouldLoadLazily'>
 <retval type='B'/>
 </method>
 </class>
@@ -607,6 +712,9 @@
 <method selector='noRecovery'>
 <retval type='B'/>
 </method>
+<method selector='paused'>
+<retval type='B'/>
+</method>
 <method selector='setAuxDepthStencil:'>
 <arg type='B' index='0'/>
 </method>
@@ -617,6 +725,9 @@
 <arg type='B' index='0'/>
 </method>
 <method selector='setNoRecovery:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setPaused:'>
 <arg type='B' index='0'/>
 </method>
 <method selector='setStereoBuffer:'>
@@ -661,12 +772,6 @@
 <method selector='decodeBoolForKey:'>
 <retval type='B'/>
 </method>
-<method selector='readAndLoadIntoManager:returnDummyDict:'>
-<arg type='B' index='1'/>
-</method>
-<method selector='skimDictionaryAtOffset:levelOne:'>
-<arg type='B' index='1'/>
-</method>
 <method selector='decodeBytesForKey:returnedLength:'>
 <arg NEW='1' index='1' type_modifier='o'/>
 </method>
@@ -680,54 +785,27 @@
 </method>
 </class>
 <class name='O3Locateable'>
-<method selector='debugDrawIntoSpace:'>
-<arg NEW='1' type='^{_O3Space3=^{_O3Space3}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}II}' index='0' type_modifier='o'/>
-</method>
-<method selector='matrixToSpace:'>
-<arg NEW='1' type='^{_O3Space3=^{_O3Space3}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}II}' index='0' type_modifier='o'/>
-<retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
-</method>
-<method selector='matrixToSpaceOfLocateable:'>
-<retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
-</method>
-<method selector='rotateBy:'>
-<arg type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}' index='0'/>
-</method>
-<method selector='rotateOverAxis:angle:'>
+<method selector='moveBy:inPOVOf:'>
 <arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
 </method>
-<method selector='rotateOverOSAxis:angle:'>
+<method selector='moveTo:inPOVOf:'>
 <arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
 </method>
-<method selector='rotation'>
-<retval type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}'/>
-</method>
-<method selector='scale'>
-<retval type='{O3Vec&lt;double,3&gt;=[3d]}'/>
-</method>
-<method selector='scaleBy:'>
+<method selector='resize:inPOVOf:'>
 <arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
 </method>
-<method selector='setMatrixToSpace:'>
-<arg NEW='1' type='^{_O3Space3=^{_O3Space3}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}{_O3Transformation3={O3Mat&lt;double,4,4&gt;=[16d]}{O3Mat&lt;double,4,4&gt;=[16d]}}II}' index='0' type_modifier='o'/>
+<method selector='rotateBy:over:inPOVOf:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='1'/>
 </method>
-<method selector='setRotation:'>
-<arg type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}' index='0'/>
+</class>
+<class name='O3MatStructType'>
+<method selector='initWithName:eleType:rows:cols:rowMajor:'>
+<arg type='B' index='4'/>
 </method>
-<method selector='setScale:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
-</method>
-<method selector='setTranslation:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
-</method>
-<method selector='translateBy:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
-</method>
-<method selector='translateInObjectSpaceBy:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
-</method>
-<method selector='translation'>
-<retval type='{O3Vec&lt;double,3&gt;=[3d]}'/>
+</class>
+<class name='O3MatrixSpace'>
+<method selector='setMatrixToSuper:'>
+<arg type='{O3Mat&lt;double,4,4&gt;=[16d]}' index='0'/>
 </method>
 </class>
 <class name='O3RawVertexData'>
@@ -745,10 +823,10 @@
 </class>
 <class name='O3Region'>
 <method selector='renderWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='tickWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
 </method>
 <method selector='addObject:'>
 <arg NEW='1' index='0' type_modifier='o'/>
@@ -772,18 +850,57 @@
 <method selector='isInInterfaceBuilder'>
 <retval type='B'/>
 </method>
+<method selector='loadResourceNamed:'>
+<retval type='B'/>
+</method>
 <method selector='setEncodedAsShared:'>
 <arg type='B' index='0'/>
 </method>
 </class>
 <class name='O3ResSource'>
+<method selector='handleLoadRequest:fromManager:tryAgain:'>
+<arg NEW='1' type='^B' index='2' type_modifier='o'/>
+<retval type='B'/>
+</method>
 <method selector='shouldLoadLazily'>
 <retval type='B'/>
 </method>
 </class>
 <class name='O3Scene'>
 <method selector='renderWithContext:'>
-<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@^{_O3Space3}d@[5^v]}' index='0' type_modifier='o'/>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
+</method>
+</class>
+<class name='O3Space'>
+<method selector='applyTransformation:inSpace:'>
+<arg type='{O3Mat&lt;double,4,4&gt;=[16d]}' index='0'/>
+</method>
+<method selector='matrixFromSpace:'>
+<retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+</method>
+<method selector='matrixFromSuper'>
+<retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+</method>
+<method selector='matrixToSpace:'>
+<retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+</method>
+<method selector='matrixToSuper'>
+<retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
+</method>
+<method selector='pop:'>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
+</method>
+<method selector='push:'>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
+</method>
+<method selector='setMatrixToRoot:'>
+<arg type='{O3Mat&lt;double,4,4&gt;=[16d]}' index='0'/>
+</method>
+<method selector='setMatrixToSuper:'>
+<arg type='{O3Mat&lt;double,4,4&gt;=[16d]}' index='0'/>
+</method>
+<method selector='setTransformation:inSpace:'>
+<arg type='{O3Mat&lt;double,4,4&gt;=[16d]}' index='0'/>
 </method>
 </class>
 <class name='O3StructArray'>
@@ -855,6 +972,47 @@
 <arg NEW='1' index='0' type_modifier='o'/>
 </method>
 </class>
+<class name='O3TRSSpace'>
+<method selector='drawOrthoBasis:'>
+<arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
+</method>
+<method selector='moveBy:inPOVOf:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+</method>
+<method selector='moveTo:inPOVOf:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+</method>
+<method selector='quatRotation'>
+<retval type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}'/>
+</method>
+<method selector='resize:inPOVOf:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+</method>
+<method selector='rotateBy:over:inPOVOf:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='1'/>
+</method>
+<method selector='rotation'>
+<retval type='{O3Vec&lt;double,3&gt;=[3d]}'/>
+</method>
+<method selector='scale'>
+<retval type='{O3Vec&lt;real,3&gt;=[3f]}'/>
+</method>
+<method selector='setQuatRotation:'>
+<arg type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}' index='0'/>
+</method>
+<method selector='setRotation:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+</method>
+<method selector='setScale:'>
+<arg type='{O3Vec&lt;real,3&gt;=[3f]}' index='0'/>
+</method>
+<method selector='setTranslation:'>
+<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+</method>
+<method selector='translation'>
+<retval type='{O3Vec&lt;double,3&gt;=[3d]}'/>
+</method>
+</class>
 <class name='O3Texture'>
 <method selector='isCompressed'>
 <retval type='B'/>
@@ -888,8 +1046,8 @@
 </arg>
 </method>
 </class>
-<informal_protocol name='O3KeyedArchiverSpecialness'>
-<method type='B8@0:4' selector='isSpeciallyHandledByO3Archiver'/>
+<informal_protocol name='O3KeyedArchiving'>
+<method type='v16@0:4^{?=@^vb5}8@12' selector='encodeWithO3ArchiveInfo:key:'/>
 </informal_protocol>
 <informal_protocol name='O3MutableValues'>
 <method type='d8@0:4' selector='doubleValue'/>

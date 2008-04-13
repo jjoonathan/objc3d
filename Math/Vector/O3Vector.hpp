@@ -564,7 +564,6 @@ std::string O3Vec_T::Description() const {
 	to_return<<"}";
 	return to_return.str();
 }
-#endif /*defined(__cplusplus)*/
 
 O3Vec_TT
 void O3Vec_T::WriteTo(O3NonlinearWriter* w) {
@@ -585,3 +584,4 @@ O3Vec_T& O3Vec_T::SetFromReader(O3BufferedReader* br, UIntP len) {
 		[sr free];
 	}
 }
+#endif /*defined(__cplusplus)*/

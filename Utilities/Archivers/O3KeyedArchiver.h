@@ -27,8 +27,8 @@ extern NSPropertyListFormat O3ArchiveFormat0;
 ///O3ArchiveInfo is used while archiving to pass data quicker than one could using just an objc interface
 typedef struct {
 	O3KeyedArchiver* archiver;
-	O3NonlinearWriter* writer;
 	#ifdef __cplusplus
+	O3NonlinearWriter* writer;
 	typedef std::vector<O3ChildEnt> child_arr_t;
 	std::stack<child_arr_t> children;
 	#else

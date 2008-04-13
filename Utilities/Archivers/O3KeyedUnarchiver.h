@@ -13,7 +13,7 @@
 	std::vector<O3ChildEnt> mRootEnts;
 	O3BufferedReader* mBr;
 #else
-	void* mRootEnts, mBr;
+	void* mRootEnts,* mBr;
 #endif
 	NSZone* mObjectZone;
 	NSMutableDictionary* mClassOverrides; ///<NSString->Class

@@ -8,8 +8,10 @@
 #import "O3VertexDataSource.h"
 #import "O3CTypes.h"
 @class O3StructType;
+#ifdef __cplusplus
 class O3NonlinearWriter;
 class O3BufferedReader;
+#endif
 
 @interface O3StructArray : NSMutableArray <NSCopying, NSMutableCopying, NSCoding> {
 	O3StructType* mStructType;
@@ -101,8 +103,10 @@ typedef O3StructArray O3MutableStructArray;
 - (void*)bytesOfType:(O3StructType*)t;
 @end
 
+#ifdef __cplusplus
 //double* O3StructArrayValuesAsDoubles(O3StructArray* self, UIntP* ct); //Used in O3Matrix.h
 O3EXTERN_C void O3StructArrayWrite(O3StructType* type, const void* bytes, UIntP rows, UIntP cols, O3NonlinearWriter* writeTo);
 O3EXTERN_C O3StructArray* O3StructArrayRead(O3BufferedReader* readFrom, UIntP len); ///@return a struct array with 1 retain and 0 autoreleases
 O3EXTERN_C float* O3StructArrayReadFloats(O3BufferedReader* readFrom, UIntP len, UIntP* o_rows, UIntP* o_cols);
 O3EXTERN_C double* O3StructArrayReadDoubles(O3BufferedReader* readFrom, UIntP len, UIntP* o_rows, UIntP* o_cols);
+#endif

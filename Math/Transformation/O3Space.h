@@ -42,6 +42,8 @@
 - (double)drift; ///<Should be close to zero. The larger, the further matrixFromSuper*matrixToSuper is from the identity, and (ponentially) the less stable the transformaion is.
 @end
 
+#ifdef __cplusplus
 ///<Dynamically uses TRS shortcuts if possible. If converting en masse, you should probably get a matrix though.
 O3EXTERN_C O3Vec4d O3PointFromSpaceToSpace(const O3Vec4d& p, O3Space* from, O3Space* to);
 O3EXTERN_C O3Mat4x4d O3SpaceMatrixFromTo(O3Space* fromspace, O3Space* tospace);
+#endif

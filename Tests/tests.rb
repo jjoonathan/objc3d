@@ -9,3 +9,4 @@ srand rseed
 puts "Random seed: #{srand.to_s}"
 require 'Tests/test_struct_array'
 require 'Tests/test_archivers'
+require 'Tests/test_space'

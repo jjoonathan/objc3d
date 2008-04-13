@@ -5,8 +5,8 @@
  *  @author Jonathan deWerd
  *  @copyright Copyright 2007 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  */
-#ifdef __cplusplus
 #import "O3CGParameter.h"
+#ifdef __cplusplus
 #include <map>
 #include <string>
 using namespace std;
