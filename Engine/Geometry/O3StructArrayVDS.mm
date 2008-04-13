@@ -182,7 +182,7 @@ O3DefaultO3InitializeImplementation
 			glDisableClientState(GL_VERTEX_ARRAY);
 			break;
 		case O3VertexLocationIndexDataType:
-			glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_BINDING_ARB, GL_ZERO);
+			glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_ZERO);
 			break;
 		case O3NormalDataType:			
 			glDisableClientState(GL_NORMAL_ARRAY);

@@ -31,7 +31,6 @@
 - (O3Mat4x4d)matrixToSuper; ///<The row-major matrix that when postmultiplied with a row-vector will transform it from the receiver's space to its superspace
 - (O3Mat4x4d)matrixFromSuper; ///<The row-major matrix that when postmultiplied with a row-vector will transform it from the receiver's superspace to its space
 
-- (void)applyTransformation:(O3Mat4x4d)trans inSpace:(O3Space*)sp;
 - (void)setTransformation:(O3Mat4x4d)trans inSpace:(O3Space*)sp;
 
 //Moving between spaces

@@ -10,7 +10,7 @@
 @implementation O3MatrixSpace
 - (id)init {
 	O3SuperInitOrDie();
-	mMatToSuper.Identitize();
+	mMat.Identitize();
 	return self;
 }
 
@@ -22,23 +22,41 @@
 	}
 	O3SuperInitOrDie();
 	O32DStructArray* sa = [coder decodeObjectForKey:@"matrix"];
-	if (sa) mMatToSuper.SetValue(sa);
-	else mMatToSuper.Identitize();
+	if (sa) mMat.SetValue(sa);
+	else mMat.Identitize();
+	mMatIsToSuper = [coder decodeBoolForKey:@"isToSuper"];
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
 	if (![coder allowsKeyedCoding])
 		[NSException raise:NSInvalidArgumentException format:@"Object %@ cannot be encoded with a non-keyed archiver", self];
-	[coder encodeObject:mMatToSuper.Value() forKey:@"matrix"];
+	[coder encodeObject:mMat.Value() forKey:@"matrix"];
+	[coder encodeBool:mMatIsToSuper forKey:@"isToSuper"];
 }
 
 - (void)setMatrixToSuper:(O3Mat4x4d)mat {
-	mMatToSuper = mat;
+	mMatIsToSuper = YES;
+	mMat = mat;
+}
+
+- (void)setMatrixFromSuper:(O3Mat4x4d)mat {
+	mMatIsToSuper = NO;
+	mMat = mat;
 }
 
 - (O3Mat4x4d)matrixToSuper {
-	return mMatToSuper;
+	if (mMatIsToSuper) return mMat;
+	O3Mat4x4d im = mMat;
+	im.InvertLU();
+	return im;
+}
+
+- (O3Mat4x4d)matrixFromSuper {
+	if (!mMatIsToSuper) return mMat;
+	O3Mat4x4d im = mMat;
+	im.InvertLU();
+	return im;
 }
 
 @end

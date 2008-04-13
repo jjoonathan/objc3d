@@ -53,6 +53,6 @@ typedef O3Translation<double, 3> O3Translation3;
 typedef O3Translation<double, 2> O3Translation2;
 #else
 //This type is not legal in the bridge. Instead, you should allow the user to input a double[2] or double[3]. The types will be automatically converted in your objc code, and you will be able to use the less awkward [x,y,z] syntax in ruby code.
-//typedef struct {double v[3];} O3Translation3;
-//typedef struct {double v[2];} O3Translation2;
+typedef struct {double v[3];} O3Translation3;
+typedef struct {double v[2];} O3Translation2;
 #endif /*defined(__cplusplus)*/

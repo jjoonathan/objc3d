@@ -88,6 +88,8 @@ inline void initP(O3GLView* self) {
 	[self setSceneName:@"defaultScene"];
 	[self setUpdateInterval:1./35.];
 	[[self window] setAcceptsMouseMovedEvents:YES];
+	[NSThread detachNewThreadSelector:@selector(updateThread:) toTarget:self withObject:nil];
+	self->mUpdateRunningLock = [[NSLock alloc] init];
 }
 
 - (O3GLView*)initWithFrame:(NSRect)frameRect {
@@ -103,6 +105,10 @@ inline void initP(O3GLView* self) {
 	[mScene release];
 	[mContext release];
 	[self unlockMouse];
+	mUpdateThreadIsCanceled = YES;
+	[mUpdateRunningLock lock]; [mUpdateRunningLock unlock]; //Make sure the change above had a chance to be applied
+	[mUpdateRunningLock release];
+	if (mOwnsController) [[self controller] release];
 	O3SuperDealloc();
 }
 
@@ -245,9 +251,9 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 
 /************************************/ #pragma mark Accessors /************************************/
 - (void)installDefaultViewController {
-	O3LogWarn(@"This method causes a leak. Don't use in real code.");
 	O3GLViewController* cont = [[O3GLViewController alloc] init];
 	[cont setRepresentedView:self];
+	[self setOwnsController:YES];
 }
 
 - (NSMutableDictionary*)viewState {
@@ -324,6 +330,15 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 	return nil;
 }
 
+- (BOOL)ownsController {
+	return mOwnsController;
+}
+
+- (void)setOwnsController:(BOOL)shouldReleaseController {
+	mOwnsController=shouldReleaseController;
+}
+
+
 /************************************/ #pragma mark Drawing /************************************/
 - (void)drawRect:(NSRect)rect {
 	if (![self canDraw]) {O3LogWarn(@"Cannot draw %@", self); return;} //We don't want this to be an exception
@@ -361,6 +376,34 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 	updateContextIfNecessary(self);
 	[mContext update];
 	[self drawRect:[self frame]];
+}
+
+- (void)updateThread:(id)obj {
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
+	NSThread* ct = [NSThread currentThread];
+	if (mUpdateThread) return; //Loose, doesn't really need a lock
+	NSTimer* oldTimer = nil;
+	mUpdateThread = ct; [ct performSelector:@selector(setName:) withObject:@"O3GLView Update"];
+	mUpdateThreadRunLoop = [NSRunLoop currentRunLoop];	
+	[mUpdateRunningLock lock];
+	while (1) {
+		NSAutoreleasePool *pool2 = [NSAutoreleasePool new];
+		if (oldTimer!=mUpdateTimer) {
+			[mUpdateThreadRunLoop addTimer:mUpdateTimer forMode:NSDefaultRunLoopMode];
+			oldTimer=mUpdateTimer;
+		}
+		[mUpdateThreadRunLoop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+		[pool2 release];
+		NSDate* fireNext = [mUpdateThreadRunLoop limitDateForMode:NSDefaultRunLoopMode];
+		[mUpdateRunningLock unlock];
+		//If any threads want to update mUpdateThreadIsCanceled, that happens here
+		double ti = [fireNext timeIntervalSinceNow];
+		usleep(ti*1000000);
+		[mUpdateRunningLock lock];
+		if (mUpdateThreadIsCanceled) break;
+	}
+	[mUpdateRunningLock unlock];
+	[pool release];
 }
 
 - (void)drawBlackScreenOfDeath:(NSString*)message {
@@ -689,7 +732,7 @@ inline void mouseMoved(O3GLView* self, NSEvent* e) {
 }
 
 - (void)setUpdateInterval:(double)newInt {
-	NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:newInt target:self selector:@selector(update) userInfo:nil repeats:YES];
+	NSTimer* t = [NSTimer timerWithTimeInterval:newInt target:self selector:@selector(update) userInfo:nil repeats:YES];
 	[mUpdateTimer invalidate];
 	O3Assign(t, mUpdateTimer);
 }

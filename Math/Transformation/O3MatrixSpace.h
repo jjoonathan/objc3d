@@ -8,7 +8,9 @@
 #import "O3Space.h"
 
 @interface O3MatrixSpace : O3Space {
-	O3Mat4x4d mMatToSuper;
+	BOOL mMatIsToSuper; ///<YES if mMat goes to the superspace, NO if it goes from it
+	O3Mat4x4d mMat;
 }
 - (void)setMatrixToSuper:(O3Mat4x4d)mat;
+- (void)setMatrixFromSuper:(O3Mat4x4d)mat;
 @end

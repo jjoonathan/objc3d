@@ -6,6 +6,7 @@
  */
 #import "O3Camera.h"
 #import "O3GLView.h"
+#import "O3TRSSpace.h"
 #import "O3MatrixSpace.h"
 #define mLocation (*(self->mpLocation))
 #define mDirection (*(self->mpDirection))
@@ -18,6 +19,7 @@ O3DefaultO3InitializeImplementation
 
 inline void initP(O3Camera* self) {
 	self->mPostProjectionSpace = [[O3MatrixSpace alloc] init];
+	[self->mPostProjectionSpace setSuperspaceWithoutAdjusting:self->mObjectSpace];
 	self->mAspectRatio = 1.;
 	self->mNearPlane = .1;
 	self->mFarPlane = 100.;
@@ -36,7 +38,7 @@ inline O3MatrixSpace* mPostProjectionSpaceP(O3Camera* self) {
 	if (!self->mPostProjectionSpaceNeedsUpdate) return self->mPostProjectionSpace;
 	O3Mat4x4d themat;
 	themat.SetPerspective(self->mFOVY, self->mAspectRatio, self->mNearPlane, self->mFarPlane);
-	[self->mPostProjectionSpace setMatrixToSuper:themat];
+	[self->mPostProjectionSpace setMatrixFromSuper:themat];
 	return self->mPostProjectionSpace;
 }
 
@@ -121,8 +123,16 @@ inline O3MatrixSpace* mPostProjectionSpaceP(O3Camera* self) {
 /************************************/ #pragma mark Use /************************************/
 - (void)setProjectionMatrix {
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixd([mPostProjectionSpace matrixToSuper]);
+	O3Mat4x4d projMat;// = [mPostProjectionSpace matrixFromSuper];
+	projMat.SetPerspective(self->mFOVY, self->mAspectRatio, self->mNearPlane, self->mFarPlane);
+	glLoadMatrixd(projMat);
+	glLoadIdentity();
+	glFrustum(-1, 1, -1, 1, .1, 100);
 	glMatrixMode(GL_MODELVIEW);
+}
+
+- (void)setViewMatrix {
+	glLoadMatrixd([mObjectSpace matrixFromSuper]);
 }
 
 - (void)tickWithContext:(O3RenderContext*)context {
@@ -130,19 +140,19 @@ inline O3MatrixSpace* mPostProjectionSpaceP(O3Camera* self) {
 	double t = raw_t * mFlySpeed;
 	NSDictionary* d = [context->view viewState];
 	if ([d objectForKey:@"flyingFast"]) t *= 10;
-	if ([d objectForKey:@"flyingForward"])  {[self moveBy:O3Vec3d(0,0,t) inPOVOf:self];}
-	if ([d objectForKey:@"flyingBackward"]) {[self moveBy:O3Vec3d(0,0,-t) inPOVOf:self]; }
-	if ([d objectForKey:@"flyingLeft"])     {[self moveBy:O3Vec3d(t,0,0) inPOVOf:self];}
-	if ([d objectForKey:@"flyingRight"])    {[self moveBy:O3Vec3d(-t,0,0) inPOVOf:self]; }
-	if ([d objectForKey:@"flyingUp"])       {[self moveBy:O3Vec3d(0,-t,0) inPOVOf:self]; }
-	if ([d objectForKey:@"flyingDown"])     {[self moveBy:O3Vec3d(0,t,0) inPOVOf:self];}
-	if ([d objectForKey:@"barrelingLeft"])  {[self rotateBy:-mBarrelRate*raw_t over:O3Vec3d(0,0,-1) inPOVOf:self];}
-	if ([d objectForKey:@"barrelingRight"]) {[self rotateBy:mBarrelRate*raw_t  over:O3Vec3d(0,0,-1) inPOVOf:self];}
+	if ([d objectForKey:@"flyingForward"])  {[self moveTo:O3Vec3d(0,0,-t) inPOVOf:self];}
+	if ([d objectForKey:@"flyingBackward"]) {[self moveTo:O3Vec3d(0,0,t) inPOVOf:self]; }
+	if ([d objectForKey:@"flyingLeft"])     {[self moveTo:O3Vec3d(-t,0,0) inPOVOf:self];}
+	if ([d objectForKey:@"flyingRight"])    {[self moveTo:O3Vec3d(t,0,0) inPOVOf:self]; }
+	if ([d objectForKey:@"flyingUp"])       {[self moveTo:O3Vec3d(0,t,0) inPOVOf:self]; }
+	if ([d objectForKey:@"flyingDown"])     {[self moveTo:O3Vec3d(0,-t,0) inPOVOf:self];}
+	if ([d objectForKey:@"barrelingLeft"])  {[self rotateBy:mBarrelRate*raw_t over:O3Vec3d(0,0,-1) inPOVOf:self];}
+	if ([d objectForKey:@"barrelingRight"]) {[self rotateBy:-mBarrelRate*raw_t  over:O3Vec3d(0,0,-1) inPOVOf:self];}
 }
 
 - (void)rotateForMouseMoved:(O3Vec2d)amount {
-	[self rotateBy:-mRotRate*amount[0] over:O3Vec3d(0,1,0) inPOVOf:self];
-	[self rotateBy:-mRotRate*amount[1] over:O3Vec3d(1,0,0) inPOVOf:self];
+	[self rotateBy:mRotRate*amount[0] over:O3Vec3d(0,1,0) inPOVOf:self];
+	[self rotateBy:mRotRate*amount[1] over:O3Vec3d(1,0,0) inPOVOf:self];
 }
 
 @end

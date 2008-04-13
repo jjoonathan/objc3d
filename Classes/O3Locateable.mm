@@ -40,10 +40,6 @@ O3DefaultO3InitializeImplementation
 
 
 /************************************/ #pragma mark Transformation /************************************/
-- (void)moveBy:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov {
-	[mObjectSpace moveBy:amount inPOVOf:pov];
-}
-
 - (void)moveTo:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov {
 	[mObjectSpace moveTo:amount inPOVOf:pov];
 }
@@ -65,7 +61,11 @@ O3DefaultO3InitializeImplementation
 }
 
 - (void)setParentSpace:(id<O3Spatial>)s {
-	
+	[mObjectSpace setSuperspace:[s space]];
+}
+
+- (void)setParentSpaceWithoutAdjusting:(id<O3Spatial>)s {
+	[mObjectSpace setSuperspaceWithoutAdjusting:[s space]];
 }
 
 @end

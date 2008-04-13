@@ -42,15 +42,6 @@ O3DefaultO3InitializeImplementation
 }
 
 /************************************/ #pragma mark Movement /************************************/
-- (void)moveBy:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov {
-	if (pov==mSuperspace) {
-		mTranslation+=amount;
-		return;
-	}
-	O3Mat4x4d trans = O3Translation3(amount).GetMatrix();
-	[self applyTransformation:trans inSpace:[pov space]];
-}
-
 - (void)moveTo:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov {
 	if (pov==mSuperspace) {
 		mTranslation.Set(amount);
@@ -68,7 +59,7 @@ O3DefaultO3InitializeImplementation
 		mRotation+=O3Rotation3(theta, axis);
 		return;
 	}
-	[self applyTransformation:O3Rotation3(theta,axis).GetMatrix() inSpace:[pov space]];
+	[self setTransformation:O3Rotation3(theta,axis).GetMatrix() inSpace:[pov space]];
 }
 
 - (void)resize:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov {
@@ -76,7 +67,7 @@ O3DefaultO3InitializeImplementation
 		mScale*=amount;
 		return;
 	}
-	[self applyTransformation:O3Scale3(amount).GetMatrix() inSpace:[pov space]];
+	[self setTransformation:O3Scale3(amount).GetMatrix() inSpace:[pov space]];
 }
 
 
@@ -159,21 +150,13 @@ O3Mat4x4d O3TRSSpaceMatFromSuper(O3TRSSpace* self) {
 	ret(0,0)*=s0; ret(0,1)*=s1; ret(0,2)*=s2;
 	ret(1,0)*=s0; ret(1,1)*=s1; ret(1,2)*=s2;
 	ret(2,0)*=s0; ret(2,1)*=s1; ret(2,2)*=s2;
-	double tx = self->mTranslation[0];
-	double ty = self->mTranslation[1];
-	double tz = self->mTranslation[2];
+	double tx = -self->mTranslation[0];
+	double ty = -self->mTranslation[1];
+	double tz = -self->mTranslation[2];
 	ret(3,0) = ret(0,0)*tx + ret(1,0)*ty + ret(2,0)*tz;
 	ret(3,1) = ret(0,1)*tx + ret(1,1)*ty + ret(2,1)*tz;
 	ret(3,2) = ret(0,2)*tx + ret(1,2)*ty + ret(2,2)*tz;
 	return ret;
-}
-
-- (O3Mat4x4d)matrixToSpace:(O3Space*)tospace {
-	return O3Mat4x4d();
-}
-
-- (O3Mat4x4d)matrixFromSpace:(O3Space*)fromspace {
-	return O3Mat4x4d();
 }
 
 - (O3Mat4x4d)matrixFromSuper {
@@ -181,7 +164,7 @@ O3Mat4x4d O3TRSSpaceMatFromSuper(O3TRSSpace* self) {
 }
 
 - (O3Mat4x4d)matrixToSuper {
-	return O3TRSSpaceMatFromSuper(self);
+	return O3TRSSpaceMatToSuper(self);
 }
 
 - (void)pushSpace:(O3RenderContext*)ctx {
@@ -281,6 +264,16 @@ O3EXTERN_C O3Vec4d O3PointFromSpaceToSpace(const O3Vec4d& p, O3Space* from, O3Sp
 	}
 	
 	return newpt;
+}
+
+
+/************************************/ #pragma mark Desc /************************************/
+- (NSString*)description {
+	double roll, pitch, yaw; mRotation.GetEulerAngles(&roll, &pitch, &yaw);
+	return [NSString stringWithFormat:@"<O3TRSSpace: translation=%f,%f,%f roll:%f pitch:%f yaw:%f scale:%f,%f,%f>",
+		mTranslation[0], mTranslation[1], mTranslation[2],
+		roll, pitch, yaw,
+		mScale[0], mScale[1], mScale[2]];
 }
 
 

@@ -23,10 +23,12 @@
 }
 
 - (void)setSuperspaceWithoutAdjusting:(O3Space*)ss {
+	O3AssertArg(ss!=self, @"Cannot loop spaces");
 	mSuperspace = ss;
 }
 
 - (void)setSuperspace:(O3Space*)ss {
+	O3AssertArg(ss!=self, @"Cannot loop spaces");
 	O3Mat4x4d trans = O3SpaceMatrixFromTo(mSuperspace, ss);
 	O3Mat4x4d newSpace = [self matrixToSuper]*trans;
 	[self setMatrixToSuper:newSpace];
@@ -40,7 +42,8 @@
 /************************************/ #pragma mark GL /************************************/
 - (void)push:(O3RenderContext*)ctx {
 	glPushMatrix();
-	glMultMatrixd([self matrixToSuper].GLMatrix());
+	double* glmat = [self matrixToSuper].GLMatrix();
+	glMultMatrixd(glmat);
 }
 
 - (void)pop:(O3RenderContext*)ctx {
@@ -89,13 +92,6 @@
 	return ret.Invert3x4();
 }
 
-- (void)applyTransformation:(O3Mat4x4d)trans inSpace:(O3Space*)sp {
-	O3Mat4x4d mts = [self matrixToSuper];
-	O3Mat4x4d povchanger = O3SpaceMatrixFromTo(sp, [self superspace]);
-	trans *= povchanger;
-	[self setMatrixToSuper:mts*trans];
-}
-
 - (void)setTransformation:(O3Mat4x4d)trans inSpace:(O3Space*)sp {
 	O3Mat4x4d povchanger = O3SpaceMatrixFromTo(sp, [self superspace]);
 	trans *= povchanger;
@@ -108,12 +104,17 @@
 /************************************/ #pragma mark Moving from space to space /************************************/
 O3EXTERN_C O3Mat4x4d O3SpaceMatrixFromTo(O3Space* fromspace, O3Space* tospace) {
 	if (fromspace==tospace) return O3Mat4x4d::GetIdentity();
-	O3Mat4x4d mat = [fromspace matrixToSuper];
-	O3Space* current_space = fromspace->mSuperspace;
-	while (current_space) {
-		mat *= [current_space matrixToSuper];
-		current_space = [current_space superspace];
-		if (current_space==tospace) return mat;
+	O3Mat4x4d mat;
+	if (fromspace) {
+		mat = [fromspace matrixToSuper];
+		O3Space* current_space = fromspace->mSuperspace;
+		while (current_space) {
+			mat *= [current_space matrixToSuper];
+			current_space = [current_space superspace];
+			if (current_space==tospace) return mat;
+		}
+	} else {
+		mat.Identitize();
 	}
 	
 	//Build a list of spaces to transform into from root
@@ -121,13 +122,13 @@ O3EXTERN_C O3Mat4x4d O3SpaceMatrixFromTo(O3Space* fromspace, O3Space* tospace) {
 	O3Space* ts = tospace;
 	while (ts) {
 		to_stack.push_back(ts);
-		ts = [tospace superspace];
+		ts = [ts superspace];
 	}
 	
 	//And apply them in reverse order
 	std::vector<O3Space*>::reverse_iterator it=to_stack.rbegin(), e=to_stack.rend();
 	for (; it!=e; it++) {
-		current_space = *it;
+		O3Space* current_space = *it;
 		mat *= [current_space matrixFromSuper];
 		if (current_space==tospace) return mat;
 	}

@@ -36,7 +36,14 @@
 	BOOL mRenderingDisabled:1;
 	BOOL mLogFPS:1; //More of a debug thing for the scripting layer (not public)
 	
+	BOOL mOwnsController; ///<Should send a release to the controller when the receiver is released
+	
+	BOOL mUpdateThreadIsCanceled:1;
 	NSTimer* mUpdateTimer;
+	NSThread* mUpdateThread;
+	NSRunLoop* mUpdateThreadRunLoop;
+	NSLock* mUpdateRunningLock; //<Locked while updates are running. Acquire to be sure the child thread has had a chance to check the exit status.
+	
 	NSMutableDictionary* mViewState; ///<A scratch dictionary
 }
 //Init
@@ -45,6 +52,8 @@
 //Convenience
 - (void)installDefaultViewController;
 - (O3GLViewController*)controller;
+- (BOOL)ownsController;
+- (void)setOwnsController:(BOOL)shouldReleaseController;
 - (void)toggleMouseLock;
 
 //Mouse

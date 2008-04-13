@@ -48,6 +48,7 @@ using namespace ObjC3D::Math;
 
 //Use
 - (void)setProjectionMatrix; ///<Sets the projection matrix to the receiver's matrix. No pushing, since that would be pointless with a proj matrix.
+- (void)setViewMatrix; ///<Sets the modelview matrix to be the matrix that transforms from worldspace into cameraspace.
 //- (void)debugDraw; ///<Draw a wireframe model of the receiver
 - (void)tickWithContext:(O3RenderContext*)context;
 @end

@@ -55,15 +55,16 @@ O3Mat_sq_T& O3Mat_sq_T::Set(const O3Mat_sq_T2& other_matrix) {
 
 O3Mat_sq_TT2
 O3Mat_sq_T& O3Mat_sq_T::SetUpperLeft(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat) {
-	int i,k,j = SIZE-1;
-	for (i=0;i<j;i++)
-		for (i=0;i<k;i++)
-			operator()(i,k) = other_mat(i,k);
-	for (i=0;i<j;i++) {
-		operator()(j,i) = 0;
-		operator()(i,j) = 0;
+	int i,j;
+	int s=SIZE-1;
+	for (i=0;i<s;i++)
+		for (j=0; j<s; j++)
+			operator()(i,j) = other_mat(i,j);
+	for (i=0;i<s;i++) {
+		operator()(s,i) = 0;
+		operator()(i,s) = 0;
 	}
-	operator()(j,j) = 1;
+	operator()(s,s) = 1;
 	return *this;
 }
 
@@ -641,22 +642,22 @@ O3Mat_sq_TT
 bool O3Mat_sq_T::GetOrtho(double& left, double& right, double& bottom, double& top, double& zNear, double& zFar) const {
 	O3CompileAssert(SIZE==4, "Can only get orthagonal decomp on a 4x4 matrix");
 	if (O3Equals(operator()(0,3), 0.0, O3Epsilon(double)) || 
-		O3Equals(operator()(1,3), 0.0, O3Epsilon(double)) || 
-		O3Equals(operator()(2,3), 0.0, O3Epsilon(double)) || 
+		O3Equals(operator()(3,1), 0.0, O3Epsilon(double)) || 
+		O3Equals(operator()(3,2), 0.0, O3Epsilon(double)) || 
 		O3Equals(operator()(3,3), 1.0, O3Epsilon(double))    ) return false;
 	
 	double recip00 = 1.0 / operator()(0,0);
 	double recip11 = 1.0 / operator()(1,1);
 	double recip22 = 1.0 / operator()(2,2);
     
-    left = -(1.0+operator()(0,3)) * recip00;
-    right = (1.0-operator()(0,3)) * recip00;
+    left = -(1.0+operator()(3,0)) * recip00;
+    right = (1.0-operator()(3,0)) * recip00;
 	
-    bottom = -(1.0+operator()(1,3)) * recip11;
-    top    =  (1.0-operator()(1,3)) * recip11;
+    bottom = -(1.0+operator()(3,1)) * recip11;
+    top    =  (1.0-operator()(3,1)) * recip11;
 	
-	zNear = (operator()(2,3)+1.0) * recip22;
-    zFar  = (operator()(2,3)-1.0) * recip22;
+	zNear = (operator()(3,2)+1.0) * recip22;
+    zFar  = (operator()(3,2)-1.0) * recip22;
     
     return true;
 }
@@ -664,23 +665,23 @@ bool O3Mat_sq_T::GetOrtho(double& left, double& right, double& bottom, double& t
 O3Mat_sq_TT
 bool O3Mat_sq_T::GetFrustum(double& left, double& right, double& bottom, double& top, double& zNear, double& zFar) const {
 	O3CompileAssert(SIZE==4, "Cannot get the frustum defined by a non 4x4!");
-	if (O3Equals(operator()(0,3), 0.0, O3Epsilon(double)) || 
-		O3Equals(operator()(1,3), 0.0, O3Epsilon(double)) || 
-		O3Equals(operator()(2,3), 0.0, O3Epsilon(double)) || 
+	if (O3Equals(operator()(3,0), 0.0, O3Epsilon(double)) || 
+		O3Equals(operator()(3,1), 0.0, O3Epsilon(double)) || 
+		O3Equals(operator()(3,2), 0.0, O3Epsilon(double)) || 
 		O3Equals(operator()(3,3), 1.0, O3Epsilon(double))    ) return false;	
 	
 	double m22 = operator()(2,2);
 	double recip00 = 1.0 / operator()(0,0);
 	double recip11 = 1.0 / operator()(1,1);
 	
-    zNear = operator()(3,2) / (m22-1.0);
-    zFar  = operator()(3,2) / (m22+1.0);
+    zNear = operator()(2,3) / (m22-1.0);
+    zFar  = operator()(2,3) / (m22+1.0);
     
     left  = zNear * (m22-1.0) * recip00;
     right = zNear * (m22+1.0) * recip00;
 	
-    top    = zNear * (operator()(1,2)+1.0) * recip11;
-    bottom = zNear * (operator()(1,2)-1.0) * recip11;
+    top    = zNear * (operator()(2,1)+1.0) * recip11;
+    bottom = zNear * (operator()(2,1)-1.0) * recip11;
     
     return true;
 }

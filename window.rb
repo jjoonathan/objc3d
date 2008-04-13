@@ -5,3 +5,5 @@
 @o.installDefaultViewController
 @o.setDefaultScene
 @w.makeKeyAndOrderFront nil
+@w.setReleasedWhenClosed true
+@o.release

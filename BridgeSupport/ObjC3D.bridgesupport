@@ -24,11 +24,15 @@
 <struct name='O3Mat4x4r' type='{O3Mat&lt;real,4,4&gt;=&quot;v&quot;[16f]}'/>
 <struct name='O3OptInfo' type='{_O3OptInfo=&quot;stats&quot;^{?}&quot;benefit&quot;f&quot;cost&quot;f}'/>
 <struct name='O3OptStats' type='{_O3OptStats=&quot;accum_count&quot;C&quot;prev_accum_count&quot;C&quot;reassess_at&quot;C&quot;accum_time&quot;f&quot;prev_accum_time&quot;f&quot;revert_usr_data&quot;@}'/>
-<struct name='O3Quaternion' type='{_O3Quaternion=&quot;v&quot;[4d]}'/>
+<struct name='O3Quaternion' type='{O3Quaternion=&quot;v&quot;[4d]}'/>
 <struct name='O3RawData' type='{_O3RawData=&quot;bytes&quot;^v&quot;length&quot;I}'/>
 <struct name='O3RenderContext' type='{_O3RenderContext=&quot;scratch&quot;[5^v]&quot;objCCompatibility&quot;#&quot;view&quot;@&quot;O3GLView&quot;&quot;camera&quot;@&quot;O3Camera&quot;&quot;cameraSpace&quot;@&quot;O3Space&quot;&quot;elapsedTime&quot;d&quot;ctx&quot;@&quot;O3Context&quot;&quot;glContext&quot;@&quot;NSOpenGLContext&quot;&quot;reserved&quot;[5^v]}'/>
 <struct name='O3Rotation3' type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}'/>
+<struct name='O3Scale2' type='{_O3Scale2=&quot;v&quot;[2d]}'/>
+<struct name='O3Scale3' type='{_O3Scale3=&quot;v&quot;[3d]}'/>
 <struct name='O3Transformation3' type='{_O3Transformation3=&quot;MyTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}&quot;MyInverseTransform&quot;{O3Mat&lt;double,4,4&gt;=&quot;v&quot;[16d]}}'/>
+<struct name='O3Translation2' type='{_O3Translation2=&quot;v&quot;[2d]}'/>
+<struct name='O3Translation3' type='{_O3Translation3=&quot;v&quot;[3d]}'/>
 <struct name='O3Vec2d' type='{O3Vec&lt;double,2&gt;=&quot;v&quot;[2d]}'/>
 <struct name='O3Vec2f' type='{O3Vec&lt;float,2&gt;=&quot;v&quot;[2f]}'/>
 <struct name='O3Vec2r' type='{O3Vec&lt;real,2&gt;=&quot;v&quot;[2f]}'/>
@@ -473,7 +477,7 @@
 </class>
 <class name='NSCoder'>
 <method selector='encodeVec3d:forKey:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+<arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
 <method selector='encodeVec3f:forKey:'>
 <arg type='{O3Vec&lt;real,3&gt;=[3f]}' index='0'/>
@@ -647,7 +651,7 @@
 <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
 </method>
 <method selector='rotateForMouseMoved:'>
-<arg type='{O3Vec&lt;double,2&gt;=[2d]}' index='0'/>
+<arg type='{_O3Translation2=[2d]}' index='0'/>
 </method>
 <method selector='tickWithContext:'>
 <arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
@@ -785,17 +789,14 @@
 </method>
 </class>
 <class name='O3Locateable'>
-<method selector='moveBy:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
-</method>
 <method selector='moveTo:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+<arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
 <method selector='resize:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+<arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
 <method selector='rotateBy:over:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='1'/>
+<arg type='{_O3Translation3=[3d]}' index='1'/>
 </method>
 </class>
 <class name='O3MatStructType'>
@@ -872,9 +873,6 @@
 </method>
 </class>
 <class name='O3Space'>
-<method selector='applyTransformation:inSpace:'>
-<arg type='{O3Mat&lt;double,4,4&gt;=[16d]}' index='0'/>
-</method>
 <method selector='matrixFromSpace:'>
 <retval type='{O3Mat&lt;double,4,4&gt;=[16d]}'/>
 </method>
@@ -976,23 +974,20 @@
 <method selector='drawOrthoBasis:'>
 <arg NEW='1' type='^{_O3RenderContext=[5^v]#@@@d@@[5^v]}' index='0' type_modifier='o'/>
 </method>
-<method selector='moveBy:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
-</method>
 <method selector='moveTo:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+<arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
 <method selector='quatRotation'>
 <retval type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}'/>
 </method>
 <method selector='resize:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+<arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
 <method selector='rotateBy:over:inPOVOf:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='1'/>
+<arg type='{_O3Translation3=[3d]}' index='1'/>
 </method>
 <method selector='rotation'>
-<retval type='{O3Vec&lt;double,3&gt;=[3d]}'/>
+<retval type='{_O3Translation3=[3d]}'/>
 </method>
 <method selector='scale'>
 <retval type='{O3Vec&lt;real,3&gt;=[3f]}'/>
@@ -1001,16 +996,16 @@
 <arg type='{O3Rotation3=&quot;q&quot;{O3Quaternion=&quot;v&quot;[4d]}}' index='0'/>
 </method>
 <method selector='setRotation:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+<arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
 <method selector='setScale:'>
 <arg type='{O3Vec&lt;real,3&gt;=[3f]}' index='0'/>
 </method>
 <method selector='setTranslation:'>
-<arg type='{O3Vec&lt;double,3&gt;=[3d]}' index='0'/>
+<arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
 <method selector='translation'>
-<retval type='{O3Vec&lt;double,3&gt;=[3d]}'/>
+<retval type='{_O3Translation3=[3d]}'/>
 </method>
 </class>
 <class name='O3Texture'>

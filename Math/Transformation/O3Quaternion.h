@@ -21,7 +21,7 @@ public: //Constructors
 	O3Quaternion(const O3Mat4x4d& mat) {Set(mat);};	///<Constructs a quaternion from the rotation element of mat
 	
 public: //Setters
-	void Set() {O3Vec4d(0., 0., 0., 1.); };								///<Sets the receiver to the quaternion multiplication identity (NOTE: THIS IS *NOT* THE ADDITION IDENTITY!)
+	void Set() {O3Vec4d::Set(0., 0., 0., 1.); };								///<Sets the receiver to the quaternion multiplication identity (NOTE: THIS IS *NOT* THE ADDITION IDENTITY!)
 	void Set(const O3Quaternion& other) {O3Vec4d::Set(other);};				///<Sets the receiver to the contents of other
 	void Set(angle theta, O3Vec3d axis);									///<Sets the receiver to the rotation defined by the axis-angle pair
 	void Set(angle x, angle y, angle z);						///<Sets the receiver to the euler angle defined by x/z/y (NOTE: Not doublely a great idea, be careful about gimbal lock)

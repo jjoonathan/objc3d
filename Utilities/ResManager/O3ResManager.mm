@@ -448,6 +448,7 @@ BOOL O3ResSourcesLoadNamed_fromPreloadCache_orSources_intoManager_(NSString* res
 }
 
 - (void)resourceLoaderThread:(id)obj {
+	[[NSThread currentThread] performSelector:@selector(setName:) withObject:@"O3GLView Update"];
 	int counter=0;
 	BOOL should_die = NO; //YES if there are too many threads and we should close
 	while (!should_die) { //Continuously try to load stuff

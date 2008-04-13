@@ -117,6 +117,7 @@ inline void initP(O3Scene* self) {
 	}
 	[context->glContext makeCurrentContext];
 	[context->camera setProjectionMatrix];
+	[context->camera setViewMatrix];
 	NSEnumerator* mRenderStepsEnumerator = [mRenderSteps objectEnumerator];
 	while (NSString* step = (NSString*)[mRenderStepsEnumerator nextObject]) {
 		SEL stepsel = NSSelectorFromString(step);

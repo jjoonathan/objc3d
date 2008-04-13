@@ -22,7 +22,6 @@ using namespace ObjC3D::Math;
 	float mScale[3];
 #endif
 }
-- (void)moveBy:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov;
 - (void)moveTo:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov;
 - (void)rotateBy:(angle)theta over:(O3Vec3d)axis inPOVOf:(id<O3Spatial>)pov;
 - (void)resize:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov;
