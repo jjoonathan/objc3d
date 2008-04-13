@@ -30,8 +30,8 @@ class O3BufferedReader;
 - (id)initWithType:(O3StructType*)type portableData:(NSData*)dat;
 - (id)initWithType:(O3StructType*)type capacity:(UIntP)countGuess;
 - (id)initWithTypeNamed:(NSString*)name;
-- (id)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l;
-- (id)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l;
+- (id)initWithBytes:(void*)bytes typeName:(NSString*)name length:(UIntP)l; ///<bytes is freed when done
+- (id)initWithBytes:(void*)bytes type:(O3StructType*)t length:(UIntP)l; ///<bytes is freed when done
 - (id)initWithCopiedBytes:(const void*)bytes typeName:(NSString*)name length:(UIntP)l;
 - (id)initWithCopiedBytes:(const void*)bytes type:(O3StructType*)t length:(UIntP)l;
 - (id)initByCompoundingArrays:(O3StructArray*)arr,...;

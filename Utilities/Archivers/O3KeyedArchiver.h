@@ -90,3 +90,8 @@ O3EXTERN_C NSString* O3KeyedArchiverEncodedNameOfClass(O3KeyedArchiver* self, Cl
 @interface NSObject (O3KeyedArchiving)
 - (void)encodeWithO3ArchiveInfo:(O3ArchiveInfo*)arch key:(NSString*)k;
 @end
+
+@interface NSCoder (O3VectorAdditions)
+- (void)encodeVec3d:(O3Vec3d)v forKey:(NSString*)k;
+- (void)encodeVec3f:(O3Vec3f)v forKey:(NSString*)k;
+@end

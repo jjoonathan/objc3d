@@ -205,8 +205,16 @@ O3Vec_T O3Vec_T::operator^(const O3Vec_T &vec) const { //Cross product
 	O3CompileAssert(NUMBER==3, "Cannot cross non-3D vectors. Fix if you need to.");
 	int X=0, Y=1, Z=2;
 	return O3Vec_T(	v[Y] * vec[Z] - v[Z] * vec[Y],
-									v[Z] * vec[X] - v[X] * vec[Z],
-									v[X] * vec[Y] - v[Y] * vec[X]  );
+	                v[Z] * vec[X] - v[X] * vec[Z],
+	                v[X] * vec[Y] - v[Y] * vec[X]  );
+}
+
+O3Vec_TT
+O3Vec_T& O3Vec_T::SetLength(double newlen) {
+	double len = Length();
+	double ratio = newlen / len;
+	operator*=(newlen);
+	return *this;
 }
 
 /*******************************************************************/ #pragma mark O3Vec In-Place Products /*******************************************************************/

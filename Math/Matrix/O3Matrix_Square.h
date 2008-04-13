@@ -17,8 +17,8 @@ public:
 	TYPE Values[SIZE*SIZE]; //DynamicMatrix depends on this. Do not change the name or the type without first modifying DynamicMatrix.
 	
 public: //Constructors
-	static O3Mat_sq_T  GetZero();
-	static O3Mat_sq_T  GetIdentity();
+	static O3Mat_sq_T GetZero() {O3Mat_sq_T self; return self.Zero();}
+	static O3Mat_sq_T GetIdentity() {O3Mat_sq_T self; return self.Identitize();}
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
 	O3Mat_sq_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);}; ///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_sq_TTT2 O3Mat(const O3Mat_sq_T2& other_matrix) {Set(other_matrix);}; ///<Construct a matrix with the contents of other_matrix
@@ -29,7 +29,8 @@ public: //Constructors
 public: //Setters
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const TYPE2* array, bool row_major = false, int arows = SIZE, int acols = SIZE);	///<Fills the receiver with the elements in array, specifying weather array is row or column major.
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Mat_sq_T2& other_matrix);		///<Fills the receiver with the contents of other_matrix.
-	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat); ///<Set a matrix to a smaller matrix (other_mat is put in the upper left corner of the receiver, and everything else is padded with identity values)
+	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat) {return SetUpperLeft(other_mat);}
+	O3Mat_sq_TTT2 O3Mat_sq_T& SetUpperLeft(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat); ///<Set a matrix to a smaller matrix (other_mat is put in the upper left corner of the receiver, and everything else is padded with identity values)
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Vec<TYPE2, 3> v1, const O3Vec<TYPE2, 3> v2, const O3Vec<TYPE2, 3> v3);		///<Fills the orthonormal base of the receiver. Valid on 3x3 and 4x4 matricies.
 	O3Mat_sq_T& SetValue(O32DStructArray* val);
 	
@@ -103,6 +104,7 @@ public: //Accessors
 	int Columns() const;	///<Returns the number of columns in the receiver.
 	const TYPE *Data(BOOL* row_major=NULL) const;	///<Returns a pointer to the internal values array. THIS SHOULD NOT BE USED.
 	const char* ElementType() const {return @encode(TYPE);} ///<Returns the ObjC encoding of TYPE
+	TYPE* GLMatrix() {return Values;} ///<Get a pointer to the receiver that GL will like
 	
 public: //Type detection
 	bool IsIdentity(double tolerance = O3Epsilon(TYPE)) const; ///<Returns true if every element in the receiver equals the identity value plus or minus tolerance (which defaults to a small value appropriate for the receiver's type)
@@ -115,7 +117,7 @@ public: //Type detection
 public: //Type conversion
 	operator const TYPE* () const {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
 	operator TYPE* () {return Values;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
-	O32DStructArray* Value() const {return O32DStructArrayWithBytesTypeRowsCols(O3MemDup(this,sizeof(O3Mat_sq_T)), @encode(TYPE), SIZE, SIZE, O3MatIsRowMajor);}
+	O32DStructArray* Value() const {return O32DStructArrayWithBytesTypeRowsCols(O3MemDup(this,sizeof(O3Mat_sq_T)), @encode(TYPE), SIZE, SIZE, O3MatIsStoredRowMajor);}
 	
 public: //Interface
 	std::string Description() const; ///<Returns a string describing the receiver

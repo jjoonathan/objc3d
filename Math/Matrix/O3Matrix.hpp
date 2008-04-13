@@ -9,13 +9,6 @@
 using namespace ObjC3D::Math;
 
 /*******************************************************************/ #pragma mark Constructors /*******************************************************************/
-O3Mat_TT
-/*static*/ O3Mat_T  O3Mat_T::GetZero() {
-	O3Mat_T to_return;
-	to_return.Zero();
-	return to_return;
-}
-
 ///@note If there is a difference in dimensionality between \e array and the receiver, the receiver will fill as much of itself as it can from \e array, then pad the rest with identity values.
 ///@param arows If \e array has a different dimensionality than the receiver, specify the number of rows in \e array here.
 ///@param acols If \e array has a different dimensionality than the receiver, specify the number of columns in \e array here.
@@ -72,12 +65,12 @@ const typename O3Mat_T::RowAccessor O3Mat_T::operator[](int row) const {
 
 O3Mat_TT
 TYPE& O3Mat_T::operator()(int row, int column) {
-	return v[O3MatIndexForLocation(ROWS,COLS,row,column)];
+	return v[O3MatIndexForLocation(ROWS,COLUMNS,row,column)];
 }
 
 O3Mat_TT
 const TYPE& O3Mat_T::operator()(int row, int column) const {
-	return v[O3MatIndexForLocation(ROWS,COLS,row,column)];
+	return v[O3MatIndexForLocation(ROWS,COLUMNS,row,column)];
 }
 
 O3Mat_TT

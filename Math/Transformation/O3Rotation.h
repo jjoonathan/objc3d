@@ -19,17 +19,17 @@ public: //Constructors
 	O3Rotation3(const O3Quaternion& quat): MyQuat(quat) {};							///<Initialize a rotation with a quaternion
 	O3Rotation3(angle theta, O3Vec3d axis): MyQuat(theta, axis) {};					///<Initialize to another rotation
 	O3Rotation3(angle roll, angle pitch, angle yaw): MyQuat(roll, pitch, yaw) {};	///<Initialize with the euler angles roll, pitch, and yaw. NOTE: internal gimbal lock won't happen, but you still have to be careful here.
-	O3Rotation3(const O3Mat3x3d& mat) {Set(mat);};	///<Constructs a rotation from a rotation matrix
-	O3Rotation3(const O3Mat4x4d& mat) {Set(mat);};	///<Constructs a rotation from the rotation element of mat
-	
+	O3Rotation3(const O3Mat3x3d& mat) {SetMat(mat);};	///<Constructs a rotation from a rotation matrix
+	O3Rotation3(const O3Mat4x4d& mat) {SetMat(mat);};	///<Constructs a rotation from the rotation element of mat
+		
 public: //Setters
 	O3Rotation3& Set() {MyQuat.Set(); return *this;};												///<Set the receiver to the identity rotation (no rotation)
 	O3Rotation3& Set(const O3Rotation3& other) {MyQuat.Set(other.GetQuaternion()); return *this;};	///<Make the receiver a copy of other
 	O3Rotation3& Set(angle theta, O3Vec3d axis) {MyQuat.Set(theta, axis); return *this;};			///<Set the receiver to the rotation described by the axis-angle pair theta and axis.
 	O3Rotation3& Set(const O3Quaternion& quat) {MyQuat.Set(quat); return *this;};					///<Set the receiver to the rotation represented by quat
 	O3Rotation3& Set(angle roll, angle pitch, angle yaw) {MyQuat.Set(roll, pitch, yaw); return *this;}; ///<Set the receiver to the rotation represented by roll, pitch, and yaw (NOTE: though internally O3Rotation3 is not suceptible to gimbal lock, the euler representation is, so be careful.)
-	O3Rotation3& Set(const O3Mat3x3d& mat) {MyQuat.Set(mat); return *this;}; ///<Sets the receiver to the rotation represented by mat
-	O3Rotation3& Set(const O3Mat4x4d& mat) {MyQuat.Set(mat); return *this;}; ///<Sets the receiver to the rotation component of mat
+	O3Rotation3& SetMat(const O3Mat3x3d& mat) {MyQuat.SetMat(mat); return *this;}; ///<Sets the receiver to the rotation represented by mat
+	O3Rotation3& SetMat(const O3Mat4x4d& mat) {MyQuat.SetMat(mat); return *this;}; ///<Sets the receiver to the rotation component of mat
 	
 public: //Concatenations        
 	O3Rotation3& Rotate(const O3Rotation3& other);	///<Rotate the receiver by the rotation specified by other
@@ -54,6 +54,10 @@ public: //Inspectors
 	O3Mat3x3d GetMatrix() const;			///<Gets the 3x3 matrix that performs the receiver's rotation
 	O3Quaternion GetQuaternion() const;	///<Gets the receiver's quaternion representation
 	void GetEulerAngles(angle* roll, angle* pitch, angle* yaw) const;	///<Gets the euler angles that compose the receiver's rotation (pass NULL if you don't want one of them)
+	
+public: //Use
+	O3Vec3d RotatePoint(const O3Vec3d& p) {return MyQuat.RotatePoint(p);}
+
 };
 #else
 typedef struct {double v[4];} O3Quaternion;

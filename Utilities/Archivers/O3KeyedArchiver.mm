@@ -476,3 +476,34 @@ inline NSString* encodeNameOfObjClass(O3KeyedArchiver* self, id obj) {
 	[super encodeWithO3ArchiveInfo:arch key:k];
 }
 @end
+
+
+
+
+@implementation NSCoder (O3VectorAdditions)
+
+- (void)encodeVec3d:(O3Vec3d)v forKey:(NSString*)k {
+	[self encodeObject:[[O3StructArray alloc] initWithCopiedBytes:&v type:O3DoubleType() length:sizeof(v)] forKey:k];
+}
+
+- (void)encodeVec3f:(O3Vec3f)v forKey:(NSString*)k {
+	[self encodeObject:[[O3StructArray alloc] initWithCopiedBytes:&v type:O3FloatType() length:sizeof(v)] forKey:k];
+}
+
+@end
+
+@implementation O3KeyedArchiver (O3VectorAdditions)
+
+- (void)encodeVec3d:(O3Vec3d)v forKey:(NSString*)k {
+	beginWithArchiver_key_tenativeObj_(self, k, self);
+	O3StructArrayWrite(O3DoubleType(), &v, sizeof(v)/sizeof(double), 0, mArchInfo->writer);
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeStructArray);
+}
+
+- (void)encodeVec3f:(O3Vec3f)v forKey:(NSString*)k {
+	beginWithArchiver_key_tenativeObj_(self, k, self);
+	O3StructArrayWrite(O3FloatType(), &v, sizeof(v)/sizeof(float), 0, mArchInfo->writer);
+	endWithArchiver_className_pkgType(self, nil, O3PkgTypeStructArray);
+}
+
+@end

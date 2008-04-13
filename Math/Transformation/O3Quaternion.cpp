@@ -6,6 +6,7 @@
  *  Copyright 2006 Jonathan deWerd. This file is distributed under the MIT license (see accompanying file for details).
  *
  */
+//Swapped all mat references. Should now be row major.
 #include "O3Quaternion.h"
 #include <cmath>
 using namespace ObjC3D::Math;
@@ -22,28 +23,28 @@ void O3Quaternion::Set(angle theta, O3Vec3d axis) {
 	Z() = axis.GetZ() * sin_half_theta;
 }
 
-void O3Quaternion::Set(const O3Mat3x3d& mat) {	
+void O3Quaternion::SetMat(const O3Mat3x3d& mat) {	
     double w = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) + mat(1,1) + mat(2,2) ) );
     double x = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) - mat(1,1) - mat(2,2) ) );
     double y = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) + mat(1,1) - mat(2,2) ) );
     double z = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) - mat(1,1) + mat(2,2) ) );
 	
 	W() = w;
-    X() = copysign(	x, mat(2,1) - mat(1,2)	);
-    Y() = copysign(	y, mat(2,0) - mat(0,2)	);
-    Z() = copysign(	z, mat(1,0) - mat(0,1)	);
+    X() = copysign(	x, mat(1,2) - mat(2,1)	);
+    Y() = copysign(	y, mat(0,2) - mat(2,0)	);
+    Z() = copysign(	z, mat(0,1) - mat(1,0)	);
 }
 
-void O3Quaternion::Set(const O3Mat4x4d& mat) {	
+void O3Quaternion::SetMat(const O3Mat4x4d& mat) {	
     double w = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) + mat(1,1) + mat(2,2) ) );
     double x = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) - mat(1,1) - mat(2,2) ) );
     double y = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) + mat(1,1) - mat(2,2) ) );
     double z = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) - mat(1,1) + mat(2,2) ) );
 	
 	W() = w;
-    X() = copysign(	x, mat(2,1) - mat(1,2)	);
-    Y() = copysign(	y, mat(2,0) - mat(0,2)	);
-    Z() = copysign(	z, mat(1,0) - mat(0,1)	);
+    X() = copysign(	x, mat(1,2) - mat(2,1)	);
+    Y() = copysign(	y, mat(0,2) - mat(2,0)	);
+    Z() = copysign(	z, mat(0,1) - mat(1,0)	);
 }
 
 void O3Quaternion::Set(angle x, angle y, angle z) {
@@ -152,12 +153,12 @@ O3Mat3x3d O3Quaternion::GetMatrix(bool normalize) const {
 	double wy2 = 2*w*y;
 	double yz2 = 2*z*y;
 	double wx2 = 2*w*x;
-	double to_return[9] = { //Row-major
+	double to_return[9] = { //Column-major, must be flipped
 		1. - y2 - z2,   xy2 - wz2,   xz2 + wy2,
 		xy2 + wz2,      1 - x2 - z2, yz2 - wx2,
 		xz2 - wy2,      yz2 + wx2,   1 - x2 - y2
 	};
-	return O3Mat3x3d(to_return, true);
+	return O3Mat3x3d(to_return, false);
 }
 
 O3Quaternion::operator O3Mat3x3r () const {
@@ -265,6 +266,24 @@ O3Quaternion& O3Quaternion::operator*=(const O3Quaternion& q2) {
 	Z() = w*qz + z*qw + x*qy - y*qx;
 	W() = w*qw - x*qx - y*qy - z*qz;
 	return *this;
+}
+
+O3Vec3d O3Quaternion::RotatePoint(const O3Vec3d& p) {
+	double a=v[0], b=v[1], c=v[2], d=v[3];
+	double t2 =   a*b; //Code lifted from wikipedia
+	double t3 =   a*c;
+	double t4 =   a*d;
+	double t5 =  -b*b;
+	double t6 =   b*c;
+	double t7 =   b*d;
+	double t8 =  -c*c;
+	double t9 =   c*d;
+	double t10 = -d*d;
+	O3Vec3d ret;
+	ret[0] = 2*( (t8 + t10)*v[1] + (t6 -  t4)*v[2] + (t3 + t7)*v[3] ) + v[1];
+	ret[1] = 2*( (t4 +  t6)*v[1] + (t5 + t10)*v[2] + (t9 - t2)*v[3] ) + v[2];
+	ret[2] = 2*( (t7 -  t3)*v[1] + (t2 +  t9)*v[2] + (t5 + t8)*v[3] ) + v[3];
+	return ret;
 }
 
 O3Quaternion O3Quaternion::operator/(const O3Quaternion& q2) const {

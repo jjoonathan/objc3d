@@ -9,7 +9,7 @@
 
 @implementation O3Locateable (O3RegionSupport)
 - (void)setParentRegion:(O3Region*)newParent {
-	[self setSuperspaceToThatOfLocateable:newParent];	
+	[self setParentSpace:newParent];	
 }
 @end
 

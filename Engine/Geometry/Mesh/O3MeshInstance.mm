@@ -96,10 +96,11 @@ inline void initP(O3MeshInstance* self) {
 /************************************/ #pragma mark Rendering /************************************/
 - (void)tickWithContext:(O3RenderContext*)context {}
 - (void)renderWithContext:(O3RenderContext*)context {
- 	O3LocateableBeginRender(self,context);
+ 	[mObjectSpace push:context];
 	context->scratch[0] = mMaterial;
 	[mMeshType renderWithContext:context];
 	context->scratch[0] = nil;
+ 	[mObjectSpace pop:context];
 }
 
 /************************************/ #pragma mark Convenience /************************************/

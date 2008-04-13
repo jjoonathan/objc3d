@@ -114,14 +114,11 @@
 		FC2C1C520C125F6E0084A599 /* O3VectorFunctions.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FCFB72F40B75472700BB2243 /* O3VectorFunctions.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C530C125F6F0084A599 /* O3VectorFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FC5265380B7549BC00BAA016 /* O3VectorFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C560C125F700084A599 /* O3Vector.h in Headers */ = {isa = PBXBuildFile; fileRef = FCA35A2F0AA2812D0055819F /* O3Vector.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C580C125F720084A599 /* O3TRSSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FCDC8DEF0B7940A500D48155 /* O3TRSSpace.h */; settings = {ATTRIBUTES = (); }; };
 		FC2C1C5A0C125F740084A599 /* O3Translation.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4AD8310AE9BA1600812085 /* O3Translation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C5B0C125F750084A599 /* O3Transformation.h in Headers */ = {isa = PBXBuildFile; fileRef = FCDAAF750AD49A5A0074B780 /* O3Transformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C5C0C125F750084A599 /* O3Transformation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCDAAF710AD49A4B0074B780 /* O3Transformation.cpp */; };
 		FC2C1C5D0C125F760084A599 /* O3Sphere.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FCC710200AFEDAD400B43EB5 /* O3Sphere.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C5E0C125F770084A599 /* O3Sphere.h in Headers */ = {isa = PBXBuildFile; fileRef = FCC7101E0AFEDAC000B43EB5 /* O3Sphere.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C5F0C125F770084A599 /* O3Space.h in Headers */ = {isa = PBXBuildFile; fileRef = FCFB70B50B72DB0B00BB2243 /* O3Space.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC2C1C600C125F780084A599 /* O3Space.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCFB70B60B72DB0B00BB2243 /* O3Space.cpp */; };
 		FC2C1C610C125F7A0084A599 /* O3Scale.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4AD8320AE9BA2400812085 /* O3Scale.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C620C125F7A0084A599 /* O3Rotation.h in Headers */ = {isa = PBXBuildFile; fileRef = FC4AD8400AE9BAB300812085 /* O3Rotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC2C1C630C125F7B0084A599 /* O3Rotation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC4AD8410AE9BAB300812085 /* O3Rotation.cpp */; };
@@ -177,8 +174,6 @@
 		FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56EFB50D31C4490083E421 /* O3ScalarStructType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */; };
 		FC56F18C0D3324490083E421 /* liblib3ds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC56F18B0D3324490083E421 /* liblib3ds.a */; };
-		FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC56F1BB0D3328010083E421 /* O33DSUnarchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56F1B90D3328010083E421 /* O33DSUnarchiver.mm */; };
 		FC56F2620D35D0E70083E421 /* O3MeshInstance.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC56F2600D35D0E70083E421 /* O3MeshInstance.mm */; };
 		FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */ = {isa = PBXBuildFile; fileRef = FC56F2610D35D0E70083E421 /* O3MeshInstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC5B48790C205A4100879D56 /* O3BigObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC5B48770C205A4100879D56 /* O3BigObject.mm */; };
@@ -222,6 +217,12 @@
 		FC9FCAAC0D870C73001EFBD9 /* NSData+zlib.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC9FCAAA0D870C72001EFBD9 /* NSData+zlib.mm */; };
 		FC9FCAF70D885908001EFBD9 /* O3Parameter.mm in Sources */ = {isa = PBXBuildFile; fileRef = FC9FCAF50D885908001EFBD9 /* O3Parameter.mm */; };
 		FC9FCAF80D885908001EFBD9 /* O3Parameter.h in Headers */ = {isa = PBXBuildFile; fileRef = FC9FCAF60D885908001EFBD9 /* O3Parameter.h */; };
+		FCAD39F50DB1427F00D0867A /* O3TRSSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FCAD39F30DB1427F00D0867A /* O3TRSSpace.h */; };
+		FCAD39F60DB1427F00D0867A /* O3TRSSpace.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCAD39F40DB1427F00D0867A /* O3TRSSpace.mm */; };
+		FCAD39FC0DB1461300D0867A /* O3Space.h in Headers */ = {isa = PBXBuildFile; fileRef = FCAD39FA0DB1461300D0867A /* O3Space.h */; };
+		FCAD39FD0DB1461300D0867A /* O3Space.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCAD39FB0DB1461300D0867A /* O3Space.mm */; };
+		FCAD3A000DB1676000D0867A /* O3MatrixSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FCAD39FE0DB1676000D0867A /* O3MatrixSpace.h */; };
+		FCAD3A010DB1676000D0867A /* O3MatrixSpace.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCAD39FF0DB1676000D0867A /* O3MatrixSpace.mm */; };
 		FCB811150CA5F9A700DC8387 /* O3ResManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FCB811130CA5F9A700DC8387 /* O3ResManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCB811160CA5F9A700DC8387 /* O3ResManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FCB811140CA5F9A700DC8387 /* O3ResManager.mm */; };
 		FCB959A90D2DCC650083B948 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB959A80D2DCC650083B948 /* ApplicationServices.framework */; };
@@ -501,8 +502,6 @@
 		FC56EFB60D31C4490083E421 /* O3ScalarStructType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3ScalarStructType.mm; path = Utilities/O3ScalarStructType.mm; sourceTree = SOURCE_ROOT; };
 		FC56F1690D331EEC0083E421 /* lib3ds.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = lib3ds.xcodeproj; path = Other/lib3ds.xcodeproj; sourceTree = "<group>"; };
 		FC56F18B0D3324490083E421 /* liblib3ds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblib3ds.a; path = build/Support/liblib3ds.a; sourceTree = SOURCE_ROOT; };
-		FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O33DSUnarchiver.h; path = Utilities/Archivers/O33DSUnarchiver.h; sourceTree = SOURCE_ROOT; };
-		FC56F1B90D3328010083E421 /* O33DSUnarchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O33DSUnarchiver.mm; path = Utilities/Archivers/O33DSUnarchiver.mm; sourceTree = SOURCE_ROOT; };
 		FC56F2600D35D0E70083E421 /* O3MeshInstance.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3MeshInstance.mm; path = Engine/Geometry/Mesh/O3MeshInstance.mm; sourceTree = SOURCE_ROOT; };
 		FC56F2610D35D0E70083E421 /* O3MeshInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3MeshInstance.h; path = Engine/Geometry/Mesh/O3MeshInstance.h; sourceTree = SOURCE_ROOT; };
 		FC5B48760C205A4100879D56 /* O3BigObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3BigObject.h; path = Utilities/O3BigObject.h; sourceTree = SOURCE_ROOT; };
@@ -591,6 +590,12 @@
 		FCAAB2790AAA03B5001E5A30 /* O3Functions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3Functions.h; path = Math/Functions/O3Functions.h; sourceTree = SOURCE_ROOT; };
 		FCABCE8B0AACA04F0047BE2F /* O3Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Matrix.h; path = Math/Matrix/O3Matrix.h; sourceTree = SOURCE_ROOT; };
 		FCABCE8C0AACA04F0047BE2F /* O3Matrix.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = O3Matrix.hpp; path = Math/Matrix/O3Matrix.hpp; sourceTree = SOURCE_ROOT; };
+		FCAD39F30DB1427F00D0867A /* O3TRSSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3TRSSpace.h; sourceTree = "<group>"; };
+		FCAD39F40DB1427F00D0867A /* O3TRSSpace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3TRSSpace.mm; sourceTree = "<group>"; };
+		FCAD39FA0DB1461300D0867A /* O3Space.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Space.h; sourceTree = "<group>"; };
+		FCAD39FB0DB1461300D0867A /* O3Space.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3Space.mm; sourceTree = "<group>"; };
+		FCAD39FE0DB1676000D0867A /* O3MatrixSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3MatrixSpace.h; sourceTree = "<group>"; };
+		FCAD39FF0DB1676000D0867A /* O3MatrixSpace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = O3MatrixSpace.mm; sourceTree = "<group>"; };
 		FCB0166C0B4EAE9600FBFAC2 /* Cg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cg.framework; path = Other/Cg.framework; sourceTree = "<group>"; };
 		FCB016F90B4F403000FBFAC2 /* O3Accelerate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O3Accelerate.h; sourceTree = SOURCE_ROOT; };
 		FCB055E60BC3D22D00F4B778 /* O3Protocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Protocols.h; path = Utilities/O3Protocols.h; sourceTree = SOURCE_ROOT; };
@@ -617,8 +622,6 @@
 		FCDC8B1A0B76C29300D48155 /* O3SpaceTester.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = O3SpaceTester.cpp; path = Tests/Runables/O3SpaceTester.cpp; sourceTree = SOURCE_ROOT; };
 		FCDC8D5F0B7823AB00D48155 /* O3Locateable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Locateable.h; path = Classes/O3Locateable.h; sourceTree = SOURCE_ROOT; };
 		FCDC8D600B7823AB00D48155 /* O3Locateable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3Locateable.mm; path = Classes/O3Locateable.mm; sourceTree = SOURCE_ROOT; };
-		FCDC8DEE0B7940A500D48155 /* O3TRSSpace.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; name = O3TRSSpace.cpp; path = Math/Transformation/O3TRSSpace.cpp; sourceTree = SOURCE_ROOT; };
-		FCDC8DEF0B7940A500D48155 /* O3TRSSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = O3TRSSpace.h; path = Math/Transformation/O3TRSSpace.h; sourceTree = SOURCE_ROOT; };
 		FCE028B70B833B06004B6A4A /* regular_shadow.cgfx */ = {isa = PBXFileReference; fileEncoding = 4; languageSpecificationIdentifier = c; lastKnownFileType = text; name = regular_shadow.cgfx; path = Media/regular_shadow.cgfx; sourceTree = SOURCE_ROOT; };
 		FCE25C2D0CC855D00064CA75 /* O3GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3GLView.h; path = Classes/O3GLView.h; sourceTree = SOURCE_ROOT; };
 		FCE25C2E0CC855D00064CA75 /* O3GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3GLView.mm; path = Classes/O3GLView.mm; sourceTree = SOURCE_ROOT; };
@@ -667,8 +670,6 @@
 		FCF4383D0C20E9DF00263F34 /* O3TestBigObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3TestBigObject.mm; path = Tests/O3TestBigObject.mm; sourceTree = SOURCE_ROOT; };
 		FCF4384F0C217FE500263F34 /* O3BigObjSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3BigObjSubclass.h; path = Tests/O3BigObjSubclass.h; sourceTree = SOURCE_ROOT; };
 		FCF438500C217FE500263F34 /* O3BigObjSubclass.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = O3BigObjSubclass.mm; path = Tests/O3BigObjSubclass.mm; sourceTree = SOURCE_ROOT; };
-		FCFB70B50B72DB0B00BB2243 /* O3Space.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3Space.h; path = Math/Transformation/O3Space.h; sourceTree = SOURCE_ROOT; };
-		FCFB70B60B72DB0B00BB2243 /* O3Space.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = O3Space.cpp; path = Math/Transformation/O3Space.cpp; sourceTree = SOURCE_ROOT; };
 		FCFB70E50B74DD2C00BB2243 /* O3TestMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3TestMatrix.h; path = Tests/O3TestMatrix.h; sourceTree = SOURCE_ROOT; };
 		FCFB72570B753E1300BB2243 /* O3MatrixFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = O3MatrixFunctions.h; path = Math/Matrix/O3MatrixFunctions.h; sourceTree = SOURCE_ROOT; };
 		FCFB72580B753E1300BB2243 /* O3MatrixFunctions.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = O3MatrixFunctions.hpp; path = Math/Matrix/O3MatrixFunctions.hpp; sourceTree = SOURCE_ROOT; };
@@ -948,8 +949,6 @@
 				FC5BBD630BD6489500894533 /* O3KeyedUnarchiver.mm */,
 				FC3A0EA90C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.h */,
 				FC3A0EAA0C4FFB3700FCA46C /* O3ArchiveStatisticsGatherer.mm */,
-				FC56F1B80D3328010083E421 /* O33DSUnarchiver.h */,
-				FC56F1B90D3328010083E421 /* O33DSUnarchiver.mm */,
 				FC63EE030CF897DB00325C54 /* O3GPUData.h */,
 				FC63EE040CF897DB00325C54 /* O3GPUData.mm */,
 			);
@@ -1087,10 +1086,6 @@
 		FC4AD8300AE9B91900812085 /* Transformation */ = {
 			isa = PBXGroup;
 			children = (
-				FCDC8DEF0B7940A500D48155 /* O3TRSSpace.h */,
-				FCDC8DEE0B7940A500D48155 /* O3TRSSpace.cpp */,
-				FCFB70B50B72DB0B00BB2243 /* O3Space.h */,
-				FCFB70B60B72DB0B00BB2243 /* O3Space.cpp */,
 				FCDAAF750AD49A5A0074B780 /* O3Transformation.h */,
 				FCDAAF710AD49A4B0074B780 /* O3Transformation.cpp */,
 				FC4AD8320AE9BA2400812085 /* O3Scale.h */,
@@ -1099,6 +1094,12 @@
 				FC4AD8410AE9BAB300812085 /* O3Rotation.cpp */,
 				FC4AD8330AE9BA3D00812085 /* O3Quaternion.h */,
 				FC4AD8340AE9BA3D00812085 /* O3Quaternion.cpp */,
+				FCAD39FA0DB1461300D0867A /* O3Space.h */,
+				FCAD39FB0DB1461300D0867A /* O3Space.mm */,
+				FCAD39F30DB1427F00D0867A /* O3TRSSpace.h */,
+				FCAD39F40DB1427F00D0867A /* O3TRSSpace.mm */,
+				FCAD39FE0DB1676000D0867A /* O3MatrixSpace.h */,
+				FCAD39FF0DB1676000D0867A /* O3MatrixSpace.mm */,
 			);
 			path = Transformation;
 			sourceTree = "<group>";
@@ -1418,11 +1419,9 @@
 				FC2C1C510C125F5C0084A599 /* NSImageAdditions.h in Headers */,
 				FC2C1C530C125F6F0084A599 /* O3VectorFunctions.h in Headers */,
 				FC2C1C560C125F700084A599 /* O3Vector.h in Headers */,
-				FC2C1C580C125F720084A599 /* O3TRSSpace.h in Headers */,
 				FC2C1C5A0C125F740084A599 /* O3Translation.h in Headers */,
 				FC2C1C5B0C125F750084A599 /* O3Transformation.h in Headers */,
 				FC2C1C5E0C125F770084A599 /* O3Sphere.h in Headers */,
-				FC2C1C5F0C125F770084A599 /* O3Space.h in Headers */,
 				FC2C1C610C125F7A0084A599 /* O3Scale.h in Headers */,
 				FC2C1C620C125F7A0084A599 /* O3Rotation.h in Headers */,
 				FC2C1C640C125F7C0084A599 /* O3Quaternion.h in Headers */,
@@ -1456,7 +1455,6 @@
 				FC0BBD4C0D24122200E5B388 /* O3GLViewController.h in Headers */,
 				FC0BBD980D2563CF00E5B388 /* O3GLViewActionCollection.h in Headers */,
 				FC56EFB70D31C4490083E421 /* O3ScalarStructType.h in Headers */,
-				FC56F1BA0D3328010083E421 /* O33DSUnarchiver.h in Headers */,
 				FC56F2630D35D0E70083E421 /* O3MeshInstance.h in Headers */,
 				FC35144E0D3D91070000C27C /* O3CTypes.h in Headers */,
 				FC3937FB0D54F2B3007CA922 /* O32DStructArray.h in Headers */,
@@ -1466,6 +1464,9 @@
 				FC9FCAAB0D870C72001EFBD9 /* NSData+zlib.h in Headers */,
 				FC9FCAF80D885908001EFBD9 /* O3Parameter.h in Headers */,
 				FC0B09DD0DA5DF8800441FD9 /* O3Num.h in Headers */,
+				FCAD39F50DB1427F00D0867A /* O3TRSSpace.h in Headers */,
+				FCAD39FC0DB1461300D0867A /* O3Space.h in Headers */,
+				FCAD3A000DB1676000D0867A /* O3MatrixSpace.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1787,7 +1788,6 @@
 				FC2C1C4E0C125F5A0084A599 /* NSValueO3CGShaderAdditions.mm in Sources */,
 				FC2C1C500C125F5C0084A599 /* NSImageAdditions.mm in Sources */,
 				FC2C1C5C0C125F750084A599 /* O3Transformation.cpp in Sources */,
-				FC2C1C600C125F780084A599 /* O3Space.cpp in Sources */,
 				FC2C1C630C125F7B0084A599 /* O3Rotation.cpp in Sources */,
 				FC2C1C650C125F7C0084A599 /* O3Quaternion.cpp in Sources */,
 				FC2C1C6A0C125F810084A599 /* O3Plane.cpp in Sources */,
@@ -1816,7 +1816,6 @@
 				FC0BBD410D233F0700E5B388 /* O3Renderable.mm in Sources */,
 				FC0BBD4D0D24122200E5B388 /* O3GLViewController.mm in Sources */,
 				FC56EFB80D31C4490083E421 /* O3ScalarStructType.mm in Sources */,
-				FC56F1BB0D3328010083E421 /* O33DSUnarchiver.mm in Sources */,
 				FC56F2620D35D0E70083E421 /* O3MeshInstance.mm in Sources */,
 				FC35144F0D3D91080000C27C /* O3CTypes.mm in Sources */,
 				FC3937FC0D54F2B3007CA922 /* O32DStructArray.mm in Sources */,
@@ -1826,6 +1825,9 @@
 				FC9FCAAC0D870C73001EFBD9 /* NSData+zlib.mm in Sources */,
 				FC9FCAF70D885908001EFBD9 /* O3Parameter.mm in Sources */,
 				FC0B09DE0DA5DF8800441FD9 /* O3Num.mm in Sources */,
+				FCAD39F60DB1427F00D0867A /* O3TRSSpace.mm in Sources */,
+				FCAD39FD0DB1461300D0867A /* O3Space.mm in Sources */,
+				FCAD3A010DB1676000D0867A /* O3MatrixSpace.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

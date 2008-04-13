@@ -353,7 +353,7 @@ inline set<CGparameter>* mTextureParamsP(O3CGEffect* self) {
 		gO3CGEffectGlobals[name] = nparam;
 		return nparam;
 	} else {
-		CGtype ot = cgGetParameterType([param->second rawParameter]);
+		CGtype ot = cgGetParameterType([param->second rawParameter]); ot;
 		O3Assert(ot==t, @"A key of name \"%@\" already exists, but it has a different type (%s instead of %s)", k, cgGetTypeString(ot), cgGetTypeString(t));
 		return param->second;
 	}

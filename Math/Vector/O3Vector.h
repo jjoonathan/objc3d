@@ -25,7 +25,7 @@ class O3BufferedReader;
 * all overloaded anyways, but just keep it in mind and check it if you get odd behavior. It is also good practice just to cast wherever you mean to convert.
 */
 O3Vec_TT class O3Vec {
-private:
+protected:
 	TYPE v[NUMBER]; ///<Stores the array of values.
 		
 public: //Constructors
@@ -64,6 +64,7 @@ public: //Methods and Method-accessors
 	O3Vec_T  GetAbs() const;						///<Returns a copy of the receiver in which each element has been set to its absolute value.
 	O3Vec_T& Negate();								///<Negates each element in the receiver.
 	O3Vec_T  GetNegated() const;					///<Returns a copy of the receiver with each of the original vector's elements negated.
+	O3Vec_T& SetLength(double newlen);			///<"Normalizes" the receiver so that its magnitude is newlen
 	
 public: //Meta-attributes
 	TYPE Distance(const O3Vec_T &v);			/** \todo { Depricate DistanceSquared from O3Vec, and add to O3Point class. }*/
@@ -77,6 +78,7 @@ public: //Meta-attributes
 	template<class T2>
 		bool IsEqualTo(const T2& v, TYPE tolerance /*= O3Epsilon(TYPE)*/) const;	///<Returns true if the difference between the receiver and v is less than tolerance (which defaults to epsilon).
 	double Angle(const O3Vec_T& v) const; ///<Returns the angle between the receiver and v
+	TYPE SumOfComponents() const {TYPE ret=0; for (UIntP i=0; i<NUMBER; i++) ret+=v[i]; return ret;}
 	
 public: //Overloaded Operators
 	operator TYPE* () {return v;}							///<Implicit conversion from a vector to a C array

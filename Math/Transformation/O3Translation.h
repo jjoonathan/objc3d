@@ -17,10 +17,11 @@ class O3Translation : public O3Vec<TYPE, DIMENSIONS> {
 	
 public: //Constructors
 	O3Translation() {vec::Zero();}; ///<Constructs the identity translation.
-	O3Translation(const vec& vector) : vec(vector) {}; ///<Constructs a translation from a vector
-	O3Translation(const O3Translation& other_translation) : vec(other_translation) {}; ///<Copy constructor
-	O3Translation(real x, real y)  : vec(x, y) {}; ///<Constructs a translation from x, y, and z.
-	O3Translation(real x, real y, real z)  : vec(x, y, z) {}; ///<Constructs a translation from x, y, and z.
+	O3Translation(const vec& vector): vec(vector) {}; ///<Constructs a translation from a vector
+	O3Translation(const O3Translation& other_translation): vec(other_translation) {}; ///<Copy constructor
+	O3Translation(real x, real y): vec(x, y) {}; ///<Constructs a translation from x, y, and z.
+	O3Translation(real x, real y, real z): vec(x, y, z) {}; ///<Constructs a translation from x, y, and z.
+	template<class T2> O3Translation(const O3Mat<T2,4,4>& mat): vec(mat(3,0), mat(3,1), mat(3,2)) {}; ///<Extract a translation from a matrix
 
 public: //Operators
 	bool operator==(const O3Translation& other_translation) {return vec::operator==(other_translation);};
@@ -34,17 +35,15 @@ public: //Operators
 	using vec::operator !=;
 	
 public: //Mutators
-	O3Translation<TYPE, DIMENSIONS>& Set() {vec::Set(0.); return *this;}
-	template<typename TYPE2, int DIM2> O3Translation<TYPE, DIMENSIONS>& Set(const O3Translation<TYPE2,DIM2>& other) {vec::Set(other); return *this;}
-	template<typename TYPE2> O3Translation<TYPE, DIMENSIONS>& Set(const TYPE* arr, int count) {vec::Set(arr,count); return *this;}
+	template<class T2>                 O3Translation<TYPE, DIMENSIONS>& SetMat(const O3Mat<T2,4,4>& mat) {vec::Set(mat(3,0), mat(3,1), mat(3,2)); return *this;} ///<Extract a translation from a matrix
 	
 public: //O3Mat construction
 	O3Mat<TYPE,4,4> GetMatrix() { ///<Returns the matrix representing the receiver
 		TYPE to_return_dat[] = {
-			1,0,0,vec::GetX(),
-			0,1,0,vec::GetY(),
-			0,0,1,vec::GetZ(),
-			0,0,0,1
+			1,0,0,0,
+			0,1,0,0,
+			0,0,1,0,
+			vec::GetX(),vec::GetY(),vec::GetZ(),1
 			};
 		return O3Mat<TYPE,4,4>(to_return_dat);
 	}

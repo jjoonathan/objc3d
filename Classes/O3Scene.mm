@@ -149,7 +149,7 @@ inline void initP(O3Scene* self) {
 }
 
 /************************************/ #pragma mark Convenience /************************************/
-- (void)addObject:(id<O3Renderable, NSObject>)obj {
+- (void)addObject:(O3SceneObj*)obj {
 	[[self rootRegion] addObject:obj];
 }
 

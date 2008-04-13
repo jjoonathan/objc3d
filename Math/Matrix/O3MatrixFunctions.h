@@ -13,8 +13,12 @@ template <typename TYPE, int D> class O3Scale;
 typedef O3Scale<double,3> O3Scale3;
 class O3Rotation3;
 
-template <typename TYPE, int SIZE>
-O3Vec<TYPE, SIZE> operator*(const O3Mat<TYPE, SIZE, SIZE> m, const O3Vec<TYPE, SIZE> v);
+template <typename TYPE, int R, int C>
+O3Vec<TYPE, R> operator*(const O3Mat<TYPE, R, C>& m, const O3Vec<TYPE, C>& v);
+
+template <typename TYPE, int R, int C>
+O3Vec<TYPE, C> operator*(const O3Vec<TYPE, R>& v, const O3Mat<TYPE, R, C>& m);
+
 
 /* Can't redeclare structs
 template <typename TYPE, int ROWS, int COLUMNS> struct swap_implementation<O3Mat<TYPE,ROWS,COLUMNS> > {

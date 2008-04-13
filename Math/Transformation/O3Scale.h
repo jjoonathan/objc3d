@@ -19,7 +19,11 @@ public: //Constructors
 	O3Scale(const O3Scale& other_scale) : vec(other_scale) {}; ///<Copy constructor
 	O3Scale(real x, real y)  : vec(x, y) {}; ///<Constructs a scale with the scaling factors over the X and Y axis being x and y respectively.
 	O3Scale(real x, real y, real z)  : vec(x, y, z) {}; ///<Constructs a scale with the scaling factors over the X, Y, and Z axis being x, y, and z respectively.
-		
+	template<class T2>
+			O3Scale(const O3Mat<T2,4,4>& mat): vec(mat.GetRow(0).Length(),
+			                                       mat.GetRow(1).Length(),
+			                                       mat.GetRow(2).Length()) {}; ///<Extract a scale from a matrix
+	
 public: //Operators
 	bool operator==(const O3Scale& other_scale) {return vec::operator==(other_scale);};
 	bool operator!=(const O3Scale& other_scale) {return vec::operator!=(other_scale);};
@@ -33,6 +37,13 @@ public: //Operators
 	using vec::operator +=;
 	using vec::operator ==;
 	using vec::operator !=;
+	using vec::operator [];
+	template<class T2> O3Scale<TYPE,DIMENSIONS>& SetMat(const O3Mat<T2,4,4>& mat) { ///<Extract a scale from a matrix
+		vec::Set(mat.GetRow(0).Length(),
+	             mat.GetRow(1).Length(),
+		         mat.GetRow(2).Length());
+		return *this;
+	}
 	
 public: //O3Mat construction
 	O3Mat<TYPE,4,4> GetMatrix() { ///<Returns the matrix representing the receiver
@@ -46,6 +57,7 @@ public: //O3Mat construction
 
 typedef O3Scale<double, 2> O3Scale2;
 typedef O3Scale<double, 3> O3Scale3;
+typedef O3Scale<float, 3> O3Scale3f;
 #else
 //This type is not legal in the bridge. Instead, you should allow the user to input a double[2] or double[3]. The types will be automatically converted in your objc code, and you will be able to use the less awkward [x,y,z] syntax in ruby code.
 //typedef struct {double v[3];} O3Scale3;

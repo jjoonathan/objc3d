@@ -18,18 +18,18 @@ void O32DStructArrayGetR_C_RowMajor_(O32DStructArray* self, UIntP* r, UIntP* c, 
 #define O3Mat_TT2	O3Mat_TT O3Mat_TTT2
 #define O3Mat_T2	O3Mat<TYPE2, ROWS, COLUMNS>
 
-#define O3MatIndexForLocation(numRows, numCols, row, col) (numRows*col + row)
-#define O3MatIsRowMajor (O3MatIndexForLocation(3,3,0,2)==2)
+#define O3MatIndexForLocation(numRows, numCols, row, col) (col + row*numCols)
+#define O3MatIsStoredRowMajor (O3MatIndexForLocation(3,3,0,2)==2)
 
 /*
- The O3Mat class represents a column-major (translation elements are indexes 12, 13, and 14 = [0][3], [1][3], and [2][3]) matrix. 
+ The O3Mat class represents a row-major (translation elements are indexes 12, 13, and 14 = [3][0], [3][1], and [3][2]) matrix. In other words, it can be easily fed into GL. ObjC3D convention, however, is to use row-vectors. v`=v*M (you transform a vector by postmultiplying it with the transformation matrix)
 */
 O3Mat_TT class O3Mat {	
   public:
 	TYPE v[COLUMNS*ROWS]; //DynamicMatrix depends on this. Do not change the name or the type without first modifying DynamicMatrix.
 
   public: //Constructors
-	static O3Mat_T  GetZero();
+	static O3Mat_T GetZero() {O3Mat_T self; return self.Zero();}
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
 	O3Mat_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);};		///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_TTT2 O3Mat(const O3Mat_T2& other_matrix) {Set(other_matrix);};				///<Construct a matrix with the contents of other_matrix
@@ -92,7 +92,8 @@ O3Mat_TT class O3Mat {
   public: //Type conversion
 	operator const TYPE* () const {return v;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
 	operator TYPE* () {return v;} ///<Allows implicit conversion to a pointer to members (for easy integration with OpenGL & such)
-	O32DStructArray* Value() const {return O32DStructArrayWithBytesTypeRowsCols(O3MemDup(this,sizeof(O3Mat_T)), @encode(TYPE), ROWS, COLUMNS, O3MatIsRowMajor);}
+	TYPE* GLMatrix() {return v;} ///<Get a pointer to the receiver that GL will like
+	O32DStructArray* Value() const {return O32DStructArrayWithBytesTypeRowsCols(O3MemDup(this,sizeof(O3Mat_T)), @encode(TYPE), ROWS, COLUMNS, O3MatIsStoredRowMajor);}
 	
   public: //Interface
 	std::string Description() const; ///<Returns a string describing the receiver

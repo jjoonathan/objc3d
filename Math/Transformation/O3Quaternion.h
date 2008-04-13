@@ -26,8 +26,8 @@ public: //Setters
 	void Set(angle theta, O3Vec3d axis);									///<Sets the receiver to the rotation defined by the axis-angle pair
 	void Set(angle x, angle y, angle z);						///<Sets the receiver to the euler angle defined by x/z/y (NOTE: Not doublely a great idea, be careful about gimbal lock)
 	void Set(double x, double y, double z, double w) {O3Vec4d::Set(x,y,z,w); };	///<Sets the receiver to the quaternion components x, y, z, and w
-	void Set(const O3Mat3x3d& mat); ///<Sets the receiver to the rotation represented by mat
-	void Set(const O3Mat4x4d& mat); ///<Sets the receiver to the rotation component of mat
+	void SetMat(const O3Mat3x3d& mat); ///<Sets the receiver to the rotation represented by mat
+	void SetMat(const O3Mat4x4d& mat); ///<Sets the receiver to the rotation component of mat
 	
 public: //Conversions
 	angle GetAngle() const; ///<Efficently returns the angle for an axis-angle representation (i.e. ToAxisAngle speed wise = GetAxis + GetAngle)
@@ -51,6 +51,9 @@ public: //Math Operators & Methods
 	O3Quaternion& operator/=(const O3Quaternion& q2); ///<In-place quaternion inverse-multiplication of two quaternions (NOTE: This is pre-inverse-multiplication, i.e. it is done backwards from usual (not receiver=receiver*1/q2 but receiver=q2*1/receiver). This essentially "undoes" q2's rotation.
 	O3Quaternion  operator/(const O3Quaternion& q2) const; ///<O3Quaternion quotient: applies inverse 
 	
+public: //Use
+	O3Vec3d RotatePoint(const O3Vec3d& p); //Use the receiver to rotate p. Note that if you are rotating many ps, its mor efficient to compute the matrix.
+
 public: //Equality and assignment methods and operators
 	bool operator==(const O3Quaternion& q) const;	///<Tests for exact (no epsilon tolerance) equality of two quaternions.
 	bool operator!=(const O3Quaternion& q) const;	///<Tests for exact (no epsilon tolerance) inequality of two quaternions.

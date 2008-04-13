@@ -10,20 +10,6 @@ using namespace std;
 using namespace ObjC3D::Math;
 
 /*******************************************************************/ #pragma mark Constructors /*******************************************************************/
-O3Mat_sq_TT
-/*static*/ O3Mat_sq_T  O3Mat_sq_T::GetZero() {
-	O3Mat_sq_T to_return;
-	to_return.Zero();
-	return to_return;
-}
-
-O3Mat_sq_TT
-/*static*/ O3Mat_sq_T  O3Mat_sq_T::GetIdentity() {
-	O3Mat_sq_T to_return;
-	to_return.Identitize(); /*TOIMPLEMENT*/
-	return to_return;
-}
-
 ///@note If there is a difference in dimensionality between \e array and the receiver, the receiver will fill as much of itself as it can from \e array, then pad the rest with identity values.
 ///@param arows If \e array has a different dimensionality than the receiver, specify the number of rows in \e array here.
 ///@param acols If \e array has a different dimensionality than the receiver, specify the number of columns in \e array here.
@@ -68,7 +54,7 @@ O3Mat_sq_T& O3Mat_sq_T::Set(const O3Mat_sq_T2& other_matrix) {
 }
 
 O3Mat_sq_TT2
-O3Mat_sq_T& O3Mat_sq_T::Set(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat) {
+O3Mat_sq_T& O3Mat_sq_T::SetUpperLeft(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat) {
 	int i,k,j = SIZE-1;
 	for (i=0;i<j;i++)
 		for (i=0;i<k;i++)
@@ -707,4 +693,5 @@ bool O3Mat_sq_T::GetPerspective(double& fovy, double& aspectRatio, double& zNear
 	aspectRatio = (right-left)/(top-bottom);
 	return true;
 }
+
 #endif /*defined(__cplusplus)*/

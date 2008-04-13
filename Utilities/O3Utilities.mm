@@ -10,6 +10,7 @@
 #import "O3ResManager.h"
 #import "O3GPUData.h"
 #import "O3CGEffect.h"
+#import "O3Space.h"
  
 void O3FailAssertt() {
 }
@@ -91,6 +92,7 @@ O3EXTERN_C void O3Init() {
 	[O3MatStructType o3init];
 	[O3ResManager o3init];
 	[O3CGEffect o3init];
+	//[O3Space o3init];
 	
 	if (l) NSLog(@"Cleaning Up");
 	[p release];
