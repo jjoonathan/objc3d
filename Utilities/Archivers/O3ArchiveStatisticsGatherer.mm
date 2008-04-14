@@ -124,9 +124,9 @@ inline NSArray* putIntoArrayOrderAndCutLosses(NSDictionary* dict) {
 - (void)encodeValueOfObjCType:(const char*)type at:(void*)ptr {}
 
 #ifdef O3AllowInitHack
-#define incrementKeyCounter(key) {O3ArchiveStatistic* arcs = [mKT objectForKey:key];    if (!arcs) {[mKT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key); [arcs release];} UIntP c = incCount(arcs); O3LogDebug(@"KT Entry: %@:%i",key,c);}
-#define incrementStringCounter(key) {O3ArchiveStatistic* arcs = [mST objectForKey:key]; if (!arcs) {[mST setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key); [arcs release];} UIntP c = incCount(arcs); O3LogDebug(@"ST Entry: %@:%i",key,c);}
-#define incrementClassCounter(key) {O3ArchiveStatistic* arcs = [mCT objectForKey:key];  if (!arcs) {[mCT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key); [arcs release];} UIntP c = incCount(arcs); O3LogDebug(@"CT Entry: %@:%i",key,c);}
+#define incrementKeyCounter(key) {O3ArchiveStatistic* arcs = [mKT objectForKey:key];    if (!arcs) {[mKT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key); [arcs release];} UIntP c = incCount(arcs);c; O3LogDebug(@"KT Entry: %@:%i",key,c);}
+#define incrementStringCounter(key) {O3ArchiveStatistic* arcs = [mST objectForKey:key]; if (!arcs) {[mST setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key); [arcs release];} UIntP c = incCount(arcs);c; O3LogDebug(@"ST Entry: %@:%i",key,c);}
+#define incrementClassCounter(key) {O3ArchiveStatistic* arcs = [mCT objectForKey:key];  if (!arcs) {[mCT setObject:arcs=[O3ArchiveStatistic alloc] forKey:key]; setKey(arcs, key); [arcs release];} UIntP c = incCount(arcs);c; O3LogDebug(@"CT Entry: %@:%i",key,c);}
 #else
 #define incrementKeyCounter(key) {O3ArchiveStatistic* arcs = [mKT objectForKey:key];    if (!arcs) {[mKT setObject:arcs=[[O3ArchiveStatistic alloc] init] forKey:key]; setKey(arcs, key); [arcs release];} incCount(arcs);}
 #define incrementStringCounter(key) {O3ArchiveStatistic* arcs = [mST objectForKey:key]; if (!arcs) {[mST setObject:arcs=[[O3ArchiveStatistic alloc] init] forKey:key]; setKey(arcs, key); [arcs release];} incCount(arcs);}

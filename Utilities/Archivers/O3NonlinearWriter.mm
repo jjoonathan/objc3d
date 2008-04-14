@@ -264,7 +264,7 @@ void O3NonlinearWriter::WriteToFileDescriptor(int descriptor) {
 	UIntP iovtw = mChunksToWrite.size();
 	while (iovtw) {
 		UIntP iov_on_this_pass = O3Min(iovtw, UIO_MAXIOV);
-		int stat = writev(descriptor, towrite, iov_on_this_pass);
+		int stat = writev(descriptor, towrite, iov_on_this_pass); stat;
 		O3Assert(stat!=-1, @"O3NonlinearWriter writing failed, errno=%i",errno);
 		iovtw -= iov_on_this_pass;
 	}
