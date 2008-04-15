@@ -15,23 +15,20 @@ using namespace ObjC3D::Math;
 ///@param acols If \e array has a different dimensionality than the receiver, specify the number of columns in \e array here.
 ///@todo O3Optimizable()
 O3Mat_sq_TT2
-O3Mat_sq_T& O3Mat_sq_T::Set(const TYPE2 *array, bool row_major, int arows, int acols) {
-	if (!row_major || arows!=SIZE || acols!=SIZE) {
-		int row, col;
-		if (arows>SIZE) arows=SIZE;
-		if (acols>SIZE) acols=SIZE;
-		for (row=0;row<arows;row++)
-			for (col=0;col<acols;col++) {
-				operator()(row,col) = (row_major)? array[row + col*arows] : array[col + row*acols];
-			}
-		for (row=arows;row<SIZE;row++)
-			for (col=acols;col<SIZE;col++)
-				operator()(row,col) = (row==col)? 1 : 0;
-	} else {
-		int i;
-		for (i=0;i<(SIZE*SIZE);i++) 
-			operator()(i) = array[i];
-	}
+O3Mat_sq_T& O3Mat_sq_T::Set(const TYPE2 *array, bool row_major, unsigned arows, unsigned acols) {
+    int copyrows = O3Min(arows,SIZE);
+    int copycols = O3Min(acols,SIZE);
+    int row, col;
+    for (row=0;row<copyrows;row++) {
+    	for (col=0;col<copycols;col++) //Copy in the columns we have
+    		operator()(row,col) = (row_major)? array[col + row*arows] : array[row + col*arows];
+    	for (; col<SIZE; col++)
+    		operator()(row, col) = (row==col)? 1 : 0;
+    }
+    for (;row<SIZE;row++) {
+    	for (col=0;col<SIZE;col++)
+    		operator()(row, col) = (row==col)? 1 : 0;
+    }
 	return *this;
 }
 
@@ -558,14 +555,14 @@ O3Mat_sq_TT
 std::string O3Mat_sq_T::Description() const {
 	std::ostringstream to_return;
 	to_return<<"\n{";
-	int i,j;
-	for (i=0;i<SIZE;i++) {
+	int r,c;
+	for (r=0;r<SIZE;r++) {
 		to_return<<"{";
-		for (j=0;j<SIZE;j++) {
-			to_return<<operator()(i,j);
-			if (j!=(SIZE-1)) to_return<<", ";
+		for (c=0;c<SIZE;c++) {
+			to_return<<operator()(r,c);
+			if (c!=(SIZE-1)) to_return<<", ";
 		}
-		if (i!=(SIZE-1))	to_return<<"}\n  ";
+		if (r!=(SIZE-1))	to_return<<"}\n  ";
 		else				to_return<<"}}\n";
 	}
 	return to_return.str();

@@ -125,9 +125,14 @@ inline O3MatrixSpace* mPostProjectionSpaceP(O3Camera* self) {
 	glMatrixMode(GL_PROJECTION);
 	O3Mat4x4d projMat;// = [mPostProjectionSpace matrixFromSuper];
 	projMat.SetPerspective(self->mFOVY, self->mAspectRatio, self->mNearPlane, self->mFarPlane);
-	glLoadMatrixd(projMat);
-	glLoadIdentity();
-	glFrustum(-1, 1, -1, 1, .1, 100);
+	double mat[] = {1,0,0,0,
+					0,1,0,0,
+					0,0,-1.002,-1,
+					0,0,-.2002,0};
+	glLoadMatrixd(mat);
+	static BOOL lw = NO;
+	if (!lw) O3LogWarn(@"Camera is broked");
+	lw = YES;
 	glMatrixMode(GL_MODELVIEW);
 }
 

@@ -31,12 +31,12 @@ O3Mat_TT class O3Mat {
   public: //Constructors
 	static O3Mat_T GetZero() {O3Mat_T self; return self.Zero();}
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
-	O3Mat_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);};		///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
+	O3Mat_TTT2 O3Mat(const TYPE2 *array, bool row_major = true) {Set(array, row_major);};		///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_TTT2 O3Mat(const O3Mat_T2& other_matrix) {Set(other_matrix);};				///<Construct a matrix with the contents of other_matrix
 	O3Mat(O32DStructArray* v) {SetValue(v);}
 	
   public: //Setters
-	O3Mat_TTT2 O3Mat_T& Set(const TYPE2* array, bool row_major=false, unsigned arows=ROWS, unsigned acols=COLUMNS);	///<Fills the receiver with the elements in array, specifying weather array is row or column major (or not).
+	O3Mat_TTT2 O3Mat_T& Set(const TYPE2* array, bool row_major=true, unsigned arows=ROWS, unsigned acols=COLUMNS);	///<Fills the receiver with the elements in array, specifying weather array is row or column major (or not).
 	O3Mat_TTT2 O3Mat_T& Set(const O3Mat_T2& other_matrix);		///<Fills the receiver with the contents of other_matrix.
 	O3Mat_T& SetValue(O32DStructArray* val);
 	

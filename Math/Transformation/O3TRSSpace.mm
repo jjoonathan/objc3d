@@ -56,7 +56,7 @@ O3DefaultO3InitializeImplementation
 		return;
 	}
 	if (pov==self) {
-		mRotation+=O3Rotation3(theta, axis);
+		mRotation = mRotation + O3Rotation3(theta, axis);
 		return;
 	}
 	[self setTransformation:O3Rotation3(theta,axis).GetMatrix() inSpace:[pov space]];
@@ -115,7 +115,7 @@ O3DefaultO3InitializeImplementation
 }
 
 - (void)setMatrixToSuper:(O3Mat4x4d)mat {
-	mTranslation.SetMat(mat);
+ 	mTranslation.SetMat(mat);
 	mRotation.SetMat(mat);
 	mScale.SetMat(mat);
 }
@@ -267,7 +267,7 @@ O3EXTERN_C O3Vec4d O3PointFromSpaceToSpace(const O3Vec4d& p, O3Space* from, O3Sp
 }
 
 
-/************************************/ #pragma mark Desc /************************************/
+/************************************/ #pragma mark Debugging /************************************/
 - (NSString*)description {
 	double roll, pitch, yaw; mRotation.GetEulerAngles(&roll, &pitch, &yaw);
 	return [NSString stringWithFormat:@"<O3TRSSpace: translation=%f,%f,%f roll:%f pitch:%f yaw:%f scale:%f,%f,%f>",
@@ -276,6 +276,27 @@ O3EXTERN_C O3Vec4d O3PointFromSpaceToSpace(const O3Vec4d& p, O3Space* from, O3Sp
 		mScale[0], mScale[1], mScale[2]];
 }
 
+- (double)rotationalDrift {
+	O3Rotation3 irot = -mRotation;
+	O3Mat3x3d rm = mRotation.GetMatrix();
+	O3Mat3x3d rmi = irot.GetMatrix();
+	O3Mat3x3d ident = (rm*rmi);
+	O3Mat3x3d drift = ident - O3Mat3x3d::GetIdentity();
+	double accum_drift = 0;
+	for (UIntP i=0; i<9; i++) 
+		accum_drift+=O3Abs(drift(i));
+	return accum_drift;
+}
+
+- (double)rotationReconstructionDrift {
+	O3Mat3x3d rm = mRotation.GetMatrix();
+	O3Rotation3 rcr = O3Rotation3(rm);
+	O3Mat3x3d rcrm = rcr.GetMatrix();
+	O3Mat3x3d diff = rm-rcrm;
+	double accum=0;
+	for (int i=0; i<9; i++) accum += O3Abs(diff(i));
+	return accum;
+}
 
 
 @end

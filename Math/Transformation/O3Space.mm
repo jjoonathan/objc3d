@@ -32,6 +32,7 @@
 	O3Mat4x4d trans = O3SpaceMatrixFromTo(mSuperspace, ss);
 	O3Mat4x4d newSpace = [self matrixToSuper]*trans;
 	[self setMatrixToSuper:newSpace];
+	mSuperspace = ss;
 }
 
 - (O3Space*)space {
@@ -92,6 +93,7 @@
 	return ret.Invert3x4();
 }
 
+///<Sets the receiver to represent trans from sp (automatically adjusted to match the current superview)
 - (void)setTransformation:(O3Mat4x4d)trans inSpace:(O3Space*)sp {
 	O3Mat4x4d povchanger = O3SpaceMatrixFromTo(sp, [self superspace]);
 	trans *= povchanger;

@@ -20,14 +20,14 @@ public: //Constructors
 	static O3Mat_sq_T GetZero() {O3Mat_sq_T self; return self.Zero();}
 	static O3Mat_sq_T GetIdentity() {O3Mat_sq_T self; return self.Identitize();}
 	O3Mat() {}; ///<Construct a matrix (not zeroed for performance reasons).
-	O3Mat_sq_TTT2 O3Mat(const TYPE2 *array, bool row_major = false) {Set(array, row_major);}; ///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
+	O3Mat_sq_TTT2 O3Mat(const TYPE2 *array, bool row_major = true) {Set(array, row_major);}; ///<Construct a matrix filled with the elements in array, specifying weather it is row or column major format (but defaulting to column major).
 	O3Mat_sq_TTT2 O3Mat(const O3Mat_sq_T2& other_matrix) {Set(other_matrix);}; ///<Construct a matrix with the contents of other_matrix
 	O3Mat_sq_TTT2 O3Mat(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat) {Set(other_mat);} ///<Construct a matrix from a smaller matrix (other_mat is put in the upper left corner of the receiver, and everything else is padded with identity values)
 	O3Mat_sq_TTT2 O3Mat(const O3Vec<TYPE2,SIZE> v1, const O3Vec<TYPE2,SIZE> v2, const O3Vec<TYPE2,SIZE> v3) {Set(v1,v2,v3);};	   ///<Constructs a matrix with the given vectors as an orthonormal base. Valid on 3x3 and 4x4 matricies.
 	O3Mat(O32DStructArray* v) {SetValue(v);}
 	
 public: //Setters
-	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const TYPE2* array, bool row_major = false, int arows = SIZE, int acols = SIZE);	///<Fills the receiver with the elements in array, specifying weather array is row or column major.
+	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const TYPE2* array, bool row_major = true, unsigned arows = SIZE, unsigned acols = SIZE);	///<Fills the receiver with the elements in array, specifying weather array is row or column major.
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Mat_sq_T2& other_matrix);		///<Fills the receiver with the contents of other_matrix.
 	O3Mat_sq_TTT2 O3Mat_sq_T& Set(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat) {return SetUpperLeft(other_mat);}
 	O3Mat_sq_TTT2 O3Mat_sq_T& SetUpperLeft(const O3Mat<TYPE2, SIZE-1, SIZE-1> other_mat); ///<Set a matrix to a smaller matrix (other_mat is put in the upper left corner of the receiver, and everything else is padded with identity values)

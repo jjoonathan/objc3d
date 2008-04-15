@@ -57,7 +57,7 @@ O3Rotation3& O3Rotation3::operator-=(const O3Rotation3& other) {
 }
 
 O3Rotation3 O3Rotation3::operator-() const {
-	return O3Rotation3(MyQuat.GetInverted());
+	return O3Rotation3(MyQuat.GetConjugate());
 }
 
 /*******************************************************************/ #pragma mark Inspectors /*******************************************************************/

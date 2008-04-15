@@ -66,6 +66,14 @@ vec_defs = lambda { |c,count,type_chr|
     def to_a
       self.v
     end
+    
+    def mult(mat)
+      ret=[]
+      mat.cols.times {|c|
+        ret<<self.dot(mat.col(c))
+      }
+      ret
+    end
 	end
 
   Array.class_eval do
@@ -80,6 +88,7 @@ vec_defs = lambda { |c,count,type_chr|
 ###### Add O3Rotation3 methods to Array
 Array.class_eval do
   def dot(other)
+    arr=self.flatten
     raise ArgumentError, "Dimensions must match for dot product", caller if other.size!=arr.size
     accum=0.0
     arr.size.times{|x| accum += arr[x]*other[x]}
@@ -252,6 +261,14 @@ class Array
       arr.addObjects self
       arr.compressIntegerType
       arr
+  end
+  
+  def mult(mat)
+    ret=[]
+    mat.cols.times {|c|
+      ret<<self.dot(mat.col(c))
+    }
+    ret
   end
 end
 

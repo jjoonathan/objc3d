@@ -15,20 +15,18 @@ using namespace ObjC3D::Math;
 ///@todo O3Optimizable()
 O3Mat_TT2
 O3Mat_T& O3Mat_T::Set(const TYPE2 *array, bool row_major, unsigned arows, unsigned acols) {
-	if (!row_major || arows!=ROWS || acols!=COLUMNS) {
-		int row, col;
-		if (arows>ROWS) arows=ROWS;
-		if (acols>COLUMNS) acols=COLUMNS;
-		for (row=0;row<arows;row++)
-			for (col=0;col<acols;col++)
-				operator()(row,col) = (row_major)? array[row + col*arows] : array[col + row*acols];
-		for (row=arows;row<ROWS;row++)
-			for (col=acols;col<COLUMNS;col++)
-				operator()(row, col) = (row==col)? 1 : 0;
-	} else {
-		int i;
-		for (i=0;i<(ROWS*COLUMNS);i++)
-			operator()(i) = array[i];
+	int copyrows = O3Min(arows,ROWS);
+	int copycols = O3Min(acols,COLUMNS);
+	int row, col;
+	for (row=0;row<copyrows;row++) {
+		for (col=0;col<copycols;col++) //Copy in the columns we have
+			operator()(row,col) = (row_major)? array[col + row*arows] : array[row + col*arows];
+		for (; col<COLUMNS; col++)
+			operator()(row, col) = (row==col)? 1 : 0;
+	}
+	for (;row<ROWS;row++) {
+		for (col=0;col<COLUMNS;col++)
+			operator()(row, col) = (row==col)? 1 : 0;
 	}
 	return *this;
 }
@@ -421,14 +419,14 @@ O3Mat_TT
 std::string O3Mat_T::Description() const {
 	std::ostringstream to_return;
 	to_return<<"\n{";
-	int i,j;
-	for (i=0;i<ROWS;i++) {
+	int r,c;
+	for (r=0;r<ROWS;r++) {
 		to_return<<"{";
-		for (j=0;j<COLUMNS;j++) {
-			to_return<<operator()(i,j);
-			if (j!=(COLUMNS-1)) to_return<<", ";
+		for (c=0;c<COLUMNS;c++) {
+			to_return<<operator()(r,c);
+			if (c!=(COLUMNS-1)) to_return<<", ";
 		}
-		if (i!=(ROWS-1))	to_return<<"}\n  ";
+		if (r!=(ROWS-1))	to_return<<"}\n  ";
 		else				to_return<<"}}\n";
 	}
 	return to_return.str();

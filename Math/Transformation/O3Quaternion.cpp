@@ -23,28 +23,69 @@ void O3Quaternion::Set(angle theta, O3Vec3d axis) {
 	Z() = axis.GetZ() * sin_half_theta;
 }
 
+//Optimized version by id
 void O3Quaternion::SetMat(const O3Mat3x3d& mat) {	
-    double w = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) + mat(1,1) + mat(2,2) ) );
-    double x = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) - mat(1,1) - mat(2,2) ) );
-    double y = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) + mat(1,1) - mat(2,2) ) );
-    double z = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) - mat(1,1) + mat(2,2) ) );
-	
-	W() = w;
-    X() = copysign(	x, mat(1,2) - mat(2,1)	);
-    Y() = copysign(	y, mat(0,2) - mat(2,0)	);
-    Z() = copysign(	z, mat(0,1) - mat(1,0)	);
+	if (mat(0,0) + mat(1,1) + mat(2,2) > 0) {
+		float t = + mat(0,0) + mat(1,1) + mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[3] = s * t;
+		v[2] = (mat(0,1) - mat(1,0)) * s;
+		v[1] = (mat(2,0) - mat(0,2)) * s;
+		v[0] = (mat(1,2) - mat(2,1)) * s;
+	} else if (mat(0,0) > mat(1,1) && mat(0,0) > mat(2,2)) {
+		float t = + mat(0,0) - mat(1,1) - mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[0] = s * t;
+		v[1] = (mat(0,1) + mat(1,0)) * s;
+		v[2] = (mat(2,0) + mat(0,2)) * s;
+		v[3] = (mat(1,2) - mat(2,1)) * s;
+	} else if (mat(1,1) > mat(2,2)) {
+		float t = - mat(0,0) + mat(1,1) - mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[1] = s * t;
+		v[0] = (mat(0,1) + mat(1,0)) * s;
+		v[3] = (mat(2,0) - mat(0,2)) * s;
+		v[2] = (mat(1,2) + mat(2,1)) * s;
+	} else {
+		float t = - mat(0,0) - mat(1,1) + mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[2] = s * t;
+		v[3] = (mat(0,1) - mat(1,0)) * s;
+		v[0] = (mat(2,0) + mat(0,2)) * s;
+		v[1] = (mat(1,2) + mat(2,1)) * s;
+	}
 }
 
 void O3Quaternion::SetMat(const O3Mat4x4d& mat) {	
-    double w = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) + mat(1,1) + mat(2,2) ) );
-    double x = 0.5 * sqrt( max(0.0, 1.0 + mat(0,0) - mat(1,1) - mat(2,2) ) );
-    double y = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) + mat(1,1) - mat(2,2) ) );
-    double z = 0.5 * sqrt( max(0.0, 1.0 - mat(0,0) - mat(1,1) + mat(2,2) ) );
-	
-	W() = w;
-    X() = copysign(	x, mat(1,2) - mat(2,1)	);
-    Y() = copysign(	y, mat(0,2) - mat(2,0)	);
-    Z() = copysign(	z, mat(0,1) - mat(1,0)	);
+	if (mat(0,0) + mat(1,1) + mat(2,2) > 0) {
+		float t = + mat(0,0) + mat(1,1) + mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[3] = s * t;
+		v[2] = (mat(0,1) - mat(1,0)) * s;
+		v[1] = (mat(2,0) - mat(0,2)) * s;
+		v[0] = (mat(1,2) - mat(2,1)) * s;
+	} else if (mat(0,0) > mat(1,1) && mat(0,0) > mat(2,2)) {
+		float t = + mat(0,0) - mat(1,1) - mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[0] = s * t;
+		v[1] = (mat(0,1) + mat(1,0)) * s;
+		v[2] = (mat(2,0) + mat(0,2)) * s;
+		v[3] = (mat(1,2) - mat(2,1)) * s;
+	} else if (mat(1,1) > mat(2,2)) {
+		float t = - mat(0,0) + mat(1,1) - mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[1] = s * t;
+		v[0] = (mat(0,1) + mat(1,0)) * s;
+		v[3] = (mat(2,0) - mat(0,2)) * s;
+		v[2] = (mat(1,2) + mat(2,1)) * s;
+	} else {
+		float t = - mat(0,0) - mat(1,1) + mat(2,2) + 1.0f;
+		float s = O3rsqrt(t) * 0.5f;
+		v[2] = s * t;
+		v[3] = (mat(0,1) - mat(1,0)) * s;
+		v[0] = (mat(2,0) + mat(0,2)) * s;
+		v[1] = (mat(1,2) + mat(2,1)) * s;
+	}
 }
 
 void O3Quaternion::Set(angle x, angle y, angle z) {
@@ -194,7 +235,6 @@ O3Quaternion& O3Quaternion::Conjugate() {
 	X() = -X();
 	Y() = -Y();
 	Z() = -Z();
-	W() = -W();
 	return *this;
 }
 
