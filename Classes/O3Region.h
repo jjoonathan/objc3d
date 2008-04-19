@@ -33,6 +33,7 @@
 
 //Object accessors
 - (void)addObject:(O3SceneObj*)aObject;
+- (void)addObjects:(NSArray*)objs;
 - (void)insertObject:(O3SceneObj*)aObject atIndex:(UIntP)i;
 - (O3SceneObj*)objectAtIndex:(UIntP)i;
 - (UIntP)indexOfObject:(O3SceneObj*)aObject;

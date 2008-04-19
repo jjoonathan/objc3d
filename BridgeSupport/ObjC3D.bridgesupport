@@ -795,7 +795,7 @@
 <method selector='resize:inPOVOf:'>
 <arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
-<method selector='rotateBy:over:inPOVOf:'>
+<method selector='rotateTo:over:inPOVOf:'>
 <arg type='{_O3Translation3=[3d]}' index='1'/>
 </method>
 </class>
@@ -983,7 +983,7 @@
 <method selector='resize:inPOVOf:'>
 <arg type='{_O3Translation3=[3d]}' index='0'/>
 </method>
-<method selector='rotateBy:over:inPOVOf:'>
+<method selector='rotateTo:over:inPOVOf:'>
 <arg type='{_O3Translation3=[3d]}' index='1'/>
 </method>
 <method selector='rotation'>

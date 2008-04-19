@@ -44,8 +44,8 @@ O3DefaultO3InitializeImplementation
 	[mObjectSpace moveTo:amount inPOVOf:pov];
 }
 
-- (void)rotateBy:(angle)theta over:(O3Vec3d)axis inPOVOf:(id<O3Spatial>)pov {
-	[mObjectSpace rotateBy:theta over:axis inPOVOf:pov];
+- (void)rotateTo:(angle)theta over:(O3Vec3d)axis inPOVOf:(id<O3Spatial>)pov {
+	[mObjectSpace rotateTo:theta over:axis inPOVOf:pov];
 }
 
 - (void)resize:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov {
@@ -58,6 +58,10 @@ O3DefaultO3InitializeImplementation
 
 - (O3Space*)space {
 	return mObjectSpace;
+}
+
+- (void)setSpace:(O3Space*)ns {
+	O3Assign(ns, mObjectSpace);
 }
 
 - (void)setParentSpace:(id<O3Spatial>)s {

@@ -578,7 +578,7 @@ O3Mat_sq_T& O3Mat_sq_T::SetOrtho(double left, double right, double bottom, doubl
 							0, 2.0/(top-bottom), 0, ty,
 							0, 0, -2.0/(zFar-zNear), tz,
 		0, 0, 0, 1};
-	Set(mat_data);
+	Set(mat_data, false);
 	return *this;
 }
 
@@ -599,7 +599,7 @@ O3Mat_sq_T& O3Mat_sq_T::SetFrustum(double left, double right, double bottom, dou
 							0,f,b,0,
 							0,0,c,d,
 							0,0,-1,0   };
-	Set(mat_data);
+	Set(mat_data, false);
 	return *this;
 }
 
@@ -629,7 +629,7 @@ O3Mat_sq_T& O3Mat_sq_T::SetLookAt(const O3Vec<TYPE1, 3>& eye, const O3Vec<TYPE2,
         u[1],	u[1],	u[1],	-(eye[1]),
         f[2],	f[2],	f[2],	-(eye[2]),
         0.0,	0.0,	0.0,	1.0 };
-	Set(setdata);
+	Set(setdata, false);
 	return *this;
 }
 

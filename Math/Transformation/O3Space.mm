@@ -11,10 +11,18 @@
 /************************************/ #pragma mark Init & Destruction /************************************/
 - (id)initWithCoder:(NSCoder*)coder {
 	O3SuperInitOrDie();
+	O3LogWarn(@"initWithCoder: should not be called on O3Space.");
 	return self;
 }
 
 - (void)encodeWithCoder:(NSCoder*)coder {
+	O3LogWarn(@"encodeWithCoder: should not be called on O3Space.");
+}
+
++ (O3Space*)spaceWithSuper:(O3Space*)ss {
+	O3Space* slf = [[O3Space alloc] init];
+	[slf setSuperspaceWithoutAdjusting:ss];
+	return [slf autorelease];
 }
 
 /************************************/ #pragma mark Super /************************************/

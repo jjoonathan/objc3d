@@ -197,7 +197,7 @@ void Init() {
 	
 	cam = [[O3Camera alloc] init];
 		[cam setTranslation:O3Translation3(-4.130176, 0.505340, 2.535293)];
-		[cam rotateBy:O3Rotation3(0,3.973185,-1.343407)];
+		[cam rotateTo:O3Rotation3(0,3.973185,-1.343407)];
 	shadowCamera = [[O3Camera alloc] init];
 		[shadowCamera setTranslation:O3Translation3(-1.111101, -0.712656, 0.521761)];
 		[shadowCamera setRotation:O3Rotation3(0.000000, -2.745000, -1.065000)];

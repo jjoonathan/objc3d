@@ -50,7 +50,7 @@ O3DefaultO3InitializeImplementation
 	[self setTransformation:O3Translation3(amount).GetMatrix() inSpace:[pov space]];
 }
 
-- (void)rotateBy:(angle)theta over:(O3Vec3d)axis inPOVOf:(id<O3Spatial>)pov {
+- (void)rotateTo:(angle)theta over:(O3Vec3d)axis inPOVOf:(id<O3Spatial>)pov {
 	if (pov==mSuperspace) {
 		mRotation.Set(theta, axis);
 		return;

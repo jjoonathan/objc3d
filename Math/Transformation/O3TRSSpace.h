@@ -23,7 +23,7 @@ using namespace ObjC3D::Math;
 #endif
 }
 - (void)moveTo:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov;
-- (void)rotateBy:(angle)theta over:(O3Vec3d)axis inPOVOf:(id<O3Spatial>)pov;
+- (void)rotateTo:(angle)theta over:(O3Vec3d)axis inPOVOf:(id<O3Spatial>)pov;
 - (void)resize:(O3Vec3d)amount inPOVOf:(id<O3Spatial>)pov;
 
 //Applied in scale, rotate, translate order

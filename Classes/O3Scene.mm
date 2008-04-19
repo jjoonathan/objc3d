@@ -154,4 +154,8 @@ inline void initP(O3Scene* self) {
 	[[self rootRegion] addObject:obj];
 }
 
+- (void)addObjects:(NSArray*)arr {
+	[[self rootRegion] addObjects:arr];
+}
+
 @end

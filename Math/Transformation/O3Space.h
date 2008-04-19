@@ -16,6 +16,10 @@
 	BOOL mIsTRSSpace:1;
 	O3Space* mSuperspace;
 }
+//Init
++ (O3Space*)spaceWithSuper:(O3Space*)ss;
+
+//Superspace management
 - (O3Space*)superspace;
 - (void)setSuperspace:(O3Space*)ss; ///<Sets the superspace and adjusts the receiver's transformation to stay in the same place relative to the root
 - (void)setSuperspaceWithoutAdjusting:(O3Space*)ss; ///<Sets the superspace but does not keep the receiver stationary relative to the root

@@ -123,16 +123,9 @@ inline O3MatrixSpace* mPostProjectionSpaceP(O3Camera* self) {
 /************************************/ #pragma mark Use /************************************/
 - (void)setProjectionMatrix {
 	glMatrixMode(GL_PROJECTION);
-	O3Mat4x4d projMat;// = [mPostProjectionSpace matrixFromSuper];
+	O3Mat4x4d projMat = [mPostProjectionSpace matrixFromSuper];
 	projMat.SetPerspective(self->mFOVY, self->mAspectRatio, self->mNearPlane, self->mFarPlane);
-	double mat[] = {1,0,0,0,
-					0,1,0,0,
-					0,0,-1.002,-1,
-					0,0,-.2002,0};
-	glLoadMatrixd(mat);
-	static BOOL lw = NO;
-	if (!lw) O3LogWarn(@"Camera is broked");
-	lw = YES;
+	glLoadMatrixd(projMat);
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -151,13 +144,13 @@ inline O3MatrixSpace* mPostProjectionSpaceP(O3Camera* self) {
 	if ([d objectForKey:@"flyingRight"])    {[self moveTo:O3Vec3d(t,0,0) inPOVOf:self]; }
 	if ([d objectForKey:@"flyingUp"])       {[self moveTo:O3Vec3d(0,t,0) inPOVOf:self]; }
 	if ([d objectForKey:@"flyingDown"])     {[self moveTo:O3Vec3d(0,-t,0) inPOVOf:self];}
-	if ([d objectForKey:@"barrelingLeft"])  {[self rotateBy:mBarrelRate*raw_t over:O3Vec3d(0,0,-1) inPOVOf:self];}
-	if ([d objectForKey:@"barrelingRight"]) {[self rotateBy:-mBarrelRate*raw_t  over:O3Vec3d(0,0,-1) inPOVOf:self];}
+	if ([d objectForKey:@"barrelingLeft"])  {[self rotateTo:-mBarrelRate*raw_t over:O3Vec3d(0,0,-1) inPOVOf:self];}
+	if ([d objectForKey:@"barrelingRight"]) {[self rotateTo:mBarrelRate*raw_t  over:O3Vec3d(0,0,-1) inPOVOf:self];}
 }
 
 - (void)rotateForMouseMoved:(O3Vec2d)amount {
-	[self rotateBy:mRotRate*amount[0] over:O3Vec3d(0,1,0) inPOVOf:self];
-	[self rotateBy:mRotRate*amount[1] over:O3Vec3d(1,0,0) inPOVOf:self];
+	[self rotateTo:-mRotRate*amount[0] over:O3Vec3d(0,1,0) inPOVOf:self];
+	[self rotateTo:-mRotRate*amount[1] over:O3Vec3d(1,0,0) inPOVOf:self];
 }
 
 @end
